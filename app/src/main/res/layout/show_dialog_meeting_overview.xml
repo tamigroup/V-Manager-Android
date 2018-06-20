@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white">
+
+
+    <TextView
+        android:id="@+id/sdmo_content"
+        android:layout_width="280dp"
+        android:layout_height="102dp"
+        android:gravity="center"
+        android:text="@string/confirm_enter_the_meeting"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/sp_17"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/sdmo_line"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="@dimen/dp_1"
+        android:background="@color/color_EAEAEA"
+        app:layout_constraintEnd_toEndOf="@+id/sdmo_content"
+        app:layout_constraintStart_toStartOf="@+id/sdmo_content"
+        app:layout_constraintTop_toBottomOf="@+id/sdmo_content" />
+
+    <TextView
+        android:id="@+id/sdmo_view_only"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_45"
+        android:gravity="center"
+        android:text="@string/view_only"
+        android:textColor="@color/color_303030"
+        app:layout_constraintEnd_toStartOf="@+id/sdmo_confirm"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="@+id/sdmo_line"
+        app:layout_constraintTop_toBottomOf="@+id/sdmo_line" />
+
+    <TextView
+        android:id="@+id/sdmo_confirm"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_45"
+        android:gravity="center"
+        android:text="@string/confirm"
+        android:textColor="@color/color_303030"
+        app:layout_constraintEnd_toEndOf="@+id/sdmo_line"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@+id/sdmo_view_only"
+        app:layout_constraintTop_toBottomOf="@+id/sdmo_line" />
+
+</android.support.constraint.ConstraintLayout>

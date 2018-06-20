@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--    登陆和忘记密码    -->
+    <string name="v_housekeeper">V管家</string>
+    <string name="welcome_v_housekeeper">欢迎使用V管家</string>
+    <string name="password_login">密码登录</string>
+    <string name="accounts_login">帐号登录</string>
+    <string name="authentication_code">验证码</string>
+    <string name="authentication_code_login">验证码登录</string>
+    <string name="please_phone_number">请输入手机号码</string>
+    <string name="please_input_password">请输入密码</string>
+    <string name="please_input_authentication_code">请输入验证码</string>
+    <string name="get_verification_code">获取验证码</string>
+    <string name="forget_the_password">忘记密码？</string>
+    <string name="password_txt">密码</string>
+    <string name="login">登录</string>
+    <string name="phone_retrieval">手机找回</string>
+    <string name="phone_number">手机号码</string>
+    <string name="input_authentication_code">输入验证码</string>
+    <string name="input_new_password">输入新密码</string>
+    <string name="confirm_new_password">确认新密码</string>
+    <string name="submission">提交</string>
+    <string name="verifying_code_has_been_sent">验证码已发送,可能会有延迟请稍后</string>
+
+    <!--    忘记密码    -->
+    <string name="forget_the_password_prompt">请输入您的帐号查找你的密码</string>
+    <string name="sent_verification_code">发送验证码</string>
+    <string name="new_password">新密码</string>
+    <string name="confirm">确定</string>
+    <string name="again_identification">再次确认</string>
+    <string name="identification">确认</string>
+    <string name="congratulations">恭喜</string>
+    <string name="password_resetting_success">你的帐号密码已重置成功</string>
+    <string name="go_login">去登陆</string>
+
+
+    <!--    主页    -->
+    <string name="home">首页</string>
+    <string name="meeting">会议</string>
+    <string name="my">我的</string>
+    <string name="contract_money">合同款项(元)&#160;&#160;&#160;&#160;%s</string>
+    <string name="receivables">待收款项(元)&#160;&#160;&#160;&#160;%s</string>
+    <string name="home_total">%s\n共计 (场)</string>
+    <string name="have_been_held">%s\n已举办 (场)</string>
+
+    <string name="today_meeting">今日会议</string>
+    <string name="my_attention">我的关注</string>
+    <string name="pending_conference">待办会议</string>
+
+    <!--    搜索    -->
+    <string name="search_make_content">搜索制定内容</string>
+    <string name="search_history">搜索历史</string>
+
+    <!--    新建会议    -->
+    <string name="new_meeting">新建会议</string>
+    <string name="need_to_add_an_item">此页信息均为必添项</string>
+    <string name="meeting_name">会议名称</string>
+    <string name="please_choose">请选择</string>
+    <string name="please_enter">请输入</string>
+    <string name="sale_name">销售姓名</string>
+    <string name="meeting_place">会议地点</string>
+    <string name="start_time">开始时间</string>
+    <string name="end_time">结束时间</string>
+
+
+    <!--    我的    -->
+    <string name="setting_avatar">点击设置头像</string>
+    <string name="message_remind">设置消息提醒</string>
+    <string name="modify_password">修改密码</string>
+    <string name="exit_system">退出系统</string>
+    <string name="my_creation">我的创建</string>
+    <string name="account_settings">帐号设置</string>
+
+    <!--    会议列表    -->
+    <string name="stay_execute">待执行</string>
+    <string name="before_meeting">会前</string>
+    <string name="in_meeting">会中</string>
+    <string name="finished">已结束</string>
+    <string name="attention">关注</string>
+
+    <!--   会议创建     -->
+    <string name="look_at_eo_list">查看EO单</string>
+    <string name="estimate">预计：%s</string>
+    <string name="preservation_bottom">保底：%s</string>
+    <string name="true_to">实到：%s</string>
+    <string name="activity_flow">活动流程</string>
+    <string name="create_activity_flow">创建活动流程</string>
+    <string name="change_in_demand">主办方需求变化</string>
+    <string name="v_emind">小V提醒</string>
+    <string name="already_paid_item">已付款项</string>
+    <string name="contract_amount">合同金额</string>
+    <string name="amount_paid">已付金额</string>
+    <string name="close">关闭</string>
+
+    <!--   意见箱     -->
+    <string name="complaints_box">意见箱</string>
+    <string name="host">举办方(%s)</string>
+    <string name="participants">参会方(%s)</string>
+    <string name="score">打分：</string>
+    <string name="environment">环境：</string>
+    <string name="service">服务：</string>
+    <string name="comment">评论：</string>
+    <string name="no_feedback">暂无反馈哦</string>
+
+    <string name="enter_the_meeting">进入会议</string>
+
+
+    <!--    强出菜单    -->
+    <string name="today">今天</string>
+    <string name="this_month">本月</string>
+    <string name="this_year">本年度</string>
+    <string name="cancel">取消</string>
+
+    <string name="album">相册</string>
+    <string name="photograph">拍照</string>
+
+    <!--    会议    -->
+    <string name="whole">全部</string>
+    <string name="pending_payment">待付款</string>
+    <string name="day">日</string>
+    <string name="month">月</string>
+    <string name="year">年</string>
+
+    <!--    会议概览    -->
+    <string name="meeting_ganlan">会议概览</string>
+    <string name="flow_chart">会议流程</string>
+    <string name="predetermined_number">%s\n预定人数</string>
+    <string name="bottom_number">%s\n保底人数</string>
+    <string name="actual_number">%s\n实到人数</string>
+    <string name="create_process">创建流程</string>
+    <string name="change_demand">需求变化</string>
+
+    <!--    会议服务内容流程    -->
+    <string name="conference_service_content_flow">会议服务内容流程</string>
+    <string name="number_of_participants">参会人数</string>
+    <string name="vip_reception_information">VIP接待信息</string>
+    <string name="meeting_is_important">会议是否重要</string>
+    <string name="important">重要</string>
+    <string name="upload_eo_list">上传EO单</string>
+
+    <!--    编辑流程    -->
+    <string name="edit_process">编辑流程</string>
+    <!--    会议环节待确认    -->
+    <string name="meeting_link_confirmed">会议环节待确认</string>
+    <string name="confirmation_content">确认内容</string>
+    <string name="add_the_person_in_charge">添加负责人</string>
+
+    <!--    会议服务群    -->
+    <string name="conference_service_group">会议服务群</string>
+    <string name="tab_conference_information">会议信息</string>
+    <string name="tab_group_chat">群聊</string>
+    <string name="tab_feedback">反馈</string>
+    <string name="tab_notice">公告</string>
+
+    <!--    进入会议    -->
+    <string name="get_into_meeting">进入会议</string>
+    <string name="get_into">进入</string>
+    <string name="sponsor_member">主办方成员</string>
+    <string name="see">查看</string>
+    <string name="meeting_details">会议详情</string>
+    <string name="vip_details">VIP详情</string>
+
+    <!--    主办方成员    -->
+    <string name="group_chat_members">群聊成员</string>
+    <string name="common_n_people">共%s人</string>
+    <string name="expand_all">展开全部</string>
+    <string name="sign_out_meeting">退出会议</string>
+
+    <!--    确定进入此会议    -->
+    <string name="confirm_enter_the_meeting">确定进入此会议</string>
+    <string name="view_only">仅查看</string>
+    <string name="show_contract_amount">合同金额：%s</string>
+    <string name="show_amount_paid">已付金额：%s</string>
+
+    <string name="send">发送</string>
+</resources>

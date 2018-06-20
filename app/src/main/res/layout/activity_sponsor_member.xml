@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/default_bg">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/sm_top_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/sm_group_chat_members"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:gravity="center_vertical"
+            android:text="@string/group_chat_members"
+            android:textColor="@color/color_303030"
+            android:textSize="@dimen/sp_15"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/sm_common_n_people"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/dp_20"
+            android:gravity="center_vertical"
+            android:text="@string/common_n_people"
+            app:layout_constraintBottom_toBottomOf="@+id/sm_group_chat_members"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/sm_group_chat_members" />
+
+        <TextView
+            android:id="@+id/sm_line"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_1"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginRight="@dimen/dp_20"
+            android:background="@color/percentage_10"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sm_group_chat_members" />
+
+        <TextView
+            android:id="@+id/sm_expand_all"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="@dimen/dp_50"
+            android:gravity="center"
+            android:text="@string/expand_all"
+            android:textColor="@color/color_303030"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sm_line" />
+
+    </android.support.constraint.ConstraintLayout>
+
+
+    <TextView
+        android:id="@+id/sm_tab_notice"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="@dimen/dp_10"
+        android:background="@android:color/white"
+        android:gravity="center"
+        android:text="@string/tab_notice"
+        android:textColor="@color/color_303030"
+        android:textSize="@dimen/sp_14"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sm_top_layout" />
+
+
+    <TextView
+        android:id="@+id/sm_sign_out_meeting"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="@dimen/dp_20"
+        android:background="@android:color/white"
+        android:gravity="center"
+        android:text="@string/sign_out_meeting"
+        android:textColor="@color/color_FF4242"
+        android:textSize="@dimen/sp_14"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sm_tab_notice" />
+
+</android.support.constraint.ConstraintLayout>

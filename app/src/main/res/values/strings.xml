@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">V-Manager</string>
+
+    <string name="ceshi">测试</string>
+
+    <string name="image">图片说明</string>
+    <string name="view_state_display">display</string>
+    <string name="view_state_hide">hide</string>
+
+    <string name="isTitleMethodReturnsTrue">isTitle方法是否返回true？</string>
+    <string name="activity_is_layout">请设置Activity相应布局！</string>
+</resources>

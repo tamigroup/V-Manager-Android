@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/default_bg">
+
+
+    <TextView
+        android:id="@+id/create_meeting_img_txt"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_30"
+        android:layout_marginBottom="8dp"
+        android:background="@color/create_meeting_fk_bg"
+        android:drawableLeft="@drawable/create_meeting_img"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/dp_30"
+        android:text="@string/need_to_add_an_item"
+        android:textColor="@color/color_303030"
+        android:textSize="@dimen/sp_12"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/create_meeting_name_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        android:background="@drawable/item_metting_bg"
+        android:paddingLeft="@dimen/dp_20"
+        android:paddingRight="@dimen/dp_20"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/create_meeting_img_txt">
+
+        <TextView
+            android:id="@+id/create_meeting_name"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="@string/meeting_name"
+            android:textColor="@color/color_303030"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/create_meeting_name_onclick"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/create_meeting_name_onclick"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|right"
+            android:text="@string/please_enter"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toRightOf="@id/create_meeting_name"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/create_meeting_sale_name_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        android:background="@drawable/item_metting_bg"
+        android:paddingLeft="@dimen/dp_20"
+        android:paddingRight="@dimen/dp_20"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/create_meeting_name_layout">
+
+        <TextView
+            android:id="@+id/create_meeting_sale_name"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="@string/sale_name"
+            android:textColor="@color/color_303030"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/create_meeting_sale_name_onclick"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/create_meeting_sale_name_onclick"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|right"
+            android:text="@string/please_choose"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toRightOf="@id/create_meeting_sale_name"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/create_meeting_meeting_place_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        android:background="@drawable/item_metting_bg"
+        android:paddingLeft="@dimen/dp_20"
+        android:paddingRight="@dimen/dp_20"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/create_meeting_sale_name_layout">
+
+        <TextView
+            android:id="@+id/create_meeting_meeting_place"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="@string/meeting_place"
+            android:textColor="@color/color_303030"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/create_meeting_meeting_place_onclick"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/create_meeting_meeting_place_onclick"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|right"
+            android:text="@string/please_choose"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toRightOf="@id/create_meeting_meeting_place"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/create_meeting_start_time_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        android:background="@drawable/item_metting_bg"
+        android:paddingLeft="@dimen/dp_20"
+        android:paddingRight="@dimen/dp_20"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/create_meeting_meeting_place_layout">
+
+        <TextView
+            android:id="@+id/create_meeting_start_time"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="@string/start_time"
+            android:textColor="@color/color_303030"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/create_meeting_start_time_onclick"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/create_meeting_start_time_onclick"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|right"
+            android:text="@string/please_choose"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toRightOf="@id/create_meeting_start_time"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/create_meeting_end_time_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        android:background="@drawable/item_metting_bg"
+        android:paddingLeft="@dimen/dp_20"
+        android:paddingRight="@dimen/dp_20"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/create_meeting_start_time_layout">
+
+        <TextView
+            android:id="@+id/create_meeting_end_time"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="@string/end_time"
+            android:textColor="@color/color_303030"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/create_meeting_end_time_onclick"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/create_meeting_end_time_onclick"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|right"
+            android:text="@string/please_choose"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toRightOf="@id/create_meeting_end_time"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_79"
+        android:background="@drawable/item_metting_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/dp_15"
+        android:paddingRight="@dimen/dp_15"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/create_meeting_btn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_49"
+            android:background="@color/create_meeting_btn"
+            android:text="@string/identification"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/sp_16" />
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

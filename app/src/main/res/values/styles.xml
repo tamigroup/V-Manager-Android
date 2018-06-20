@@ -1,0 +1,76 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.NoBar">
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="TabLayoutTextStyle">
+        <item name="android:textSize">@dimen/sp_12</item>
+    </style>
+
+    <style name="TabLayoutTextStyle1">
+        <item name="android:textSize">@dimen/sp_15</item>
+    </style>
+
+
+
+    <style name="TitleLayoutStyle">
+        <item name="android:layout_height">@dimen/dp_50</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <style name="TitleNameStyle">
+        <item name="android:id">@id/titleName</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">@dimen/sp_18</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="layout_constraintBottom_toBottomOf">parent</item>
+        <item name="layout_constraintLeft_toLeftOf">parent</item>
+        <item name="layout_constraintRight_toRightOf">parent</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
+    </style>
+
+    <style name="titleLeftBtnStyle">
+        <item name="android:id">@id/titleLeftBtn</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="layout_constraintBottom_toBottomOf">parent</item>
+        <item name="layout_constraintLeft_toLeftOf">parent</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
+        <item name="android:src">@drawable/back_btn</item>
+    </style>
+
+    <style name="titleRightBtnStyle">
+        <item name="android:id">@id/titleRightBtn</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="layout_constraintBottom_toBottomOf">parent</item>
+        <item name="layout_constraintRight_toRightOf">parent</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="titleRightTxtStyle">
+        <item name="android:id">@id/titleRightTxt</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">@dimen/sp_18</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:layout_marginRight">@dimen/dp_10</item>
+        <item name="layout_constraintBottom_toBottomOf">parent</item>
+        <item name="layout_constraintRight_toLeftOf">@id/titleRightBtn</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
+        <item name="android:visibility">gone</item>
+    </style>
+</resources>

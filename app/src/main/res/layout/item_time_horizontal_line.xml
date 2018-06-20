@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/dp_84"
+    android:layout_height="@dimen/dp_90"
+    android:background="@android:color/white">
+
+    <View
+        android:id="@+id/thl_left_line"
+        android:layout_width="@dimen/dp_42"
+        android:layout_height="@dimen/dp_1"
+        android:background="@color/color_CACACA"
+        app:layout_constraintBottom_toBottomOf="@+id/thl_middle_pic"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/thl_middle_pic" />
+
+    <View
+        android:id="@+id/thl_right_line"
+        android:layout_width="@dimen/dp_42"
+        android:layout_height="@dimen/dp_1"
+        android:background="@color/color_CACACA"
+        app:layout_constraintBottom_toBottomOf="@+id/thl_middle_pic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/thl_middle_pic" />
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/thl_middle_pic"
+        android:layout_width="@dimen/dp_16"
+        android:layout_height="@dimen/dp_16"
+        android:layout_marginTop="@dimen/dp_20"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/middle_pic_selected" />
+
+    <TextView
+        android:id="@+id/thl_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
+        android:gravity="center_horizontal"
+        android:lineSpacingExtra="@dimen/dp_5"
+        android:textColor="@color/color_303030"
+        android:textSize="@dimen/sp_11"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/thl_middle_pic" />
+
+</android.support.constraint.ConstraintLayout>

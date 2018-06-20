@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/default_bg">
+
+    <include
+        android:id="@+id/merge_meeting_overview_head_layout"
+        layout="@layout/merge_meeting_overview_head"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/meeting_overview_function_btn"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="@dimen/dp_50"
+        android:text="@string/create_process"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/sp_16"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/meeting_overview_coordinator_layout"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="@dimen/dp_0"
+        app:layout_constraintBottom_toTopOf="@+id/meeting_overview_function_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/merge_meeting_overview_head_layout">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/meeting_overview_appbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:fitsSystemWindows="true"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:elevation="0dp">
+
+            <!--    顶部内容    -->
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/meeting_overview_constraint_layout"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:background="@android:color/white"
+                android:orientation="vertical"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:layout_scrollFlags="scroll">
+
+                <com.tami.vmanager.view.CircleProgressBar
+                    android:id="@+id/meeting_overview_already_paid_item"
+                    app:isSolid="false"
+                    app:progress="0"
+                    app:ringWidth="1dp"
+                    app:textColor="@android:color/white"
+                    app:foregroundColor="@color/colorPrimary"
+                    app:backgroundColor="@color/colorAccent"
+                    app:textShown="true"
+                    app:textSize="@dimen/sp_12"
+                    android:layout_width="@dimen/dp_40"
+                    android:layout_height="@dimen/dp_40"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:background="@color/color_888888"
+                    app:layout_constraintEnd_toStartOf="@+id/meeting_overview_complaints_box"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/meeting_overview_complaints_box"
+                    android:layout_width="@dimen/dp_40"
+                    android:layout_height="@dimen/dp_40"
+                    android:background="@color/color_888888"
+                    android:text="@string/complaints_box"
+                    app:layout_constraintBottom_toBottomOf="@+id/meeting_overview_already_paid_item"
+                    app:layout_constraintEnd_toStartOf="@+id/meeting_overview_change_demand"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintStart_toEndOf="@+id/meeting_overview_already_paid_item"
+                    app:layout_constraintTop_toTopOf="@+id/meeting_overview_already_paid_item" />
+
+                <TextView
+                    android:id="@+id/meeting_overview_change_demand"
+                    android:layout_width="@dimen/dp_40"
+                    android:layout_height="@dimen/dp_40"
+                    android:background="@color/color_888888"
+                    android:text="@string/change_demand"
+                    app:layout_constraintBottom_toBottomOf="@+id/meeting_overview_complaints_box"
+                    app:layout_constraintEnd_toStartOf="@+id/meeting_overview_v_emind"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintStart_toEndOf="@+id/meeting_overview_complaints_box"
+                    app:layout_constraintTop_toTopOf="@+id/meeting_overview_complaints_box" />
+
+                <TextView
+                    android:id="@+id/meeting_overview_v_emind"
+                    android:layout_width="@dimen/dp_40"
+                    android:layout_height="@dimen/dp_40"
+                    android:background="@color/color_888888"
+                    android:text="@string/v_emind"
+                    app:layout_constraintBottom_toBottomOf="@+id/meeting_overview_change_demand"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintStart_toEndOf="@+id/meeting_overview_change_demand"
+                    app:layout_constraintTop_toTopOf="@+id/meeting_overview_change_demand" />
+
+                <TextView
+                    android:id="@+id/meeting_overview_already_paid_item_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:text="@string/already_paid_item"
+                    android:textColor="@color/color_303030"
+                    android:textSize="@dimen/sp_12"
+                    app:layout_constraintEnd_toEndOf="@+id/meeting_overview_already_paid_item"
+                    app:layout_constraintStart_toStartOf="@+id/meeting_overview_already_paid_item"
+                    app:layout_constraintTop_toBottomOf="@+id/meeting_overview_already_paid_item" />
+
+                <TextView
+                    android:id="@+id/meeting_overview_complaints_box_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:text="@string/complaints_box"
+                    android:textColor="@color/color_303030"
+                    android:textSize="@dimen/sp_12"
+                    app:layout_constraintEnd_toEndOf="@+id/meeting_overview_complaints_box"
+                    app:layout_constraintStart_toStartOf="@+id/meeting_overview_complaints_box"
+                    app:layout_constraintTop_toBottomOf="@+id/meeting_overview_complaints_box" />
+
+                <TextView
+                    android:id="@+id/meeting_overview_change_demand_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:text="@string/change_demand"
+                    android:textColor="@color/color_303030"
+                    android:textSize="@dimen/sp_12"
+                    app:layout_constraintEnd_toEndOf="@+id/meeting_overview_change_demand"
+                    app:layout_constraintStart_toStartOf="@+id/meeting_overview_change_demand"
+                    app:layout_constraintTop_toBottomOf="@+id/meeting_overview_change_demand" />
+
+                <TextView
+                    android:id="@+id/meeting_overview_v_emind_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:text="@string/v_emind"
+                    android:textColor="@color/color_303030"
+                    android:textSize="@dimen/sp_12"
+                    app:layout_constraintEnd_toEndOf="@+id/meeting_overview_v_emind"
+                    app:layout_constraintStart_toStartOf="@+id/meeting_overview_v_emind"
+                    app:layout_constraintTop_toBottomOf="@+id/meeting_overview_v_emind" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/dp_10"
+                    android:background="@color/default_bg"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </android.support.constraint.ConstraintLayout>
+            <!--悬浮的部分-->
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/meeting_overview_xuanfu_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_45"
+                android:background="@android:color/white">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/meeting_overview_suspension_icon"
+                    android:layout_width="@dimen/dp_25"
+                    android:layout_height="@dimen/dp_25"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@android:drawable/alert_dark_frame" />
+
+                <TextView
+                    android:id="@+id/meeting_overview_flow_chart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:text="@string/flow_chart"
+                    android:textColor="@color/color_303030"
+                    android:textSize="@dimen/sp_15"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/meeting_overview_suspension_icon"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/meeting_overview_suspension_step"
+                    android:layout_width="@dimen/dp_25"
+                    android:layout_height="@dimen/dp_25"
+                    android:layout_marginRight="@dimen/dp_20"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@android:drawable/alert_dark_frame" />
+
+                <TextView
+                    android:id="@+id/meeting_overview_suspension_onclick"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginRight="@dimen/dp_20"
+                    android:text="查看"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/meeting_overview_suspension_step"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/meeting_overview_suspension_img_flag"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/dp_1"
+                    android:background="@color/percentage_10"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+            </android.support.constraint.ConstraintLayout>
+        </android.support.design.widget.AppBarLayout>
+
+        <!--主内容-->
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <TextView
+                android:id="@+id/please_create_conference"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="110dp"
+                android:gravity="center"
+                android:text="请先创建会议活动流程"
+                android:textColor="@color/color_303030"
+                android:textSize="@dimen/sp_16"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/meeting_overview_recycler_view"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@android:color/white"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.design.widget.CoordinatorLayout>
+</android.support.constraint.ConstraintLayout>
