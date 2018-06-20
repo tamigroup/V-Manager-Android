@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RadioGroup
+        android:id="@+id/meeting_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/dp_10"
+        android:paddingTop="@dimen/dp_10"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/meeting_group_whole"
+            android:layout_width="@dimen/dp_69"
+            android:layout_height="@dimen/dp_30"
+            android:background="@drawable/select_radiobutton_left"
+            android:button="@null"
+            android:checked="true"
+            android:gravity="center"
+            android:text="@string/whole"
+            android:textColor="@color/color_D7D7D7"
+            android:textSize="@dimen/dp_14" />
+
+        <RadioButton
+            android:id="@+id/meeting_group_pending_payment"
+            android:layout_width="@dimen/dp_69"
+            android:layout_height="@dimen/dp_30"
+            android:background="@drawable/select_radiobutton_mid"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/pending_payment"
+            android:textColor="@color/color_D7D7D7"
+            android:textSize="@dimen/dp_14" />
+
+        <RadioButton
+            android:id="@+id/meeting_group_day"
+            android:layout_width="@dimen/dp_69"
+            android:layout_height="@dimen/dp_30"
+            android:background="@drawable/select_radiobutton_mid"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/day"
+            android:textColor="@color/color_D7D7D7"
+            android:textSize="@dimen/dp_14" />
+
+        <RadioButton
+            android:id="@+id/meeting_group_month"
+            android:layout_width="@dimen/dp_69"
+            android:layout_height="@dimen/dp_30"
+            android:background="@drawable/select_radiobutton_mid"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/month"
+            android:textColor="@color/color_D7D7D7"
+            android:textSize="@dimen/dp_14" />
+
+        <RadioButton
+            android:id="@+id/meeting_group_year"
+            android:layout_width="@dimen/dp_69"
+            android:layout_height="@dimen/dp_30"
+            android:background="@drawable/select_radiobutton_right"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/year"
+            android:textColor="@color/color_D7D7D7"
+            android:textSize="@dimen/dp_14" />
+    </RadioGroup>
+
+</merge>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="160dp">
+
+    <TextView
+        android:id="@+id/meeting_overview_meeting_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginRight="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_10"
+        android:textColor="@color/color_333333"
+        android:textSize="@dimen/sp_20"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/meeting_overview_meeting_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_5"
+        android:textColor="@color/color_303030"
+        android:textSize="@dimen/sp_12"
+        app:layout_constraintStart_toStartOf="@+id/meeting_overview_meeting_name"
+        app:layout_constraintTop_toBottomOf="@+id/meeting_overview_meeting_name" />
+
+    <TextView
+        android:id="@+id/meeting_overview_meeting_room"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_5"
+        android:textColor="@color/color_303030"
+        android:textSize="@dimen/sp_12"
+        app:layout_constraintStart_toStartOf="@+id/meeting_overview_meeting_time"
+        app:layout_constraintTop_toBottomOf="@+id/meeting_overview_meeting_time" />
+
+    <TextView
+        android:id="@+id/meeting_overview_meeting_personnel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_5"
+        android:textColor="@color/color_303030"
+        android:textSize="@dimen/sp_12"
+        app:layout_constraintStart_toStartOf="@+id/meeting_overview_meeting_room"
+        app:layout_constraintTop_toBottomOf="@+id/meeting_overview_meeting_room" />
+
+    <TextView
+        android:id="@+id/meeting_overview_predetermined_number"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_45"
+        android:background="@color/color_F2F4F5"
+        android:gravity="center"
+        android:text="@string/predetermined_number"
+        android:textColor="@color/color_303030"
+        android:textSize="@dimen/sp_10"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/meeting_overview_bottom_number"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/meeting_overview_bottom_number"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_45"
+        android:background="@color/color_F2F4F5"
+        android:gravity="center"
+        android:text="@string/bottom_number"
+        android:textColor="@color/color_303030"
+        android:textSize="@dimen/sp_10"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/meeting_overview_actual_number"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@+id/meeting_overview_predetermined_number"
+        app:layout_constraintTop_toTopOf="@+id/meeting_overview_predetermined_number" />
+
+    <TextView
+        android:id="@+id/meeting_overview_actual_number"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="@dimen/dp_45"
+        android:background="@color/color_F2F4F5"
+        android:gravity="center"
+        android:text="@string/actual_number"
+        android:textColor="@color/color_303030"
+        android:textSize="@dimen/sp_10"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@+id/meeting_overview_bottom_number"
+        app:layout_constraintTop_toTopOf="@+id/meeting_overview_bottom_number" />
+
+    <TextView
+        android:id="@+id/meeting_overview_look_eo"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_30"
+        android:layout_marginRight="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_20"
+        android:paddingLeft="@dimen/dp_10"
+        android:paddingRight="@dimen/dp_10"
+        android:background="@drawable/look_eo_bg"
+        android:gravity="center"
+        android:text="@string/look_at_eo_list"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/sp_12"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

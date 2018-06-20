@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="titleName" type="id" />
+    <item name="titleLeftBtn" type="id" />
+    <item name="titleRightBtn" type="id" />
+    <item name="titleRightTxt" type="id" />
+
+</resources>
