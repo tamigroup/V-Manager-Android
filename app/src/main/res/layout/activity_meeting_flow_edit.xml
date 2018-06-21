@@ -23,6 +23,7 @@
         android:id="@+id/confirm_btn"
         android:layout_width="@dimen/dp_0"
         android:layout_height="@dimen/dp_50"
+        android:background="@color/color_FF5657"
         android:text="@string/confirm"
         android:textColor="@android:color/white"
         android:textSize="@dimen/sp_16"

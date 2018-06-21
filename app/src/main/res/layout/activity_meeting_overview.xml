@@ -17,13 +17,13 @@
         android:id="@+id/meeting_overview_function_btn"
         android:layout_width="@dimen/dp_0"
         android:layout_height="@dimen/dp_50"
+        android:background="@color/color_FF5657"
         android:text="@string/create_process"
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/white"
         android:textSize="@dimen/sp_16"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
 
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/meeting_overview_coordinator_layout"
@@ -55,29 +55,28 @@
 
                 <com.tami.vmanager.view.CircleProgressBar
                     android:id="@+id/meeting_overview_already_paid_item"
-                    app:isSolid="false"
-                    app:progress="0"
-                    app:ringWidth="1dp"
-                    app:textColor="@android:color/white"
-                    app:foregroundColor="@color/colorPrimary"
-                    app:backgroundColor="@color/colorAccent"
-                    app:textShown="true"
-                    app:textSize="@dimen/sp_12"
                     android:layout_width="@dimen/dp_40"
                     android:layout_height="@dimen/dp_40"
                     android:layout_marginTop="@dimen/dp_20"
-                    android:background="@color/color_888888"
+                    android:background="@mipmap/meeting_overview_fk"
+                    app:backgroundColor="@android:color/transparent"
+                    app:foregroundColor="@android:color/transparent"
+                    app:isSolid="false"
                     app:layout_constraintEnd_toStartOf="@+id/meeting_overview_complaints_box"
                     app:layout_constraintHorizontal_weight="1"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:progress="0"
+                    app:ringWidth="@dimen/dp_0"
+                    app:textColor="@android:color/white"
+                    app:textShown="true"
+                    app:textSize="@dimen/sp_12" />
 
                 <TextView
                     android:id="@+id/meeting_overview_complaints_box"
                     android:layout_width="@dimen/dp_40"
                     android:layout_height="@dimen/dp_40"
-                    android:background="@color/color_888888"
-                    android:text="@string/complaints_box"
+                    android:background="@mipmap/meeting_overview_yj"
                     app:layout_constraintBottom_toBottomOf="@+id/meeting_overview_already_paid_item"
                     app:layout_constraintEnd_toStartOf="@+id/meeting_overview_change_demand"
                     app:layout_constraintHorizontal_weight="1"
@@ -88,8 +87,7 @@
                     android:id="@+id/meeting_overview_change_demand"
                     android:layout_width="@dimen/dp_40"
                     android:layout_height="@dimen/dp_40"
-                    android:background="@color/color_888888"
-                    android:text="@string/change_demand"
+                    android:background="@mipmap/meeting_overview_xq"
                     app:layout_constraintBottom_toBottomOf="@+id/meeting_overview_complaints_box"
                     app:layout_constraintEnd_toStartOf="@+id/meeting_overview_v_emind"
                     app:layout_constraintHorizontal_weight="1"
@@ -100,8 +98,7 @@
                     android:id="@+id/meeting_overview_v_emind"
                     android:layout_width="@dimen/dp_40"
                     android:layout_height="@dimen/dp_40"
-                    android:background="@color/color_888888"
-                    android:text="@string/v_emind"
+                    android:background="@mipmap/meeting_overview_xv"
                     app:layout_constraintBottom_toBottomOf="@+id/meeting_overview_change_demand"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_weight="1"
@@ -171,48 +168,48 @@
                 android:layout_height="@dimen/dp_45"
                 android:background="@android:color/white">
 
-                <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/meeting_overview_suspension_icon"
-                    android:layout_width="@dimen/dp_25"
-                    android:layout_height="@dimen/dp_25"
-                    android:layout_marginLeft="@dimen/dp_20"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@android:drawable/alert_dark_frame" />
-
                 <TextView
                     android:id="@+id/meeting_overview_flow_chart"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp_20"
+                    android:layout_marginLeft="@dimen/dp_16"
                     android:text="@string/flow_chart"
                     android:textColor="@color/color_303030"
                     android:textSize="@dimen/sp_15"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/meeting_overview_suspension_icon"
+                    app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
 
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/meeting_overview_suspension_step"
                     android:layout_width="@dimen/dp_25"
                     android:layout_height="@dimen/dp_25"
-                    android:layout_marginRight="@dimen/dp_20"
+                    android:layout_marginRight="@dimen/dp_16"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@android:drawable/alert_dark_frame" />
+                    app:srcCompat="@mipmap/right_triangle" />
 
                 <TextView
-                    android:id="@+id/meeting_overview_suspension_onclick"
+                    android:id="@+id/meeting_overview_suspension_edit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
                     android:layout_marginRight="@dimen/dp_20"
                     android:text="查看"
+                    android:textColor="@color/color_4884D9"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/meeting_overview_suspension_step"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/meeting_overview_suspension_look"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/dp_20"
+                    android:text="编辑"
+                    android:textColor="@color/color_4884D9"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/meeting_overview_suspension_edit"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView

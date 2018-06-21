@@ -131,7 +131,7 @@ public abstract class BaseActivity extends FragmentActivity implements IBaseActi
 
     @Override
     public View getContentTitelView() {
-        LinearLayout superLayout = (LinearLayout) layoutInflater.inflate(layout.title, null);
+        LinearLayout superLayout = (LinearLayout) layoutInflater.inflate(R.layout.title, null);
         initTitleView(superLayout);
         //没有获取到相应的布局结束当前Activity
         layoutInflater.inflate(getContentViewId(), superLayout);

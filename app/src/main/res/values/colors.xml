@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimary">#364467</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
     <color name="color_303030">#303030</color>
-    <color name="color_ffd7d7d7">#ffd7d7d7</color>
     <color name="color_D7D7D7">#D7D7D7</color>
     <color name="color_ff303030">#ff303030</color>
     <color name="color_e46a6a">#e46a6a</color>
 
+
     <!--    页面背景色    -->
     <color name="page_background">#888888</color>
     <!--    个人中心页面背景色    -->
-    <color name="default_bg">#fff8f8f8</color>
+    <color name="default_bg">#fff4f4f4</color>
     <!--    标题正文文字颜色    -->
     <color name="color_333333">#333333</color>
     <!--    辅助文字颜色    -->
@@ -25,28 +25,34 @@
     <!--    分隔线    -->
     <color name="percentage_10">#1AFFFFFF</color>
     <!--    首页TAB颜色    -->
-    <color name="tab_selected">#54FF9F</color>
-    <color name="tab_unselected">#B0B0B0</color>
+    <color name="tab_selected">#FF5656</color>
+    <color name="tab_unselected">#888888</color>
     <!--    group分组颜色    -->
-    <color name="press">#54FF9F</color>
-    <color name="nomal">#B0B0B0</color>
+    <color name="press">#404E72</color>
+    <color name="nomal">#FFFFFF</color>
     <!--    创建会议小方块及背景色    -->
     <color name="create_meeting_fk">#DDCB83</color>
     <color name="create_meeting_fk_bg">#FCF4D3</color>
     <color name="create_meeting_btn">#707070</color>
 
     <!--    会议概览实到人数    -->
-    <color name="color_E27676">#E27676</color>
-    <!--    会议服务群TAB    -->
-    <color name="selectTextColor">#884B4B</color>
+    <color name="color_FF5657">#FF5657</color>
 
     <!--    时间轴未选中线条颜色    -->
     <color name="color_CACACA">#CACACA</color>
     <!--    时间轴选中线条颜色    -->
-    <color name="color_484848">#484848</color>
+    <color name="color_34DB8E">#34DB8E</color>
 
-    <color name="color_919191">#FF919191</color>
+    <!--    个人中心头像背景渐变色    -->
+    <color name="color_48567A">#48567A</color>
+    <color name="color_2B395D">#2B395D</color>
+
+    <color name="color_919191">#919191</color>
     <color name="color_FF4242">#FF4242</color>
     <color name="color_e9e9e9">#e9e9e9</color>
+    <color name="color_4884D9">#4884D9</color>
+    <color name="color_C8C8C8">#C8C8C8</color>
+    <color name="color_3B89E9">#3B89E9</color>
 
+    <color name="color_53EA73">#53EA73</color>
 </resources>

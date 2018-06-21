@@ -19,6 +19,7 @@ public class ConferenceServiceContentActivity extends BaseActivity {
     private TextView flowChart;
     private TextView vipReceptionInformation;
     private SwitchButton switchButton;
+    private TextView csc_important;
     private TextView uploadEoList;
 
     @Override
@@ -38,6 +39,7 @@ public class ConferenceServiceContentActivity extends BaseActivity {
         flowChart = findViewById(R.id.csc_flow_chart);
         vipReceptionInformation = findViewById(R.id.csc_vip_reception_information);
         switchButton = findViewById(R.id.csc_switchbtn);
+        csc_important = findViewById(R.id.csc_important);
         uploadEoList = findViewById(R.id.csc_upload_eo_list);
     }
 
@@ -53,7 +55,11 @@ public class ConferenceServiceContentActivity extends BaseActivity {
             @Override
             public void onCheckedChanged(SwitchButton view, boolean isChecked) {
                 //TODO do your job
-                Toast.makeText(getApplicationContext(), String.valueOf(isChecked), Toast.LENGTH_SHORT).show();
+                if(isChecked){
+                    csc_important.setText(getText(R.string.important));
+                }else{
+                    csc_important.setText(getText(R.string.not_important));
+                }
             }
         });
     }

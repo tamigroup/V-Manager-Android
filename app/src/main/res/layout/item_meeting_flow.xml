@@ -6,5 +6,5 @@
     android:drawableRight="@mipmap/right_triangle"
     android:gravity="center_vertical"
     android:text="@string/contract_amount"
-    android:textColor="@color/color_333333"
+    android:textColor="@color/color_303030"
     android:textSize="@dimen/sp_16" />

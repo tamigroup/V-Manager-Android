@@ -6,6 +6,6 @@ package com.tami.vmanager.base;
 
 public class BaseEntity {
 
-    public int stateCode;
+    public int code;
     public String message;
 }

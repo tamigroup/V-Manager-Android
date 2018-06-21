@@ -6,9 +6,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
+import com.tami.vmanager.callback.RequestCallback;
+import com.tami.vmanager.entity.LoginEntity;
+import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.VerificationCode;
+import com.zhy.http.okhttp.OkHttpUtils;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import okhttp3.MediaType;
 
 /**
  * 登陆
@@ -89,7 +99,7 @@ public class LoginActivity extends BaseActivity {
                 getVerificationCode();
                 break;
             case R.id.login_btn:
-                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                loginBtn();
                 break;
             case R.id.authentication_code_login:
                 authenticationCodeLogin(v);
@@ -139,5 +149,39 @@ public class LoginActivity extends BaseActivity {
      */
     private void forgetThePassword() {
         startActivity(new Intent(getApplicationContext(), ForgetThePasswordActivity.class));
+    }
+
+    /**
+     * 登陆
+     */
+    private void loginBtn() {
+        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+
+//        String url = "http://192.168.103.196/yundao-api/wxapp/login";
+//        Map<String, String> params = new HashMap<>();
+//        params.put("mobile", "13800138000");
+//        params.put("passWord", "111111");
+//        Gson gson = new Gson();
+//        OkHttpUtils
+//                .postString()
+//                .url(url)
+//                .content(gson.toJson(params))
+//                .mediaType(MediaType.parse("application/json; charset=utf-8"))
+//                .build()
+//                .execute(new RequestCallback<LoginEntity>() {
+//
+//                    @Override
+//                    public void onSuccess(LoginEntity response) {
+//                        Logger.d("onResponse:" + response.message);
+//                        Logger.d("onResponse:" + response.data.headImgUrl);
+//                    }
+//
+//                    @Override
+//                    public void onError() {
+//
+//                    }
+//                });
+
+
     }
 }

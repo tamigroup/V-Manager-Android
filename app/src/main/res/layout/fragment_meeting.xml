@@ -2,9 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/default_bg"
     android:orientation="vertical">
 
-    <include layout="@layout/merge_meeting_group"/>
+    <include layout="@layout/merge_meeting_group" />
 
     <com.tami.vmanager.view.NoScrollViewPager
         android:id="@+id/meeting_viewpager"

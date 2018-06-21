@@ -2,8 +2,10 @@ package com.tami.vmanager.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -20,6 +22,7 @@ import com.tami.vmanager.view.NoScrollViewPager;
 public class MeetingFragment extends BaseFragment {
 
     private RadioGroup meetingGroup;//顶部标签
+    private int onClickId = R.id.meeting_group_whole;
     private NoScrollViewPager viewPager;//列表数据
     private Fragment[] arrayFragment;
     private final int[] meetingType = new int[]{Constants.MEETING_TYPE_WHOLE, Constants.MEETING_TYPE_PENDING_PAYMENT, Constants.MEETING_TYPE_DAY, Constants.MEETING_TYPE_MONTH, Constants.MEETING_TYPE_YEAR};
@@ -45,6 +48,11 @@ public class MeetingFragment extends BaseFragment {
         meetingGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
+                RadioButton unselectBtn = group.findViewById(onClickId);
+                unselectBtn.setTextColor(ContextCompat.getColor(getActivity(),R.color.press));
+                RadioButton selectBtn = group.findViewById(checkedId);
+                selectBtn.setTextColor(ContextCompat.getColor(getActivity(),R.color.nomal));
+                onClickId = checkedId;
                 switch (checkedId) {
                     case R.id.meeting_group_whole:
                         //全部
@@ -72,6 +80,8 @@ public class MeetingFragment extends BaseFragment {
 
 //        viewPager.addOnPageChangeListener(this);
     }
+
+
 
     @Override
     public void initData() {

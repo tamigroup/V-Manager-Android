@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/default_bg">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/aas_settings_layout"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="wrap_content"
+        android:background="@drawable/item_bg"
+        android:paddingLeft="@dimen/dp_20"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/aas_sponsor_notification_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_45"
+            android:gravity="center_vertical"
+            android:text="@string/sponsor_notification"
+            android:textColor="@color/color_303030"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.tami.vmanager.view.SwitchButton
+            android:id="@+id/aas_sponsor_notification_sb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/dp_20"
+            app:layout_constraintBottom_toBottomOf="@+id/aas_sponsor_notification_txt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/aas_sponsor_notification_txt"
+            app:sb_background="@android:color/white"
+            app:sb_button_color="@android:color/white"
+            app:sb_checked="true"
+            app:sb_checked_color="@color/default_bg"
+            app:sb_show_indicator="false" />
+
+        <TextView
+            android:id="@+id/aas_sponsor_notification_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/dp_20"
+            android:gravity="center_vertical"
+            android:text="@string/on"
+            app:layout_constraintBottom_toBottomOf="@+id/aas_sponsor_notification_txt"
+            app:layout_constraintEnd_toStartOf="@+id/aas_sponsor_notification_sb"
+            app:layout_constraintTop_toTopOf="@+id/aas_sponsor_notification_txt" />
+
+        <TextView
+            android:id="@+id/aas_sponsor_notification_line"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_1"
+            android:background="@color/color_EAEAEA"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/aas_sponsor_notification_txt" />
+
+        <TextView
+            android:id="@+id/aas_satisfaction_notification_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_45"
+            android:gravity="center_vertical"
+            android:text="@string/satisfaction_notification"
+            android:textColor="@color/color_303030"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/aas_sponsor_notification_line" />
+
+        <com.tami.vmanager.view.SwitchButton
+            android:id="@+id/aas_satisfaction_notification_sb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/dp_20"
+            app:layout_constraintBottom_toBottomOf="@+id/aas_satisfaction_notification_txt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/aas_satisfaction_notification_txt"
+            app:sb_background="@android:color/white"
+            app:sb_button_color="@android:color/white"
+            app:sb_checked="true"
+            app:sb_checked_color="@color/default_bg"
+            app:sb_show_indicator="false" />
+
+        <TextView
+            android:id="@+id/aas_satisfaction_notification_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/dp_20"
+            android:text="@string/on"
+            app:layout_constraintBottom_toBottomOf="@+id/aas_satisfaction_notification_txt"
+            app:layout_constraintEnd_toStartOf="@+id/aas_satisfaction_notification_sb"
+            app:layout_constraintTop_toTopOf="@+id/aas_satisfaction_notification_txt" />
+
+        <TextView
+            android:id="@+id/aas_satisfaction_notification_line"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="@dimen/dp_1"
+            android:background="@color/color_EAEAEA"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/aas_satisfaction_notification_txt" />
+
+        <TextView
+            android:id="@+id/ass_group_chat_notification_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_45"
+            android:gravity="center_vertical"
+            android:text="@string/group_chat_notification"
+            android:textColor="@color/color_303030"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/aas_satisfaction_notification_line" />
+
+        <com.tami.vmanager.view.SwitchButton
+            android:id="@+id/ass_group_chat_notification_sb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/dp_20"
+            app:layout_constraintBottom_toBottomOf="@+id/ass_group_chat_notification_txt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/ass_group_chat_notification_txt"
+            app:sb_background="@android:color/white"
+            app:sb_button_color="@android:color/white"
+            app:sb_checked="true"
+            app:sb_checked_color="@color/default_bg"
+            app:sb_show_indicator="false" />
+
+        <TextView
+            android:id="@+id/ass_group_chat_notification_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/dp_20"
+            android:text="@string/on"
+            app:layout_constraintBottom_toBottomOf="@+id/ass_group_chat_notification_txt"
+            app:layout_constraintEnd_toStartOf="@+id/ass_group_chat_notification_sb"
+            app:layout_constraintTop_toTopOf="@+id/ass_group_chat_notification_txt" />
+    </android.support.constraint.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/aas_change_the_password"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="@dimen/dp_45"
+        android:layout_marginTop="@dimen/dp_45"
+        android:background="@drawable/item_bg"
+        android:drawableRight="@mipmap/right_triangle"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/dp_20"
+        android:paddingRight="@dimen/dp_20"
+        android:text="@string/change_the_password"
+        android:textColor="@color/color_303030"
+        android:textSize="@dimen/sp_16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/aas_settings_layout" />
+
+    <Button
+        android:id="@+id/aas_exit_login"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/exit_login"
+        android:textColor="@android:color/white"
+        android:background="@color/color_FF5657"
+        android:textSize="@dimen/sp_16"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</android.support.constraint.ConstraintLayout>

@@ -14,9 +14,9 @@
 
         <ImageView style="@style/titleLeftBtnStyle" />
 
-        <ImageView style="@style/titleRightBtnStyle" />
+        <ImageView style="@style/titleRightBtnStyle"/>
 
-        <TextView style="@style/titleRightTxtStyle" />
+        <TextView style="@style/titleRightTxtStyle"/>
     </android.support.constraint.ConstraintLayout>
 
 </LinearLayout>

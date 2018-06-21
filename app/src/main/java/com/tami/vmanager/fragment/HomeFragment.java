@@ -15,6 +15,9 @@ import com.tami.vmanager.activity.SearchActivity;
 import com.tami.vmanager.base.BaseFragment;
 import com.tami.vmanager.utils.Utils;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 /**
  * Created by why on 2018/6/12.
  */
@@ -81,32 +84,33 @@ public class HomeFragment extends BaseFragment {
         //设置Title名称
         setTitleName(R.string.v_housekeeper);
         //设置右边功能按钮图片
-        setTitleRightBtn(android.R.drawable.btn_star);
+        setTitleRightBtn(R.mipmap.home_search);
 
-        String num = String.valueOf(12345);
+        NumberFormat numberFormat = new DecimalFormat("###,###,###");
+        String num = numberFormat.format(1234567);
         String resStr = getString(R.string.contract_money, num);
         int start = resStr.length() - num.length();
         int end = resStr.length();
-        contract_money.setText(Utils.getSplicing(getActivity(), resStr, start, end, 24, android.R.color.black));
+        contract_money.setText(Utils.getSplicing(getActivity(), resStr, start, end, 32));
 
-        String num1 = String.valueOf(45678);
+        String num1 = numberFormat.format(3456789);
         String resStr1 = getString(R.string.receivables, num1);
         int start1 = resStr1.length() - num1.length();
         int end1 = resStr1.length();
-        receivables.setText(Utils.getSplicing(getActivity(), resStr1, start1, end1, 24, android.R.color.black));
+        receivables.setText(Utils.getSplicing(getActivity(), resStr1, start1, end1, 32));
 
         String num2 = String.valueOf(150);
         String resStr2 = getString(R.string.home_total, num2);
         int start2 = 0;
         int end2 = num2.length();
-        total.setText(Utils.getSplicing(getActivity(), resStr2, start2, end2, 16, android.R.color.black));
+        total.setText(Utils.getSplicing(getActivity(), resStr2, start2, end2, 16));
 
 
         String num3 = String.valueOf(300);
         String resStr3 = getString(R.string.have_been_held, num3);
         int start3 = 0;
         int end3 = num3.length();
-        have_been_held.setText(Utils.getSplicing(getActivity(), resStr3, start3, end3, 16, android.R.color.black));
+        have_been_held.setText(Utils.getSplicing(getActivity(), resStr3, start3, end3, 16));
 
         oday_meeting_num.setText(String.valueOf(10));
         my_attention_num.setText(String.valueOf(15));
@@ -216,28 +220,31 @@ public class HomeFragment extends BaseFragment {
      * 眼睛
      */
     private void homeEye(View v) {
+        NumberFormat numberFormat = new DecimalFormat("###,###,###");
         String num = null;
         String num1 = null;
         AppCompatImageView imageView = (AppCompatImageView) v;
         if (!TextUtils.isEmpty(imageView.getTag().toString())
                 && getString(R.string.view_state_display).equals(imageView.getTag().toString())) {
             imageView.setTag(getString(R.string.view_state_hide));
+            imageView.setImageResource(R.mipmap.home_eye_off);
             num = "****";
             num1 = "****";
         } else {
             imageView.setTag(getString(R.string.view_state_display));
-            num = String.valueOf(12345);
-            num1 = String.valueOf(45678);
+            imageView.setImageResource(R.mipmap.home_eye_on);
+            num = numberFormat.format(1234567);
+            num1 = numberFormat.format(3456789);
         }
         String resStr = getString(R.string.contract_money, num);
         int start = resStr.length() - num.length();
         int end = resStr.length();
-        contract_money.setText(Utils.getSplicing(getActivity(), resStr, start, end, 24, android.R.color.black));
+        contract_money.setText(Utils.getSplicing(getActivity(), resStr, start, end, 32));
 
         String resStr1 = getString(R.string.receivables, num1);
         int start1 = resStr1.length() - num1.length();
         int end1 = resStr1.length();
-        receivables.setText(Utils.getSplicing(getActivity(), resStr1, start1, end1, 24, android.R.color.black));
+        receivables.setText(Utils.getSplicing(getActivity(), resStr1, start1, end1, 32));
     }
 
 

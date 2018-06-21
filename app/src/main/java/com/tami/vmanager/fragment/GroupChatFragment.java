@@ -55,7 +55,7 @@ public class GroupChatFragment extends BaseFragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(new CommonAdapter<NoticeEntity>(getActivity(), R.layout.item_feedback, getData()) {
+        recyclerView.setAdapter(new CommonAdapter<NoticeEntity>(getActivity(), R.layout.item_group_chat, getData()) {
             @Override
             protected void convert(ViewHolder holder, NoticeEntity noticeEntity, int position) {
 
@@ -64,16 +64,13 @@ public class GroupChatFragment extends BaseFragment {
             @Override
             public void convert(ViewHolder holder, NoticeEntity noticeEntity) {
                 //头像
-                CircleImageView circleImageView = holder.getView(R.id.in_avatar_image);
-                //发送者
-                TextView name = holder.getView(R.id.in_name);
+                CircleImageView circleImageView = holder.getView(R.id.igc_avatar_image);
+                //发送者职位和姓名
+                TextView name = holder.getView(R.id.igc_position_name);
                 name.setText(noticeEntity.getName());
                 //发送内容
-                TextView content = holder.getView(R.id.in_content);
+                TextView content = holder.getView(R.id.igc_left_content);
                 content.setText(noticeEntity.getContent());
-                //发送时间
-                TextView time = holder.getView(R.id.in_time);
-                time.setText(noticeEntity.getTime());
             }
         });
     }
@@ -109,9 +106,9 @@ public class GroupChatFragment extends BaseFragment {
         for (int i = 0; i < 20; i++) {
             NoticeEntity noticeEntity = new NoticeEntity();
             noticeEntity.setId(i);
-            noticeEntity.setName("反馈测试名称" + i);
-            noticeEntity.setContent("反馈测试内容" + i);
-            noticeEntity.setTime("6月19日 15:00");
+            noticeEntity.setName("销售-张三");
+            noticeEntity.setContent("AA聚餐吃了近千元，损友相继溜走，最后留下的他这样逃单……看了好疼！");
+//            noticeEntity.setTime("6月19日 15:00");
             data.add(noticeEntity);
         }
         return data;

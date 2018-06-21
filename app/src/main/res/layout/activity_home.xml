@@ -13,11 +13,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:tabBackground="@drawable/tab_home_bg"
+        app:tabBackground="@android:color/white"
         app:tabIndicatorHeight="0dp"
-        app:tabSelectedTextColor="@android:color/white"
+        app:tabSelectedTextColor="@color/tab_selected"
         app:tabTextAppearance="@style/TabLayoutTextStyle"
-        app:tabTextColor="@android:color/white">
+        app:tabTextColor="@color/tab_unselected">
 
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"

@@ -136,6 +136,7 @@
     <string name="vip_reception_information">VIP接待信息</string>
     <string name="meeting_is_important">会议是否重要</string>
     <string name="important">重要</string>
+    <string name="not_important">不重要</string>
     <string name="upload_eo_list">上传EO单</string>
 
     <!--    编辑流程    -->
@@ -173,4 +174,13 @@
     <string name="show_amount_paid">已付金额：%s</string>
 
     <string name="send">发送</string>
+
+    <!--    帐号设置    -->
+    <string name="sponsor_notification">主办方通知</string>
+    <string name="satisfaction_notification">满意度通知</string>
+    <string name="group_chat_notification">群聊通知</string>
+    <string name="on">开</string>
+    <string name="off">关</string>
+    <string name="change_the_password">更改密码</string>
+    <string name="exit_login">退出登录</string>
 </resources>

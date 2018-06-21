@@ -3,7 +3,6 @@ package com.tami.vmanager.utils;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import com.alibaba.fastjson.JSON;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -11,6 +10,9 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Build;
 import android.text.TextUtils;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 /**
  * @ClassName: SharePreferenceUtils
@@ -186,7 +188,8 @@ public class SharePreferenceTools {
      */
     public <T> void putModel(String key, T t) {
         if (!TextUtils.isEmpty(key) && t != null) {
-            putString(key, JSON.toJSONString(t));// fastjson
+            Gson gson = new Gson();
+            putString(key, gson.toJson(t));// fastjson
         }
     }
 
@@ -202,7 +205,8 @@ public class SharePreferenceTools {
         if (!TextUtils.isEmpty(key)) {
             value = getString(key);
         }
-        return TextUtils.isEmpty(value) ? null : JSON.parseObject(value, clazz);// fastjson
+        Gson gson = new Gson();
+        return TextUtils.isEmpty(value) ? null : gson.fromJson(value, clazz);
     }
 
     /**
@@ -213,7 +217,8 @@ public class SharePreferenceTools {
      */
     public <T> void putModels(String key, List<T> t) {
         if (!TextUtils.isEmpty(key) && t != null && t.size() > ZERO) {
-            putString(key, JSON.toJSONString(t));// fastjson
+            Gson gson = new Gson();
+            putString(key, gson.toJson(t));// fastjson
         }
     }
 
@@ -229,7 +234,9 @@ public class SharePreferenceTools {
         if (!TextUtils.isEmpty(key)) {
             value = getString(key);
         }
-        return TextUtils.isEmpty(value) ? null : JSON.parseArray(value, clazz);// fastjson
+        Gson gson = new Gson();
+        return TextUtils.isEmpty(value) ? null : (List<T>) gson.fromJson(value, new TypeToken<List<T>>() {
+        }.getType());// fastjson
     }
 
     /**

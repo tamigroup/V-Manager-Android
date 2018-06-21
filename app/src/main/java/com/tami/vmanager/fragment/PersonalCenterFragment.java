@@ -1,11 +1,13 @@
 package com.tami.vmanager.fragment;
 
+import android.content.Intent;
 import android.support.design.widget.BottomSheetDialog;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tami.vmanager.R;
+import com.tami.vmanager.activity.AccountSettingsActivity;
 import com.tami.vmanager.base.BaseFragment;
 import com.tami.vmanager.view.CircleImageView;
 
@@ -130,6 +132,6 @@ public class PersonalCenterFragment extends BaseFragment {
      * 帐号设置
      */
     private void accountSettings() {
-
+        startActivity(new Intent(getActivity(),AccountSettingsActivity.class));
     }
 }

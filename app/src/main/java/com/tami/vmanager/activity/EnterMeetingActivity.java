@@ -146,14 +146,14 @@ public class EnterMeetingActivity extends BaseActivity {
      * 页面UI赋值
      */
     private void initUIdata() {
-        meetingName.setText("夏普8K黑科技，改变你看世界的方式！");
+        meetingName.setText("夏普8K黑科技，改变你看世界的方式！夏普8K黑科技，改变你看世界的方式！夏普8K黑科技，改变你看世界的方式！");
         meetingTime.setText("6月14日 9:00-17:00");
         meetingRoom.setText("高级VIP房间");
         meetingPersonnel.setText("销售：张三");
 
-        initUITxt(predeterminedNumber, String.valueOf(100), R.string.predetermined_number, R.color.color_303030);
-        initUITxt(bottomNumber, String.valueOf(60), R.string.bottom_number, R.color.color_303030);
-        initUITxt(actualNumber, String.valueOf(88), R.string.actual_number, R.color.color_E27676);
+        initUITxt(predeterminedNumber, String.valueOf(100), R.string.predetermined_number, android.R.color.white);
+        initUITxt(bottomNumber, String.valueOf(60), R.string.bottom_number, android.R.color.white);
+        initUITxt(actualNumber, String.valueOf(88), R.string.actual_number, R.color.color_FF5657);
     }
 
     /**

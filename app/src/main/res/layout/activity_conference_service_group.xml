@@ -13,9 +13,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tabBackground="@android:color/transparent"
-        app:tabIndicatorColor="@color/selectTextColor"
-        app:tabSelectedTextColor="@color/selectTextColor"
+        app:tabBackground="@android:color/white"
+        app:tabIndicatorColor="@color/color_FF5657"
+        app:tabSelectedTextColor="@color/color_FF5657"
         app:tabTextAppearance="@style/TabLayoutTextStyle1"
         app:tabTextColor="@color/color_303030">
 

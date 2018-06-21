@@ -51,7 +51,8 @@ public class MeetingOverviewActivity extends BaseActivity {
     private TextView vEmind;//小V提醒
 
     private ConstraintLayout xufuLayout;//悬浮布局
-    private TextView suspensionOnclick;
+    private TextView editBtn;
+    private TextView lookBtn;
     private TextView pleaseCreateConference;//提示文本
 
     private RecyclerView recyclerView;
@@ -88,7 +89,8 @@ public class MeetingOverviewActivity extends BaseActivity {
         vEmind = findViewById(R.id.meeting_overview_v_emind);
         //悬浮布局
         xufuLayout = findViewById(R.id.meeting_overview_xuanfu_layout);
-        suspensionOnclick = findViewById(R.id.meeting_overview_suspension_onclick);
+        editBtn = findViewById(R.id.meeting_overview_suspension_edit);
+        lookBtn = findViewById(R.id.meeting_overview_suspension_look);
         //创建流程及进入会意按钮
         pleaseCreateConference = findViewById(R.id.please_create_conference);
         functionBtn = findViewById(R.id.meeting_overview_function_btn);
@@ -107,6 +109,8 @@ public class MeetingOverviewActivity extends BaseActivity {
         vEmind.setOnClickListener(this);
         xufuLayout.setOnClickListener(this);
         functionBtn.setOnClickListener(this);
+        editBtn.setOnClickListener(this);
+        lookBtn.setOnClickListener(this);
 
         confirmEnterMeetingDialog.setConfirmEnterMeetingListener(new ConfirmEnterMeetingListener() {
             @Override
@@ -181,7 +185,11 @@ public class MeetingOverviewActivity extends BaseActivity {
                 //悬浮布局
 
                 break;
-            case R.id.meeting_overview_suspension_onclick:
+            case R.id.meeting_overview_suspension_edit:
+                //悬浮布局中按钮
+
+                break;
+            case R.id.meeting_overview_suspension_look:
                 //悬浮布局中按钮
 
                 break;
@@ -202,9 +210,9 @@ public class MeetingOverviewActivity extends BaseActivity {
         meetingRoom.setText("高级VIP房间");
         meetingPersonnel.setText("销售：张三");
 
-        initUITxt(predeterminedNumber, String.valueOf(100), R.string.predetermined_number, R.color.color_303030);
-        initUITxt(bottomNumber, String.valueOf(60), R.string.bottom_number, R.color.color_303030);
-        initUITxt(actualNumber, String.valueOf(88), R.string.actual_number, R.color.color_E27676);
+        initUITxt(predeterminedNumber, String.valueOf(100), R.string.predetermined_number, android.R.color.white);
+        initUITxt(bottomNumber, String.valueOf(60), R.string.bottom_number, android.R.color.white);
+        initUITxt(actualNumber, String.valueOf(88), R.string.actual_number, R.color.color_FF5657);
 
         new AsyncTask<Void, Integer, Void>() {
 

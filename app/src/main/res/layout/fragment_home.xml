@@ -11,11 +11,10 @@
         android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
         android:layout_height="220dp"
-        android:background="@color/color_ffd7d7d7"
+        android:background="@drawable/personal_center_avatar_bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
 
         <TextView
             android:id="@+id/home_selected"
@@ -26,7 +25,8 @@
             android:drawablePadding="@dimen/dp_10"
             android:drawableRight="@android:drawable/arrow_down_float"
             android:text="今天"
-            android:textSize="@dimen/sp_24"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/sp_30"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,13 +38,14 @@
             android:tag="@string/view_state_display"
             app:layout_constraintBottom_toBottomOf="@+id/home_selected"
             app:layout_constraintStart_toEndOf="@+id/home_selected"
-            app:srcCompat="@android:drawable/radiobutton_on_background" />
+            app:srcCompat="@mipmap/home_eye_on" />
 
         <TextView
             android:id="@+id/home_contract_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/dp_25"
+            android:paddingTop="@dimen/dp_15"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/sp_12"
             app:layout_constraintStart_toStartOf="@+id/home_selected"
             app:layout_constraintTop_toBottomOf="@+id/home_selected" />
@@ -53,14 +54,15 @@
             android:id="@+id/home_receivables"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/dp_10"
+            android:paddingTop="@dimen/dp_5"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/sp_12"
             app:layout_constraintStart_toStartOf="@+id/home_contract_money"
             app:layout_constraintTop_toBottomOf="@+id/home_contract_money" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_60"
+            android:layout_height="@dimen/dp_40"
             android:background="@color/percentage_10"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -71,7 +73,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center" />
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/sp_10" />
 
             <View
                 android:layout_width="1px"
@@ -85,7 +89,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center" />
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/sp_10" />
         </LinearLayout>
     </android.support.constraint.ConstraintLayout>
 
@@ -93,8 +99,8 @@
         android:id="@+id/home_today_meeting_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_100"
-        android:layout_marginLeft="@dimen/dp_20"
-        android:layout_marginRight="@dimen/dp_20"
+        android:layout_marginLeft="@dimen/dp_15"
+        android:layout_marginRight="@dimen/dp_15"
         android:layout_marginTop="@dimen/dp_10"
         android:background="@drawable/item_home_bg"
         app:layout_constraintEnd_toEndOf="parent"
@@ -106,7 +112,7 @@
             android:id="@+id/textView9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableLeft="@android:drawable/title_bar"
+            android:drawableLeft="@mipmap/home_today"
             android:drawablePadding="@dimen/dp_10"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/dp_10"
@@ -121,6 +127,7 @@
             android:id="@+id/home_today_meeting_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/color_303030"
             android:textSize="@dimen/sp_31"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -133,9 +140,9 @@
         android:id="@+id/home_my_attention_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_100"
-        android:layout_marginLeft="@dimen/dp_20"
-        android:layout_marginRight="@dimen/dp_20"
-        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginLeft="@dimen/dp_15"
+        android:layout_marginRight="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_5"
         android:background="@drawable/item_home_bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -145,7 +152,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableLeft="@android:drawable/title_bar"
+            android:drawableLeft="@mipmap/home_collection"
             android:drawablePadding="@dimen/dp_10"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/dp_10"
@@ -160,6 +167,7 @@
             android:id="@+id/home_my_attention_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/color_303030"
             android:textSize="@dimen/sp_31"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -172,9 +180,9 @@
         android:id="@+id/home_pending_conference_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_100"
-        android:layout_marginLeft="@dimen/dp_20"
-        android:layout_marginRight="@dimen/dp_20"
-        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginLeft="@dimen/dp_15"
+        android:layout_marginRight="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_5"
         android:background="@drawable/item_home_bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -184,7 +192,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableLeft="@android:drawable/title_bar"
+            android:drawableLeft="@mipmap/home_wait"
             android:drawablePadding="@dimen/dp_10"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/dp_10"
@@ -199,6 +207,7 @@
             android:id="@+id/home_pending_conference_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/color_303030"
             android:textSize="@dimen/sp_31"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -215,7 +224,7 @@
         android:layout_marginRight="@dimen/dp_10"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_launcher_background"
+        app:srcCompat="@mipmap/home_create_meeting"
         tools:ignore="VectorDrawableCompat" />
 
 </android.support.constraint.ConstraintLayout>

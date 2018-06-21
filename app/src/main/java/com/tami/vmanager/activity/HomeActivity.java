@@ -5,10 +5,12 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.fragment.HomeFragment;
@@ -25,7 +27,8 @@ public class HomeActivity extends BaseActivity implements TabLayout.OnTabSelecte
 
     private TabLayout home_tab;
     private String[] title = new String[]{"首页", "会议", "我的"};
-    private int[] titleImg = new int[]{android.R.drawable.title_bar, android.R.drawable.title_bar, android.R.drawable.title_bar};
+    private int[] tabIconUnSelected = new int[]{R.mipmap.tab_home_nor, R.mipmap.tab_meeting_nor, R.mipmap.tab_me_nor};
+    private int[] tabIconSelected = new int[]{R.mipmap.tab_home_pre, R.mipmap.tab_meeting_pre, R.mipmap.tab_me_pre};
 
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
@@ -58,9 +61,9 @@ public class HomeActivity extends BaseActivity implements TabLayout.OnTabSelecte
         home_tab.setTabMode(TabLayout.MODE_FIXED);
         //为TabLayout添加tab名称
         for (int i = 0; i < title.length; i++) {
-            home_tab.getTabAt(i).setCustomView(getTabView(title[i], titleImg[i]));
+            home_tab.getTabAt(i).setCustomView(getTabView(title[i], tabIconUnSelected[i]));
         }
-
+        onTabSelected(home_tab.getTabAt(selectId));
         onSelected(selectId);
     }
 
@@ -157,11 +160,19 @@ public class HomeActivity extends BaseActivity implements TabLayout.OnTabSelecte
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
+        TextView textView = tab.getCustomView().findViewById(R.id.item_tab_txt);
+        textView.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.tab_selected));
+        ImageView imageView = tab.getCustomView().findViewById(R.id.item_tab_img);
+        imageView.setImageResource(tabIconSelected[tab.getPosition()]);
         onSelected(tab.getPosition());
     }
 
     @Override
     public void onTabUnselected(TabLayout.Tab tab) {
+        TextView textView = tab.getCustomView().findViewById(R.id.item_tab_txt);
+        textView.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.tab_unselected));
+        ImageView imageView = tab.getCustomView().findViewById(R.id.item_tab_img);
+        imageView.setImageResource(tabIconUnSelected[tab.getPosition()]);
     }
 
     @Override

@@ -9,7 +9,7 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/search_title_layout"
         android:layout_width="match_parent"
-        android:background="@color/color_F2F4F5"
+        android:background="@color/colorPrimary"
         android:layout_height="wrap_content">
 
         <android.support.v7.widget.AppCompatImageView
@@ -19,7 +19,7 @@
             android:padding="@dimen/dp_10"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/back_btn" />
+            app:srcCompat="@mipmap/return_btn" />
 
         <SearchView
             android:id="@+id/searchView"
