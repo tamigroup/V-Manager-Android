@@ -1,17 +1,12 @@
 package com.tami.vmanager.activity;
 
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.GuidePageFragmentPagerAdapter;
+import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.fragment.GuidePageFragment;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.view.ViewPagerIndicator;
@@ -20,8 +15,7 @@ import com.tami.vmanager.view.ViewPagerIndicator;
  * 引导页
  * Created by why on 2018/6/11.
  */
-
-public class GuidePageActivity extends AppCompatActivity {
+public class GuidePageActivity extends BaseActivity {
 
     private ViewPager viewPager;
     private ViewPagerIndicator viewPagerIndicator;
@@ -29,20 +23,40 @@ public class GuidePageActivity extends AppCompatActivity {
     private Fragment[] arrayFragment;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //去掉标题栏
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //设置全屏
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    public int getStartBarColor() {
+        return android.R.color.transparent;
+    }
 
-        hideBottomUIMenu();
+    @Override
+    public int getNavigationBarColor() {
+        return android.R.color.transparent;
+    }
 
-        setContentView(R.layout.activity_guidepage);
 
+    @Override
+    public boolean isTitle() {
+        return false;
+    }
+
+    @Override
+    public int getContentViewId() {
+        return R.layout.activity_guidepage;
+    }
+
+    @Override
+    public void initView() {
         viewPager = findViewById(R.id.viewpage_id);
         viewPagerIndicator = findViewById(R.id.viewpager_indicator);
+    }
 
+    @Override
+    public void initListener() {
+        viewPagerOnPageChangeListener = new ViewPagerOnPageChangeListener(viewPagerIndicator);
+        viewPager.addOnPageChangeListener(viewPagerOnPageChangeListener);
+    }
+
+    @Override
+    public void initData() {
         arrayFragment = new Fragment[3];
 
         GuidePageFragment aFragment = new GuidePageFragment();
@@ -71,34 +85,24 @@ public class GuidePageActivity extends AppCompatActivity {
 
         GuidePageFragmentPagerAdapter guidePageFragmentPagerAdapter = new GuidePageFragmentPagerAdapter(getSupportFragmentManager(), arrayFragment);
         viewPager.setAdapter(guidePageFragmentPagerAdapter);
-        viewPagerOnPageChangeListener = new ViewPagerOnPageChangeListener(viewPagerIndicator);
-        viewPager.addOnPageChangeListener(viewPagerOnPageChangeListener);
-    }
-
-    /**
-     * 隐藏虚拟按键，并且全屏
-     */
-    protected void hideBottomUIMenu() {
-        //隐藏虚拟按键，并且全屏
-        if (Build.VERSION.SDK_INT > 11 && Build.VERSION.SDK_INT < 19) { // lower api
-            View v = getWindow().getDecorView();
-            v.setSystemUiVisibility(View.GONE);
-        } else if (Build.VERSION.SDK_INT >= 19) {
-            //for new api versions.
-            View decorView = getWindow().getDecorView();
-            int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_FULLSCREEN;
-            decorView.setSystemUiVisibility(uiOptions);
-        }
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void requestNetwork() {
+
+    }
+
+    @Override
+    public void removeListener() {
         viewPager.removeOnPageChangeListener(viewPagerOnPageChangeListener);
         viewPager.removeAllViews();
         arrayFragment = null;
         viewPager = null;
+    }
+
+    @Override
+    public void emptyObject() {
+
     }
 
     /**

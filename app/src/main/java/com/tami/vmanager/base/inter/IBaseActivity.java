@@ -11,6 +11,20 @@ import android.view.View;
 public interface IBaseActivity {
 
     /**
+     * 可动态设置状态栏颜色
+     *
+     * @return
+     */
+    public int getStartBarColor();
+
+    /**
+     * 可动态设置导航栏颜色
+     *
+     * @return
+     */
+    public int getNavigationBarColor();
+
+    /**
      * 判断Activity是否需要显示Title
      *
      * @return boolean

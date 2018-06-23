@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
+import com.tami.vmanager.utils.VerificationCode;
 
 /**
  * 忘记密码
@@ -24,6 +25,8 @@ public class ForgetThePasswordActivity extends BaseActivity {
     private TextView againIdentification;
     private EditText againPassword;
     private Button confirmBtn;
+    private TextView codeView;
+    private VerificationCode verificationCode;
 
     @Override
     public boolean isTitle() {
@@ -44,16 +47,25 @@ public class ForgetThePasswordActivity extends BaseActivity {
         againIdentification = findViewById(R.id.forget_password_again_identification);
         againPassword = findViewById(R.id.forget_password_again_password);
         confirmBtn = findViewById(R.id.forget_password_confirm_btn);
+        codeView = findViewById(R.id.forget_password_recapture);
     }
 
     @Override
     public void initListener() {
         confirmBtn.setOnClickListener(this);
+        codeView.setOnClickListener(this);
     }
 
     @Override
     public void initData() {
-
+        verificationCode = new VerificationCode.Build()
+                .setContext(getApplicationContext())
+                .setCodeView(codeView)
+                .setExecuteTxt("s")
+                .setExecuteTxtColor(R.color.color_FF5657)
+                .setEndTxt("重新获取")
+                .setEndTxtColor(R.color.color_333333)
+                .build();
     }
 
     @Override
@@ -68,23 +80,31 @@ public class ForgetThePasswordActivity extends BaseActivity {
 
     @Override
     public void emptyObject() {
-
+        if (verificationCode != null) {
+            verificationCode.stop();
+            verificationCode.clear();
+        }
     }
 
     @Override
     public void onClick(View v) {
         super.onClick(v);
-        if (v.getId() == R.id.forget_password_confirm_btn) {
-            Button btn = (Button) v;
-            if (getString(R.string.sent_verification_code).equals(btn.getText().toString())) {
-                sentVerificationCode();
-            } else if (getString(R.string.confirm).equals(btn.getText().toString())) {
-                confirm();
-            } else if (getString(R.string.identification).equals(btn.getText().toString())) {
-                identification();
-            } else if (getString(R.string.go_login).equals(btn.getText().toString())) {
-                goLogin();
-            }
+        switch (v.getId()) {
+            case R.id.forget_password_recapture:
+                verificationCode.start();
+                break;
+            case R.id.forget_password_confirm_btn:
+                Button btn = (Button) v;
+                if (getString(R.string.next_step).equals(btn.getText().toString())) {
+                    sentVerificationCode();
+                } else if (getString(R.string.confirm).equals(btn.getText().toString())) {
+                    confirm();
+                } else if (getString(R.string.identification).equals(btn.getText().toString())) {
+                    identification();
+                } else if (getString(R.string.go_login).equals(btn.getText().toString())) {
+                    goLogin();
+                }
+                break;
         }
     }
 
@@ -95,9 +115,14 @@ public class ForgetThePasswordActivity extends BaseActivity {
         title.setText(getString(R.string.input_authentication_code));
         prompt.setVisibility(View.INVISIBLE);
         name.setText(getString(R.string.authentication_code));
-        value.setInputType(InputType.TYPE_NULL);
+        value.setInputType(InputType.TYPE_CLASS_NUMBER);
         value.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});
         value.setText(null);
+        value.setFocusable(true);
+        value.setFocusableInTouchMode(true);
+        value.requestFocus();
+        codeView.setVisibility(View.VISIBLE);
+        verificationCode.start();
         confirmBtn.setText(getString(R.string.confirm));
     }
 
@@ -107,10 +132,15 @@ public class ForgetThePasswordActivity extends BaseActivity {
     private void confirm() {
         title.setText(getString(R.string.new_password));
         prompt.setVisibility(View.INVISIBLE);
+        verificationCode.stop();
+        codeView.setVisibility(View.GONE);
         name.setText(getString(R.string.new_password));
         value.setInputType(InputType.TYPE_TEXT_VARIATION_URI);
-        value.setFilters(new InputFilter[]{new InputFilter.LengthFilter(16)});
+        value.setFilters(new InputFilter[]{new InputFilter.LengthFilter(32)});
         value.setText(null);
+        value.setFocusable(true);
+        value.setFocusableInTouchMode(true);
+        value.requestFocus();
         againIdentification.setVisibility(View.VISIBLE);
         againPassword.setVisibility(View.VISIBLE);
         confirmBtn.setText(getString(R.string.identification));
@@ -127,6 +157,7 @@ public class ForgetThePasswordActivity extends BaseActivity {
         value.setVisibility(View.INVISIBLE);
         againIdentification.setVisibility(View.INVISIBLE);
         againPassword.setVisibility(View.INVISIBLE);
+        confirmBtn.setBackgroundResource(R.color.color_FF5657);
         confirmBtn.setText(getString(R.string.go_login));
     }
 

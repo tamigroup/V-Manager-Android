@@ -12,19 +12,16 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tami.vmanager.R;
+import com.tami.vmanager.R.id;
+import com.tami.vmanager.R.string;
 import com.tami.vmanager.base.inter.IBaseActivity;
 import com.tami.vmanager.manager.ActivityManager;
-
-import java.lang.reflect.Field;
-
-import static com.tami.vmanager.R.*;
 
 /**
  * Created by lixishuang on 2017/11/30.
@@ -42,21 +39,17 @@ public abstract class BaseActivity extends FragmentActivity implements IBaseActi
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            SystemBarTintManager tintManager = new SystemBarTintManager(this);
+            tintManager.setStatusBarTintEnabled(true);
+            tintManager.setStatusBarTintColor(ContextCompat.getColor(getApplicationContext(), getStartBarColor()));
+            if (!tintManager.isNavBarTintEnabled()) {
+                tintManager.setNavigationBarTintEnabled(true);
+                tintManager.setNavigationBarTintColor(ContextCompat.getColor(getApplicationContext(), getNavigationBarColor()));
+            }
+        }
         //设置主题颜色
         Window window = getWindow();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            // 透明状态栏
-            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            SystemBarTintManager tintManager = new SystemBarTintManager(this);
-            tintManager.setStatusBarTintColor(ContextCompat.getColor(getApplicationContext(), color.colorPrimary));
-            tintManager.setStatusBarTintEnabled(true);
-//             透明导航栏
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(ContextCompat.getColor(getApplicationContext(), color.colorPrimary));
-            window.setNavigationBarColor(ContextCompat.getColor(getApplicationContext(), color.colorPrimary));
-        }
         //设置背景为NULL
         window.setBackgroundDrawable(null);
         layoutInflater = LayoutInflater.from(this);
@@ -72,24 +65,6 @@ public abstract class BaseActivity extends FragmentActivity implements IBaseActi
         initListener();
         initData();
         ActivityManager.getInstance().addActivity(this);
-    }
-
-    /**
-     * 通过反射的方式获取状态栏高度
-     *
-     * @return
-     */
-    private int getStatusBarHeight() {
-        try {
-            Class<?> c = Class.forName("com.android.internal.R$dimen");
-            Object obj = c.newInstance();
-            Field field = c.getField("status_bar_height");
-            int x = Integer.parseInt(field.get(obj).toString());
-            return getResources().getDimensionPixelSize(x);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return 0;
     }
 
     @Override
@@ -110,8 +85,8 @@ public abstract class BaseActivity extends FragmentActivity implements IBaseActi
 
     @Override
     protected void onDestroy() {
-        emptyObject();
         removeListener();
+        emptyObject();
         layoutInflater = null;
         if (isTitle()) {
             titleName = null;
@@ -140,11 +115,11 @@ public abstract class BaseActivity extends FragmentActivity implements IBaseActi
 
     @Override
     public void initTitleView(View view) {
-        titleName = (TextView) view.findViewById(id.titleName);
-        titleLeftBtn = (ImageView) view.findViewById(id.titleLeftBtn);
+        titleName = view.findViewById(id.titleName);
+        titleLeftBtn = view.findViewById(id.titleLeftBtn);
         titleLeftBtn.setOnClickListener(this);
-        titleRightBtn = (ImageView) view.findViewById(id.titleRightBtn);
-        titleRightTxt = (TextView) view.findViewById(id.titleRightTxt);
+        titleRightBtn = view.findViewById(id.titleRightBtn);
+        titleRightTxt = view.findViewById(id.titleRightTxt);
     }
 
     @Override
@@ -237,5 +212,15 @@ public abstract class BaseActivity extends FragmentActivity implements IBaseActi
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
+    }
+
+    @Override
+    public int getStartBarColor() {
+        return R.color.colorPrimary;
+    }
+
+    @Override
+    public int getNavigationBarColor() {
+        return R.color.colorPrimary;
     }
 }

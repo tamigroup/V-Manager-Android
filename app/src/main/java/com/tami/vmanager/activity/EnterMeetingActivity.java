@@ -111,7 +111,10 @@ public class EnterMeetingActivity extends BaseActivity {
 
     @Override
     public void emptyObject() {
-
+        if (recyclerView != null) {
+            recyclerView.removeAllViews();
+            recyclerView = null;
+        }
     }
 
 

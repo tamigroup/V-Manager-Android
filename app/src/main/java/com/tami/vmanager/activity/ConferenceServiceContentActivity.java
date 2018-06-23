@@ -81,7 +81,7 @@ public class ConferenceServiceContentActivity extends BaseActivity {
 
     @Override
     public void emptyObject() {
-
+        switchButton = null;
     }
 
     @Override

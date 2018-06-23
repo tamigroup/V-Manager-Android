@@ -4,6 +4,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+
 import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.GuidePageFragmentPagerAdapter;
 import com.tami.vmanager.base.BaseActivity;
@@ -80,7 +81,11 @@ public class ConferenceServiceGroupActivity extends BaseActivity {
 
     @Override
     public void emptyObject() {
-
+        tabLayoutOnPageChangeListener = null;
+        viewPagerOnTabSelectedListener = null;
+        tabLayout = null;
+        viewPager = null;
+        arrayFragment = null;
     }
 
     @Override

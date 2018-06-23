@@ -1,7 +1,13 @@
 package com.tami.vmanager.activity;
 
 import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -9,6 +15,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
+import com.tami.vmanager.base.SystemBarTintManager;
 import com.tami.vmanager.callback.RequestCallback;
 import com.tami.vmanager.entity.LoginEntity;
 import com.tami.vmanager.utils.Logger;
@@ -30,13 +37,23 @@ public class LoginActivity extends BaseActivity {
     private EditText logoin_phone;
     private TextView login_password_txt;
     private EditText login_password;
-    private Button get_verification_code;
+    private TextView get_verification_code;
     private TextView verification_code_prompt;
     private boolean promptFlag = false;
     private Button login_btn;
     private TextView authentication_code_login;
     private TextView forget_the_password;
     private VerificationCode verificationCode;
+
+    @Override
+    public int getStartBarColor() {
+        return android.R.color.transparent;
+    }
+
+    @Override
+    public int getNavigationBarColor() {
+        return android.R.color.transparent;
+    }
 
     @Override
     public boolean isTitle() {
@@ -50,6 +67,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        //设置主题颜色
         logoin_phone = findViewById(R.id.logoin_phone);
         login_password_txt = findViewById(R.id.login_password_txt);
         login_password = findViewById(R.id.login_password);
@@ -70,7 +88,12 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void initData() {
-
+        verificationCode = new VerificationCode.Build()
+                .setContext(getApplicationContext())
+                .setCodeView(get_verification_code)
+                .setExecuteTxt("秒后重新获取")
+                .setEndTxt("获取验证码")
+                .build();
     }
 
     @Override
@@ -114,7 +137,6 @@ public class LoginActivity extends BaseActivity {
      * 获取验证码
      */
     private void getVerificationCode() {
-        verificationCode = new VerificationCode(getApplicationContext(), get_verification_code);
         verificationCode.start();
         promptFlag = true;
         verification_code_prompt.setVisibility(View.VISIBLE);
@@ -126,7 +148,7 @@ public class LoginActivity extends BaseActivity {
     private void authenticationCodeLogin(View v) {
         TextView tv = (TextView) v;
         if (getString(R.string.accounts_login).equals(tv.getText().toString())) {
-            verification_code_prompt.setVisibility(View.GONE);
+            verification_code_prompt.setVisibility(View.INVISIBLE);
             get_verification_code.setVisibility(View.GONE);
             login_password_txt.setText(getString(R.string.password_txt));
             login_password.setText(null);

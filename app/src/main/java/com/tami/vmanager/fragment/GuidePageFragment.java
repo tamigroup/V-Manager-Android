@@ -94,7 +94,7 @@ public class GuidePageFragment extends BaseFragment {
 
     @Override
     public void emptyObject() {
-
+        imageView = null;
     }
 
     public int getDrawableId(String key) {

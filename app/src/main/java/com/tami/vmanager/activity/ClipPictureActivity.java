@@ -20,10 +20,12 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.utils.CommonUtil;
 import com.tami.vmanager.view.ClipView;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -118,7 +120,14 @@ public class ClipPictureActivity extends BaseActivity implements View.OnTouchLis
 
     @Override
     public void emptyObject() {
-
+        srcPic = null;
+        clipview = null;
+        start = null;
+        mid = null;
+        if (bitmap != null) {
+            bitmap.recycle();
+            bitmap = null;
+        }
     }
 
     @Override
@@ -338,14 +347,18 @@ public class ClipPictureActivity extends BaseActivity implements View.OnTouchLis
                     + ",clipview.getCircleCenterPX()=" + clipview.getCircleCenterPX()
                     + ",clipview.getRadius()=" + clipview.getRadius()
                     + ",clipview.getCircleCenterPY()=" + clipview.getCircleCenterPY());
+
+            imageView = findViewById(R.id.imageView2);
             Bitmap finalBitmap = Bitmap.createBitmap(
                     loadBitmapFromView(srcPic),
                     startX, startY, clipview.getClipWidth(),
                     clipview.getClipHeight());
+            imageView.setImageBitmap(finalBitmap);
             // 释放资源
             srcPic.destroyDrawingCache();
             Log.i(TAG, "getBitmap()  finalBitmap=" + finalBitmap);
-            return getCircleBitmap(finalBitmap);
+            return finalBitmap;
+//            return getCircleBitmap(finalBitmap);
         } catch (OutOfMemoryError err) {
             Toast.makeText(this, "保存头像失败", Toast.LENGTH_SHORT).show();
             Log.e(TAG, err.getMessage());
@@ -358,6 +371,7 @@ public class ClipPictureActivity extends BaseActivity implements View.OnTouchLis
 
     }
 
+    ImageView imageView;
 
     /**
      * @param bitmap src图片

@@ -51,5 +51,11 @@
             android:layout_height="match_parent"
             android:background="#000000"
             android:scaleType="matrix" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="150dp"
+            android:layout_height="150dp"/>
     </FrameLayout>
+
 </android.support.constraint.ConstraintLayout>

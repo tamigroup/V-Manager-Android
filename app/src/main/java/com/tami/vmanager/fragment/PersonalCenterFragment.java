@@ -192,8 +192,6 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
             case TAKE_PHOTO_REQUEST_CODE:
                 Logger.d("拍照后返回.........");
                 if (resultCode == getActivity().RESULT_OK) {
-                    //拍照后返回,调用系统裁剪,系统裁剪无法裁剪成圆形
-                    //clipPhotoBySystem(imageUri);
                     //调用自定义裁剪
                     clipPhotoBySelf(headIconFile.getAbsolutePath());
                 }
@@ -212,7 +210,6 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
                         Logger.d("filePath : " + filePath);
 
                         if (filePath != null && filePath.length() > 0) {
-                            //clipPhotoBySystem(originalUri);
                             //调用自定义裁剪
                             clipPhotoBySelf(filePath);
                         }
@@ -222,7 +219,9 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
             case CLIP_PHOTO_BY_SELF_REQUEST_CODE:
                 Logger.d("从自定义切图返回..........");
                 if (resultCode == getActivity().RESULT_OK) {
+                    Logger.d("onActivityResult()---headIconFile : " + headIconFile.getAbsolutePath());
                     Logger.d("onActivityResult()---headClipFile : " + headClipFile.getAbsolutePath());
+                    addPicToGallery(headIconFile.getAbsolutePath());
                     addPicToGallery(headClipFile.getAbsolutePath());
                     Bitmap bm = BitmapFactory.decodeFile(headClipFile.getAbsolutePath());
                     avatar_image.setImageBitmap(bm);
@@ -285,7 +284,7 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
             } else {
                 //FileProvider为7.0新增应用间共享文件,在7.0上暴露文件路径会报FileUriExposedException
                 //为了适配7.0,所以需要使用FileProvider,具体使用百度一下即可
-                imageUri = FileProvider.getUriForFile(getActivity(),
+                imageUri = FileProvider.getUriForFile(getContext(),
                         "com.tami.vmanager.fileprovider", headIconFile);//通过FileProvider创建一个content类型的Uri
             }
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); //添加这一句表示对目标应用临时授权该Uri所代表的文件
@@ -301,13 +300,12 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
      * @param filePath
      */
     protected void clipPhotoBySelf(String filePath) {
-        Logger.d("通过自定义方式去剪辑这个照片");
+        Logger.d("通过自定义方式去剪辑这个照片:" + filePath);
         //进入裁剪页面,此处用的是自定义的裁剪页面而不是调用系统裁剪
         Intent intent = new Intent(getActivity(), ClipPictureActivity.class);
         intent.putExtra(ClipPictureActivity.IMAGE_PATH_ORIGINAL, filePath);
         intent.putExtra(ClipPictureActivity.IMAGE_PATH_AFTER_CROP,
                 headClipFile.getAbsolutePath());
-
         startActivityForResult(intent, CLIP_PHOTO_BY_SELF_REQUEST_CODE);
     }
 

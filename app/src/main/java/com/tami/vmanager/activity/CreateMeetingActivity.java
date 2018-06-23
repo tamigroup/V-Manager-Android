@@ -94,7 +94,8 @@ public class CreateMeetingActivity extends BaseActivity {
 
     @Override
     public void emptyObject() {
-
+        recordStartDate = null;
+        recordEndDate = null;
     }
 
     @Override

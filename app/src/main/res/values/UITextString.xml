@@ -20,10 +20,12 @@
     <string name="input_new_password">输入新密码</string>
     <string name="confirm_new_password">确认新密码</string>
     <string name="submission">提交</string>
+    <string name="recapture">重新获取</string>
     <string name="verifying_code_has_been_sent">验证码已发送,可能会有延迟请稍后</string>
 
     <!--    忘记密码    -->
     <string name="forget_the_password_prompt">请输入您的帐号查找你的密码</string>
+    <string name="next_step">下一步</string>
     <string name="sent_verification_code">发送验证码</string>
     <string name="new_password">新密码</string>
     <string name="confirm">确定</string>
