@@ -1,21 +1,40 @@
 package com.tami.vmanager.fragment;
 
+import android.Manifest;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialog;
+import android.support.v4.content.FileProvider;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tami.vmanager.R;
 import com.tami.vmanager.activity.AccountSettingsActivity;
+import com.tami.vmanager.activity.ClipPictureActivity;
 import com.tami.vmanager.base.BaseFragment;
+import com.tami.vmanager.utils.GetImagePath;
+import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.view.CircleImageView;
+
+import java.io.File;
+import java.util.List;
+
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
 
 /**
  * Created by why on 2018/6/12.
  */
 
-public class PersonalCenterFragment extends BaseFragment {
+public class PersonalCenterFragment extends BaseFragment implements EasyPermissions.PermissionCallbacks {
 
     private CircleImageView avatar_image;//我的头像
     private TextView full_name;//姓名
@@ -23,6 +42,29 @@ public class PersonalCenterFragment extends BaseFragment {
     private TextView my_creation;//我的创建
     private TextView account_settings;//帐号设置
     private BottomSheetDialog mBottomSheetDialog;
+
+    public static final String HEAD_ICON_DIC = Environment
+            .getExternalStorageDirectory()
+            + File.separator + "TaMiExternal";
+    protected final String TAG = getClass().getSimpleName();
+    private File headIconFile = null;// 相册或者拍照保存的文件
+    private File headClipFile = null;// 裁剪后的头像
+    private String headFileNameStr = "headIcon.jpg";
+    private String clipFileNameStr = "clipIcon.jpg";
+    Uri imageUri;
+    private final String IMAGE_TYPE = "image/*";
+
+    //权限相关
+    public static final int REQUEST_EXTERNAL_STORAGE = 103;
+    public static final String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    public static final int REQUEST_CAMERA = 104;
+    public static final String[] PERMISSIONS_CAMERA = {Manifest.permission.CAMERA};
+
+    private final int CHOOSE_PHOTO_REQUEST_CODE = 0X00;
+    private final int TAKE_PHOTO_REQUEST_CODE = 0X01;
+    private final int CLIP_PHOTO_BY_SELF_REQUEST_CODE = 0X02;
 
     @Override
     public boolean isTitle() {
@@ -91,16 +133,102 @@ public class PersonalCenterFragment extends BaseFragment {
                 accountSettings();
                 break;
             case R.id.personal_menu_album:
+                xiangCe();
                 //相册
                 mBottomSheetDialog.dismiss();
                 break;
             case R.id.personal_menu_photograph:
                 //拍照
+                paiZhao();
                 mBottomSheetDialog.dismiss();
                 break;
             case R.id.personal_menu_cancel:
                 //取消
                 mBottomSheetDialog.dismiss();
+                break;
+        }
+    }
+
+    @Override
+    @AfterPermissionGranted(REQUEST_EXTERNAL_STORAGE)
+    public void onResume() {
+        super.onResume();
+        if (Build.VERSION.SDK_INT >= 23) {
+            //权限请求与判断
+            if (EasyPermissions.hasPermissions(getContext(), PERMISSIONS_STORAGE)) {
+                initHeadIconFile();
+            } else {
+                EasyPermissions.requestPermissions(this, getString(R.string.app_name),
+                        REQUEST_EXTERNAL_STORAGE, PERMISSIONS_STORAGE);
+            }
+        } else {
+            initHeadIconFile();
+        }
+    }
+
+    private void initHeadIconFile() {
+        headIconFile = new File(HEAD_ICON_DIC);
+        Log.e(TAG, "initHeadIconFile()---headIconFile.exists() : " + headIconFile.exists());
+        if (!headIconFile.exists()) {
+            boolean mkdirs = headIconFile.mkdirs();
+            Log.e(TAG, "initHeadIconFile()---mkdirs : " + mkdirs);
+
+        }
+        headIconFile = new File(HEAD_ICON_DIC, headFileNameStr);
+        headClipFile = new File(HEAD_ICON_DIC, clipFileNameStr);
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.e(TAG, "onActivityResult()---requestCode" + requestCode + ", resultCode : " + resultCode);
+        switch (requestCode) {
+            case TAKE_PHOTO_REQUEST_CODE:
+                Logger.d("拍照后返回.........");
+                if (resultCode == getActivity().RESULT_OK) {
+                    //拍照后返回,调用系统裁剪,系统裁剪无法裁剪成圆形
+                    //clipPhotoBySystem(imageUri);
+                    //调用自定义裁剪
+                    clipPhotoBySelf(headIconFile.getAbsolutePath());
+                }
+                break;
+            case CHOOSE_PHOTO_REQUEST_CODE:
+                Logger.d("从相册选取照片后返回....");
+                if (resultCode == getActivity().RESULT_OK) {
+
+                    if (data != null) {
+                        String filePath = "";
+                        Uri originalUri = data.getData(); // 获得图片的uri
+                        Logger.d("originalUri : " + originalUri);
+                        if (originalUri != null) {
+                            filePath = GetImagePath.getPath(getActivity(), originalUri);
+                        }
+                        Logger.d("filePath : " + filePath);
+
+                        if (filePath != null && filePath.length() > 0) {
+                            //clipPhotoBySystem(originalUri);
+                            //调用自定义裁剪
+                            clipPhotoBySelf(filePath);
+                        }
+                    }
+                }
+                break;
+            case CLIP_PHOTO_BY_SELF_REQUEST_CODE:
+                Logger.d("从自定义切图返回..........");
+                if (resultCode == getActivity().RESULT_OK) {
+                    Logger.d("onActivityResult()---headClipFile : " + headClipFile.getAbsolutePath());
+                    addPicToGallery(headClipFile.getAbsolutePath());
+                    Bitmap bm = BitmapFactory.decodeFile(headClipFile.getAbsolutePath());
+                    avatar_image.setImageBitmap(bm);
+                } else {
+                    Logger.d("onActivityResult()---resultCode : " + resultCode);
+                }
                 break;
         }
     }
@@ -121,6 +249,81 @@ public class PersonalCenterFragment extends BaseFragment {
         mBottomSheetDialog.show();
     }
 
+
+    private void xiangCe() {
+        String state = Environment.getExternalStorageState();
+        if (state.equals(Environment.MEDIA_MOUNTED)) {
+            Intent openAlbumIntent = new Intent(Intent.ACTION_GET_CONTENT);
+            openAlbumIntent.setType(IMAGE_TYPE);
+            startActivityForResult(openAlbumIntent, CHOOSE_PHOTO_REQUEST_CODE);
+        }
+    }
+
+    @AfterPermissionGranted(REQUEST_CAMERA)
+    private void paiZhao() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (EasyPermissions.hasPermissions(getContext(), PERMISSIONS_CAMERA)) {
+                openCamera();
+            } else {
+                EasyPermissions.requestPermissions(this, getString(R.string.app_name),
+                        REQUEST_CAMERA, PERMISSIONS_CAMERA);
+            }
+        } else {
+            openCamera();
+        }
+    }
+
+    /**
+     * 打开系统摄像头拍照获取图片
+     */
+    private void openCamera() {
+        String state = Environment.getExternalStorageState();
+        if (state.equals(Environment.MEDIA_MOUNTED)) {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);//设置Action为拍照
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
+                imageUri = Uri.fromFile(headIconFile);
+            } else {
+                //FileProvider为7.0新增应用间共享文件,在7.0上暴露文件路径会报FileUriExposedException
+                //为了适配7.0,所以需要使用FileProvider,具体使用百度一下即可
+                imageUri = FileProvider.getUriForFile(getActivity(),
+                        "com.tami.vmanager.fileprovider", headIconFile);//通过FileProvider创建一个content类型的Uri
+            }
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); //添加这一句表示对目标应用临时授权该Uri所代表的文件
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+            startActivityForResult(intent, TAKE_PHOTO_REQUEST_CODE);
+            Log.e(TAG, "openCamera()---intent" + intent);
+        }
+    }
+
+    /**
+     * 调用自定义切图方法
+     *
+     * @param filePath
+     */
+    protected void clipPhotoBySelf(String filePath) {
+        Logger.d("通过自定义方式去剪辑这个照片");
+        //进入裁剪页面,此处用的是自定义的裁剪页面而不是调用系统裁剪
+        Intent intent = new Intent(getActivity(), ClipPictureActivity.class);
+        intent.putExtra(ClipPictureActivity.IMAGE_PATH_ORIGINAL, filePath);
+        intent.putExtra(ClipPictureActivity.IMAGE_PATH_AFTER_CROP,
+                headClipFile.getAbsolutePath());
+
+        startActivityForResult(intent, CLIP_PHOTO_BY_SELF_REQUEST_CODE);
+    }
+
+    /**
+     * 把图像添加进系统相册
+     *
+     * @param imgPath 图像路径
+     */
+    private void addPicToGallery(String imgPath) {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(imgPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        getActivity().sendBroadcast(mediaScanIntent);
+    }
+
     /**
      * 我的创建
      */
@@ -132,6 +335,16 @@ public class PersonalCenterFragment extends BaseFragment {
      * 帐号设置
      */
     private void accountSettings() {
-        startActivity(new Intent(getActivity(),AccountSettingsActivity.class));
+        startActivity(new Intent(getActivity(), AccountSettingsActivity.class));
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+        Logger.d("onPermissionsGranted:" + requestCode + ":" + perms.size());
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+        Logger.d("onPermissionsDenied:" + requestCode + ":" + perms.size());
     }
 }

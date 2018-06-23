@@ -2,7 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.tami.vmanager">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <!--相机权限-->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!--写入SD卡的权限：如果你希望保存相机拍照后的照片-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--读取SD卡的权限:打开相册选取图片所必须的权限-->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!--网络权限-->
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -50,7 +57,24 @@
         <activity android:name=".activity.SponsorMemberActivity"></activity>
         <!--    帐号设置    -->
         <activity android:name=".activity.AccountSettingsActivity"></activity>
+        <!--    图片裁剪    -->
+        <activity android:name=".activity.ClipPictureActivity"></activity>
 
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.tami.vmanager.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <activity
+            android:name="pub.devrel.easypermissions.AppSettingsDialogHolderActivity"
+            android:exported="false"
+            android:label=""
+            android:theme="@style/EasyPermissions.Transparent"/>
     </application>
 
 </manifest>

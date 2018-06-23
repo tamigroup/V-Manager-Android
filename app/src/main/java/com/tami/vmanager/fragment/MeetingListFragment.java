@@ -15,6 +15,8 @@ import com.tami.vmanager.activity.MeetingOverviewActivity;
 import com.tami.vmanager.adapter.RecycleViewDivider;
 import com.tami.vmanager.base.BaseFragment;
 import com.tami.vmanager.utils.Constants;
+import com.tami.vmanager.utils.Logger;
+import com.tami.vmanager.utils.ScreenUtil;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -68,7 +70,8 @@ public class MeetingListFragment extends BaseFragment {
             @Override
             public void convert(ViewHolder holder, String s) {
                 //赋值
-                holder.setText(R.id.item_meeting_name, "第一个会议");
+                TextView nameView = holder.getView(R.id.item_meeting_name);
+                setNameTextLayoutParams(nameView, s);
                 holder.setText(R.id.item_meeting_state, "会中");
                 holder.setText(R.id.item_meeting_start_time, "6月14日 9:00-17:00");
                 holder.setText(R.id.item_meeting_end_time, "6月16日 9:00-17:00");
@@ -96,6 +99,24 @@ public class MeetingListFragment extends BaseFragment {
                     }
                 });
             }
+
+            private void setNameTextLayoutParams(TextView nameView, String content) {
+                setLayoutParams(nameView, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+                nameView.setText(content);
+                int spec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+                nameView.measure(spec, spec);
+                int measuredWidthTicketNum = nameView.getMeasuredWidth();
+                int maxWidth = ScreenUtil.sp2px(getContext(), 270);
+                if (measuredWidthTicketNum > maxWidth) {
+                    setLayoutParams(nameView, maxWidth);
+                }
+            }
+
+            private void setLayoutParams(TextView nameView, int value) {
+                ConstraintLayout.LayoutParams layoutParams1 = (ConstraintLayout.LayoutParams) nameView.getLayoutParams();
+                layoutParams1.width = value;
+                nameView.setLayoutParams(layoutParams1);
+            }
         });
     }
 
@@ -119,9 +140,21 @@ public class MeetingListFragment extends BaseFragment {
     }
 
     private List<String> getData() {
+        String[] str = new String[]{"梅西传球数比门将还少 阿媒痛批:配不上当领袖",
+                "VAR正在蚕食比赛悬念",
+                "三匪徒持斧校门口“行凶”不到5分钟被制伏",
+                "告诉你一个电视上看不到的世界杯",
+                "教皇方济各：对中国充满敬意 中国人应获“诺贝尔耐心奖”",
+                "世界杯最长球荒！梅西675分钟0进球 从11射到1射",
+                "你也一定想知道的事：世界杯赛场上裁判和球员咋对话？",
+                "世界杯期间交通违法真不少",
+                "男子为掩人耳目男扮女装深夜偷车被民警抓获",
+                "瑞斯康达破发：上市业绩变脸 投行招商证券赚4200万",
+                "他信又摊上事儿了！泰国最高法院向他发出逮捕令"
+                , "谁在豪赌退市昆机"};
         List<String> data = new ArrayList<String>();
-        for (int i = 0; i < 40; i++) {
-            data.add("测试数据" + i);
+        for (int i = 0; i < str.length; i++) {
+            data.add(str[i]);
         }
         return data;
     }

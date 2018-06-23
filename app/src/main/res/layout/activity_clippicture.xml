@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/clip_close_img"
+        android:layout_width="@dimen/dp_45"
+        android:layout_height="@dimen/dp_45"
+        android:scaleType="fitXY"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/clip_close" />
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/clip_confirm_img"
+        android:layout_width="@dimen/dp_45"
+        android:layout_height="@dimen/dp_45"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/clip_confirm" />
+
+    <TextView
+        android:id="@+id/clip_title_name"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_45"
+        android:gravity="center"
+        android:text="头像裁剪"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/sp_16"
+        app:layout_constraintEnd_toStartOf="@+id/clip_confirm_img"
+        app:layout_constraintStart_toEndOf="@+id/clip_close_img"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/clip_src_layout"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="@dimen/dp_0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/clip_title_name">
+
+        <ImageView
+            android:id="@+id/clip_src_pic"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#000000"
+            android:scaleType="matrix" />
+    </FrameLayout>
+</android.support.constraint.ConstraintLayout>

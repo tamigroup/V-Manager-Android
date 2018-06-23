@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="search_custom_content">
+        <item>会议名称</item>
+        <item>V智慧</item>
+        <item>重要</item>
+        <item>销售姓名</item>
+        <item>会议地点</item>
+    </string-array>
+
+</resources>

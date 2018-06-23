@@ -1,6 +1,7 @@
 package com.tami.vmanager.activity;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,6 +18,8 @@ import com.tami.vmanager.fragment.HomeFragment;
 import com.tami.vmanager.fragment.MeetingFragment;
 import com.tami.vmanager.fragment.PersonalCenterFragment;
 import com.tami.vmanager.utils.Logger;
+
+import java.util.List;
 
 /**
  * 主页
@@ -64,7 +67,6 @@ public class HomeActivity extends BaseActivity implements TabLayout.OnTabSelecte
             home_tab.getTabAt(i).setCustomView(getTabView(title[i], tabIconUnSelected[i]));
         }
         onTabSelected(home_tab.getTabAt(selectId));
-        onSelected(selectId);
     }
 
     // Tab自定义view
@@ -156,6 +158,23 @@ public class HomeActivity extends BaseActivity implements TabLayout.OnTabSelecte
         // TODO Auto-generated method stub super存在是处理Fragment
         super.onActivityResult(requestCode, resultCode, data);
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        // 获取到Activity下的Fragment
+//        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+//        if (fragments == null) {
+//            return;
+//        }
+//        // 查找在Fragment中onRequestPermissionsResult方法并调用
+//        for (Fragment fragment : fragments) {
+//            if (fragment != null) {
+//                // 这里就会调用我们Fragment中的onRequestPermissionsResult方法
+//                fragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//            }
+//        }
     }
 
     @Override

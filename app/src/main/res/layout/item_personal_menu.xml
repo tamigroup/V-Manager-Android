@@ -23,7 +23,8 @@
         android:layout_height="@dimen/dp_50"
         android:gravity="center"
         android:text="@string/photograph"
-        android:textAllCaps="false" />
+        android:textAllCaps="false"
+        android:visibility="gone" />
 
     <View
         android:layout_width="match_parent"
