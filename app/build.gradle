@@ -11,9 +11,22 @@ android {
         multiDexEnabled true
     }
     buildTypes {
-        release {
+        debug {
+            buildConfigField 'String', 'API_SERVER_URL', '"http://192.168.103.196/yundao-api/"'
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        release {
+            buildConfigField 'String', 'API_SERVER_URL', '"http://192.168.103.196/yundao-api/"'
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            outputFileName = "${variant.buildType.name}_${project.name}_${defaultConfig.versionName}_${buildTime()}.apk"
         }
     }
 }
@@ -32,4 +45,10 @@ dependencies {
     compile 'com.zhy:okhttputils:2.6.2'
 
     compile 'pub.devrel:easypermissions:1.2.0'
+}
+
+def buildTime() {
+    def date = new Date()
+    def formattedDate = date.format('YYYY_MM_dd')
+    return formattedDate
 }

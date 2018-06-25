@@ -1,31 +1,22 @@
 package com.tami.vmanager.activity;
 
 import android.content.Intent;
-import android.os.Build;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
-import com.tami.vmanager.base.SystemBarTintManager;
 import com.tami.vmanager.callback.RequestCallback;
 import com.tami.vmanager.entity.LoginEntity;
+import com.tami.vmanager.http.HttpKey;
+import com.tami.vmanager.http.HttpManager;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.VerificationCode;
-import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import okhttp3.MediaType;
 
 /**
  * 登陆
@@ -205,5 +196,22 @@ public class LoginActivity extends BaseActivity {
 //                });
 
 
+//        Map<String, String> serviceParams = new HashMap<>();
+//        serviceParams.put(HttpKey.KEY_MOBILE, "13800138000");
+//        serviceParams.put(HttpKey.KEY_PASSWORD, "111111");
+//        HttpManager.initPostString(HttpKey.USER_LOGIN, serviceParams)
+//                .build().execute(new RequestCallback<LoginEntity>() {
+//
+//            @Override
+//            public void onSuccess(LoginEntity response) {
+//                Logger.d("onResponse:" + response.message);
+//                Logger.d("onResponse:" + response.data.headImgUrl);
+//            }
+//
+//            @Override
+//            public void onError() {
+//
+//            }
+//        });
     }
 }
