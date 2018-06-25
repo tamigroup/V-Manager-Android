@@ -152,10 +152,6 @@ public class MeetingOverviewActivity extends BaseActivity {
     @Override
     public void emptyObject() {
         alreadyPaidItem = null;
-        if (recyclerView != null) {
-            recyclerView.removeAllViews();
-            recyclerView = null;
-        }
         if (confirmEnterMeetingDialog != null && confirmEnterMeetingDialog.isShowing()) {
             confirmEnterMeetingDialog.dismiss();
         }

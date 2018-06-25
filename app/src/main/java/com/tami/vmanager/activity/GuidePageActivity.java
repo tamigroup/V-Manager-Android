@@ -95,7 +95,6 @@ public class GuidePageActivity extends BaseActivity {
     @Override
     public void removeListener() {
         viewPager.removeOnPageChangeListener(viewPagerOnPageChangeListener);
-        viewPager.removeAllViews();
         arrayFragment = null;
         viewPager = null;
     }

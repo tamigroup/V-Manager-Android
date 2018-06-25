@@ -121,10 +121,6 @@ public class MeetingLinkConfirmedActivity extends BaseActivity {
     @Override
     public void emptyObject() {
         switchbtn = null;
-        if (recyclerView != null) {
-            recyclerView.removeAllViews();
-            recyclerView = null;
-        }
     }
 
     List<String> listData;

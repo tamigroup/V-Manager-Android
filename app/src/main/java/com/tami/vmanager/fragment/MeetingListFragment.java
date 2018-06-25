@@ -136,10 +136,7 @@ public class MeetingListFragment extends BaseFragment {
 
     @Override
     public void emptyObject() {
-        if (recyclerView != null) {
-            recyclerView.removeAllViews();
-            recyclerView = null;
-        }
+
     }
 
     private List<String> getData() {

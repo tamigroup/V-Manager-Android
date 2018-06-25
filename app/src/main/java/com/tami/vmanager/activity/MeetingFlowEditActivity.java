@@ -105,10 +105,7 @@ public class MeetingFlowEditActivity extends BaseActivity {
 
     @Override
     public void emptyObject() {
-        if (listView != null) {
-            listView.removeAllViews();
-            listView = null;
-        }
+
     }
 
     @Override
