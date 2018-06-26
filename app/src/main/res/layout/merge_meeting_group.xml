@@ -36,6 +36,17 @@
             android:textSize="@dimen/dp_14" />
 
         <RadioButton
+            android:id="@+id/meeting_group_perfected"
+            android:layout_width="@dimen/dp_69"
+            android:layout_height="@dimen/dp_30"
+            android:background="@drawable/select_radiobutton_mid"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/perfected"
+            android:textColor="@color/press"
+            android:textSize="@dimen/dp_14" />
+
+        <RadioButton
             android:id="@+id/meeting_group_day"
             android:layout_width="@dimen/dp_69"
             android:layout_height="@dimen/dp_30"

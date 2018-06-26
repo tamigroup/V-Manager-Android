@@ -19,8 +19,6 @@ import com.tami.vmanager.fragment.MeetingFragment;
 import com.tami.vmanager.fragment.PersonalCenterFragment;
 import com.tami.vmanager.utils.Logger;
 
-import java.util.List;
-
 /**
  * 主页
  * Created by why on 2018/6/12.
@@ -37,11 +35,6 @@ public class HomeActivity extends BaseActivity implements TabLayout.OnTabSelecte
     private FragmentTransaction fragmentTransaction;
     private String currentContentFragmentTag = null;
     private int selectId = 0;
-
-    @Override
-    public boolean isTitle() {
-        return false;
-    }
 
     @Override
     public int getContentViewId() {
@@ -163,18 +156,6 @@ public class HomeActivity extends BaseActivity implements TabLayout.OnTabSelecte
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        // 获取到Activity下的Fragment
-//        List<Fragment> fragments = getSupportFragmentManager().getFragments();
-//        if (fragments == null) {
-//            return;
-//        }
-//        // 查找在Fragment中onRequestPermissionsResult方法并调用
-//        for (Fragment fragment : fragments) {
-//            if (fragment != null) {
-//                // 这里就会调用我们Fragment中的onRequestPermissionsResult方法
-//                fragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//            }
-//        }
     }
 
     @Override

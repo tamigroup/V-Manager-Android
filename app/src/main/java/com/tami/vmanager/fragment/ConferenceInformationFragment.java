@@ -10,11 +10,6 @@ import com.tami.vmanager.base.BaseFragment;
 public class ConferenceInformationFragment extends BaseFragment {
 
     @Override
-    public boolean isTitle() {
-        return false;
-    }
-
-    @Override
     public int getContentViewId() {
         return R.layout.fragment_conference_information;
     }

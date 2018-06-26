@@ -24,21 +24,22 @@ public class Constants {
     public static final String MEETING_TYPE = "meeting_type";
     public static final int MEETING_TYPE_WHOLE = 0;
     public static final int MEETING_TYPE_PENDING_PAYMENT = 1;
-    public static final int MEETING_TYPE_DAY = 2;
-    public static final int MEETING_TYPE_MONTH = 3;
-    public static final int MEETING_TYPE_YEAR = 4;
+    public static final int MEETING_TYPE_PERFECTED = 2;
+    public static final int MEETING_TYPE_DAY = 3;
+    public static final int MEETING_TYPE_MONTH = 4;
+    public static final int MEETING_TYPE_YEAR = 5;
 
     /******************** 时间相关常量 ********************/
     //秒与毫秒的倍数
     public static final int MSEC = 1;
     //秒与毫秒的倍数
-    public static final int SEC  = 1000;
+    public static final int SEC = 1000;
     //分与毫秒的倍数
-    public static final int MIN  = 60000;
+    public static final int MIN = 60000;
     //时与毫秒的倍数
     public static final int HOUR = 3600000;
     //天与毫秒的倍数
-    public static final int DAY  = 86400000;
+    public static final int DAY = 86400000;
 
     public enum TimeUnit {
         MSEC,
@@ -47,6 +48,10 @@ public class Constants {
         HOUR,
         DAY
     }
+
     public static final String KEY_DAY = "key_day";
 
+    public static final String FIRST_LANDING = "firstLanding";
+    //每页记录条数
+    public static final int PAGE_SIZE = 10;
 }

@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_10"
-            android:tag="@string/view_state_display"
+            android:tag="@string/view_state_hide"
             app:layout_constraintBottom_toBottomOf="@+id/home_selected"
             app:layout_constraintStart_toEndOf="@+id/home_selected"
             app:srcCompat="@mipmap/home_eye_on" />

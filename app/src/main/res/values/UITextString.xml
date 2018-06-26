@@ -119,6 +119,7 @@
     <!--    会议    -->
     <string name="whole">全部</string>
     <string name="pending_payment">待付款</string>
+    <string name="perfected">待完善</string>
     <string name="day">日</string>
     <string name="month">月</string>
     <string name="year">年</string>
@@ -185,4 +186,11 @@
     <string name="off">关</string>
     <string name="change_the_password">更改密码</string>
     <string name="exit_login">退出登录</string>
+
+    <string name="create_meeting_and_service_process">创建会议与服务流程</string>
+    <string name="create_meeting">创建会议</string>
+    <string name="please_create">请创建</string>
+    <string name="create_service_process">创建服务流程</string>
+    <string name="add_process">+ 添加流程</string>
+
 </resources>

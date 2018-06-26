@@ -37,6 +37,11 @@ public abstract class BaseFragment extends Fragment implements IBaseFragment, Vi
     private boolean isUIVisible;
 
     @Override
+    public boolean isTitle() {
+        return false;
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         view = isTitle() ? getContentTitelView(inflater) : getContentView(inflater, container);
@@ -243,4 +248,7 @@ public abstract class BaseFragment extends Fragment implements IBaseFragment, Vi
         }
     }
 
+    public  String getTAG() {
+        return this.getClass().getSimpleName();
+    }
 }

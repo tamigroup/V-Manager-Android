@@ -10,11 +10,6 @@ import com.tami.vmanager.base.BaseActivity;
 public class SearchActivity extends BaseActivity {
 
     @Override
-    public boolean isTitle() {
-        return false;
-    }
-
-    @Override
     public int getContentViewId() {
         return R.layout.activity_search;
     }

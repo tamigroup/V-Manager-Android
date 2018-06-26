@@ -9,4 +9,6 @@
 
     <string name="isTitleMethodReturnsTrue">isTitle方法是否返回true？</string>
     <string name="activity_is_layout">请设置Activity相应布局！</string>
+
+    <string name="plase_check_netword">请检查网络连接是否正常！</string>
 </resources>

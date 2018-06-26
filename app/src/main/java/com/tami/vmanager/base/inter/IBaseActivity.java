@@ -159,4 +159,8 @@ public interface IBaseActivity {
      * 清除提示框
      */
     public void dialogDismiss();
+
+    public boolean isNetwork();
+
+    public void checkNetworkToast();
 }

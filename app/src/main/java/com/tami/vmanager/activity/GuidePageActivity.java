@@ -1,14 +1,20 @@
 package com.tami.vmanager.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.AppCompatImageView;
+import android.view.View;
 
 import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.GuidePageFragmentPagerAdapter;
 import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.fragment.GuidePageFragment;
 import com.tami.vmanager.utils.Constants;
+import com.tami.vmanager.utils.SharePreferenceTools;
 import com.tami.vmanager.view.ViewPagerIndicator;
 
 /**
@@ -21,6 +27,7 @@ public class GuidePageActivity extends BaseActivity {
     private ViewPagerIndicator viewPagerIndicator;
     private ViewPagerOnPageChangeListener viewPagerOnPageChangeListener;
     private Fragment[] arrayFragment;
+    private AppCompatImageView appCompatImageView;
 
     @Override
     public int getStartBarColor() {
@@ -32,12 +39,6 @@ public class GuidePageActivity extends BaseActivity {
         return android.R.color.transparent;
     }
 
-
-    @Override
-    public boolean isTitle() {
-        return false;
-    }
-
     @Override
     public int getContentViewId() {
         return R.layout.activity_guidepage;
@@ -47,6 +48,7 @@ public class GuidePageActivity extends BaseActivity {
     public void initView() {
         viewPager = findViewById(R.id.viewpage_id);
         viewPagerIndicator = findViewById(R.id.viewpager_indicator);
+        appCompatImageView = findViewById(R.id.ag_guide_image);
     }
 
     @Override
@@ -85,6 +87,9 @@ public class GuidePageActivity extends BaseActivity {
 
         GuidePageFragmentPagerAdapter guidePageFragmentPagerAdapter = new GuidePageFragmentPagerAdapter(getSupportFragmentManager(), arrayFragment);
         viewPager.setAdapter(guidePageFragmentPagerAdapter);
+
+        handler.sendEmptyMessage(1);
+//        handler.sendEmptyMessageDelayed(1, 3000);
     }
 
     @Override
@@ -94,6 +99,7 @@ public class GuidePageActivity extends BaseActivity {
 
     @Override
     public void removeListener() {
+        handler.removeCallbacksAndMessages(null);
         viewPager.removeOnPageChangeListener(viewPagerOnPageChangeListener);
         arrayFragment = null;
         viewPager = null;
@@ -104,11 +110,29 @@ public class GuidePageActivity extends BaseActivity {
 
     }
 
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 1) {
+                SharePreferenceTools sharePreferenceTools = new SharePreferenceTools(GuidePageActivity.this);
+                boolean firstLanding = sharePreferenceTools.getBoolean(Constants.FIRST_LANDING);
+                if (!firstLanding) {
+                    sharePreferenceTools.putBoolean(Constants.FIRST_LANDING, true);
+                    appCompatImageView.setVisibility(View.GONE);
+                } else {
+                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                    finish();
+                }
+            }
+        }
+    };
+
     /**
      * //     * ViewPager滚动监听
      * //
      */
-    public class ViewPagerOnPageChangeListener implements ViewPager.OnPageChangeListener {
+    public static class ViewPagerOnPageChangeListener implements ViewPager.OnPageChangeListener {
 
         private ViewPagerIndicator viewPagerIndicator;
 

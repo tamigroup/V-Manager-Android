@@ -10,13 +10,22 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.jwenfeng.library.pulltorefresh.BaseRefreshListener;
+import com.jwenfeng.library.pulltorefresh.PullToRefreshLayout;
 import com.tami.vmanager.R;
 import com.tami.vmanager.activity.MeetingOverviewActivity;
 import com.tami.vmanager.adapter.RecycleViewDivider;
 import com.tami.vmanager.base.BaseFragment;
+import com.tami.vmanager.entity.AllMeetingsRequest;
+import com.tami.vmanager.entity.AllMeetingsResponse;
+import com.tami.vmanager.entity.LoginResponse;
+import com.tami.vmanager.http.HttpKey;
+import com.tami.vmanager.http.NetworkBroker;
+import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.ScreenUtil;
+import com.tami.vmanager.utils.TimeUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -26,16 +35,15 @@ import java.util.List;
 /**
  * Created by why on 2018/6/14.
  */
-
 public class MeetingListFragment extends BaseFragment {
 
     private RecyclerView recyclerView;
+    private PullToRefreshLayout pullToRefreshLayout;
+    private CommonAdapter<AllMeetingsResponse.Item.ElementElements> commonAdapter;
+    private List<AllMeetingsResponse.Item.ElementElements> listData;
     private int meetingType;//标识点击哪个进入到的页面
-
-    @Override
-    public boolean isTitle() {
-        return false;
-    }
+    private NetworkBroker networkBroker;
+    private int CurPage = 0;
 
     @Override
     public int getContentViewId() {
@@ -44,13 +52,24 @@ public class MeetingListFragment extends BaseFragment {
 
     @Override
     public void initView() {
-        recyclerView = findViewById(R.id.fragment_meeting_list_RecyclerView);
+        pullToRefreshLayout = findViewById(R.id.fml_PullToRefreshLayout);
+        recyclerView = findViewById(R.id.fml_RecyclerView);
     }
 
     @Override
     public void initListener() {
+        pullToRefreshLayout.setRefreshListener(new BaseRefreshListener() {
+            @Override
+            public void refresh() {
+            }
 
+            @Override
+            public void loadMore() {
+                query();
+            }
+        });
     }
+
 
     @Override
     public void initData() {
@@ -60,25 +79,25 @@ public class MeetingListFragment extends BaseFragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL,
                 1, ContextCompat.getColor(getActivity(), R.color.percentage_10)));
-
-        recyclerView.setAdapter(new CommonAdapter<String>(getActivity(), R.layout.item_meeting, getData()) {
+        listData = new ArrayList<>();
+        commonAdapter = new CommonAdapter<AllMeetingsResponse.Item.ElementElements>(getActivity(), R.layout.item_meeting, listData) {
             @Override
-            protected void convert(ViewHolder holder, String s, int position) {
+            protected void convert(ViewHolder holder, AllMeetingsResponse.Item.ElementElements elementElements, int position) {
 
             }
 
             @Override
-            public void convert(ViewHolder holder, String s) {
+            public void convert(ViewHolder holder, AllMeetingsResponse.Item.ElementElements elements) {
                 //赋值
                 TextView nameView = holder.getView(R.id.item_meeting_name);
-                setNameTextLayoutParams(nameView, s);
-                holder.setText(R.id.item_meeting_state, "会中");
-                holder.setText(R.id.item_meeting_start_time, "6月14日 9:00-17:00");
-                holder.setText(R.id.item_meeting_end_time, "6月16日 9:00-17:00");
+                setNameTextLayoutParams(nameView, elements.getMeetingName());
+                holder.setText(R.id.item_meeting_state, elements.getMeetingStatus());
+                holder.setText(R.id.item_meeting_start_time, TimeUtils.milliseconds2String(elements.getStartTime()));
+                holder.setText(R.id.item_meeting_end_time, TimeUtils.milliseconds2String(elements.getEndTime()));
                 //R.id.item_meeting_level_icon ---V重图片
                 ImageView imageView = holder.getView(R.id.item_meeting_level_icon);
                 imageView.setImageResource(R.drawable.back_btn);
-                holder.setText(R.id.item_meeting_room, "高级客房");
+                holder.setText(R.id.item_meeting_room, elements.getMeetingAddress());
                 //关注按钮点击
                 TextView follow = holder.getView(R.id.item_meeting_follow);
                 follow.setOnClickListener(new View.OnClickListener() {
@@ -117,7 +136,9 @@ public class MeetingListFragment extends BaseFragment {
                 layoutParams1.width = value;
                 nameView.setLayoutParams(layoutParams1);
             }
-        });
+        };
+        recyclerView.setAdapter(commonAdapter);
+        pullToRefreshLayout.setCanRefresh(false);
     }
 
     @Override
@@ -126,7 +147,9 @@ public class MeetingListFragment extends BaseFragment {
         if (bundle != null) {
             meetingType = bundle.getInt(Constants.MEETING_TYPE);
         }
-
+        networkBroker = new NetworkBroker(getActivity());
+        networkBroker.setCancelTag(getTAG());
+        query();
     }
 
     @Override
@@ -139,23 +162,39 @@ public class MeetingListFragment extends BaseFragment {
 
     }
 
-    private List<String> getData() {
-        String[] str = new String[]{"梅西传球数比门将还少 阿媒痛批:配不上当领袖",
-                "VAR正在蚕食比赛悬念",
-                "三匪徒持斧校门口“行凶”不到5分钟被制伏",
-                "告诉你一个电视上看不到的世界杯",
-                "教皇方济各：对中国充满敬意 中国人应获“诺贝尔耐心奖”",
-                "世界杯最长球荒！梅西675分钟0进球 从11射到1射",
-                "你也一定想知道的事：世界杯赛场上裁判和球员咋对话？",
-                "世界杯期间交通违法真不少",
-                "男子为掩人耳目男扮女装深夜偷车被民警抓获",
-                "瑞斯康达破发：上市业绩变脸 投行招商证券赚4200万",
-                "他信又摊上事儿了！泰国最高法院向他发出逮捕令"
-                , "谁在豪赌退市昆机"};
-        List<String> data = new ArrayList<String>();
-        for (int i = 0; i < str.length; i++) {
-            data.add(str[i]);
+    private void query() {
+        AllMeetingsRequest allMeetingsRequest = new AllMeetingsRequest();
+        LoginResponse.Item item = GlobaVariable.getInstance().item;
+        if (item != null) {
+            allMeetingsRequest.setUserId(item.getId());
         }
-        return data;
+        allMeetingsRequest.setSearchType(String.valueOf(meetingType + 1));
+        allMeetingsRequest.setCurPage(String.valueOf(CurPage++));
+        allMeetingsRequest.setPageSize(String.valueOf(Constants.PAGE_SIZE));
+        allMeetingsRequest.setRequestUrl(HttpKey.USER_ALL_MEETINGS);
+        networkBroker.ask(allMeetingsRequest, (ex1, res) -> {
+            if (null != ex1) {
+                ex1.printStackTrace();
+                Logger.d(ex1.getMessage() + "-" + ex1);
+                return;
+            }
+            try {
+                AllMeetingsResponse response = (AllMeetingsResponse) res;
+                if (response.getCode() == 200) {
+                    AllMeetingsResponse.Item aItem = response.getData();
+                    if (aItem != null && aItem.getElements() != null && aItem.getElements().size() > 0) {
+                        listData.addAll(aItem.getElements());
+                        commonAdapter.notifyDataSetChanged();
+                    }
+                    pullToRefreshLayout.finishLoadMore();
+                    if (!aItem.getLastPage()) {
+                        pullToRefreshLayout.setCanLoadMore(false);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        });
     }
 }

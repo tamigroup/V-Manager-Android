@@ -21,6 +21,7 @@ import com.tami.vmanager.R;
 import com.tami.vmanager.R.id;
 import com.tami.vmanager.R.string;
 import com.tami.vmanager.base.inter.IBaseActivity;
+import com.tami.vmanager.http.HttpManager;
 import com.tami.vmanager.manager.ActivityManager;
 
 /**
@@ -97,6 +98,11 @@ public abstract class BaseActivity extends FragmentActivity implements IBaseActi
         dialogDismiss();
         progressDialog = null;
         super.onDestroy();
+    }
+
+    @Override
+    public boolean isTitle() {
+        return false;
     }
 
     @Override
@@ -222,5 +228,17 @@ public abstract class BaseActivity extends FragmentActivity implements IBaseActi
     @Override
     public int getNavigationBarColor() {
         return R.color.colorPrimary;
+    }
+
+    public boolean isNetwork() {
+        return HttpManager.getType(getApplicationContext()) != -1;
+    }
+
+    public void checkNetworkToast() {
+        showToast(R.string.plase_check_netword);
+    }
+
+    public  String getTAG() {
+        return this.getClass().getSimpleName();
     }
 }

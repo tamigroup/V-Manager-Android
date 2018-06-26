@@ -23,7 +23,7 @@ import java.util.Calendar;
  * 会议流程编辑
  * Created by why on 2018/6/15.
  */
-
+@Deprecated
 public class MeetingFlowEditActivity extends BaseActivity {
 
     private ExpandableListView listView;

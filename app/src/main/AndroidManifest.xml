@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.tami.vmanager">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!--相机权限-->
     <uses-permission android:name="android.permission.CAMERA" />
     <!--写入SD卡的权限：如果你希望保存相机拍照后的照片-->
@@ -20,6 +21,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activity.GuidePageActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,37 +30,87 @@
             </intent-filter>
         </activity>
         <!--    登录页   -->
-        <activity android:name=".activity.LoginActivity"></activity>
+        <activity
+            android:name=".activity.LoginActivity"
+            android:screenOrientation="portrait"></activity>
         <!--    忘记密码    -->
-        <activity android:name=".activity.ForgetThePasswordActivity"></activity>
+        <activity
+            android:name=".activity.ForgetThePasswordActivity"
+            android:screenOrientation="portrait"></activity>
         <!--    主页面    -->
         <activity
             android:name=".activity.HomeActivity"
-            android:launchMode="singleTask"></activity>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"></activity>
         <!--    搜索功能    -->
-        <activity android:name=".activity.SearchActivity"></activity>
+        <activity
+            android:name=".activity.SearchActivity"
+            android:screenOrientation="portrait"></activity>
         <!--    首页的创建会议    -->
-        <activity android:name=".activity.CreateMeetingActivity"></activity>
+        <activity
+            android:name=".activity.CreateMeetingActivity"
+            android:screenOrientation="portrait"></activity>
         <!--    会议概览    -->
-        <activity android:name=".activity.MeetingOverviewActivity"></activity>
+        <activity
+            android:name=".activity.MeetingOverviewActivity"
+            android:screenOrientation="portrait"></activity>
         <!--    会议服务内容流程    -->
-        <activity android:name=".activity.ConferenceServiceContentActivity"></activity>
+        <activity
+            android:name=".activity.ConferenceServiceContentActivity"
+            android:screenOrientation="portrait"></activity>
         <!--    会议流程    -->
-        <activity android:name=".activity.MeetingFlowActivity"></activity>
+        <activity
+            android:name=".activity.MeetingFlowActivity"
+            android:screenOrientation="portrait"></activity>
         <!--    会议流程编辑    -->
-        <activity android:name=".activity.MeetingFlowEditActivity"></activity>
+        <activity
+            android:name=".activity.MeetingFlowEditActivity"
+            android:screenOrientation="portrait"></activity>
         <!--    会议环节待确认    -->
-        <activity android:name=".activity.MeetingLinkConfirmedActivity"></activity>
+        <activity
+            android:name=".activity.MeetingLinkConfirmedActivity"
+            android:screenOrientation="portrait"></activity>
         <!--    会议服务群    -->
-        <activity android:name=".activity.ConferenceServiceGroupActivity"></activity>
+        <activity
+            android:name=".activity.ConferenceServiceGroupActivity"
+            android:screenOrientation="portrait"></activity>
         <!--    进入会议    -->
-        <activity android:name=".activity.EnterMeetingActivity"></activity>
+        <activity
+            android:name=".activity.EnterMeetingActivity"
+            android:screenOrientation="portrait"></activity>
         <!--    进入会议    -->
-        <activity android:name=".activity.SponsorMemberActivity"></activity>
+        <activity
+            android:name=".activity.SponsorMemberActivity"
+            android:screenOrientation="portrait"></activity>
         <!--    帐号设置    -->
-        <activity android:name=".activity.AccountSettingsActivity"></activity>
+        <activity
+            android:name=".activity.AccountSettingsActivity"
+            android:screenOrientation="portrait"></activity>
         <!--    图片裁剪    -->
-        <activity android:name=".activity.ClipPictureActivity"></activity>
+        <activity
+            android:name=".activity.ClipPictureActivity"
+            android:screenOrientation="portrait"></activity>
+        <!--    创建会议与服务流程    -->
+        <activity
+            android:name=".activity.CreateMeetingAndServiceActivity"
+
+            android:screenOrientation="portrait"></activity>
+        <!--    创建服务流程    -->
+        <activity
+            android:name=".activity.CreateServiceFlowActivity"
+            android:screenOrientation="portrait"></activity>
+        <!--    今日会议    -->
+        <activity
+            android:name=".activity.TodayMeetingActivity"
+            android:screenOrientation="portrait"></activity>
+        <!--    我的关注    -->
+        <activity
+            android:name=".activity.FollowMeetingsActivity"
+            android:screenOrientation="portrait"></activity>
+        <!--    待办会议    -->
+        <activity
+            android:name=".activity.WaitMeetingsActivity"
+            android:screenOrientation="portrait"></activity>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -74,7 +126,7 @@
             android:name="pub.devrel.easypermissions.AppSettingsDialogHolderActivity"
             android:exported="false"
             android:label=""
-            android:theme="@style/EasyPermissions.Transparent"/>
+            android:theme="@style/EasyPermissions.Transparent" />
     </application>
 
 </manifest>

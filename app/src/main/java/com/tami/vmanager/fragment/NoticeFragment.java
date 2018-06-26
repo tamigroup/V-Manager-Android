@@ -24,11 +24,6 @@ public class NoticeFragment extends BaseFragment {
     private RecyclerView recyclerView;
 
     @Override
-    public boolean isTitle() {
-        return false;
-    }
-
-    @Override
     public int getContentViewId() {
         return R.layout.fragment_notice;
     }

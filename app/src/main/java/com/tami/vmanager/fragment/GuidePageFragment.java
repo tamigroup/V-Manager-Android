@@ -2,10 +2,9 @@ package com.tami.vmanager.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatImageView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-
 import com.tami.vmanager.R;
 import com.tami.vmanager.activity.LoginActivity;
 import com.tami.vmanager.base.BaseFragment;
@@ -17,18 +16,13 @@ import com.tami.vmanager.utils.Constants;
 
 public class GuidePageFragment extends BaseFragment {
 
-    private ImageView imageView;
+    private AppCompatImageView imageView;
     private Button skip_btn;
     private Button immediate_experience;
 
     @Override
     public void onClick(View v) {
 
-    }
-
-    @Override
-    public boolean isTitle() {
-        return false;
     }
 
     @Override

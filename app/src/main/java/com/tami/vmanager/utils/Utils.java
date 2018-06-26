@@ -10,7 +10,6 @@ import android.text.style.ForegroundColorSpan;
 /**
  * Created by why on 2018/6/11.
  */
-
 public class Utils {
 
 

@@ -1,5 +1,9 @@
 package com.tami.vmanager.http;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 import com.google.gson.Gson;
 import com.tami.vmanager.BuildConfig;
 import com.tami.vmanager.utils.Logger;
@@ -14,6 +18,7 @@ import okhttp3.MediaType;
 /**
  * Created by why on 2018/6/23.
  */
+@Deprecated
 public class HttpManager {
 
     /**
@@ -72,4 +77,29 @@ public class HttpManager {
                 .headers(addHeaders());
     }
 
+
+    /**
+     * 判断是否有网
+     *
+     * @param context
+     * @return
+     */
+    public static int getType(Context context) {
+        int mState = -1;//-1代表无网络
+        //获取系统提供的服务，转换成连接管理类，这个类专门处理连接相关的东西
+        ConnectivityManager systemService = (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);
+        //NetworkInfo封装了网络连接的信息
+        NetworkInfo activeNetworkInfo = systemService.getActiveNetworkInfo();
+        //如果网络连接的信息等于空的话，代表无网络
+        if (activeNetworkInfo == null) {
+            return mState;
+        }
+        int type = activeNetworkInfo.getType();
+        if (type == systemService.TYPE_WIFI) {//代表现在是wifi网络
+            mState = 1;
+        } else if (type == systemService.TYPE_MOBILE) {
+            mState = 0;//代表现在是蜂窝网络
+        }
+        return mState;
+    }
 }

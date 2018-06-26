@@ -8,6 +8,7 @@ import com.tami.vmanager.base.BaseEntity;
 /**
  * Created by why on 2018/6/19.
  */
+@Deprecated
 public class NoticeEntity extends BaseEntity implements Parcelable {
 
     private int id;

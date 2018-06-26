@@ -3,15 +3,12 @@ package com.tami.vmanager.fragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
-
 import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.GuidePageFragmentPagerAdapter;
-import com.tami.vmanager.base.BaseFragment;
+import com.tami.vmanager.base.ABaseFragment;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.view.NoScrollViewPager;
 
@@ -19,13 +16,13 @@ import com.tami.vmanager.view.NoScrollViewPager;
  * Created by why on 2018/6/12.
  */
 
-public class MeetingFragment extends BaseFragment {
+public class MeetingFragment extends ABaseFragment {
 
     private RadioGroup meetingGroup;//顶部标签
     private int onClickId = R.id.meeting_group_whole;
     private NoScrollViewPager viewPager;//列表数据
     private Fragment[] arrayFragment;
-    private final int[] meetingType = new int[]{Constants.MEETING_TYPE_WHOLE, Constants.MEETING_TYPE_PENDING_PAYMENT, Constants.MEETING_TYPE_DAY, Constants.MEETING_TYPE_MONTH, Constants.MEETING_TYPE_YEAR};
+    private final int[] meetingType = new int[]{Constants.MEETING_TYPE_WHOLE, Constants.MEETING_TYPE_PENDING_PAYMENT,Constants.MEETING_TYPE_PERFECTED, Constants.MEETING_TYPE_DAY, Constants.MEETING_TYPE_MONTH, Constants.MEETING_TYPE_YEAR};
 
     @Override
     public boolean isTitle() {
@@ -62,6 +59,10 @@ public class MeetingFragment extends BaseFragment {
                         //待付款
                         groupPendingPayment();
                         break;
+                    case R.id.meeting_group_perfected:
+                        //待完善
+                        groupPerfected();
+                        break;
                     case R.id.meeting_group_day:
                         //日
                         groupDay();
@@ -89,6 +90,8 @@ public class MeetingFragment extends BaseFragment {
         setTitleLeftBtnVisibility(View.GONE);
         //设置Title名称
         setTitleName(R.string.v_housekeeper);
+        //设置右边功能按钮图片
+        setTitleRightBtn(R.mipmap.home_search);
 
         //添充数据
         arrayFragment = new Fragment[meetingType.length];
@@ -139,6 +142,10 @@ public class MeetingFragment extends BaseFragment {
      */
     private void groupPendingPayment() {
         viewPager.setCurrentItem(Constants.MEETING_TYPE_PENDING_PAYMENT);
+    }
+
+    private void groupPerfected(){
+        viewPager.setCurrentItem(Constants.MEETING_TYPE_PERFECTED);
     }
 
     /**

@@ -28,11 +28,6 @@ public class GroupChatFragment extends BaseFragment {
     private Button sendBtn;//发送按钮
 
     @Override
-    public boolean isTitle() {
-        return false;
-    }
-
-    @Override
     public int getContentViewId() {
         return R.layout.fragment_group_chat;
     }

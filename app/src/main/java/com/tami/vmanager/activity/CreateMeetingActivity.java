@@ -24,6 +24,7 @@ import java.util.Date;
  * 首页中的创建会议
  * Created by why on 2018/6/13.
  */
+@Deprecated
 public class CreateMeetingActivity extends BaseActivity {
 
     private ConstraintLayout nameLayout;//会议名称

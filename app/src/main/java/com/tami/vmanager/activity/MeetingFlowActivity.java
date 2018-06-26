@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 会议流程
+ * 创建服务流程
  * Created by why on 2018/6/15.
  */
 public class MeetingFlowActivity extends BaseActivity {
@@ -48,7 +48,7 @@ public class MeetingFlowActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        setTitleName(R.string.flow_chart);
+        setTitleName(R.string.create_service_process);
 
         //创建一个线性的布局管理器并设置
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -71,7 +71,7 @@ public class MeetingFlowActivity extends BaseActivity {
                 timeView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(getApplicationContext(), MeetingFlowEditActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), CreateServiceFlowActivity.class);
                         intent.putExtra(Constants.KEY_DAY, s);
                         startActivity(intent);
                     }

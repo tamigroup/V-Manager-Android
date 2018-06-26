@@ -8,21 +8,20 @@ import android.widget.TextView;
 
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
-import com.tami.vmanager.callback.RequestCallback;
-import com.tami.vmanager.entity.LoginEntity;
+import com.tami.vmanager.entity.LoginRequest;
+import com.tami.vmanager.entity.LoginResponse;
+import com.tami.vmanager.entity.SendVerifyCodeRequest;
+import com.tami.vmanager.entity.SendVerifyCodeResponse;
 import com.tami.vmanager.http.HttpKey;
-import com.tami.vmanager.http.HttpManager;
+import com.tami.vmanager.http.NetworkBroker;
+import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.VerificationCode;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 登陆
  * Created by why on 2018/6/11.
  */
-
 public class LoginActivity extends BaseActivity {
 
     private EditText logoin_phone;
@@ -30,11 +29,12 @@ public class LoginActivity extends BaseActivity {
     private EditText login_password;
     private TextView get_verification_code;
     private TextView verification_code_prompt;
-    private boolean promptFlag = false;
+    private boolean promptFlag = false;//验证码发送提示
     private Button login_btn;
     private TextView authentication_code_login;
     private TextView forget_the_password;
     private VerificationCode verificationCode;
+    private NetworkBroker networkBroker;
 
     @Override
     public int getStartBarColor() {
@@ -44,11 +44,6 @@ public class LoginActivity extends BaseActivity {
     @Override
     public int getNavigationBarColor() {
         return android.R.color.transparent;
-    }
-
-    @Override
-    public boolean isTitle() {
-        return false;
     }
 
     @Override
@@ -85,6 +80,12 @@ public class LoginActivity extends BaseActivity {
                 .setExecuteTxt("秒后重新获取")
                 .setEndTxt("获取验证码")
                 .build();
+
+        networkBroker = new NetworkBroker(this);
+        networkBroker.setCancelTag(getTAG());
+        logoin_phone.setText("15901125418");
+//        logoin_phone.setText("13800138000");
+        login_password.setText("111111");
     }
 
     @Override
@@ -103,6 +104,7 @@ public class LoginActivity extends BaseActivity {
             verificationCode.stop();
             verificationCode.clear();
         }
+        networkBroker.cancelAllRequests();
     }
 
     @Override
@@ -128,9 +130,25 @@ public class LoginActivity extends BaseActivity {
      * 获取验证码
      */
     private void getVerificationCode() {
-        verificationCode.start();
-        promptFlag = true;
-        verification_code_prompt.setVisibility(View.VISIBLE);
+        SendVerifyCodeRequest sendVerifyCodeRequest = new SendVerifyCodeRequest();
+        sendVerifyCodeRequest.setMobile(logoin_phone.getText().toString());
+        networkBroker.ask(sendVerifyCodeRequest, (ex1, res) -> {
+            if (null != ex1) {
+                Logger.d(ex1.getMessage() + "-" + ex1);
+                return;
+            }
+            try {
+                SendVerifyCodeResponse response = (SendVerifyCodeResponse) res;
+                if (response.getCode() == 200) {
+                    verificationCode.start();
+                    promptFlag = true;
+                    verification_code_prompt.setVisibility(View.VISIBLE);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        });
     }
 
     /**
@@ -168,50 +186,29 @@ public class LoginActivity extends BaseActivity {
      * 登陆
      */
     private void loginBtn() {
-        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-
-//        String url = "http://192.168.103.196/yundao-api/wxapp/login";
-//        Map<String, String> params = new HashMap<>();
-//        params.put("mobile", "13800138000");
-//        params.put("passWord", "111111");
-//        Gson gson = new Gson();
-//        OkHttpUtils
-//                .postString()
-//                .url(url)
-//                .content(gson.toJson(params))
-//                .mediaType(MediaType.parse("application/json; charset=utf-8"))
-//                .build()
-//                .execute(new RequestCallback<LoginEntity>() {
-//
-//                    @Override
-//                    public void onSuccess(LoginEntity response) {
-//                        Logger.d("onResponse:" + response.message);
-//                        Logger.d("onResponse:" + response.data.headImgUrl);
-//                    }
-//
-//                    @Override
-//                    public void onError() {
-//
-//                    }
-//                });
-
-
-//        Map<String, String> serviceParams = new HashMap<>();
-//        serviceParams.put(HttpKey.KEY_MOBILE, "13800138000");
-//        serviceParams.put(HttpKey.KEY_PASSWORD, "111111");
-//        HttpManager.initPostString(HttpKey.USER_LOGIN, serviceParams)
-//                .build().execute(new RequestCallback<LoginEntity>() {
-//
-//            @Override
-//            public void onSuccess(LoginEntity response) {
-//                Logger.d("onResponse:" + response.message);
-//                Logger.d("onResponse:" + response.data.headImgUrl);
-//            }
-//
-//            @Override
-//            public void onError() {
-//
-//            }
-//        });
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setMobile(logoin_phone.getText().toString());
+        if (getString(R.string.authentication_code_login).equals(authentication_code_login.getText())) {
+            loginRequest.setRequestUrl(HttpKey.USER_LOGIN);
+            loginRequest.setPassWord(login_password.getText().toString());
+        } else {
+            loginRequest.setRequestUrl(HttpKey.USER_LOGIN_SMS);
+            loginRequest.setSmsCode(login_password.getText().toString());
+        }
+        networkBroker.ask(loginRequest, (ex1, res) -> {
+            if (null != ex1) {
+                Logger.d(ex1.getMessage() + "-" + ex1);
+                return;
+            }
+            try {
+                LoginResponse response = (LoginResponse) res;
+                if (response.getCode() == 200) {
+                    GlobaVariable.getInstance().item = response.getData();
+                    startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

@@ -16,10 +16,16 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.tami.vmanager.R;
 import com.tami.vmanager.activity.AccountSettingsActivity;
 import com.tami.vmanager.activity.ClipPictureActivity;
-import com.tami.vmanager.base.BaseFragment;
+import com.tami.vmanager.base.ABaseFragment;
+import com.tami.vmanager.entity.LoginResponse;
+import com.tami.vmanager.entity.UpdateUserIconRequest;
+import com.tami.vmanager.entity.UpdateUserIconResponse;
+import com.tami.vmanager.http.NetworkBroker;
+import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.GetImagePath;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.view.CircleImageView;
@@ -34,7 +40,7 @@ import pub.devrel.easypermissions.EasyPermissions;
  * Created by why on 2018/6/12.
  */
 
-public class PersonalCenterFragment extends BaseFragment implements EasyPermissions.PermissionCallbacks {
+public class PersonalCenterFragment extends ABaseFragment implements EasyPermissions.PermissionCallbacks {
 
     private CircleImageView avatar_image;//我的头像
     private TextView full_name;//姓名
@@ -66,10 +72,7 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
     private final int TAKE_PHOTO_REQUEST_CODE = 0X01;
     private final int CLIP_PHOTO_BY_SELF_REQUEST_CODE = 0X02;
 
-    @Override
-    public boolean isTitle() {
-        return false;
-    }
+    private NetworkBroker networkBroker;
 
     @Override
     public int getContentViewId() {
@@ -94,7 +97,21 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
 
     @Override
     public void initData() {
+        networkBroker = new NetworkBroker(getActivity());
+        networkBroker.setCancelTag(getTAG());
 
+        LoginResponse.Item item = GlobaVariable.getInstance().item;
+        if (item != null) {
+            full_name.setText(item.getRealName());
+            position.setText(item.getDepName() + "-" + item.getPositionName());
+            if (item.getIconUrl() != null) {
+                Picasso.get().load(item.getIconUrl()).into(avatar_image);
+            }
+//            else{
+//                String imageUrl = "http://img.tukuchina.cn/images/front/v/bd/c8/235563103124.jpg";
+//                Picasso.get().load(imageUrl).into(avatar_image);
+//            }
+        }
     }
 
     @Override
@@ -344,5 +361,26 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
     @Override
     public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
         Logger.d("onPermissionsDenied:" + requestCode + ":" + perms.size());
+    }
+
+    public void updateUserIcon() {
+        UpdateUserIconRequest updateUserIconRequest = new UpdateUserIconRequest();
+        LoginResponse.Item item = GlobaVariable.getInstance().item;
+        updateUserIconRequest.setUserId(item.getId());
+        updateUserIconRequest.setIconUrl("");
+        networkBroker.ask(updateUserIconRequest, (ex1, res) -> {
+            if (null != ex1) {
+                Logger.d(ex1.getMessage() + "-" + ex1);
+                return;
+            }
+            try {
+                UpdateUserIconResponse response = (UpdateUserIconResponse) res;
+                if (response.getCode() == 200) {
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        });
     }
 }

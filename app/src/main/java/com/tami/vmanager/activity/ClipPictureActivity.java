@@ -69,11 +69,6 @@ public class ClipPictureActivity extends BaseActivity implements View.OnTouchLis
     private Bitmap bitmap;
 
     @Override
-    public boolean isTitle() {
-        return false;
-    }
-
-    @Override
     public int getContentViewId() {
         return R.layout.activity_clippicture;
     }

@@ -2,6 +2,7 @@ package com.tami.vmanager.activity;
 
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -9,6 +10,13 @@ import android.widget.TextView;
 
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
+import com.tami.vmanager.entity.LoginResponse;
+import com.tami.vmanager.entity.ResetPwdRequest;
+import com.tami.vmanager.entity.SendVerifyCodeRequest;
+import com.tami.vmanager.entity.SendVerifyCodeResponse;
+import com.tami.vmanager.http.NetworkBroker;
+import com.tami.vmanager.manager.GlobaVariable;
+import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.VerificationCode;
 
 /**
@@ -27,6 +35,9 @@ public class ForgetThePasswordActivity extends BaseActivity {
     private Button confirmBtn;
     private TextView codeView;
     private VerificationCode verificationCode;
+
+    private String smsCode = null;
+    private NetworkBroker networkBroker;
 
     @Override
     public boolean isTitle() {
@@ -66,6 +77,9 @@ public class ForgetThePasswordActivity extends BaseActivity {
                 .setEndTxt("重新获取")
                 .setEndTxtColor(R.color.color_333333)
                 .build();
+
+        networkBroker = new NetworkBroker(this);
+        networkBroker.setCancelTag(getTAG());
     }
 
     @Override
@@ -84,6 +98,7 @@ public class ForgetThePasswordActivity extends BaseActivity {
             verificationCode.stop();
             verificationCode.clear();
         }
+        networkBroker.cancelAllRequests();
     }
 
     @Override
@@ -112,24 +127,49 @@ public class ForgetThePasswordActivity extends BaseActivity {
      * 发送验证码点击
      */
     private void sentVerificationCode() {
-        title.setText(getString(R.string.input_authentication_code));
-        prompt.setVisibility(View.INVISIBLE);
-        name.setText(getString(R.string.authentication_code));
-        value.setInputType(InputType.TYPE_CLASS_NUMBER);
-        value.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});
-        value.setText(null);
-        value.setFocusable(true);
-        value.setFocusableInTouchMode(true);
-        value.requestFocus();
-        codeView.setVisibility(View.VISIBLE);
-        verificationCode.start();
-        confirmBtn.setText(getString(R.string.confirm));
+//        if (TextUtils.isEmpty(value.getText())) {
+//            showToast("请输入手机号");
+//            return;
+//        }
+//        SendVerifyCodeRequest sendVerifyCodeRequest = new SendVerifyCodeRequest();
+//        sendVerifyCodeRequest.setMobile(value.getText().toString());
+//        networkBroker.ask(sendVerifyCodeRequest, (ex1, res) -> {
+//            if (null != ex1) {
+//                Logger.d(ex1.getMessage() + "-" + ex1);
+//                return;
+//            }
+//            try {
+//                SendVerifyCodeResponse response = (SendVerifyCodeResponse) res;
+//                if (response.getCode() == 200) {
+                    title.setText(getString(R.string.input_authentication_code));
+                    prompt.setVisibility(View.INVISIBLE);
+                    name.setText(getString(R.string.authentication_code));
+                    value.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    value.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});
+                    value.setText(null);
+                    value.setFocusable(true);
+                    value.setFocusableInTouchMode(true);
+                    value.requestFocus();
+                    codeView.setVisibility(View.VISIBLE);
+                    verificationCode.start();
+                    confirmBtn.setText(getString(R.string.confirm));
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//
+//        });
     }
 
     /**
      * 确定按钮点击
      */
     private void confirm() {
+        if (TextUtils.isEmpty(value.getText())) {
+            showToast("请输入验证码！");
+            return;
+        }
+        smsCode = value.getText().toString();
         title.setText(getString(R.string.new_password));
         prompt.setVisibility(View.INVISIBLE);
         verificationCode.stop();
@@ -150,15 +190,34 @@ public class ForgetThePasswordActivity extends BaseActivity {
      * 确认按钮点击
      */
     private void identification() {
-        title.setText(getString(R.string.congratulations));
-        prompt.setVisibility(View.VISIBLE);
-        prompt.setText(getString(R.string.password_resetting_success));
-        name.setVisibility(View.INVISIBLE);
-        value.setVisibility(View.INVISIBLE);
-        againIdentification.setVisibility(View.INVISIBLE);
-        againPassword.setVisibility(View.INVISIBLE);
-        confirmBtn.setBackgroundResource(R.color.color_FF5657);
-        confirmBtn.setText(getString(R.string.go_login));
+        ResetPwdRequest resetPwdRequest = new ResetPwdRequest();
+        LoginResponse.Item item = GlobaVariable.getInstance().item;
+        resetPwdRequest.setUserId(item.getId());
+        resetPwdRequest.setNewPassWord(againPassword.getText().toString());
+        resetPwdRequest.setSmsCode(smsCode);
+        networkBroker.ask(resetPwdRequest, (ex1, res) -> {
+            if (null != ex1) {
+                Logger.d(ex1.getMessage() + "-" + ex1);
+                return;
+            }
+            try {
+                SendVerifyCodeResponse response = (SendVerifyCodeResponse) res;
+                if (response.getCode() == 200) {
+                    title.setText(getString(R.string.congratulations));
+                    prompt.setVisibility(View.VISIBLE);
+                    prompt.setText(getString(R.string.password_resetting_success));
+                    name.setVisibility(View.INVISIBLE);
+                    value.setVisibility(View.INVISIBLE);
+                    againIdentification.setVisibility(View.INVISIBLE);
+                    againPassword.setVisibility(View.INVISIBLE);
+                    confirmBtn.setBackgroundResource(R.color.color_FF5657);
+                    confirmBtn.setText(getString(R.string.go_login));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        });
     }
 
     /**
