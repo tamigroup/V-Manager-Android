@@ -13,7 +13,7 @@ import com.tami.vmanager.activity.FollowMeetingsActivity;
 import com.tami.vmanager.activity.SearchActivity;
 import com.tami.vmanager.activity.TodayMeetingActivity;
 import com.tami.vmanager.activity.WaitMeetingsActivity;
-import com.tami.vmanager.base.ABaseFragment;
+import com.tami.vmanager.base.BaseFragment;
 import com.tami.vmanager.entity.GetBannerDataRequest;
 import com.tami.vmanager.entity.GetBannerDataResponse;
 import com.tami.vmanager.entity.GetIndexRequest;
@@ -32,7 +32,7 @@ import java.text.NumberFormat;
  * Created by why on 2018/6/12.
  */
 
-public class HomeFragment extends ABaseFragment {
+public class HomeFragment extends BaseFragment {
 
     private TextView homeSelected;
     private AppCompatImageView eye;//眼睛

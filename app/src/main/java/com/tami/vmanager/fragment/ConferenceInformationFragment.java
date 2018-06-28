@@ -1,13 +1,13 @@
 package com.tami.vmanager.fragment;
 
 import com.tami.vmanager.R;
-import com.tami.vmanager.base.BaseFragment;
+import com.tami.vmanager.base.ViewPagerBaseFragment;
 
 /**
  *会议信息
  * Created by why on 2018/6/16.
  */
-public class ConferenceInformationFragment extends BaseFragment {
+public class ConferenceInformationFragment extends ViewPagerBaseFragment {
 
     @Override
     public int getContentViewId() {

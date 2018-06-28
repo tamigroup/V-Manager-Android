@@ -15,7 +15,7 @@ import com.jwenfeng.library.pulltorefresh.PullToRefreshLayout;
 import com.tami.vmanager.R;
 import com.tami.vmanager.activity.MeetingOverviewActivity;
 import com.tami.vmanager.adapter.RecycleViewDivider;
-import com.tami.vmanager.base.BaseFragment;
+import com.tami.vmanager.base.ViewPagerBaseFragment;
 import com.tami.vmanager.entity.AllMeetingsRequest;
 import com.tami.vmanager.entity.AllMeetingsResponse;
 import com.tami.vmanager.entity.FollowUserMeetingRequest;
@@ -37,7 +37,7 @@ import java.util.List;
 /**
  * Created by why on 2018/6/14.
  */
-public class MeetingListFragment extends BaseFragment {
+public class MeetingListFragment extends ViewPagerBaseFragment {
 
     private RecyclerView recyclerView;
     private PullToRefreshLayout pullToRefreshLayout;

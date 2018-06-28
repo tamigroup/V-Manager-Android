@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
 import com.tami.vmanager.R;
-import com.tami.vmanager.base.BaseFragment;
+import com.tami.vmanager.base.ViewPagerBaseFragment;
 import com.tami.vmanager.entity.NoticeEntity;
 import com.tami.vmanager.view.CircleImageView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -19,7 +19,7 @@ import java.util.List;
  * Created by why on 2018/6/16.
  */
 
-public class NoticeFragment extends BaseFragment {
+public class NoticeFragment extends ViewPagerBaseFragment {
 
     private RecyclerView recyclerView;
 

@@ -7,14 +7,14 @@ import android.view.View;
 import android.widget.Button;
 import com.tami.vmanager.R;
 import com.tami.vmanager.activity.LoginActivity;
-import com.tami.vmanager.base.BaseFragment;
+import com.tami.vmanager.base.ViewPagerBaseFragment;
 import com.tami.vmanager.utils.Constants;
 
 /**
  * Created by why on 2018/6/11.
  */
 
-public class GuidePageFragment extends BaseFragment {
+public class GuidePageFragment extends ViewPagerBaseFragment {
 
     private AppCompatImageView imageView;
     private Button skip_btn;

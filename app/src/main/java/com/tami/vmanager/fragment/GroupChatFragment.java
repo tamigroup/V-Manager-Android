@@ -8,7 +8,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.tami.vmanager.R;
-import com.tami.vmanager.base.BaseFragment;
+import com.tami.vmanager.base.ViewPagerBaseFragment;
 import com.tami.vmanager.entity.NoticeEntity;
 import com.tami.vmanager.view.CircleImageView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -21,7 +21,7 @@ import java.util.List;
  * 群聊
  * Created by why on 2018/6/16.
  */
-public class GroupChatFragment extends BaseFragment {
+public class GroupChatFragment extends ViewPagerBaseFragment {
 
     private RecyclerView recyclerView;//聊天记录
     private EditText sendTxt;//发送文本

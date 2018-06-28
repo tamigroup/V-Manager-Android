@@ -20,7 +20,7 @@ import com.squareup.picasso.Picasso;
 import com.tami.vmanager.R;
 import com.tami.vmanager.activity.AccountSettingsActivity;
 import com.tami.vmanager.activity.ClipPictureActivity;
-import com.tami.vmanager.base.ABaseFragment;
+import com.tami.vmanager.base.BaseFragment;
 import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.entity.UpdateUserIconRequest;
 import com.tami.vmanager.entity.UpdateUserIconResponse;
@@ -40,7 +40,7 @@ import pub.devrel.easypermissions.EasyPermissions;
  * Created by why on 2018/6/12.
  */
 
-public class PersonalCenterFragment extends ABaseFragment implements EasyPermissions.PermissionCallbacks {
+public class PersonalCenterFragment extends BaseFragment implements EasyPermissions.PermissionCallbacks {
 
     private CircleImageView avatar_image;//我的头像
     private TextView full_name;//姓名

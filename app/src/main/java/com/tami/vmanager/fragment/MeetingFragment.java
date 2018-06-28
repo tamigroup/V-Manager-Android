@@ -8,7 +8,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.GuidePageFragmentPagerAdapter;
-import com.tami.vmanager.base.ABaseFragment;
+import com.tami.vmanager.base.BaseFragment;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.view.NoScrollViewPager;
 
@@ -16,7 +16,7 @@ import com.tami.vmanager.view.NoScrollViewPager;
  * Created by why on 2018/6/12.
  */
 
-public class MeetingFragment extends ABaseFragment {
+public class MeetingFragment extends BaseFragment {
 
     private RadioGroup meetingGroup;//顶部标签
     private int onClickId = R.id.meeting_group_whole;

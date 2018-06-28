@@ -1,16 +1,17 @@
 package com.tami.vmanager.base;
 
 import android.app.ProgressDialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,11 +20,10 @@ import android.widget.Toast;
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.inter.IBaseFragment;
 
-
 /**
  * Created by lixishuang on 2017/11/30.
  */
-public abstract class BaseFragment extends Fragment implements IBaseFragment, View.OnClickListener {
+public abstract class BaseFragment extends Fragment implements IBaseFragment, View.OnClickListener, ViewTreeObserver.OnGlobalLayoutListener {
 
     public View view;
     private TextView titleName;
@@ -31,10 +31,8 @@ public abstract class BaseFragment extends Fragment implements IBaseFragment, Vi
     private ImageView titleRightBtn;
     private TextView titleRightTxt;
     private ProgressDialog progressDialog;
-    //Fragment的View加载完毕的标记
-    private boolean isViewCreated;
-    //Fragment对用户可见的标记
-    private boolean isUIVisible;
+    private boolean firstLoad = true;//只加载一次网络请求
+    private ViewTreeObserver observer;
 
     @Override
     public boolean isTitle() {
@@ -45,36 +43,16 @@ public abstract class BaseFragment extends Fragment implements IBaseFragment, Vi
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         view = isTitle() ? getContentTitelView(inflater) : getContentView(inflater, container);
+        observer = view.getViewTreeObserver();
+        observer.addOnGlobalLayoutListener(this);
         return view;
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        isViewCreated = true;
-        lazyLoad();
-    }
-
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        //isVisibleToUser这个boolean值表示:该Fragment的UI 用户是否可见
-        if (isVisibleToUser) {
-            isUIVisible = true;
-            lazyLoad();
-        } else {
-            isUIVisible = false;
-        }
-    }
-
-    private void lazyLoad() {
-        //这里进行双重标记判断,是因为setUserVisibleHint会多次回调,并且会在onCreateView执行前回调,必须确保onCreateView加载完毕且页面可见,才加载数据
-        if (isViewCreated && isUIVisible) {
+    public void onGlobalLayout() {
+        if (firstLoad) {
+            firstLoad = false;
             requestNetwork();
-            //数据加载完毕,恢复标记,防止重复加载
-            isViewCreated = false;
-            isUIVisible = false;
         }
     }
 
@@ -103,17 +81,11 @@ public abstract class BaseFragment extends Fragment implements IBaseFragment, Vi
     }
 
     @Override
-    public void onClick(View v) {
-        if (titleLeftBtn != null && v.getId() == R.id.titleLeftBtn) {
-            getActivity().finish();
-        }
-    }
-
-    @Override
     public void onDestroy() {
-        //页面销毁,恢复标记
-        isViewCreated = false;
-        isUIVisible = false;
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN && observer != null && observer.isAlive()) {
+            observer.removeOnGlobalLayoutListener(this);
+        }
+        observer = null;
         removeListener();
         super.onDestroy();
     }
@@ -129,6 +101,13 @@ public abstract class BaseFragment extends Fragment implements IBaseFragment, Vi
         initTitleView(superLayout);
         inflater.inflate(getContentViewId(), superLayout);
         return superLayout;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (titleLeftBtn != null && v.getId() == R.id.titleLeftBtn) {
+            getActivity().finish();
+        }
     }
 
     @Override
@@ -248,7 +227,7 @@ public abstract class BaseFragment extends Fragment implements IBaseFragment, Vi
         }
     }
 
-    public  String getTAG() {
+    public String getTAG() {
         return this.getClass().getSimpleName();
     }
 }

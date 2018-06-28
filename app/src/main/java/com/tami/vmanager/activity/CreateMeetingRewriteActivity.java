@@ -1,24 +1,8 @@
 package com.tami.vmanager.activity;
 
-import android.app.Dialog;
-import android.content.Intent;
-import android.support.constraint.ConstraintLayout;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.FrameLayout;
-import android.widget.TextView;
-
-import com.bigkoo.pickerview.builder.TimePickerBuilder;
-import com.bigkoo.pickerview.listener.OnTimeSelectListener;
-import com.bigkoo.pickerview.view.TimePickerView;
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
-import com.tami.vmanager.utils.TimeUtils;
-
-import java.util.Calendar;
-import java.util.Date;
 
 /**
  * 首页中的创建会议
