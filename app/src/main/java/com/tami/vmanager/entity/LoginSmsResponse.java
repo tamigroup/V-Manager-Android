@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  * 
  */
 @JsonInclude(Include.NON_NULL)
+@Deprecated
 public class LoginSmsResponse extends MobileMessage implements Serializable{
 
 	/**

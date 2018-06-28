@@ -53,7 +53,7 @@ public class GetBannerDataRequest extends MobileMessage implements Serializable 
     }
 
     @Override
-    public String getRequsetUrl() {
+    public String getRequestUrl() {
         return HttpKey.USER_GET_BANNER_DATA;
     }
 }

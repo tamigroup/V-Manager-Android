@@ -100,13 +100,13 @@ public class AllMeetingsRequest extends MobileMessage implements Serializable {
     }
 
     @Override
-    public String getRequsetUrl() {
+    public String getRequestUrl() {
         return requestUrl;
     }
 
     private String requestUrl;
 
-    public void setRequestUrl(String requestUrl) {
+    public void setRequsetUrl(String requestUrl) {
         this.requestUrl = requestUrl;
     }
 }

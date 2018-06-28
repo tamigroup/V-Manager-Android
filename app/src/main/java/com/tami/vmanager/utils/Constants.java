@@ -29,6 +29,12 @@ public class Constants {
     public static final int MEETING_TYPE_MONTH = 4;
     public static final int MEETING_TYPE_YEAR = 5;
 
+    public static final String FOLLOW_TYPE = "follow_type";
+    public static final int FOLLOW_TYPE_WHOLE = 0;
+    public static final int FOLLOW_TYPE_DAY = 1;
+    public static final int FOLLOW_TYPE_WEEK = 2;
+    public static final int FOLLOW_TYPE_MONTH = 3;
+    public static final String WAIT_TYPE = "wait_type";
     /******************** 时间相关常量 ********************/
     //秒与毫秒的倍数
     public static final int MSEC = 1;

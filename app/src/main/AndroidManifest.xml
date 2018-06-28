@@ -111,6 +111,30 @@
         <activity
             android:name=".activity.WaitMeetingsActivity"
             android:screenOrientation="portrait"></activity>
+        <!--    会议地点选择    -->
+        <activity
+            android:name=".activity.MeetingPlaceSelectActivity"
+            android:screenOrientation="portrait"></activity>
+        <!--    添加VIP人物介绍    -->
+        <activity
+            android:name=".activity.VIPPersonageIntroductionActivity"
+            android:screenOrientation="portrait"></activity>
+        <!--    小V提醒    -->
+        <activity
+            android:name=".activity.SmallVRemindingActivity"
+            android:screenOrientation="portrait"></activity>
+        <!--    意见箱    -->
+        <activity
+            android:name=".activity.IdeasBoxActivity"
+            android:screenOrientation="portrait"></activity>
+        <!--    需求变化    -->
+        <activity
+            android:name=".activity.ChangeDemandActivity"
+            android:screenOrientation="portrait"></activity>
+        <!--    添加接待人    -->
+        <activity
+            android:name=".activity.AddReceptionistActivity"
+            android:screenOrientation="portrait"></activity>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

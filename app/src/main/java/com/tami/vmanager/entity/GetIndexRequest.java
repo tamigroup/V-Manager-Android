@@ -37,7 +37,7 @@ public class GetIndexRequest extends MobileMessage implements Serializable{
 	}
 
 	@Override
-	public String getRequsetUrl() {
+	public String getRequestUrl() {
 		return HttpKey.USER_GET_INDEX;
 	}
 

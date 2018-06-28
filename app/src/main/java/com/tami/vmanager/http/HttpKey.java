@@ -41,13 +41,17 @@ public class HttpKey {
     //  查询全部会议列表searchType类型1：所有，2：待付款，3：待完善，4：今天，5：本月，6：本年度
     public static final String USER_ALL_MEETINGS = "meeting/allMeetings";
     // 查询今日会议列表
-    public static final String TODAY_MEETINGS ="meeting/todayMeetings";
+    public static final String TODAY_MEETINGS = "meeting/todayMeetings";
     // 查询我关注的会议列表searchType1：全部，2:今天，3：一周，4：一个月
-    public static final String FOLLOW_MEETINGS ="meeting/followMeetings";
+    public static final String FOLLOW_MEETINGS = "meeting/followMeetings";
     // 查询待办会议列表
-    public static final String WAIT_MEETINGS ="meeting/waitMeetings";
-
-
+    public static final String WAIT_MEETINGS = "meeting/waitMeetings";
+    // 关注某一个会议
+    public static final String FOLLOW_USER_MEETING = "meeting/followUserMeeting";
+    // 取消关注某一个会议
+    public static final String CANCEL_USER_MEETING = "meeting/cancelUserMeeting";
+    //添加VIP成员信息
+    public static final String CREATE_VIPGUEST = "vip/createVipGuest";
     //---------------------------------------------------------------------------
 
 //    //手机号

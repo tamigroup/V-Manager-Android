@@ -62,7 +62,7 @@ public class ResetPwdRequest extends MobileMessage implements Serializable{
 	}
 
 	@Override
-	public String getRequsetUrl() {
+	public String getRequestUrl() {
 		return HttpKey.USER_RESET_PASSOWRD;
 	}
 

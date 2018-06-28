@@ -49,7 +49,7 @@ public class UpdateUserIconRequest extends MobileMessage implements Serializable
 
 
     @Override
-    public String getRequsetUrl() {
+    public String getRequestUrl() {
         return HttpKey.USER_UPDATE_USER_ICON;
     }
 

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  * 
  */
 @JsonInclude(Include.NON_NULL)
+@Deprecated
 public class CancelUserMeetingResponse extends MobileMessage implements Serializable{
 
 	/**

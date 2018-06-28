@@ -26,6 +26,6 @@ public class CreateVipGuestResponse extends MobileMessage implements Serializabl
 		super();
 	}
 
-	
+	public boolean data;
 
 }

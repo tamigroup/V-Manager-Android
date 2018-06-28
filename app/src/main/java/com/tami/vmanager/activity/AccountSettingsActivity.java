@@ -56,19 +56,19 @@ public class AccountSettingsActivity extends BaseActivity {
         sponsor.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(SwitchButton view, boolean isChecked) {
-
+                setUserNoticeConfig();
             }
         });
         satisfaction.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(SwitchButton view, boolean isChecked) {
-
+                setUserNoticeConfig();
             }
         });
         groupChat.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(SwitchButton view, boolean isChecked) {
-
+                setUserNoticeConfig();
             }
         });
 
@@ -157,7 +157,16 @@ public class AccountSettingsActivity extends BaseActivity {
             try {
                 GetUserNoticeConfigResponse response = (GetUserNoticeConfigResponse) res;
                 if (response.getCode() == 200) {
-
+                    if (response.data == null) {
+                        sponsor.setChecked(false);
+                        satisfaction.setChecked(false);
+                        groupChat.setChecked(false);
+                    } else {
+                        GetUserNoticeConfigResponse.Item noticeItem = response.data;
+                        sponsor.setChecked(noticeItem.getHostNotice() == 1 ? true : false);
+                        satisfaction.setChecked(noticeItem.getSatisfactionNotice() == 1 ? true : false);
+                        groupChat.setChecked(noticeItem.getGroupchatNotice() == 1 ? true : false);
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -172,11 +181,11 @@ public class AccountSettingsActivity extends BaseActivity {
         SetUserNoticeConfigRequest setUserNoticeConfigRequest = new SetUserNoticeConfigRequest();
         LoginResponse.Item item = GlobaVariable.getInstance().item;
         setUserNoticeConfigRequest.setUserId(item.getId());
-        setUserNoticeConfigRequest.setSystemNotice(String.valueOf(1));
-        setUserNoticeConfigRequest.setHostNotice(String.valueOf(1));
-        setUserNoticeConfigRequest.setMeetingNotice(String.valueOf(1));
-        setUserNoticeConfigRequest.setSatisfactionNotice(String.valueOf(1));
-        setUserNoticeConfigRequest.setGroupChatNotice(String.valueOf(1));
+        setUserNoticeConfigRequest.setSystemNotice(String.valueOf(0));
+        setUserNoticeConfigRequest.setHostNotice(String.valueOf(sponsor.isChecked()?1:0));
+        setUserNoticeConfigRequest.setMeetingNotice(String.valueOf(0));
+        setUserNoticeConfigRequest.setSatisfactionNotice(String.valueOf(satisfaction.isChecked()?1:0));
+        setUserNoticeConfigRequest.setGroupChatNotice(String.valueOf(groupChat.isChecked()?1:0));
         networkBroker.ask(setUserNoticeConfigRequest, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);

@@ -36,9 +36,9 @@ public class LoginResponse extends MobileMessage implements Serializable {
     }
 
     @JsonInclude(Include.NON_NULL)
-    public class Item {
+    public static class Item {
         @JsonInclude(Include.NON_NULL)
-        public class ElementUserRoleList {
+        public static class ElementUserRoleList {
 
             private String userId;
 

@@ -44,7 +44,7 @@ public class SendVerifyCodeRequest extends MobileMessage implements Serializable
 	}
 
 	@Override
-	public String getRequsetUrl() {
+	public String getRequestUrl() {
 		return HttpKey.USER_SEND_VERIFY_CODE;
 	}
 }

@@ -1,5 +1,7 @@
 package com.tami.vmanager.entity;
 
+import com.tami.vmanager.http.HttpKey;
+
 import java.io.Serializable;
 
 
@@ -9,7 +11,7 @@ import java.io.Serializable;
  * @author 代码生成器v1.0
  * 
  */
-public class CreateVipGuestRequest implements Serializable{
+public class CreateVipGuestRequest extends MobileMessage implements Serializable{
 
 	/**
 	 * 
@@ -70,5 +72,13 @@ public class CreateVipGuestRequest implements Serializable{
 		this.systemId = systemId;
 	}
 
+	@Override
+	public Class getResponseClass() {
+		return CreateVipGuestResponse.class;
+	}
 
+	@Override
+	public String getRequestUrl() {
+		return HttpKey.CREATE_VIPGUEST;
+	}
 }

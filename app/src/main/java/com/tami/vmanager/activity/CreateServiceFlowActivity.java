@@ -2,20 +2,21 @@ package com.tami.vmanager.activity;
 
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.widget.AppCompatImageView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Space;
 import android.widget.TextView;
-
 import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.ListViewAdapter;
 import com.tami.vmanager.adapter.ViewHolder;
 import com.tami.vmanager.base.BaseActivity;
+import com.tami.vmanager.entity.GetMeetingItemsResponse;
 import com.tami.vmanager.utils.Constants;
-
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -36,8 +37,8 @@ public class CreateServiceFlowActivity extends BaseActivity {
 
     private Button submission;
     private ListView listView;
-    private ListViewAdapter<String> listViewAdapter;
-    private List<String> data;
+    private ListViewAdapter<GetMeetingItemsResponse.ElementDataList> listViewAdapter;
+    private List<GetMeetingItemsResponse.ElementDataList> data;
     private Space space;
 
     @Override
@@ -68,11 +69,20 @@ public class CreateServiceFlowActivity extends BaseActivity {
         space = footerView.findViewById(R.id.fcsf_space);
         footerView.setOnClickListener(this);
         listView.addFooterView(footerView);
-        data = new ArrayList<String>();
-        listViewAdapter = new ListViewAdapter<String>(getApplicationContext(), data, R.layout.item_create_service_flow) {
+        data = new ArrayList<>();
+        listViewAdapter = new ListViewAdapter<GetMeetingItemsResponse.ElementDataList>(getApplicationContext(), data, R.layout.item_create_service_flow) {
             @Override
-            protected void binView(ViewHolder viewHolder, String item, int position) {
-
+            protected void binView(ViewHolder viewHolder, GetMeetingItemsResponse.ElementDataList item, int position) {
+                viewHolder.setTextView(R.id.icsf_line_number, String.valueOf(position + 1));
+                viewHolder.setTextView(R.id.icsf_name, "name" + position);
+                viewHolder.setTextView(R.id.icsf_editing_time, item.getCreateOn());
+                AppCompatImageView delete = viewHolder.getItemView(R.id.icsf_delete);
+                delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showToast("123456");
+                    }
+                });
             }
         };
         listView.setAdapter(listViewAdapter);
@@ -93,13 +103,17 @@ public class CreateServiceFlowActivity extends BaseActivity {
 
     }
 
+    String[] str = new String[]{"10:10","05:20","09:10","03:20","00:10","05:21","13:20"};
+    int i = 0;
     @Override
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.fcsf_add_process_layout:
-                showToast("123456");
-                data.add("123456");
+                GetMeetingItemsResponse.ElementDataList item = new GetMeetingItemsResponse.ElementDataList();
+                item.setCreateOn(str[i++]);
+                data.add(item);
+                Collections.sort(data);
                 listViewAdapter.notifyDataSetChanged();
                 if (data.size() > 0) {
                     space.setVisibility(View.VISIBLE);

@@ -115,7 +115,7 @@ public class NetworkBroker extends BaseBroker {
             return;
         }
         Logger.d("发送报文:" + CancelTag + json);
-        String uri = BASE_URI + request.getRequsetUrl();
+        String uri = BASE_URI + request.getRequestUrl();
         if (showLoading) this.loadingSubject.onNext(true);
         String token = null;
         LoginResponse.Item item = GlobaVariable.getInstance().item;

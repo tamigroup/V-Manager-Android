@@ -31,7 +31,7 @@ public class MobileMessage {
         return null;
     }
 
-    public String getRequsetUrl() {
+    public String getRequestUrl() {
         return null;
     }
 }

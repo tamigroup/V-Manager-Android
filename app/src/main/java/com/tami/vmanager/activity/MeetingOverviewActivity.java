@@ -172,15 +172,15 @@ public class MeetingOverviewActivity extends BaseActivity {
                 break;
             case R.id.meeting_overview_complaints_box:
                 //意见箱
-
+                startActivity(new Intent(getApplicationContext(), IdeasBoxActivity.class));
                 break;
             case R.id.meeting_overview_change_demand:
                 //需求变化
-
+                startActivity(new Intent(getApplicationContext(), ChangeDemandActivity.class));
                 break;
             case R.id.meeting_overview_v_emind:
                 //小V提醒
-
+                startActivity(new Intent(getApplicationContext(), SmallVRemindingActivity.class));
                 break;
             case R.id.meeting_overview_xuanfu_layout:
                 //悬浮布局

@@ -42,7 +42,7 @@ public class GetUserNoticeConfigRequest extends MobileMessage implements Seriali
 	}
 
 	@Override
-	public String getRequsetUrl() {
+	public String getRequestUrl() {
 		return HttpKey.USER_GET_NOTICE_CONFIG;
 	}
 }

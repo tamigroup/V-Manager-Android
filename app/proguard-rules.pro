@@ -39,9 +39,30 @@
 # 保留support下的所有类及其内部类
 -keep class android.support.** {*;}
 # 保留继承的
--keep public class * extends android.support.v4.**
--keep public class * extends android.support.v7.**
--keep public class * extends android.support.annotation.**
+-dontwarn android.support.v4.**
+-keep class android.support.v4.** { *; }
+-keep public class * extends android.support.v4.**{ *; }
+-keep interface android.support.v4.** { *; }
+-keep public class android.support.v4.R$* { *; }
+
+-dontwarn android.support.v7.**
+-keep class android.support.v7.** { *; }
+-keep public class * extends android.support.v7.**{ *; }
+-keep interface android.support.v7.** { *; }
+-keep public class android.support.v7.R$* { *; }
+
+-dontwarn android.support.design.**
+-keep class android.support.design.** { *; }
+-keep public class * extends android.support.design.**{ *; }
+-keep interface android.support.design.** { *; }
+-keep public class android.support.design.R$* { *; }
+
+-dontwarn android.support.annotation.**
+-keep class android.support.annotation.** { *; }
+-keep public class * extends android.support.annotation.**{ *; }
+-keep interface android.support.annotation.** { *; }
+-keep public class android.support.annotation.R$* { *; }
+
 # 保留R下面的资源
 -keep class **.R$* {*;}
 # 保留本地native方法不被混淆
@@ -82,6 +103,7 @@
     java.lang.Object writeReplace();
     java.lang.Object readResolve();
 }
+
 # 对于带有回调函数的onXXEvent、**On*Listener的，不能被混淆
 -keepclassmembers class * {
     void *(**On*Event);
@@ -108,9 +130,51 @@
 #okio
 -dontwarn okio.**
 -keep class okio.**{*;}
-
+#Picasso
 -dontwarn com.squareup.okhttp.**
 
+#权限
 -keepclassmembers class * {
     @pub.devrel.easypermissions.AfterPermissionGranted <methods>;
 }
+
+# gson
+-dontwarn com.google.**
+-keep class com.google.**{*;}
+-keep class com.google.gson.** {*;}
+-keep class com.google.gson.stream.** {*;}
+
+# RxJava RxAndroid
+-dontwarn sun.misc.**
+-keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
+    long producerIndex;
+    long consumerIndex;
+}
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
+    rx.internal.util.atomic.LinkedQueueNode producerNode;
+}
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
+    rx.internal.util.atomic.LinkedQueueNode consumerNode;
+}
+-dontnote rx.internal.util.PlatformDependent
+
+#第三方JAR
+-dontwarn com.zhy.**
+-keep class com.zhy.**{*;}
+-dontwarn com.bigkoo.**
+-keep class com.bigkoo.**{*;}
+-dontwarn com.readystatesoftware.chuck.**
+-keep class com.readystatesoftware.chuck.**{*;}
+-dontwarn com.github.promeg.**
+-keep class com.github.promeg.**{*;}
+-dontwarn com.jwenfeng.library.**
+-keep class com.jwenfeng.library.**{*;}
+-dontwarn com.fasterxml.jackson.annotation.**
+-keep class com.fasterxml.jackson.annotation.**{*;}
+-dontwarn com.fasterxml.jackson.core.**
+-keep class com.fasterxml.jackson.core.**{*;}
+-dontwarn com.fasterxml.jackson.databind.**
+-keep class com.fasterxml.jackson.databind.**{*;}
+
+
+

@@ -37,7 +37,7 @@ public class LoginOutRequest extends MobileMessage implements Serializable {
 
 
     @Override
-    public String getRequsetUrl() {
+    public String getRequestUrl() {
         return HttpKey.USER_LOGIN_OUT;
     }
 

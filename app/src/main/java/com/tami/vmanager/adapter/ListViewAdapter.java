@@ -37,7 +37,7 @@ public abstract class ListViewAdapter<T> extends BaseAdapter {
 
     @Override
     public T getItem(int position) {
-        return null;
+        return listData.get(position);
     }
 
     @Override

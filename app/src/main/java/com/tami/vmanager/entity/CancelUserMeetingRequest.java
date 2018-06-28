@@ -9,6 +9,7 @@ import java.io.Serializable;
  * @author 代码生成器v1.0
  * 
  */
+@Deprecated
 public class CancelUserMeetingRequest implements Serializable{
 
 	/**

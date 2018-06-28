@@ -21,95 +21,75 @@ public class GetUserNoticeConfigResponse extends MobileMessage implements Serial
 	private static final long serialVersionUID = 1L;
 
 
-	private String createOn;
-	private String groupchatNotice;
-	private String hostNotice;
-	private String meetingNotice;
-	private String satisfactionNotice;
-	private String systemNotice;
-	private String updateOn;
-
 	public GetUserNoticeConfigResponse() {
 		super();
 	}
 
-	
+	public Item data;
 
+	public static class Item{
+		private String createOn;
+		private int groupchatNotice;
+		private int hostNotice;
+		private int meetingNotice;
+		private int satisfactionNotice;
+		private int systemNotice;
+		private String updateOn;
 
-	/**
-	 * @return 
-	 */
-	public String getCreateOn() {
-		return createOn;
-	}
+		public String getCreateOn() {
+			return createOn;
+		}
 
-	public void setCreateOn(String createOn) {
-		this.createOn = createOn;
-	}
+		public void setCreateOn(String createOn) {
+			this.createOn = createOn;
+		}
 
-	/**
-	 * @return 
-	 */
-	public String getGroupchatNotice() {
-		return groupchatNotice;
-	}
+		public int getGroupchatNotice() {
+			return groupchatNotice;
+		}
 
-	public void setGroupchatNotice(String groupchatNotice) {
-		this.groupchatNotice = groupchatNotice;
-	}
+		public void setGroupchatNotice(int groupchatNotice) {
+			this.groupchatNotice = groupchatNotice;
+		}
 
-	/**
-	 * @return 
-	 */
-	public String getHostNotice() {
-		return hostNotice;
-	}
+		public int getHostNotice() {
+			return hostNotice;
+		}
 
-	public void setHostNotice(String hostNotice) {
-		this.hostNotice = hostNotice;
-	}
+		public void setHostNotice(int hostNotice) {
+			this.hostNotice = hostNotice;
+		}
 
-	/**
-	 * @return 
-	 */
-	public String getMeetingNotice() {
-		return meetingNotice;
-	}
+		public int getMeetingNotice() {
+			return meetingNotice;
+		}
 
-	public void setMeetingNotice(String meetingNotice) {
-		this.meetingNotice = meetingNotice;
-	}
+		public void setMeetingNotice(int meetingNotice) {
+			this.meetingNotice = meetingNotice;
+		}
 
-	/**
-	 * @return 
-	 */
-	public String getSatisfactionNotice() {
-		return satisfactionNotice;
-	}
+		public int getSatisfactionNotice() {
+			return satisfactionNotice;
+		}
 
-	public void setSatisfactionNotice(String satisfactionNotice) {
-		this.satisfactionNotice = satisfactionNotice;
-	}
+		public void setSatisfactionNotice(int satisfactionNotice) {
+			this.satisfactionNotice = satisfactionNotice;
+		}
 
-	/**
-	 * @return 
-	 */
-	public String getSystemNotice() {
-		return systemNotice;
-	}
+		public int getSystemNotice() {
+			return systemNotice;
+		}
 
-	public void setSystemNotice(String systemNotice) {
-		this.systemNotice = systemNotice;
-	}
+		public void setSystemNotice(int systemNotice) {
+			this.systemNotice = systemNotice;
+		}
 
-	/**
-	 * @return 
-	 */
-	public String getUpdateOn() {
-		return updateOn;
-	}
+		public String getUpdateOn() {
+			return updateOn;
+		}
 
-	public void setUpdateOn(String updateOn) {
-		this.updateOn = updateOn;
+		public void setUpdateOn(String updateOn) {
+			this.updateOn = updateOn;
+		}
 	}
 }

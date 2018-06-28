@@ -3,19 +3,61 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/textView7"
-        android:layout_width="wrap_content"
-        android:layout_height="17dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="TextView"
+        android:id="@+id/icsf_line_number"
+        android:layout_width="@dimen/dp_55"
+        android:layout_height="@dimen/dp_50"
+        android:gravity="center"
+        android:textColor="@color/color_333333"
+        android:textSize="@dimen/sp_16"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/icsf_name"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_0"
+        android:gravity="center_vertical"
+        android:textColor="@color/color_333333"
+        android:textSize="@dimen/sp_16"
+        app:layout_constraintBottom_toBottomOf="@+id/icsf_line_number"
+        app:layout_constraintStart_toEndOf="@+id/icsf_line_number"
+        app:layout_constraintTop_toTopOf="@+id/icsf_line_number" />
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/icsf_delete"
+        android:layout_width="@dimen/dp_44"
+        android:layout_height="@dimen/dp_0"
+        android:adjustViewBounds="true"
+        android:scaleType="center"
+        android:src="@android:drawable/ic_delete"
+        app:layout_constraintBottom_toBottomOf="@+id/icsf_line_number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/icsf_line_number" />
+
+    <TextView
+        android:id="@+id/icsf_editing_time"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_0"
+        android:gravity="center"
+        android:hint="@string/editing_time"
+        android:textColor="@color/color_3B89E9"
+        android:textColorHint="@color/color_888888"
+        android:textSize="@dimen/sp_16"
+        app:layout_constraintBottom_toBottomOf="@+id/icsf_line_number"
+        app:layout_constraintEnd_toStartOf="@+id/icsf_delete"
+        app:layout_constraintTop_toTopOf="@+id/icsf_line_number" />
+
+    <View
+        android:id="@+id/icsf_line"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="1px"
+        android:background="@color/color_EAEAEA"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/icsf_name" />
+
 </android.support.constraint.ConstraintLayout>
