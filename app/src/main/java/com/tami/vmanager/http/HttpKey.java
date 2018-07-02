@@ -52,6 +52,12 @@ public class HttpKey {
     public static final String CANCEL_USER_MEETING = "meeting/cancelUserMeeting";
     //添加VIP成员信息
     public static final String CREATE_VIPGUEST = "vip/createVipGuest";
+    //获取所有职位及职位下的人员列表
+    public static final String USER_LIST_OF_POSITION = "user/userListOfPosition";
+    // 编辑保存VIP接待人员
+    public static final String SAVE_RECEIVE_USER = "vip/saveReceiveUser";
+
+
     //---------------------------------------------------------------------------
 
 //    //手机号

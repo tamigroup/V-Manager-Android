@@ -5,5 +5,468 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/acmr_save_layout"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="@dimen/dp_79"
+        android:background="@android:color/white"
+        android:padding="@dimen/dp_15"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/acmr_save_btn"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="@dimen/dp_49"
+            android:background="@drawable/item_meeting_attention_bg"
+            android:text="@string/save"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/sp_17"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/acmr_scrollview"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="@dimen/dp_0"
+        android:background="@color/default_bg"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@+id/acmr_save_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/acmr_meeting_top_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:paddingLeft="@dimen/dp_16"
+                android:paddingRight="@dimen/dp_16"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/acmr_meeting_name_txt"
+                    style="@style/CreateMeetingNameTxt"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/acmr_meeting_name"
+                    style="@style/CreateMeetingInput"
+                    android:hint="@string/please_enter"
+                    android:inputType="text"
+                    app:layout_constraintBottom_toBottomOf="@+id/acmr_meeting_name_txt"
+                    app:layout_constraintStart_toEndOf="@+id/acmr_meeting_name_txt" />
+
+                <View
+                    android:id="@+id/acmr_meeting_name_line"
+                    style="@style/CreateMeetingLine"
+                    app:layout_constraintTop_toBottomOf="@+id/acmr_meeting_name_txt" />
+
+                <TextView
+                    android:id="@+id/acmr_sponsor_txt"
+                    style="@style/CreateMeetingNameTxt"
+                    app:layout_constraintTop_toBottomOf="@+id/acmr_meeting_name_line" />
+
+                <EditText
+                    android:id="@+id/acmr_sponsor"
+                    style="@style/CreateMeetingInput"
+                    android:hint="@string/please_enter"
+                    android:inputType="text"
+                    app:layout_constraintBottom_toBottomOf="@+id/acmr_sponsor_txt"
+                    app:layout_constraintStart_toEndOf="@+id/acmr_sponsor_txt"
+                    app:layout_constraintTop_toTopOf="@+id/acmr_sponsor_txt" />
+
+                <View
+                    android:id="@+id/acmr_sponsor_line"
+                    style="@style/CreateMeetingLine"
+                    app:layout_constraintTop_toBottomOf="@+id/acmr_sponsor_txt" />
+
+                <TextView
+                    android:id="@+id/acmr_meeting_place_txt"
+                    style="@style/CreateMeetingNameTxt"
+                    app:layout_constraintTop_toBottomOf="@+id/acmr_sponsor_line" />
+
+                <TextView
+                    android:id="@+id/acmr_meeting_place"
+                    style="@style/CreateMeetingInput"
+                    android:hint="@string/please_choose"
+                    app:layout_constraintBottom_toBottomOf="@+id/acmr_meeting_place_txt"
+                    app:layout_constraintStart_toEndOf="@+id/acmr_meeting_place_txt"
+                    app:layout_constraintTop_toTopOf="@+id/acmr_meeting_place_txt" />
+
+                <View
+                    android:id="@+id/acmr_meeting_place_line"
+                    style="@style/CreateMeetingLine"
+                    app:layout_constraintTop_toBottomOf="@+id/acmr_meeting_place_txt" />
+
+                <TextView
+                    android:id="@+id/acmr_start_time_txt"
+                    style="@style/CreateMeetingNameTxt"
+                    app:layout_constraintTop_toBottomOf="@+id/acmr_meeting_place_line" />
+
+                <TextView
+                    android:id="@+id/acmr_start_time"
+                    style="@style/CreateMeetingInput"
+                    android:hint="@string/please_choose"
+                    app:layout_constraintBottom_toBottomOf="@+id/acmr_start_time_txt"
+                    app:layout_constraintStart_toEndOf="@+id/acmr_start_time_txt"
+                    app:layout_constraintTop_toTopOf="@+id/acmr_start_time_txt" />
+
+                <View
+                    android:id="@+id/acmr_start_time_line"
+                    style="@style/CreateMeetingLine"
+                    app:layout_constraintTop_toBottomOf="@+id/acmr_start_time_txt" />
+
+                <TextView
+                    android:id="@+id/acmr_end_time_txt"
+                    style="@style/CreateMeetingNameTxt"
+                    app:layout_constraintTop_toBottomOf="@+id/acmr_start_time_line" />
+
+                <TextView
+                    android:id="@+id/acmr_end_time"
+                    style="@style/CreateMeetingInput"
+                    android:hint="@string/please_choose"
+                    app:layout_constraintBottom_toBottomOf="@+id/acmr_end_time_txt"
+                    app:layout_constraintStart_toEndOf="@+id/acmr_end_time_txt"
+                    app:layout_constraintTop_toTopOf="@+id/acmr_end_time_txt" />
+
+                <View
+                    android:id="@+id/acmr_end_time_line"
+                    style="@style/CreateMeetingLine"
+                    app:layout_constraintTop_toBottomOf="@+id/acmr_end_time_txt" />
+
+                <TextView
+                    android:id="@+id/acmr_contract_amount_txt"
+                    style="@style/CreateMeetingNameTxt"
+                    app:layout_constraintTop_toBottomOf="@+id/acmr_end_time_line" />
+
+                <EditText
+                    android:id="@+id/acmr_contract_amount"
+                    style="@style/CreateMeetingInput"
+                    android:hint="@string/please_enter"
+                    android:inputType="text"
+                    app:layout_constraintBottom_toBottomOf="@+id/acmr_contract_amount_txt"
+                    app:layout_constraintStart_toEndOf="@+id/acmr_contract_amount_txt"
+                    app:layout_constraintTop_toTopOf="@+id/acmr_contract_amount_txt" />
+
+                <View
+                    android:id="@+id/acmr_contract_amount_line"
+                    style="@style/CreateMeetingLine"
+                    app:layout_constraintTop_toBottomOf="@+id/acmr_contract_amount_txt" />
+
+                <TextView
+                    android:id="@+id/acmr_received_amount_txt"
+                    style="@style/CreateMeetingNameTxt"
+                    app:layout_constraintTop_toBottomOf="@+id/acmr_contract_amount_line" />
+
+                <EditText
+                    android:id="@+id/acmr_received_amount"
+                    style="@style/CreateMeetingInput"
+                    android:hint="@string/please_enter"
+                    android:inputType="text"
+                    app:layout_constraintBottom_toBottomOf="@+id/acmr_received_amount_txt"
+                    app:layout_constraintStart_toEndOf="@+id/acmr_received_amount_txt"
+                    app:layout_constraintTop_toTopOf="@+id/acmr_received_amount_txt" />
+
+                <View
+                    android:id="@+id/acmr_received_amount_line"
+                    style="@style/CreateMeetingLine"
+                    app:layout_constraintTop_toBottomOf="@+id/acmr_received_amount_txt" />
+            </android.support.constraint.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/acmr_number_participants"
+                style="@style/CreateMeetingItemTitle"
+
+                app:layout_constraintTop_toBottomOf="@+id/acmr_meeting_top_layout" />
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/acmr_number_participants_layout"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_50"
+                android:background="@android:color/white"
+                android:paddingLeft="@dimen/dp_16"
+                android:paddingRight="@dimen/dp_16"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/acmr_number_participants">
+
+                <TextView
+                    android:id="@+id/acmr_number_participants_line"
+                    android:layout_width="@dimen/dp_1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dp_15"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:background="@color/color_EAEAEA"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/acmr_estimated_number_people_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp_0"
+                    android:gravity="center_vertical"
+                    android:text="@string/estimated_number_people"
+                    android:textColor="@color/color_303030"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/acmr_estimated_number_people"
+                    android:layout_width="@dimen/dp_0"
+                    android:layout_height="@dimen/dp_0"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:background="@null"
+                    android:gravity="center_vertical|right"
+                    android:hint="@string/please_enter"
+                    android:inputType="number"
+                    android:lines="1"
+                    android:textColor="@color/color_303030"
+                    android:textColorHint="@color/color_888888"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/acmr_number_participants_line"
+                    app:layout_constraintStart_toEndOf="@+id/acmr_estimated_number_people_txt"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/acmr_bottom_number_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp_0"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:gravity="center_vertical"
+                    android:text="@string/bottom_number_people"
+                    android:textColor="@color/color_303030"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/acmr_number_participants_line"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/acmr_bottom_number"
+                    android:layout_width="@dimen/dp_0"
+                    android:layout_height="@dimen/dp_0"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:background="@null"
+                    android:gravity="center_vertical|right"
+                    android:hint="@string/please_enter"
+                    android:inputType="number"
+                    android:lines="1"
+                    android:textColor="@color/color_303030"
+                    android:textColorHint="@color/color_888888"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/acmr_bottom_number_txt"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/acmr_meeting_level"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_50"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@android:color/white"
+                android:gravity="center_vertical|left"
+                android:paddingLeft="@dimen/dp_16"
+                android:text="@string/conference_level"
+                android:textColor="@color/color_303030"
+                android:textSize="@dimen/sp_16"
+
+                app:layout_constraintEnd_toStartOf="@+id/acmr_meeting_level_chose"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/acmr_number_participants_layout" />
+
+            <TextView
+                android:id="@+id/acmr_meeting_level_chose"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_0"
+                android:background="@android:color/white"
+                android:gravity="center_vertical|right"
+                android:hint="@string/please_choose"
+                android:paddingRight="@dimen/dp_16"
+                android:textColor="@color/color_303030"
+                android:textColorHint="@color/color_888888"
+                android:textSize="@dimen/sp_16"
+                app:layout_constraintBottom_toBottomOf="@+id/acmr_meeting_level"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@+id/acmr_meeting_level"
+                app:layout_constraintTop_toTopOf="@+id/acmr_meeting_level" />
+
+            <TextView
+                android:id="@+id/acmr_receptionist"
+                style="@style/CreateMeetingItemTitle"
+                android:text="@string/receptionist"
+
+                app:layout_constraintTop_toBottomOf="@+id/acmr_meeting_level" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/acmr_receptionist_recyclerview"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/acmr_receptionist" />
+
+            <TextView
+                android:id="@+id/acmr_vip_personage_introduction"
+                style="@style/CreateMeetingItemTitle"
+                android:text="@string/vip_personage_introduction"
+                app:layout_constraintTop_toBottomOf="@+id/acmr_receptionist_recyclerview" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/acmr_personage_introduction_recyclerview"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/acmr_vip_personage_introduction" />
+
+
+            <TextView
+                android:id="@+id/acmr_upload_eo_list"
+                style="@style/CreateMeetingItemTitle"
+                android:text="@string/upload_eo_list"
+                app:layout_constraintTop_toBottomOf="@+id/acmr_personage_introduction_recyclerview" />
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/acmr_upload_eo_list_image_layout"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/acmr_upload_eo_list">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/acmr_eo_add_image"
+                    android:layout_width="@dimen/dp_55"
+                    android:layout_height="@dimen/dp_55"
+                    android:layout_marginBottom="@dimen/dp_12"
+                    android:layout_marginLeft="@dimen/dp_15"
+                    android:layout_marginTop="@dimen/dp_12"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@mipmap/create_meeting_add" />
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/acmr_eo_delete_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/dp_15"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/acmr_eo_add_image"
+                    app:srcCompat="@mipmap/create_meeting_delete" />
+
+                <TextView
+                    android:id="@+id/acmr_eo_add_image_name"
+                    android:layout_width="@dimen/dp_0"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:gravity="left|center_vertical"
+                    android:text="TextView"
+                    android:textColor="@color/color_303030"
+                    android:textSize="@dimen/sp_12"
+                    app:layout_constraintEnd_toStartOf="@+id/acmr_eo_delete_image"
+                    app:layout_constraintStart_toEndOf="@+id/acmr_eo_add_image"
+                    app:layout_constraintTop_toTopOf="@+id/acmr_eo_add_image" />
+
+                <TextView
+                    android:id="@+id/acmr_eo_add_image_size"
+                    android:layout_width="@dimen/dp_0"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:gravity="left|center_vertical"
+                    android:text="TextView"
+                    android:textColor="@color/color_ACACAC"
+                    android:textSize="@dimen/sp_10"
+                    app:layout_constraintEnd_toEndOf="@+id/acmr_eo_add_image_name"
+                    app:layout_constraintStart_toStartOf="@+id/acmr_eo_add_image_name"
+                    app:layout_constraintTop_toBottomOf="@+id/acmr_eo_add_image_name" />
+
+                <android.support.constraint.Group
+                    android:id="@+id/acmr_eo_image_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:constraint_referenced_ids="acmr_eo_delete_image,acmr_eo_add_image_name,acmr_eo_add_image_size" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/acmr_meeting_level_layout"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_50"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@android:color/white"
+                android:paddingLeft="@dimen/dp_16"
+                android:paddingRight="@dimen/dp_16"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/acmr_upload_eo_list_image_layout">
+
+
+                <TextView
+                    android:id="@+id/acmr_v_zhi_hui"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp_0"
+                    android:gravity="center_vertical|left"
+                    android:text="@string/v_zhi_hui"
+                    android:textColor="@color/color_303030"
+                    android:textSize="@dimen/sp_16"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.tami.vmanager.view.SwitchButton
+                    android:id="@+id/acmr_v_zhi_hui_switchbtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:sb_background="@color/color_888888"
+                    app:sb_button_color="@android:color/white"
+                    app:sb_checked="false"
+                    app:sb_checked_color="@color/color_53EA73"
+                    app:sb_show_indicator="false" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.v4.widget.Space
+                android:id="@+id/acmr_space"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_10"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/acmr_meeting_level_layout" />
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v4.widget.NestedScrollView>
 
 </android.support.constraint.ConstraintLayout>

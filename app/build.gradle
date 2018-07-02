@@ -40,15 +40,19 @@ dependencies {
 //    implementation 'com.android.support:appcompat-v7:27+'
     implementation 'com.android.support.constraint:constraint-layout:1.1.1'
     compile 'com.android.support:multidex:1.0.3'
+    //图片
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.android.support:design:27.1.0'
+    //通用Adapter
     compile 'com.zhy:base-rvadapter:3.0.3'
+    //时间弹框
     compile 'com.contrarywind:Android-PickerView:4.1.4'
     compile 'com.google.code.gson:gson:2.8.0'
+    //网络
     compile 'com.readystatesoftware.chuck:library:1.0.4'
     compile 'com.zhy:okhttputils:2.6.2'
+    //权限
     compile 'pub.devrel:easypermissions:1.2.0'
-
     //为了网络请求添加
     compile 'com.fasterxml.jackson.core:jackson-core:2.9.6'
     compile 'com.fasterxml.jackson.core:jackson-annotations:2.9.6'

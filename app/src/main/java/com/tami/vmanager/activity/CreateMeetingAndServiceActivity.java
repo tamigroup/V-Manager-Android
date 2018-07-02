@@ -71,7 +71,7 @@ public class CreateMeetingAndServiceActivity extends BaseActivity {
             case R.id.acmas_create_meeting:
             case R.id.acmas_please_create_1:
                 //创建会议
-
+                startActivity(new Intent(getApplicationContext(),CreateMeetingRewriteActivity.class));
                 break;
             case R.id.acmas_create_service_process:
             case R.id.acmas_please_create_2:

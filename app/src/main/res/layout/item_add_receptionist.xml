@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rar_layout"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_50"
+    android:background="@android:color/white">
+
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/iar_select_image"
+        android:layout_width="17dp"
+        android:layout_height="24dp"
+        android:layout_marginLeft="@dimen/dp_15"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/people_checkbox_unselected" />
+
+    <TextView
+        android:id="@+id/iar_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:gravity="center_vertical|left"
+        android:text="@string/setting_avatar"
+        android:textColor="@color/color_303030"
+        android:textSize="@dimen/sp_16"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iar_select_image"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/iar_line"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="1px"
+        android:background="@color/color_EAEAEA"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/iar_name" />
+
+</android.support.constraint.ConstraintLayout>

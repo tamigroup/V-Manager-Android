@@ -18,7 +18,7 @@
         android:layout_width="@dimen/dp_0"
         android:layout_height="@dimen/dp_50"
         android:background="@color/color_FF5657"
-        android:text="@string/create_process"
+        android:text="@string/get_into_meeting"
         android:textColor="@android:color/white"
         android:textSize="@dimen/sp_16"
         app:layout_constraintBottom_toBottomOf="parent"

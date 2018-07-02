@@ -208,9 +208,16 @@
     <string name="add_process">+ 添加流程</string>
     <string name="editing_time">编辑时间</string>
 
-    <string name="vip_personage_introduction">添加VIP人物介绍</string>
+    <string name="add_vip_personage_introduction">添加VIP人物介绍</string>
     <string name="please_enter_name">请输入姓名</string>
     <string name="please_enter_character_introduction">请输入VIP人物介绍</string>
     <string name="add_receptionist">添加接待人</string>
-
+    <string name="estimated_number_people">预计人数</string>
+    <string name="bottom_number_people">保底人数</string>
+    <string name="conference_level">会议等级</string>
+    <string name="receptionist">接待人</string>
+    <string name="vip_personage_introduction">VIP人物介绍</string>
+    <string name="v_zhi_hui">V智会</string>
+    <string name="save">保存</string>
+    <string name="selected_people">已选择：%d人</string>
 </resources>

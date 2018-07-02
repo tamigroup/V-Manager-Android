@@ -46,4 +46,19 @@ public class Utils {
         builder.setSpan(new AbsoluteSizeSpan(ScreenUtil.sp2px(context, size)), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return builder;
     }
+
+    /**
+     * 改变颜色
+     * @param context
+     * @param str
+     * @param start
+     * @param end
+     * @param color
+     * @return
+     */
+    public static SpannableStringBuilder getSplicingColor(Context context, String str, int start, int end, int color) {
+        SpannableStringBuilder builder = new SpannableStringBuilder(str);
+        builder.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, color)), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return builder;
+    }
 }

@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.content.FileProvider;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -104,7 +105,7 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
         if (item != null) {
             full_name.setText(item.getRealName());
             position.setText(item.getDepName() + "-" + item.getPositionName());
-            if (item.getIconUrl() != null) {
+            if (!TextUtils.isEmpty(item.getIconUrl())) {
                 Picasso.get().load(item.getIconUrl()).into(avatar_image);
             }
 //            else{
@@ -254,7 +255,7 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
      */
     private void avatarImage() {
         mBottomSheetDialog = new BottomSheetDialog(getActivity());
-        LinearLayout linearLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.item_personal_menu, null);
+        LinearLayout linearLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.show_menu_personal_pic, null);
         TextView album = linearLayout.findViewById(R.id.personal_menu_album);
         TextView photograph = linearLayout.findViewById(R.id.personal_menu_photograph);
         TextView cancel = linearLayout.findViewById(R.id.personal_menu_cancel);
@@ -267,11 +268,15 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
 
 
     private void xiangCe() {
-        String state = Environment.getExternalStorageState();
-        if (state.equals(Environment.MEDIA_MOUNTED)) {
-            Intent openAlbumIntent = new Intent(Intent.ACTION_GET_CONTENT);
-            openAlbumIntent.setType(IMAGE_TYPE);
-            startActivityForResult(openAlbumIntent, CHOOSE_PHOTO_REQUEST_CODE);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            startActivityForResult(new Intent(Intent.ACTION_GET_CONTENT).setType("image/*"), CHOOSE_PHOTO_REQUEST_CODE);
+        } else {
+            String state = Environment.getExternalStorageState();
+            if (state.equals(Environment.MEDIA_MOUNTED)) {
+                Intent openAlbumIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                openAlbumIntent.setType(IMAGE_TYPE);
+                startActivityForResult(openAlbumIntent, CHOOSE_PHOTO_REQUEST_CODE);
+            }
         }
     }
 

@@ -285,7 +285,6 @@ public class MeetingOverviewActivity extends BaseActivity {
      */
     private void functionBtn(View v) {
 //        confirmEnterMeetingDialog.show();
-
         Button button = (Button) v;
         if (!TextUtils.isEmpty(button.toString())
                 && getString(R.string.create_process).equals(button.getText().toString())) {
@@ -293,7 +292,7 @@ public class MeetingOverviewActivity extends BaseActivity {
             startActivity(new Intent(getApplicationContext(), ConferenceServiceContentActivity.class));
         } else {
             //进入
-
+            startActivity(new Intent(getApplicationContext(), EnterMeetingActivity.class));
         }
     }
 }

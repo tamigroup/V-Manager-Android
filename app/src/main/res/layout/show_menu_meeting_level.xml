@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <TextView
+        android:id="@+id/smml_vip1"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_50"
+        android:gravity="center"
+        android:text="VIP 1"
+        android:textAllCaps="false"
+        android:textColor="@color/color_333333"
+        android:textSize="@dimen/sp_14"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/smml_vip1_selected"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_0"
+        android:layout_marginRight="@dimen/dp_20"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/smml_vip1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/smml_vip1"
+        app:srcCompat="@mipmap/meeting_place_selected" />
+
+    <View
+        android:id="@+id/smml_vip1_line"
+        android:layout_width="0dp"
+        android:layout_height="1px"
+        android:background="@color/color_EAEAEA"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/smml_vip1" />
+
+
+    <TextView
+        android:id="@+id/smml_vip2"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_50"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="VIP 2"
+        android:textAllCaps="false"
+        android:textColor="@color/color_333333"
+        android:textSize="@dimen/sp_14"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/smml_vip1_line" />
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/smml_vip2_selected"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_0"
+        android:layout_marginRight="@dimen/dp_20"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/smml_vip2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/smml_vip2"
+        app:srcCompat="@mipmap/meeting_place_selected" />
+
+    <View
+        android:id="@+id/smml_vip2_line"
+        android:layout_width="0dp"
+        android:layout_height="1px"
+        android:background="@color/color_EAEAEA"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/smml_vip2" />
+
+    <TextView
+        android:id="@+id/smml_vip3"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_50"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="VIP 3"
+        android:textAllCaps="false"
+        android:textColor="@color/color_333333"
+        android:textSize="@dimen/sp_14"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/smml_vip2_line" />
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/smml_vip3_selected"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_0"
+        android:layout_marginRight="@dimen/dp_20"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/smml_vip3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/smml_vip3"
+        app:srcCompat="@mipmap/meeting_place_selected" />
+
+    <View
+        android:id="@+id/smml_vip3_line"
+        android:layout_width="0dp"
+        android:layout_height="1px"
+        android:background="@color/color_EAEAEA"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/smml_vip3" />
+
+    <TextView
+        android:id="@+id/smml_vip4"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_50"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="VIP 4"
+        android:textAllCaps="false"
+        android:textColor="@color/color_333333"
+        android:textSize="@dimen/sp_14"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/smml_vip3_line" />
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/smml_vip4_selected"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_0"
+        android:layout_marginRight="@dimen/dp_20"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/smml_vip4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/smml_vip4"
+        app:srcCompat="@mipmap/meeting_place_selected" />
+
+    <View
+        android:id="@+id/smml_vip4_line"
+        android:layout_width="0dp"
+        android:layout_height="1px"
+        android:background="@color/color_EAEAEA"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/smml_vip4" />
+
+    <TextView
+        android:id="@+id/smml_cancel"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_50"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="@string/cancel"
+        android:textAllCaps="false"
+        android:textColor="@color/color_FF5657"
+        android:textSize="@dimen/sp_14"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/smml_vip4_line" />
+
+</android.support.constraint.ConstraintLayout>

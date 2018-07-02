@@ -1,162 +1,155 @@
 package com.tami.vmanager.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
-
 import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-
 /**
  * 获取所有职位及职位下的人员列表.服务端响应
- * 
+ *
  * @author 代码生成器v1.0
- * 
  */
 @JsonInclude(Include.NON_NULL)
-public class UserListOfPositionResponse extends MobileMessage implements Serializable{
+public class UserListOfPositionResponse extends MobileMessage implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    public static final long serialVersionUID = 1L;
 
+    public UserListOfPositionResponse() {
+        super();
+    }
 
-	/**
-	 * @see com.bwapi.TM.message.entity.UserListOfPositionResponse#getDataList
-	 * 
-	 */
-	@JsonInclude(Include.NON_NULL)
-	public static class ElementDataList {
+    public Item data;
 
-		private String createOn;
-		private String departmentName;
-		private String depId;
-		private String id;
-		private String orderBy;
-		private String positionName;
-		private String systemId;
-		private String updateOn;
-		private String userCounts;
+    @JsonInclude(Include.NON_NULL)
+    public static class Item {
 
-		/**
-		 * @return 
-		 */
-		public String getCreateOn() {
-			return createOn;
-		}
+        public List<UserListOfPositionResponse.Item.TitleItem> dataList;
 
-		public void setCreateOn(String createOn) {
-			this.createOn = createOn;
-		}
+        @JsonInclude(Include.NON_NULL)
+        public static class TitleItem {
 
-		/**
-		 * @return 
-		 */
-		public String getDepartmentName() {
-			return departmentName;
-		}
+            public int id;	/*5*/
+            public int orderBy;	/*0*/
+            public int status;	/*0*/
+            public int userCounts;	/*0*/
+            public int systemId;	/*4*/
+            public int depId;	/*31*/
+            public String positionName;	/*rbqtest1*/
+            public String departmentName;	/**/
+            public Long createOn;	/*1528073029000*/
+            public Long updateOn;	/*1530070917000*/
+            public List<ContentList> userList;
 
-		public void setDepartmentName(String departmentName) {
-			this.departmentName = departmentName;
-		}
+            /**
+             *
+             */
+            @JsonInclude(Include.NON_NULL)
+            public static class ContentList implements Parcelable {
 
-		/**
-		 * @return 
-		 */
-		public String getDepId() {
-			return depId;
-		}
+                public String registrationId;	/**/
+                public Integer status;	/*0*/
+                public String iconUrl;	/**/
+                public String systemName;	/**/
+                public String depName;	/**/
+                public Integer depId;	/*5*/
+                public String password;	/*63fb221131c62409a33301d16ee08c9f*/
+                public Integer fromPlat;	/*1*/
+                public Integer id;	/*14*/
+                public String nickName;	/*测试用户1*/
+                public String token;	/**/
+                public Integer positionId;	/*5*/
+                public Integer isAdmin;	/*1*/
+                public String realName;	/*测试用户1*/
+                public Integer systemId;	/*4*/
+                public String userRoleList;	/**/
+                public String positionName;	/**/
+                public Long createOn;	/*1528092185000*/
+                public Long updateOn;	/*1528092185000*/
+                public Integer roleId;	/*0*/
+                public String mobile;	/*13300000000*/
 
-		public void setDepId(String depId) {
-			this.depId = depId;
-		}
-
-		/**
-		 * @return 
-		 */
-		public String getId() {
-			return id;
-		}
-
-		public void setId(String id) {
-			this.id = id;
-		}
-
-		/**
-		 * @return 
-		 */
-		public String getOrderBy() {
-			return orderBy;
-		}
-
-		public void setOrderBy(String orderBy) {
-			this.orderBy = orderBy;
-		}
-
-		/**
-		 * @return 
-		 */
-		public String getPositionName() {
-			return positionName;
-		}
-
-		public void setPositionName(String positionName) {
-			this.positionName = positionName;
-		}
-
-		/**
-		 * @return 
-		 */
-		public String getSystemId() {
-			return systemId;
-		}
-
-		public void setSystemId(String systemId) {
-			this.systemId = systemId;
-		}
-
-		/**
-		 * @return 
-		 */
-		public String getUpdateOn() {
-			return updateOn;
-		}
-
-		public void setUpdateOn(String updateOn) {
-			this.updateOn = updateOn;
-		}
-
-		/**
-		 * @return 
-		 */
-		public String getUserCounts() {
-			return userCounts;
-		}
-
-		public void setUserCounts(String userCounts) {
-			this.userCounts = userCounts;
-		}
-	}
-
-	private List<ElementDataList> dataList;
-
-	public UserListOfPositionResponse() {
-		super();
-	}
-
-	
+                public boolean isSelected;
 
 
-	/**
-	 * @return 
-	 */
-	public List<ElementDataList> getDataList() {
-		return dataList;
-	}
+                @Override
+                public int describeContents() {
+                    return 0;
+                }
 
-	public void setDataList(List<ElementDataList> dataList) {
-		this.dataList = dataList;
-	}
+                @Override
+                public void writeToParcel(Parcel dest, int flags) {
+                    dest.writeString(this.registrationId);
+                    dest.writeValue(this.status);
+                    dest.writeString(this.iconUrl);
+                    dest.writeString(this.systemName);
+                    dest.writeString(this.depName);
+                    dest.writeValue(this.depId);
+                    dest.writeString(this.password);
+                    dest.writeValue(this.fromPlat);
+                    dest.writeValue(this.id);
+                    dest.writeString(this.nickName);
+                    dest.writeString(this.token);
+                    dest.writeValue(this.positionId);
+                    dest.writeValue(this.isAdmin);
+                    dest.writeString(this.realName);
+                    dest.writeValue(this.systemId);
+                    dest.writeString(this.userRoleList);
+                    dest.writeString(this.positionName);
+                    dest.writeValue(this.createOn);
+                    dest.writeValue(this.updateOn);
+                    dest.writeValue(this.roleId);
+                    dest.writeString(this.mobile);
+                    dest.writeByte(this.isSelected ? (byte) 1 : (byte) 0);
+                }
+
+                public ContentList() {
+                }
+
+                protected ContentList(Parcel in) {
+                    this.registrationId = in.readString();
+                    this.status = (Integer) in.readValue(Integer.class.getClassLoader());
+                    this.iconUrl = in.readString();
+                    this.systemName = in.readString();
+                    this.depName = in.readString();
+                    this.depId = (Integer) in.readValue(Integer.class.getClassLoader());
+                    this.password = in.readString();
+                    this.fromPlat = (Integer) in.readValue(Integer.class.getClassLoader());
+                    this.id = (Integer) in.readValue(Integer.class.getClassLoader());
+                    this.nickName = in.readString();
+                    this.token = in.readString();
+                    this.positionId = (Integer) in.readValue(Integer.class.getClassLoader());
+                    this.isAdmin = (Integer) in.readValue(Integer.class.getClassLoader());
+                    this.realName = in.readString();
+                    this.systemId = (Integer) in.readValue(Integer.class.getClassLoader());
+                    this.userRoleList = in.readString();
+                    this.positionName = in.readString();
+                    this.createOn = (Long) in.readValue(Long.class.getClassLoader());
+                    this.updateOn = (Long) in.readValue(Long.class.getClassLoader());
+                    this.roleId = (Integer) in.readValue(Integer.class.getClassLoader());
+                    this.mobile = in.readString();
+                    this.isSelected = in.readByte() != 0;
+                }
+
+                public static final Creator<ContentList> CREATOR = new Creator<ContentList>() {
+                    @Override
+                    public ContentList createFromParcel(Parcel source) {
+                        return new ContentList(source);
+                    }
+
+                    @Override
+                    public ContentList[] newArray(int size) {
+                        return new ContentList[size];
+                    }
+                };
+            }
+        }
+    }
+
 }

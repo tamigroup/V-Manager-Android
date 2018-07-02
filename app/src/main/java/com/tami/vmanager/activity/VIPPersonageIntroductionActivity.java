@@ -1,5 +1,6 @@
 package com.tami.vmanager.activity;
 
+import android.content.Intent;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -10,7 +11,9 @@ import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.entity.CreateVipGuestRequest;
 import com.tami.vmanager.entity.CreateVipGuestResponse;
+import com.tami.vmanager.entity.MeetingPlaceSelectResponse;
 import com.tami.vmanager.http.NetworkBroker;
+import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 
 /**
@@ -60,7 +63,7 @@ public class VIPPersonageIntroductionActivity extends BaseActivity implements Te
 
     @Override
     public void initData() {
-        setTitleName(R.string.vip_personage_introduction);
+        setTitleName(R.string.add_vip_personage_introduction);
         networkBroker = new NetworkBroker(this);
         networkBroker.setCancelTag(getTAG());
     }
@@ -122,21 +125,22 @@ public class VIPPersonageIntroductionActivity extends BaseActivity implements Te
 //        createVipGuestRequest.setSystemId();
         createVipGuestRequest.setName(avpi_name.getText().toString());
         createVipGuestRequest.setIntro(avpi_introduction.getText().toString());
-        networkBroker.ask(createVipGuestRequest, (ex1, res) -> {
-            if (null != ex1) {
-                Logger.d(ex1.getMessage() + "-" + ex1);
-                return;
-            }
-            try {
-                CreateVipGuestResponse response = (CreateVipGuestResponse) res;
-                if (response.getCode() == 200 && response.data) {
-                    backLastPage();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        });
+        backLastPage(createVipGuestRequest);
+        //        networkBroker.ask(createVipGuestRequest, (ex1, res) -> {
+//            if (null != ex1) {
+//                Logger.d(ex1.getMessage() + "-" + ex1);
+//                return;
+//            }
+//            try {
+//                CreateVipGuestResponse response = (CreateVipGuestResponse) res;
+//                if (response.getCode() == 200 && response.data) {
+//                    backLastPage();
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//
+//        });
     }
 
     private boolean isCheck() {
@@ -150,8 +154,10 @@ public class VIPPersonageIntroductionActivity extends BaseActivity implements Te
         return true;
     }
 
-    private void backLastPage(){
-
-        setResult(0);
+    private void backLastPage(CreateVipGuestRequest item){
+        Intent intent = new Intent();
+        intent.putExtra(Constants.RESULT_VIP, item);
+        setResult(Constants.CREATE_MEETING_VIP, intent);
+        finish();
     }
 }

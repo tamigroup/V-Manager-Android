@@ -36,6 +36,7 @@ public class ForgetThePasswordActivity extends BaseActivity {
     private TextView codeView;
     private VerificationCode verificationCode;
 
+    private String mobile = null;
     private String smsCode = null;
     private NetworkBroker networkBroker;
 
@@ -131,6 +132,7 @@ public class ForgetThePasswordActivity extends BaseActivity {
 //            showToast("请输入手机号");
 //            return;
 //        }
+        mobile = value.getText().toString();
 //        SendVerifyCodeRequest sendVerifyCodeRequest = new SendVerifyCodeRequest();
 //        sendVerifyCodeRequest.setMobile(value.getText().toString());
 //        networkBroker.ask(sendVerifyCodeRequest, (ex1, res) -> {
@@ -141,18 +143,18 @@ public class ForgetThePasswordActivity extends BaseActivity {
 //            try {
 //                SendVerifyCodeResponse response = (SendVerifyCodeResponse) res;
 //                if (response.getCode() == 200) {
-                    title.setText(getString(R.string.input_authentication_code));
-                    prompt.setVisibility(View.INVISIBLE);
-                    name.setText(getString(R.string.authentication_code));
-                    value.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    value.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});
-                    value.setText(null);
-                    value.setFocusable(true);
-                    value.setFocusableInTouchMode(true);
-                    value.requestFocus();
-                    codeView.setVisibility(View.VISIBLE);
-                    verificationCode.start();
-                    confirmBtn.setText(getString(R.string.confirm));
+        title.setText(getString(R.string.input_authentication_code));
+        prompt.setVisibility(View.INVISIBLE);
+        name.setText(getString(R.string.authentication_code));
+        value.setInputType(InputType.TYPE_CLASS_NUMBER);
+        value.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});
+        value.setText(null);
+        value.setFocusable(true);
+        value.setFocusableInTouchMode(true);
+        value.requestFocus();
+        codeView.setVisibility(View.VISIBLE);
+        verificationCode.start();
+        confirmBtn.setText(getString(R.string.confirm));
 //                }
 //            } catch (Exception e) {
 //                e.printStackTrace();
@@ -191,8 +193,7 @@ public class ForgetThePasswordActivity extends BaseActivity {
      */
     private void identification() {
         ResetPwdRequest resetPwdRequest = new ResetPwdRequest();
-        LoginResponse.Item item = GlobaVariable.getInstance().item;
-        resetPwdRequest.setUserId(item.getId());
+        resetPwdRequest.setMobile(mobile);
         resetPwdRequest.setNewPassWord(againPassword.getText().toString());
         resetPwdRequest.setSmsCode(smsCode);
         networkBroker.ask(resetPwdRequest, (ex1, res) -> {

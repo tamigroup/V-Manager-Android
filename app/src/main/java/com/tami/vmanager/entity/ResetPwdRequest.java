@@ -22,7 +22,7 @@ public class ResetPwdRequest extends MobileMessage implements Serializable{
 
 	private String newPassWord;
 	private String smsCode;
-	private String userId;
+	private String mobile;
 
 	public ResetPwdRequest() {
 		super();
@@ -50,15 +50,12 @@ public class ResetPwdRequest extends MobileMessage implements Serializable{
 		this.smsCode = smsCode;
 	}
 
-	/**
-	 * @return 用户ID
-	 */
-	public String getUserId() {
-		return userId;
+	public String getMobile() {
+		return mobile;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
 	}
 
 	@Override

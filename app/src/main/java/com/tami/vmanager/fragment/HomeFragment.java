@@ -7,6 +7,7 @@ import android.support.v7.widget.AppCompatImageView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
+
 import com.tami.vmanager.R;
 import com.tami.vmanager.activity.CreateMeetingAndServiceActivity;
 import com.tami.vmanager.activity.FollowMeetingsActivity;
@@ -223,7 +224,7 @@ public class HomeFragment extends BaseFragment {
      */
     private void homeSelected() {
         mBottomSheetDialog = new BottomSheetDialog(getActivity());
-        ConstraintLayout constraintLayout = (ConstraintLayout) getActivity().getLayoutInflater().inflate(R.layout.item_home_menu, null);
+        ConstraintLayout constraintLayout = (ConstraintLayout) getActivity().getLayoutInflater().inflate(R.layout.show_menu_home_time, null);
         TextView hm_today = constraintLayout.findViewById(R.id.hm_today);
         TextView hm_this_month = constraintLayout.findViewById(R.id.hm_this_month);
         TextView hm_this_year = constraintLayout.findViewById(R.id.hm_this_year);
@@ -255,10 +256,14 @@ public class HomeFragment extends BaseFragment {
             imageView.setTag(getString(R.string.view_state_display));
             imageView.setImageResource(R.mipmap.home_eye_on);
             if (headItem != null) {
-                BigDecimal big1 = new BigDecimal(headItem.getAllPayCount());
-                num = numberFormat.format(big1);
-                BigDecimal big2 = new BigDecimal(headItem.getUnPayCount());
-                num1 = numberFormat.format(big2);
+                if (!TextUtils.isEmpty(headItem.getAllPayCount())) {
+                    BigDecimal big1 = new BigDecimal(headItem.getAllPayCount());
+                    num = numberFormat.format(big1);
+                }
+                if (!TextUtils.isEmpty(headItem.getUnPayCount())) {
+                    BigDecimal big2 = new BigDecimal(headItem.getUnPayCount());
+                    num1 = numberFormat.format(big2);
+                }
             }
         }
         String resStr = getString(R.string.contract_money, num);

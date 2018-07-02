@@ -60,4 +60,11 @@ public class Constants {
     public static final String FIRST_LANDING = "firstLanding";
     //每页记录条数
     public static final int PAGE_SIZE = 10;
+
+    public static final int CREATE_MEETING_DIDIAN = 0x10;
+    public static final String RESULT_DIDIAN = "didian";
+    public static final int CREATE_MEETING_JIEDAIREN = 0x11;
+    public static final String RESULT_JIEDAIREN = "jiedairen";
+    public static final int CREATE_MEETING_VIP = 0x12;
+    public static final String RESULT_VIP = "vip";
 }

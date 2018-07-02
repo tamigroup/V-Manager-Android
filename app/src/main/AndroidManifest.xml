@@ -93,7 +93,10 @@
         <!--    创建会议与服务流程    -->
         <activity
             android:name=".activity.CreateMeetingAndServiceActivity"
-
+            android:screenOrientation="portrait"></activity>
+        <!--    创建会议    -->
+        <activity
+            android:name=".activity.CreateMeetingRewriteActivity"
             android:screenOrientation="portrait"></activity>
         <!--    创建服务流程    -->
         <activity
