@@ -1,14 +1,20 @@
 package com.tami.vmanager.activity;
 
+import android.annotation.SuppressLint;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.AppCompatImageView;
 import android.view.View;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.tami.vmanager.Database.AppDatabase;
+import com.tami.vmanager.Database.dao.SearchHistoryDao;
+import com.tami.vmanager.Database.entity.SearchHistoryBean;
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
-import com.tami.vmanager.utils.Logger;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by why on 2018/6/14.
@@ -33,6 +39,9 @@ public class SearchActivity extends BaseActivity {
     private TextView search_history_tv4;
     private TextView search_history_tv5;
     private TextView search_history_tv6;
+    private SearchHistoryDao dao;
+    private SearchHistoryBean searchHistoryBean;
+    private AppDatabase db;
 
     @Override
     public int getContentViewId() {
@@ -60,6 +69,10 @@ public class SearchActivity extends BaseActivity {
         search_history_tv4 = findViewById(R.id.search_history_tv4);
         search_history_tv5 = findViewById(R.id.search_history_tv5);
         search_history_tv6 = findViewById(R.id.search_history_tv6);
+
+        db = AppDatabase.getInstance(getApplicationContext());
+        dao = db.searchHistoryDao();
+        searchHistoryBean = new SearchHistoryBean();
     }
 
     @Override
@@ -67,8 +80,92 @@ public class SearchActivity extends BaseActivity {
         search_back_btn.setOnClickListener(this);
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void initData() {
+        dao.getSearchHistory()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(searchHistoryBeans -> {
+                    switch (searchHistoryBeans.size()) {
+                        case 0:
+                            search_history_tv.setVisibility(View.GONE);
+                            break;
+                        case 1:
+                            search_history_tv.setVisibility(View.VISIBLE);
+                            search_history_tv1.setVisibility(View.VISIBLE);
+                            for (int i = 0; i < searchHistoryBeans.size(); i++) {
+                                search_history_tv1.setText(searchHistoryBeans.get(0).getSearchHistory());
+                            }
+                            break;
+                        case 2:
+                            search_history_tv.setVisibility(View.VISIBLE);
+                            search_history_tv1.setVisibility(View.VISIBLE);
+                            search_history_tv2.setVisibility(View.VISIBLE);
+                            for (int i = 0; i < searchHistoryBeans.size(); i++) {
+                                search_history_tv1.setText(searchHistoryBeans.get(0).getSearchHistory());
+                                search_history_tv2.setText(searchHistoryBeans.get(1).getSearchHistory());
+                            }
+                            break;
+                        case 3:
+                            search_history_tv.setVisibility(View.VISIBLE);
+                            search_history_tv1.setVisibility(View.VISIBLE);
+                            search_history_tv2.setVisibility(View.VISIBLE);
+                            search_history_tv3.setVisibility(View.VISIBLE);
+                            for (int i = 0; i < searchHistoryBeans.size(); i++) {
+                                search_history_tv1.setText(searchHistoryBeans.get(0).getSearchHistory());
+                                search_history_tv2.setText(searchHistoryBeans.get(1).getSearchHistory());
+                                search_history_tv3.setText(searchHistoryBeans.get(2).getSearchHistory());
+                            }
+                            break;
+                        case 4:
+                            search_history_tv.setVisibility(View.VISIBLE);
+                            search_history_tv1.setVisibility(View.VISIBLE);
+                            search_history_tv2.setVisibility(View.VISIBLE);
+                            search_history_tv3.setVisibility(View.VISIBLE);
+                            search_history_tv4.setVisibility(View.VISIBLE);
+                            for (int i = 0; i < searchHistoryBeans.size(); i++) {
+                                search_history_tv1.setText(searchHistoryBeans.get(0).getSearchHistory());
+                                search_history_tv2.setText(searchHistoryBeans.get(1).getSearchHistory());
+                                search_history_tv3.setText(searchHistoryBeans.get(2).getSearchHistory());
+                                search_history_tv4.setText(searchHistoryBeans.get(3).getSearchHistory());
+                            }
+                            break;
+                        case 5:
+                            search_history_tv.setVisibility(View.VISIBLE);
+                            search_history_tv1.setVisibility(View.VISIBLE);
+                            search_history_tv2.setVisibility(View.VISIBLE);
+                            search_history_tv3.setVisibility(View.VISIBLE);
+                            search_history_tv4.setVisibility(View.VISIBLE);
+                            search_history_tv5.setVisibility(View.VISIBLE);
+                            for (int i = 0; i < searchHistoryBeans.size(); i++) {
+                                search_history_tv1.setText(searchHistoryBeans.get(0).getSearchHistory());
+                                search_history_tv2.setText(searchHistoryBeans.get(1).getSearchHistory());
+                                search_history_tv3.setText(searchHistoryBeans.get(2).getSearchHistory());
+                                search_history_tv4.setText(searchHistoryBeans.get(3).getSearchHistory());
+                                search_history_tv5.setText(searchHistoryBeans.get(4).getSearchHistory());
+                            }
+                            break;
+                        case 6:
+                            search_history_tv.setVisibility(View.VISIBLE);
+                            search_history_tv1.setVisibility(View.VISIBLE);
+                            search_history_tv2.setVisibility(View.VISIBLE);
+                            search_history_tv3.setVisibility(View.VISIBLE);
+                            search_history_tv4.setVisibility(View.VISIBLE);
+                            search_history_tv5.setVisibility(View.VISIBLE);
+                            search_history_tv6.setVisibility(View.VISIBLE);
+                            for (int i = 0; i < searchHistoryBeans.size(); i++) {
+                                search_history_tv1.setText(searchHistoryBeans.get(0).getSearchHistory());
+                                search_history_tv2.setText(searchHistoryBeans.get(1).getSearchHistory());
+                                search_history_tv3.setText(searchHistoryBeans.get(2).getSearchHistory());
+                                search_history_tv4.setText(searchHistoryBeans.get(3).getSearchHistory());
+                                search_history_tv5.setText(searchHistoryBeans.get(4).getSearchHistory());
+                                search_history_tv6.setText(searchHistoryBeans.get(5).getSearchHistory());
+                            }
+                            break;
+                    }
+                });
+
         searchView.setOnSearchClickListener(v -> {
             search_make_content.setVisibility(View.GONE);
             search_content_tv.setVisibility(View.GONE);
@@ -79,16 +176,13 @@ public class SearchActivity extends BaseActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                //提交按钮的点击事件
-                //请求网络
-                Logger.e("searchView is onQueryTextSubmit+++");
+                searchHistoryBean.setSearchHistory(query);
+                new Thread(() -> dao.insert(searchHistoryBean)).start();
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                //输入框内容改变
-                Logger.e("searchView is onQueryTextChange-----");
                 return false;
             }
         });
@@ -106,7 +200,7 @@ public class SearchActivity extends BaseActivity {
 
     @Override
     public void emptyObject() {
-
+        db.RoomClose();
     }
 
     @Override
