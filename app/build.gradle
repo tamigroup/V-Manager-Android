@@ -9,6 +9,12 @@ android {
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
     buildTypes {
         debug {
@@ -63,6 +69,10 @@ dependencies {
     compile 'com.jwenfeng.pulltorefresh:library:1.2.7'
     //添加接待人用
     compile 'com.github.promeg:tinypinyin:1.0.0'
+    //room
+    api "android.arch.persistence.room:runtime:1.1.1"
+    api "android.arch.persistence.room:rxjava2:1.1.1"
+    annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
 }
 
 def buildTime() {

@@ -123,6 +123,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/search_content_tv1"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"/>
 
         <TextView
@@ -131,6 +132,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_25"
             android:text="@string/search_content_tv2"
+            android:visibility="gone"
             app:layout_constraintStart_toEndOf="@id/search_history_tv1"/>
 
         <TextView
@@ -140,6 +142,7 @@
             android:layout_marginLeft="@dimen/dp_25"
             android:layout_marginTop="@dimen/dp_25"
             android:text="@string/search_content_tv3"
+            android:visibility="gone"
             app:layout_constraintStart_toEndOf="@id/search_history_tv2"/>
 
         <TextView
@@ -149,6 +152,7 @@
             android:layout_marginLeft="@dimen/dp_25"
             android:layout_marginTop="@dimen/dp_25"
             android:text="@string/search_content_tv4"
+            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@+id/search_history_tv1"/>
 
         <TextView
@@ -158,6 +162,7 @@
             android:layout_marginLeft="@dimen/dp_25"
             android:layout_marginTop="@dimen/dp_25"
             android:text="@string/search_content_tv5"
+            android:visibility="gone"
             app:layout_constraintStart_toEndOf="@id/search_history_tv4"
             app:layout_constraintTop_toBottomOf="@+id/search_history_tv1"/>
 
@@ -168,6 +173,7 @@
             android:layout_marginLeft="@dimen/dp_25"
             android:layout_marginTop="@dimen/dp_25"
             android:text="@string/search_content_tv5"
+            android:visibility="gone"
             app:layout_constraintStart_toEndOf="@id/search_history_tv5"
             app:layout_constraintTop_toBottomOf="@+id/search_history_tv1"/>
     </android.support.constraint.ConstraintLayout>
