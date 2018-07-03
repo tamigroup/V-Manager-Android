@@ -80,6 +80,7 @@ public class SearchActivity extends BaseActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 //提交按钮的点击事件
+                //请求网络
                 Logger.e("searchView is onQueryTextSubmit+++");
                 return false;
             }
