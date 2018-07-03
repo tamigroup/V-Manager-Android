@@ -1,5 +1,7 @@
 package com.tami.vmanager.entity;
 
+import com.tami.vmanager.http.HttpKey;
+
 import java.io.Serializable;
 
 
@@ -9,7 +11,7 @@ import java.io.Serializable;
  * @author 代码生成器v1.0
  * 
  */
-public class GetMeetingItemsRequest implements Serializable{
+public class GetMeetingItemsRequest extends MobileMessage implements Serializable{
 
 	/**
 	 * 
@@ -46,5 +48,13 @@ public class GetMeetingItemsRequest implements Serializable{
 		this.startDate = startDate;
 	}
 
+	@Override
+	public String getRequestUrl() {
+		return HttpKey.GET_MEETING_ITEMS;
+	}
 
+	@Override
+	public Class getResponseClass() {
+		return GetMeetingItemsResponse.class;
+	}
 }

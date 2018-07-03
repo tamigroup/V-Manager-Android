@@ -1,10 +1,12 @@
 package com.tami.vmanager.activity;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.constraint.Group;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.GridLayoutManager;
@@ -31,6 +33,8 @@ import com.tami.vmanager.entity.CreateMeetingResponse;
 import com.tami.vmanager.entity.CreateVipGuestRequest;
 import com.tami.vmanager.entity.GetMeetingAddressListResponse;
 import com.tami.vmanager.entity.LoginResponse;
+import com.tami.vmanager.entity.UploadImageRequest;
+import com.tami.vmanager.entity.UploadImageResponse;
 import com.tami.vmanager.entity.UserListOfPositionResponse;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
@@ -53,11 +57,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
+
 /**
  * 首页中的创建会议
  * Created by why on 2018/6/13.
  */
-public class CreateMeetingRewriteActivity extends BaseActivity implements View.OnClickListener {
+public class CreateMeetingRewriteActivity extends BaseActivity implements View.OnClickListener, EasyPermissions.PermissionCallbacks {
 
     private Button saveBtn;//保存按钮
     //TOP侧面NAME-主要给TEXT文本框赋值*号
@@ -108,6 +115,11 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
     private final int EO_DAN = 0X00;
     //会议地址ID
     private int addressId = -1;
+    //图片路径
+    private String filePath = null;
+
+    public static final int REQUEST_EXTERNAL_STORAGE = 103;
+    public static final String[] PERMISSIONS_STORAGE = {Manifest.permission.READ_EXTERNAL_STORAGE};
 
     @Override
     public boolean isTitle() {
@@ -205,6 +217,25 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
     }
 
     @Override
+    @AfterPermissionGranted(REQUEST_EXTERNAL_STORAGE)
+    protected void onResume() {
+        super.onResume();
+        if (Build.VERSION.SDK_INT >= 23) {
+            //权限请求与判断
+            if (!EasyPermissions.hasPermissions(getApplicationContext(), PERMISSIONS_STORAGE)) {
+                EasyPermissions.requestPermissions(this, getString(R.string.app_name),
+                        REQUEST_EXTERNAL_STORAGE, PERMISSIONS_STORAGE);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null) {
@@ -249,7 +280,6 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
                     //从相册选取照片后返回
                     if (resultCode == RESULT_OK) {
                         if (data != null) {
-                            String filePath = "";
                             Uri originalUri = data.getData(); // 获得图片的uri
                             Logger.d("originalUri : " + originalUri);
                             if (originalUri != null) {
@@ -277,7 +307,8 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
         super.onClick(v);
         switch (v.getId()) {
             case R.id.acmr_save_btn:
-                save();
+//                save();
+                uploadImage();
                 break;
             case R.id.acmr_meeting_place:
                 meetingPlace();
@@ -365,6 +396,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
     private void deleteImage() {
         addImage.setImageResource(R.mipmap.create_meeting_add);
         imageGroup.setVisibility(View.GONE);
+        filePath = null;
     }
 
 
@@ -542,6 +574,17 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
         if (!isEmpty()) {
             return;
         }
+        if (!TextUtils.isEmpty(filePath)) {
+            uploadImage();
+            return;
+        }
+        createMeetingRequest(null);
+    }
+
+    /**
+     * 请求网络
+     */
+    private void createMeetingRequest(String eoUrl) {
         CreateMeetingRequest cmr = new CreateMeetingRequest();
         LoginResponse.Item item = GlobaVariable.getInstance().item;
         cmr.setSystemId(item.getSystemId());
@@ -559,7 +602,9 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
         if (receptionistListData != null && receptionistListData.size() > 0) {
             cmr.setVipReceiveUserId(getStringIds());
         }
-        cmr.setEoUrl("http://pic9.photophoto.cn/20081128/0033033999061521_b.jpg");
+        if (!TextUtils.isEmpty(eoUrl)) {
+            cmr.setEoUrl(eoUrl);
+        }
         cmr.setIsVzh(String.valueOf(switchButton.isChecked() ? 1 : 0));
         if (vipListData != null && vipListData.size() > 0) {
             cmr.setVipList(getVipList());
@@ -582,7 +627,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
     }
 
     /**
-     *
+     * 接待人员ID
      */
     private String getStringIds() {
         StringBuilder builder = new StringBuilder();
@@ -632,5 +677,43 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
             return false;
         }
         return true;
+    }
+
+    /**
+     * 上传图片
+     */
+    private void uploadImage() {
+        UploadImageRequest fmm = new UploadImageRequest();
+        fmm.filePath = new String[]{filePath};
+        networkBroker.uploadImage(fmm, (ex1, res) -> {
+            if (null != ex1) {
+                Logger.d(ex1.getMessage() + "-" + ex1);
+                return;
+            }
+            try {
+                UploadImageResponse response = (UploadImageResponse) res;
+                if (response.getCode() == 200) {
+                    if (response.data != null) {
+                        UploadImageResponse.Item item = response.data;
+                        if (item.dataList != null && item.dataList.size() > 0) {
+                            Logger.d("上传图片返回地址：" + item.dataList.get(0));
+                            createMeetingRequest(item.dataList.get(0));
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+        Logger.d("onPermissionsGranted:" + requestCode + ":" + perms.size());
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+        Logger.d("onPermissionsDenied:" + requestCode + ":" + perms.size());
     }
 }

@@ -60,6 +60,10 @@ public class HttpKey {
     public static final String CREATE_MEETING = "meeting/createMeeting";
     // 根据酒店ID查询会议厅List
     public static final String GET_MEETING_ADDRESS_LIST = "meeting/getMeetingAddressList";
+    // 查询系统内置的会议流程所有节点
+    public static final String GET_MEETING_ITEMS = "meeting/getMeetingItems";
+    // 图片上传
+    public static final String UPLOAD_IMAGE = "upload/uploadImage";
 
     //---------------------------------------------------------------------------
 

@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:layout_height="wrap_content">
 
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/icsf_line_number"
@@ -67,6 +66,7 @@
         android:hint="@string/editing_time"
         android:textColor="@color/color_3B89E9"
         android:textColorHint="@color/color_888888"
+        app:layout_goneMarginRight="@dimen/dp_20"
         android:textSize="@dimen/sp_16"
         app:layout_constraintBottom_toBottomOf="@+id/icsf_name"
         app:layout_constraintEnd_toStartOf="@+id/icsf_v_line"

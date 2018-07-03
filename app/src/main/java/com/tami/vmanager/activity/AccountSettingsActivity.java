@@ -148,7 +148,9 @@ public class AccountSettingsActivity extends BaseActivity {
     private void getUserNoticeConfig() {
         GetUserNoticeConfigRequest getUserNoticeConfigRequest = new GetUserNoticeConfigRequest();
         LoginResponse.Item item = GlobaVariable.getInstance().item;
-        getUserNoticeConfigRequest.setUserId(item.getId());
+        if (item != null) {
+            getUserNoticeConfigRequest.setUserId(item.getId());
+        }
         networkBroker.ask(getUserNoticeConfigRequest, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);
@@ -180,12 +182,14 @@ public class AccountSettingsActivity extends BaseActivity {
     public void setUserNoticeConfig() {
         SetUserNoticeConfigRequest setUserNoticeConfigRequest = new SetUserNoticeConfigRequest();
         LoginResponse.Item item = GlobaVariable.getInstance().item;
-        setUserNoticeConfigRequest.setUserId(item.getId());
+        if (item != null) {
+            setUserNoticeConfigRequest.setUserId(item.getId());
+        }
         setUserNoticeConfigRequest.setSystemNotice(String.valueOf(0));
-        setUserNoticeConfigRequest.setHostNotice(String.valueOf(sponsor.isChecked()?1:0));
+        setUserNoticeConfigRequest.setHostNotice(String.valueOf(sponsor.isChecked() ? 1 : 0));
         setUserNoticeConfigRequest.setMeetingNotice(String.valueOf(0));
-        setUserNoticeConfigRequest.setSatisfactionNotice(String.valueOf(satisfaction.isChecked()?1:0));
-        setUserNoticeConfigRequest.setGroupChatNotice(String.valueOf(groupChat.isChecked()?1:0));
+        setUserNoticeConfigRequest.setSatisfactionNotice(String.valueOf(satisfaction.isChecked() ? 1 : 0));
+        setUserNoticeConfigRequest.setGroupChatNotice(String.valueOf(groupChat.isChecked() ? 1 : 0));
         networkBroker.ask(setUserNoticeConfigRequest, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);

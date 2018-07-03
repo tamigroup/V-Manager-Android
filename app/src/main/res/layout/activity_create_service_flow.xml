@@ -6,32 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/default_bg">
 
-
-    <!--
-     <Button
-         android:id="@+id/acsf_submission"
-         android:layout_width="@dimen/dp_0"
-         android:layout_height="@dimen/dp_49"
-         android:background="@color/color_FF5657"
-         android:text="@string/submission"
-         android:textColor="@android:color/white"
-         android:textSize="@dimen/sp_17"
-         app:layout_constraintBottom_toBottomOf="parent"
-         app:layout_constraintEnd_toEndOf="parent"
-         app:layout_constraintStart_toStartOf="parent" />
-
-     <ListView
-         android:id="@+id/acsf_listView"
-         android:layout_width="@dimen/dp_0"
-         android:layout_height="@dimen/dp_0"
-         android:divider="@android:color/transparent"
-         android:dividerHeight="@dimen/dp_0"
-         android:background="@android:color/white"
-         app:layout_constraintBottom_toTopOf="@+id/acsf_submission"
-         app:layout_constraintEnd_toEndOf="parent"
-         app:layout_constraintStart_toStartOf="parent"
-         app:layout_constraintTop_toTopOf="parent" />
-    -->
     <android.support.constraint.ConstraintLayout
         android:id="@+id/acmr_save_layout"
         android:layout_width="@dimen/dp_0"
@@ -85,6 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_10"
                 android:background="@android:color/white"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -104,6 +79,13 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/acsf_bottom_recyclerview"
                 app:layout_goneMarginTop="@dimen/dp_10" />
+
+            <android.support.v4.widget.Space
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_10"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fcsf_add_process" />
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v4.widget.NestedScrollView>

@@ -5,16 +5,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.TextUtils;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tami.vmanager.activity.LoginActivity;
+import com.tami.vmanager.entity.FileMobileMessage;
 import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.entity.MobileMessage;
 import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.NetworkUtil;
 import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.builder.PostFormBuilder;
 import com.zhy.http.okhttp.builder.PostStringBuilder;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -147,7 +150,7 @@ public class NetworkBroker extends BaseBroker {
                     public void onResponse(String responseJson, int id) {
                         if (showLoading) loadingSubject.onNext(false);
                         Logger.d("接受报文:" + CancelTag + responseJson);
-                        Logger.d("getResponseClass:"  + request.getResponseClass());
+                        Logger.d("getResponseClass:" + request.getResponseClass());
                         try {
                             MobileMessage response = (MobileMessage) mapper.readValue(responseJson, request.getResponseClass());
 
@@ -295,5 +298,94 @@ public class NetworkBroker extends BaseBroker {
         if (statusCode == -1) return false;
 
         return statusCode == 0;
+    }
+
+    /**
+     * 上传图片
+     *
+     * @param request
+     * @param callback
+     */
+    public void uploadImage(final FileMobileMessage request, final FileUploadCallback callback) {
+        uploadImage(request, true, callback);
+    }
+
+    /**
+     * 上传图片
+     *
+     * @param request
+     * @param showLoading
+     * @param callback
+     */
+    public void uploadImage(final FileMobileMessage request, final boolean showLoading, final FileUploadCallback callback) {
+        final ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        // 网络未连接  chentong
+        if (!NetworkUtil.isConnectingToInternet(this.context)) {
+            callback.apply(new AccessException(-1, "未能连上网络"), null);
+            return;
+        }
+        Logger.d("发送报文:" + CancelTag + "上传文件");
+        String uri = BASE_URI + request.getRequestUrl();
+        if (showLoading) this.loadingSubject.onNext(true);
+        PostFormBuilder postFormBuilder = OkHttpUtils.post()
+                .url(uri)
+                .tag(CancelTag);
+        if (request.filePath != null && request.filePath.length > 0) {
+            for (String fileUrl : request.filePath) {
+                if(!TextUtils.isEmpty(fileUrl)){
+                    File file = new File(fileUrl);
+                    if(file.exists()){
+                        postFormBuilder.addFile("file", file.getName(), file);
+                    }
+                }
+            }
+        }
+        postFormBuilder
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception ex1, int id) {
+                        if (showLoading) loadingSubject.onNext(false);
+                        Logger.d("接受报文: 错误" + CancelTag + ex1.getLocalizedMessage());
+                        callback.apply(ex1, null);
+                        return;
+                    }
+
+                    @Override
+                    public void onResponse(String responseJson, int id) {
+                        if (showLoading) loadingSubject.onNext(false);
+                        Logger.d("接受报文:" + CancelTag + responseJson);
+                        Logger.d("getResponseClass:" + request.getResponseClass());
+                        try {
+                            FileMobileMessage response = (FileMobileMessage) mapper.readValue(responseJson, request.getResponseClass());
+
+                            int statusCode = response.getCode();
+                            String statusMessage = response.getMessage();
+
+                            if (statusCode == -1) {
+                                callback.apply(new AccessException(-1, "未知错误"), null);
+                            } else {
+                                int code = Integer.valueOf(statusCode);
+                                if (NO_AUTH == code) {
+//                                    // Session过期引起的重新登录
+//                                    LocalSettings.inst().clearLogin();
+                                    Intent intent = new Intent(context, LoginActivity.class);
+                                    context.startActivity(intent);
+                                } else if (UNKNOWN_ERR == code) {
+                                    callback.apply(new AccessException(-1, statusMessage), null);
+                                } else {
+                                    callback.apply(null, response);
+                                }
+                            }
+                        } catch (IOException ex2) {
+                            callback.apply(ex2, null);
+                        }
+                    }
+                });
+    }
+
+    public static interface FileUploadCallback {
+        public void apply(Exception ex, FileMobileMessage response);
     }
 }

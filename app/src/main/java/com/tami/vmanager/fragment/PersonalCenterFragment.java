@@ -25,6 +25,8 @@ import com.tami.vmanager.base.BaseFragment;
 import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.entity.UpdateUserIconRequest;
 import com.tami.vmanager.entity.UpdateUserIconResponse;
+import com.tami.vmanager.entity.UploadImageRequest;
+import com.tami.vmanager.entity.UploadImageResponse;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.GetImagePath;
@@ -241,8 +243,10 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
                     Logger.d("onActivityResult()---headClipFile : " + headClipFile.getAbsolutePath());
                     addPicToGallery(headIconFile.getAbsolutePath());
                     addPicToGallery(headClipFile.getAbsolutePath());
-                    Bitmap bm = BitmapFactory.decodeFile(headClipFile.getAbsolutePath());
-                    avatar_image.setImageBitmap(bm);
+                    avatar_image.setImageBitmap(BitmapFactory.decodeFile(headClipFile.getAbsolutePath()));
+                    if (!TextUtils.isEmpty(headClipFile.getAbsolutePath())) {
+                        uploadImage();
+                    }
                 } else {
                     Logger.d("onActivityResult()---resultCode : " + resultCode);
                 }
@@ -368,24 +372,64 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
         Logger.d("onPermissionsDenied:" + requestCode + ":" + perms.size());
     }
 
-    public void updateUserIcon() {
+    public void updateUserIcon(String imageUrl) {
         UpdateUserIconRequest updateUserIconRequest = new UpdateUserIconRequest();
         LoginResponse.Item item = GlobaVariable.getInstance().item;
-        updateUserIconRequest.setUserId(item.getId());
-        updateUserIconRequest.setIconUrl("");
+        if (item != null) {
+            updateUserIconRequest.setUserId(item.getId());
+        }
+        updateUserIconRequest.setIconUrl(imageUrl);
         networkBroker.ask(updateUserIconRequest, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);
+                showToast(getString(R.string.replace_head_image_failure));
                 return;
             }
             try {
                 UpdateUserIconResponse response = (UpdateUserIconResponse) res;
                 if (response.getCode() == 200) {
+                    GlobaVariable.getInstance().item.setIconUrl(imageUrl);
+                    showToast(getString(R.string.replace_head_image_successfully));
+                } else {
+                    showToast(getString(R.string.replace_head_image_failure));
                 }
             } catch (Exception e) {
+                showToast(getString(R.string.replace_head_image_failure));
                 e.printStackTrace();
             }
 
+        });
+    }
+
+    /**
+     * 上传图片
+     */
+    private void uploadImage() {
+        UploadImageRequest fmm = new UploadImageRequest();
+        fmm.filePath = new String[]{headClipFile.getPath()};
+        networkBroker.uploadImage(fmm, (ex1, res) -> {
+            if (null != ex1) {
+                Logger.d(ex1.getMessage() + "-" + ex1);
+                showToast(getString(R.string.replace_head_image_failure));
+                return;
+            }
+            try {
+                UploadImageResponse response = (UploadImageResponse) res;
+                if (response.getCode() == 200) {
+                    if (response.data != null) {
+                        UploadImageResponse.Item item = response.data;
+                        if (item.dataList != null && item.dataList.size() > 0) {
+                            Logger.d("上传图片返回地址：" + item.dataList.get(0));
+                            updateUserIcon(item.dataList.get(0));
+                        } else {
+                            showToast(getString(R.string.replace_head_image_failure));
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                showToast(getString(R.string.replace_head_image_failure));
+                e.printStackTrace();
+            }
         });
     }
 }

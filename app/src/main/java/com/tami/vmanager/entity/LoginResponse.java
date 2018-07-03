@@ -40,18 +40,12 @@ public class LoginResponse extends MobileMessage implements Serializable {
         @JsonInclude(Include.NON_NULL)
         public static class ElementUserRoleList {
 
-            private String userId;
-
-            /**
-             * @return 用户ID
-             */
-            public String getUserId() {
-                return userId;
-            }
-
-            public void setUserId(String userId) {
-                this.userId = userId;
-            }
+            public	Integer	id;	/*1*/
+            public	Integer	status;	/*0*/
+            public	Integer	userId;	/*1*/
+            public	String	createOn;	/*2018-05-22 08:17:24*/
+            public	String	updateOn;	/*2018-05-22 08:17:22*/
+            public	Integer	roleId;	/*2*/
         }
 
         private String createOn;
