@@ -57,10 +57,8 @@ dependencies {
     compile 'com.fasterxml.jackson.core:jackson-core:2.9.6'
     compile 'com.fasterxml.jackson.core:jackson-annotations:2.9.6'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.9.6'
-    compile 'io.reactivex:rxjava:1.0.13'
-    compile 'io.reactivex:rxandroid:1.0.1'
-//    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
-//    implementation 'io.reactivex.rxjava2:rxjava:2.x.x'
+    api 'io.reactivex.rxjava2:rxandroid:2.0.2'
+    api 'io.reactivex.rxjava2:rxjava:2.1.12'
     //下拉刷新上拉加载更多
     compile 'com.jwenfeng.pulltorefresh:library:1.2.7'
     //添加接待人用

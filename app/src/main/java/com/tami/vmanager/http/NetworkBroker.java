@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
+
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tami.vmanager.activity.LoginActivity;
@@ -16,12 +17,14 @@ import com.tami.vmanager.utils.NetworkUtil;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.builder.PostStringBuilder;
 import com.zhy.http.okhttp.callback.StringCallback;
+
 import java.io.File;
 import java.io.IOException;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.subjects.BehaviorSubject;
 import okhttp3.Call;
 import okhttp3.MediaType;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.subjects.BehaviorSubject;
 
 /**
  * 网络访问代理

@@ -4,8 +4,6 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.HandlerThread;
 
-import rx.Scheduler;
-import rx.android.schedulers.HandlerScheduler;
 
 /**
  * Created by guoyu
@@ -31,7 +29,7 @@ public class BaseBroker {
      *
      * @return IO调度器
      */
-    protected Scheduler IOScheduler() {
-        return HandlerScheduler.from(BaseBroker.ioHandler);
-    }
+//    protected Scheduler IOScheduler() {
+//        return HandlerScheduler.from(BaseBroker.ioHandler);
+//    }
 }
