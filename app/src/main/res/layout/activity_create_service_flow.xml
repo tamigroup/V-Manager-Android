@@ -7,28 +7,104 @@
     android:background="@color/default_bg">
 
 
-    <Button
-        android:id="@+id/acsf_submission"
+    <!--
+     <Button
+         android:id="@+id/acsf_submission"
+         android:layout_width="@dimen/dp_0"
+         android:layout_height="@dimen/dp_49"
+         android:background="@color/color_FF5657"
+         android:text="@string/submission"
+         android:textColor="@android:color/white"
+         android:textSize="@dimen/sp_17"
+         app:layout_constraintBottom_toBottomOf="parent"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toStartOf="parent" />
+
+     <ListView
+         android:id="@+id/acsf_listView"
+         android:layout_width="@dimen/dp_0"
+         android:layout_height="@dimen/dp_0"
+         android:divider="@android:color/transparent"
+         android:dividerHeight="@dimen/dp_0"
+         android:background="@android:color/white"
+         app:layout_constraintBottom_toTopOf="@+id/acsf_submission"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="parent" />
+    -->
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/acmr_save_layout"
         android:layout_width="@dimen/dp_0"
-        android:layout_height="@dimen/dp_49"
-        android:background="@color/color_FF5657"
-        android:text="@string/submission"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/sp_17"
+        android:layout_height="@dimen/dp_79"
+        android:background="@android:color/white"
+        android:padding="@dimen/dp_15"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
 
-    <ListView
-        android:id="@+id/acsf_listView"
+        <Button
+            android:id="@+id/acsf_save_btn"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="@dimen/dp_49"
+            android:background="@drawable/item_meeting_attention_bg"
+            android:text="@string/save"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/sp_17"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/acsf_nestedscrollview"
         android:layout_width="@dimen/dp_0"
         android:layout_height="@dimen/dp_0"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="@dimen/dp_0"
-        android:background="@android:color/white"
-        app:layout_constraintBottom_toTopOf="@+id/acsf_submission"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@+id/acmr_save_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/acsf_top_recyclerview"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/acsf_bottom_recyclerview"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@android:color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/acsf_top_recyclerview" />
+
+            <TextView
+                android:id="@+id/fcsf_add_process"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@android:color/white"
+                android:gravity="center"
+                android:text="@string/add_process"
+                android:textColor="@color/color_3B89E9"
+                android:textSize="@dimen/sp_16"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/acsf_bottom_recyclerview"
+                app:layout_goneMarginTop="@dimen/dp_10" />
+
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v4.widget.NestedScrollView>
 </android.support.constraint.ConstraintLayout>

@@ -1,7 +1,6 @@
 package com.tami.vmanager.entity;
 
 import java.io.Serializable;
-
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -10,81 +9,47 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
  * 根据酒店ID查询会议厅List.服务端响应
- * 
+ *
  * @author 代码生成器v1.0
- * 
  */
 @JsonInclude(Include.NON_NULL)
-public class GetMeetingAddressListResponse extends MobileMessage implements Serializable{
+public class GetMeetingAddressListResponse extends MobileMessage implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    public static final long serialVersionUID = 1L;
 
+    public GetMeetingAddressListResponse() {
+        super();
+    }
 
-	/**
-	 * @see com.bwapi.TM.message.entity.GetMeetingAddressListResponse#getDataList
-	 * 
-	 */
-	@JsonInclude(Include.NON_NULL)
-	public static class ElementDataList {
+    public Array data;
 
-		private String area;
-		private String id;
-		private String name;
+    public static class Array {
 
-		/**
-		 * @return 
-		 */
-		public String getArea() {
-			return area;
-		}
+        public List<Item> dataList;
 
-		public void setArea(String area) {
-			this.area = area;
-		}
+        /**
+         */
+        @JsonInclude(Include.NON_NULL)
+        public static class Item implements Serializable {
 
-		/**
-		 * @return 
-		 */
-		public String getId() {
-			return id;
-		}
+            private static final long serialVersionUID = -5431030678043923508L;
+            public int id;	/*3*/
+            public String position;	/*Object*/
+            public int area;	/*0*/
+            public int orderBy;	/*2*/
+            public int status;	/*0*/
+            public String name;	/*醉仙翁*/
+            public String mark;	/*喝酒的地方*/
+            public int systemId;	/*4*/
+            public int maxNum;	/*0*/
+            public Long createOn;	/*1528107162000*/
+            public Long updateOn;	/*1528107166000*/
 
-		public void setId(String id) {
-			this.id = id;
-		}
+            public boolean isState;
+        }
+    }
 
-		/**
-		 * @return 
-		 */
-		public String getName() {
-			return name;
-		}
-
-		public void setName(String name) {
-			this.name = name;
-		}
-	}
-
-	private List<ElementDataList> dataList;
-
-	public GetMeetingAddressListResponse() {
-		super();
-	}
-
-	
-
-
-	/**
-	 * @return 
-	 */
-	public List<ElementDataList> getDataList() {
-		return dataList;
-	}
-
-	public void setDataList(List<ElementDataList> dataList) {
-		this.dataList = dataList;
-	}
 }

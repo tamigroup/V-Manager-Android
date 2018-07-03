@@ -8,20 +8,18 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
-
 import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.RecycleViewDivider;
 import com.tami.vmanager.base.BaseActivity;
+import com.tami.vmanager.entity.GetMeetingAddressListRequest;
+import com.tami.vmanager.entity.GetMeetingAddressListResponse;
 import com.tami.vmanager.entity.LoginResponse;
-import com.tami.vmanager.entity.MeetingPlaceSelectRequest;
-import com.tami.vmanager.entity.MeetingPlaceSelectResponse;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,8 +31,8 @@ public class MeetingPlaceSelectActivity extends BaseActivity {
 
     private Button confirm;
     private RecyclerView recyclerView;
-    private List<MeetingPlaceSelectResponse.Item> listData;
-    private CommonAdapter<MeetingPlaceSelectResponse.Item> commonAdapter;
+    private List<GetMeetingAddressListResponse.Array.Item> listData;
+    private CommonAdapter<GetMeetingAddressListResponse.Array.Item> commonAdapter;
     private int onClick = -1;
     private NetworkBroker networkBroker;
 
@@ -68,14 +66,14 @@ public class MeetingPlaceSelectActivity extends BaseActivity {
         recyclerView.addItemDecoration(new RecycleViewDivider(getApplicationContext(), LinearLayoutManager.HORIZONTAL,
                 1, ContextCompat.getColor(getApplicationContext(), R.color.color_EAEAEA)));
         recyclerView.setLayoutManager(layoutManager);
-        getData();
-        commonAdapter = new CommonAdapter<MeetingPlaceSelectResponse.Item>(getApplicationContext(), R.layout.item_meeting_place, listData) {
+        listData = new ArrayList<>();
+        commonAdapter = new CommonAdapter<GetMeetingAddressListResponse.Array.Item>(getApplicationContext(), R.layout.item_meeting_place, listData) {
             @Override
-            protected void convert(ViewHolder holder, MeetingPlaceSelectResponse.Item item, int position) {
-                holder.setText(R.id.imp_name, item.getName());
+            protected void convert(ViewHolder holder, GetMeetingAddressListResponse.Array.Item item, int position) {
+                holder.setText(R.id.imp_name, item.name);
                 ConstraintLayout constraintLayout = holder.getView(R.id.imp_layout);
                 AppCompatImageView imageView = holder.getView(R.id.imp_selected);
-                imageView.setVisibility(item.isState() ? View.VISIBLE : View.GONE);
+                imageView.setVisibility(item.isState ? View.VISIBLE : View.GONE);
                 constraintLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -83,8 +81,8 @@ public class MeetingPlaceSelectActivity extends BaseActivity {
                             AppCompatImageView onClickView = recyclerView.getChildAt(onClick).findViewById(R.id.imp_selected);
                             onClickView.setVisibility(View.GONE);
                         }
-                        item.setState(!item.isState());
-                        imageView.setVisibility(item.isState() ? View.VISIBLE : View.GONE);
+                        item.isState = !item.isState;
+                        imageView.setVisibility(item.isState ? View.VISIBLE : View.GONE);
                         onClick = position;
                     }
                 });
@@ -98,7 +96,7 @@ public class MeetingPlaceSelectActivity extends BaseActivity {
 
     @Override
     public void requestNetwork() {
-//        getMeetingPlace();
+        getMeetingPlace();
     }
 
     @Override
@@ -123,42 +121,36 @@ public class MeetingPlaceSelectActivity extends BaseActivity {
 
     private void confirm() {
         Intent intent = new Intent();
-        MeetingPlaceSelectResponse.Item item = listData.get(onClick);
+        GetMeetingAddressListResponse.Array.Item item = listData.get(onClick);
         intent.putExtra(Constants.RESULT_DIDIAN, item);
         setResult(Constants.CREATE_MEETING_DIDIAN, intent);
         finish();
-    }
-
-
-    private void getData() {
-        listData = new ArrayList<MeetingPlaceSelectResponse.Item>();
-        for (int i = 0; i < 20; i++) {
-            MeetingPlaceSelectResponse.Item item = new MeetingPlaceSelectResponse.Item();
-            item.setId(i);
-            item.setName("name" + i);
-            item.setState(false);
-            listData.add(item);
-        }
     }
 
     /**
      * 获取会议地点列表
      */
     private void getMeetingPlace() {
-        MeetingPlaceSelectRequest meetingPlaceSelectRequest = new MeetingPlaceSelectRequest();
+        GetMeetingAddressListRequest gma = new GetMeetingAddressListRequest();
         LoginResponse.Item item = GlobaVariable.getInstance().item;
         if (item != null) {
-            meetingPlaceSelectRequest.setUserId(item.getId());
+            gma.setSystemId(item.getSystemId());
         }
-        networkBroker.ask(meetingPlaceSelectRequest, (ex1, res) -> {
+        networkBroker.ask(gma, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);
                 return;
             }
             try {
-                MeetingPlaceSelectResponse response = (MeetingPlaceSelectResponse) res;
+                GetMeetingAddressListResponse response = (GetMeetingAddressListResponse) res;
                 if (response.getCode() == 200) {
-
+                    if (response.data != null) {
+                        GetMeetingAddressListResponse.Array array = response.data;
+                        if (array != null && array.dataList != null && array.dataList.size() > 0) {
+                            listData.addAll(array.dataList);
+                            commonAdapter.notifyDataSetChanged();
+                        }
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();

@@ -54,25 +54,25 @@ public class UserListOfPositionResponse extends MobileMessage implements Seriali
             public static class ContentList implements Parcelable {
 
                 public String registrationId;	/**/
-                public Integer status;	/*0*/
+                public int status;	/*0*/
                 public String iconUrl;	/**/
                 public String systemName;	/**/
                 public String depName;	/**/
-                public Integer depId;	/*5*/
+                public int depId;	/*5*/
                 public String password;	/*63fb221131c62409a33301d16ee08c9f*/
-                public Integer fromPlat;	/*1*/
-                public Integer id;	/*14*/
+                public int fromPlat;	/*1*/
+                public int id;	/*14*/
                 public String nickName;	/*测试用户1*/
                 public String token;	/**/
-                public Integer positionId;	/*5*/
-                public Integer isAdmin;	/*1*/
+                public int positionId;	/*5*/
+                public int isAdmin;	/*1*/
                 public String realName;	/*测试用户1*/
-                public Integer systemId;	/*4*/
+                public int systemId;	/*4*/
                 public String userRoleList;	/**/
                 public String positionName;	/**/
                 public Long createOn;	/*1528092185000*/
                 public Long updateOn;	/*1528092185000*/
-                public Integer roleId;	/*0*/
+                public int roleId;	/*0*/
                 public String mobile;	/*13300000000*/
 
                 public boolean isSelected;
@@ -114,25 +114,25 @@ public class UserListOfPositionResponse extends MobileMessage implements Seriali
 
                 protected ContentList(Parcel in) {
                     this.registrationId = in.readString();
-                    this.status = (Integer) in.readValue(Integer.class.getClassLoader());
+                    this.status = (int) in.readValue(int.class.getClassLoader());
                     this.iconUrl = in.readString();
                     this.systemName = in.readString();
                     this.depName = in.readString();
-                    this.depId = (Integer) in.readValue(Integer.class.getClassLoader());
+                    this.depId = (int) in.readValue(int.class.getClassLoader());
                     this.password = in.readString();
-                    this.fromPlat = (Integer) in.readValue(Integer.class.getClassLoader());
-                    this.id = (Integer) in.readValue(Integer.class.getClassLoader());
+                    this.fromPlat = (int) in.readValue(int.class.getClassLoader());
+                    this.id = (int) in.readValue(int.class.getClassLoader());
                     this.nickName = in.readString();
                     this.token = in.readString();
-                    this.positionId = (Integer) in.readValue(Integer.class.getClassLoader());
-                    this.isAdmin = (Integer) in.readValue(Integer.class.getClassLoader());
+                    this.positionId = (int) in.readValue(int.class.getClassLoader());
+                    this.isAdmin = (int) in.readValue(int.class.getClassLoader());
                     this.realName = in.readString();
-                    this.systemId = (Integer) in.readValue(Integer.class.getClassLoader());
+                    this.systemId = (int) in.readValue(int.class.getClassLoader());
                     this.userRoleList = in.readString();
                     this.positionName = in.readString();
                     this.createOn = (Long) in.readValue(Long.class.getClassLoader());
                     this.updateOn = (Long) in.readValue(Long.class.getClassLoader());
-                    this.roleId = (Integer) in.readValue(Integer.class.getClassLoader());
+                    this.roleId = (int) in.readValue(int.class.getClassLoader());
                     this.mobile = in.readString();
                     this.isSelected = in.readByte() != 0;
                 }

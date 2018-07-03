@@ -22,13 +22,20 @@ import android.widget.TextView;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
+import com.squareup.picasso.Picasso;
 import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.RecyclerItemDecoration;
 import com.tami.vmanager.base.BaseActivity;
+import com.tami.vmanager.entity.CreateMeetingRequest;
+import com.tami.vmanager.entity.CreateMeetingResponse;
 import com.tami.vmanager.entity.CreateVipGuestRequest;
-import com.tami.vmanager.entity.MeetingPlaceSelectResponse;
+import com.tami.vmanager.entity.GetMeetingAddressListResponse;
+import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.entity.UserListOfPositionResponse;
+import com.tami.vmanager.http.NetworkBroker;
+import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Constants;
+import com.tami.vmanager.utils.FileSizeUtil;
 import com.tami.vmanager.utils.GetImagePath;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.ScreenUtil;
@@ -77,8 +84,8 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
     private TextView meetingLevel;
     //接待人
     private RecyclerView receptionistList;
-    private List<String> receptionistListData;
-    private CommonAdapter<String> receptionistListAdapter;
+    private List<UserListOfPositionResponse.Item.TitleItem.ContentList> receptionistListData;
+    private CommonAdapter<UserListOfPositionResponse.Item.TitleItem.ContentList> receptionistListAdapter;
     //Vip介绍
     private RecyclerView vipRecyclerView;
     private List<CreateVipGuestRequest> vipListData;
@@ -96,8 +103,11 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
     private Date recordEndDate;//记录结束时间
     private int meetingLevelIndex = 0;//会议级别
 
+    private NetworkBroker networkBroker;
     private final String IMAGE_TYPE = "image/*";
     private final int EO_DAN = 0X00;
+    //会议地址ID
+    private int addressId = -1;
 
     @Override
     public boolean isTitle() {
@@ -169,6 +179,8 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
     @Override
     public void initData() {
         setTitleName(R.string.create_meeting);
+        networkBroker = new NetworkBroker(this);
+        networkBroker.setCancelTag(getTAG());
         //文本加*操作
         initTextView();
         //初始化接待人列表
@@ -189,6 +201,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
 
     @Override
     public void emptyObject() {
+        networkBroker.cancelAllRequests();
     }
 
     @Override
@@ -197,19 +210,34 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
         if (data != null) {
             switch (requestCode) {
                 case Constants.CREATE_MEETING_DIDIAN:
-                    Logger.d("开会地点选择返回-------->");
-                    MeetingPlaceSelectResponse.Item item = (MeetingPlaceSelectResponse.Item) data.getSerializableExtra(Constants.RESULT_DIDIAN);
-                    if (item != null && !TextUtils.isEmpty(item.getName())) {
-                        meeetingPlaceView.setText(item.getName());
+                    //开会地点选择返回
+                    GetMeetingAddressListResponse.Array.Item item = (GetMeetingAddressListResponse.Array.Item) data.getSerializableExtra(Constants.RESULT_DIDIAN);
+                    if (item != null && !TextUtils.isEmpty(item.name)) {
+                        meeetingPlaceView.setText(item.name);
+                        addressId = item.id;
                     }
                     break;
                 case Constants.CREATE_MEETING_JIEDAIREN:
-                    Logger.d("接待人返回-------->");
+                    //接待人返回
                     List<UserListOfPositionResponse.Item.TitleItem.ContentList> itemList = data.getParcelableArrayListExtra(Constants.RESULT_JIEDAIREN);
-                    Logger.d("itemList:" + itemList.size());
+                    if (itemList != null && itemList.size() > 0) {
+                        for (UserListOfPositionResponse.Item.TitleItem.ContentList cl : itemList) {
+                            boolean flag = true;
+                            for (UserListOfPositionResponse.Item.TitleItem.ContentList rld : receptionistListData) {
+                                if (cl.id == rld.id) {
+                                    flag = false;
+                                    break;
+                                }
+                            }
+                            if (flag) {
+                                receptionistListData.add(0, cl);
+                            }
+                        }
+                        receptionistListAdapter.notifyDataSetChanged();
+                    }
                     break;
                 case Constants.CREATE_MEETING_VIP:
-                    Logger.d("VIP人物介绍返回-------->");
+                    //VIP人物介绍返回
                     CreateVipGuestRequest cvgrItem = (CreateVipGuestRequest) data.getSerializableExtra(Constants.RESULT_VIP);
                     if (cvgrItem != null) {
                         int index = vipListData.size() - 1;
@@ -218,7 +246,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
                     }
                     break;
                 case EO_DAN:
-                    Logger.d("从相册选取照片后返回....");
+                    //从相册选取照片后返回
                     if (resultCode == RESULT_OK) {
                         if (data != null) {
                             String filePath = "";
@@ -228,16 +256,21 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
                                 addImage.setImageURI(originalUri);
                                 filePath = GetImagePath.getPath(getApplicationContext(), originalUri);
                             }
-                            Logger.d("filePath : " + filePath);
-                            File sdCard = Environment.getExternalStorageDirectory();
-                            File file = new File(sdCard,filePath);
-                            Logger.d("filePath.length() : " + filePath.length());
+                            if (!TextUtils.isEmpty(filePath)) {
+                                File file = new File(filePath);
+                                if (file.exists()) {
+                                    imageName.setText(file.getName());
+                                    imageSize.setText(FileSizeUtil.getAutoFileOrFilesSize(filePath));
+                                    imageGroup.setVisibility(View.VISIBLE);
+                                }
+                            }
                         }
                     }
                     break;
             }
         }
     }
+
 
     @Override
     public void onClick(View v) {
@@ -271,7 +304,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
      * 保存按钮
      */
     private void save() {
-
+        createMeeting();
     }
 
     /**
@@ -292,7 +325,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
      * 结束时间
      */
     private void endTime() {
-        createTime(endTimeView, true, recordEndDate);
+        createTime(endTimeView, false, recordEndDate);
     }
 
     /**
@@ -330,7 +363,8 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
      * 删除图片EO单
      */
     private void deleteImage() {
-
+        addImage.setImageResource(R.mipmap.create_meeting_add);
+        imageGroup.setVisibility(View.GONE);
     }
 
 
@@ -366,16 +400,16 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
         receptionistList.addItemDecoration(new RecyclerItemDecoration(ScreenUtil.dip2px(getApplicationContext(), 20), 3));
         receptionistList.setLayoutManager(layoutManage);
         receptionistListData = new ArrayList<>();
-        receptionistListData.add("");
-        receptionistListAdapter = new CommonAdapter<String>(getApplicationContext(), R.layout.item_create_meeting_receptionist, receptionistListData) {
+        UserListOfPositionResponse.Item.TitleItem.ContentList item = new UserListOfPositionResponse.Item.TitleItem.ContentList();
+        item.id = -1000;
+        receptionistListData.add(item);
+
+        receptionistListAdapter = new CommonAdapter<UserListOfPositionResponse.Item.TitleItem.ContentList>(getApplicationContext(), R.layout.item_create_meeting_receptionist, receptionistListData) {
             @Override
-            protected void convert(ViewHolder holder, String s, int position) {
+            protected void convert(ViewHolder holder, UserListOfPositionResponse.Item.TitleItem.ContentList contentList, int position) {
                 Group group = holder.getView(R.id.icmr_group);
                 AppCompatImageView defaultImage = holder.getView(R.id.icmr_default_image);
-                if (receptionistListData.size() - 1 != position) {
-                    group.setVisibility(View.VISIBLE);
-                    defaultImage.setVisibility(View.GONE);
-                } else {
+                if (contentList.id == -1000) {
                     group.setVisibility(View.GONE);
                     defaultImage.setVisibility(View.VISIBLE);
                     defaultImage.setOnClickListener(new View.OnClickListener() {
@@ -385,10 +419,23 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
                         }
                     });
                     return;
+                } else {
+                    group.setVisibility(View.VISIBLE);
+                    defaultImage.setVisibility(View.GONE);
+                    CircleImageView avatarImage = holder.getView(R.id.icmr_avatar_image);
+                    if (!TextUtils.isEmpty(contentList.iconUrl)) {
+                        Picasso.get().load(contentList.iconUrl).into(avatarImage);
+                    }
+                    AppCompatImageView deleteImage = holder.getView(R.id.icmr_delete_image);
+                    deleteImage.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            receptionistListData.remove(position);
+                            receptionistListAdapter.notifyDataSetChanged();
+                        }
+                    });
+                    holder.setText(R.id.icmr_name, contentList.realName);
                 }
-                CircleImageView avatarImage = holder.getView(R.id.icmr_avatar_image);
-                AppCompatImageView deleteImage = holder.getView(R.id.icmr_delete_image);
-                holder.setText(R.id.icmr_name, s);
             }
         };
         receptionistList.setAdapter(receptionistListAdapter);
@@ -409,9 +456,18 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
             protected void convert(ViewHolder holder, CreateVipGuestRequest item, int position) {
                 Group group = holder.getView(R.id.icmpi_group);
                 AppCompatImageView defaultImage = holder.getView(R.id.icmpi_default_image);
-                if (vipListData.size() - 1 != position) {
+                if (!TextUtils.isEmpty(item.getName())) {
                     group.setVisibility(View.VISIBLE);
                     defaultImage.setVisibility(View.GONE);
+                    AppCompatImageView deleteImage = holder.getView(R.id.icmpi_delete);
+                    deleteImage.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            vipListData.remove(position);
+                            vipAdapter.notifyDataSetChanged();
+                        }
+                    });
+                    holder.setText(R.id.icmpi_name, item.getName());
                 } else {
                     group.setVisibility(View.GONE);
                     defaultImage.setVisibility(View.VISIBLE);
@@ -423,15 +479,6 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
                     });
                     return;
                 }
-                AppCompatImageView deleteImage = holder.getView(R.id.icmpi_delete);
-                deleteImage.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        vipListData.remove(position);
-                        vipAdapter.notifyDataSetChanged();
-                    }
-                });
-                holder.setText(R.id.icmpi_name, item.getName());
             }
         };
         vipRecyclerView.setAdapter(vipAdapter);
@@ -461,9 +508,9 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
                 } else {
                     recordEndDate = date;
                 }
-                view.setText(TimeUtils.date2String(date, TimeUtils.DATE_YYYYMMDDHHMM_SLASH));
+                view.setText(TimeUtils.date2String(date));
             }
-        }).setType(new boolean[]{true, true, true, true, true, false})
+        }).setType(new boolean[]{true, true, true, true, true, true})
                 .setDate(selectedDate)// 如果不设置的话，默认是系统时间*/
                 .setRangDate(startDate, endDate)//起始终止年月日设定
                 .isDialog(true)//是否显示为对话框样式
@@ -486,5 +533,104 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
             }
         }
         pvTime.show(view);
+    }
+
+    /**
+     * 创建会议
+     */
+    private void createMeeting() {
+        if (!isEmpty()) {
+            return;
+        }
+        CreateMeetingRequest cmr = new CreateMeetingRequest();
+        LoginResponse.Item item = GlobaVariable.getInstance().item;
+        cmr.setSystemId(item.getSystemId());
+        cmr.setMeetingName(nameView.getText().toString());
+        cmr.setSponsorName(sponsorView.getText().toString());
+        cmr.setCreateMeetingUserId(item.getId());
+        cmr.setMeetingAddressId(String.valueOf(addressId));
+        cmr.setStartDate(TimeUtils.date2String(recordStartDate));
+        cmr.setEndDate(TimeUtils.date2String(recordEndDate));
+        cmr.setContractMoney(contractAmountView.getText().toString());
+        cmr.setPayMoney(receivedAmountView.getText().toString());
+        cmr.setEstimateNum(estimatedNumberPeople.getText().toString());
+        cmr.setMinNum(bottomNumberPeople.getText().toString());
+        cmr.setIsImportant(String.valueOf(meetingLevelIndex));
+        if (receptionistListData != null && receptionistListData.size() > 0) {
+            cmr.setVipReceiveUserId(getStringIds());
+        }
+        cmr.setEoUrl("http://pic9.photophoto.cn/20081128/0033033999061521_b.jpg");
+        cmr.setIsVzh(String.valueOf(switchButton.isChecked() ? 1 : 0));
+        if (vipListData != null && vipListData.size() > 0) {
+            cmr.setVipList(getVipList());
+        }
+        networkBroker.ask(cmr, (ex1, res) -> {
+            if (null != ex1) {
+                Logger.d(ex1.getMessage() + "-" + ex1);
+                return;
+            }
+            try {
+                CreateMeetingResponse response = (CreateMeetingResponse) res;
+                if (response.getCode() == 200) {
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        });
+    }
+
+    /**
+     *
+     */
+    private String getStringIds() {
+        StringBuilder builder = new StringBuilder();
+        for (UserListOfPositionResponse.Item.TitleItem.ContentList contentList : receptionistListData) {
+            if (contentList.id != -1000) {
+                builder.append(contentList.id);
+                builder.append(",");
+            }
+        }
+        return builder.substring(0, builder.length() - 1).toString();
+    }
+
+    /**
+     * 获取VIP内容
+     *
+     * @return
+     */
+    private List<CreateMeetingRequest.Item> getVipList() {
+        List<CreateMeetingRequest.Item> listIemt = new ArrayList<>();
+        for (CreateVipGuestRequest cvgr : vipListData) {
+            CreateMeetingRequest.Item item = new CreateMeetingRequest.Item();
+            item.setSystemId(cvgr.getSystemId());
+            item.getName(cvgr.getName());
+            item.setIntro(cvgr.getIntro());
+            listIemt.add(item);
+        }
+        return listIemt;
+    }
+
+    /**
+     * 为空验证
+     *
+     * @return
+     */
+    private boolean isEmpty() {
+        if (TextUtils.isEmpty(nameView.getText())
+                || TextUtils.isEmpty(sponsorView.getText())
+                || addressId == -1
+                || recordStartDate == null
+                || recordEndDate == null
+                || TextUtils.isEmpty(contractAmountView.getText())
+                || TextUtils.isEmpty(receivedAmountView.getText())
+                || TextUtils.isEmpty(estimatedNumberPeople.getText())
+                || TextUtils.isEmpty(bottomNumberPeople.getText())
+                ) {
+            showToast("必添项不可为空！");
+            return false;
+        }
+        return true;
     }
 }

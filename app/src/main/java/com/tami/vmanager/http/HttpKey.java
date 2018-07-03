@@ -56,7 +56,10 @@ public class HttpKey {
     public static final String USER_LIST_OF_POSITION = "user/userListOfPosition";
     // 编辑保存VIP接待人员
     public static final String SAVE_RECEIVE_USER = "vip/saveReceiveUser";
-
+    // App创建会议
+    public static final String CREATE_MEETING = "meeting/createMeeting";
+    // 根据酒店ID查询会议厅List
+    public static final String GET_MEETING_ADDRESS_LIST = "meeting/getMeetingAddressList";
 
     //---------------------------------------------------------------------------
 

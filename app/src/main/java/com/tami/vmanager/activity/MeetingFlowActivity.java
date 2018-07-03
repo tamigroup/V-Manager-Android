@@ -60,11 +60,6 @@ public class MeetingFlowActivity extends BaseActivity {
         recyclerView.setAdapter(new CommonAdapter<String>(this, R.layout.item_meeting_flow, getData()) {
             @Override
             protected void convert(ViewHolder holder, String s, int position) {
-
-            }
-
-            @Override
-            public void convert(ViewHolder holder, final String s) {
                 //赋值
                 TextView timeView = holder.getView(R.id.meeting_flow_time);
                 timeView.setText(s);

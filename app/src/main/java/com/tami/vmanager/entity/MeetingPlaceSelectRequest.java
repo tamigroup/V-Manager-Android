@@ -5,6 +5,7 @@ import java.io.Serializable;
 /**
  * Created by why on 2018/6/29.
  */
+@Deprecated
 public class MeetingPlaceSelectRequest extends MobileMessage implements Serializable {
 
     private static final long serialVersionUID = -1214198018181528231L;
