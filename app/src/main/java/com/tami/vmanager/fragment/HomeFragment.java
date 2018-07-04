@@ -102,36 +102,6 @@ public class HomeFragment extends BaseFragment {
         setTitleName(R.string.v_housekeeper);
         //设置右边功能按钮图片
         setTitleRightBtn(R.mipmap.home_search);
-
-//        NumberFormat numberFormat = new DecimalFormat("###,###,###");
-//        String num = numberFormat.format(1234567);
-//        String resStr = getString(R.string.contract_money, num);
-//        int start = resStr.length() - num.length();
-//        int end = resStr.length();
-//        contract_money.setText(Utils.getSplicing(getActivity(), resStr, start, end, 32));
-//
-//        String num1 = numberFormat.format(3456789);
-//        String resStr1 = getString(R.string.receivables, num1);
-//        int start1 = resStr1.length() - num1.length();
-//        int end1 = resStr1.length();
-//        receivables.setText(Utils.getSplicing(getActivity(), resStr1, start1, end1, 32));
-//
-//        String num2 = String.valueOf(150);
-//        String resStr2 = getString(R.string.home_total, num2);
-//        int start2 = 0;
-//        int end2 = num2.length();
-//        total.setText(Utils.getSplicing(getActivity(), resStr2, start2, end2, 16));
-//
-//
-//        String num3 = String.valueOf(300);
-//        String resStr3 = getString(R.string.have_been_held, num3);
-//        int start3 = 0;
-//        int end3 = num3.length();
-//        have_been_held.setText(Utils.getSplicing(getActivity(), resStr3, start3, end3, 16));
-//
-//        oday_meeting_num.setText(String.valueOf(10));
-//        my_attention_num.setText(String.valueOf(15));
-//        conference_num.setText(String.valueOf(20));
     }
 
     @Override
@@ -169,7 +139,7 @@ public class HomeFragment extends BaseFragment {
                 break;
             case R.id.home_eye:
                 //眼睛
-                homeEye(v);
+                homeEye(v, true);
                 break;
             case R.id.home_today_meeting_layout:
                 //今日会议
@@ -241,12 +211,19 @@ public class HomeFragment extends BaseFragment {
     /**
      * 眼睛
      */
-    private void homeEye(View v) {
+    private void homeEye(View v, boolean flag) {
+//        LoginResponse.Item item = GlobaVariable.getInstance().item;
+//        if (item.getRoleId()) {
+//            eye.setVisibility(View.GONE);
+//            contract_money.setVisibility(View.GONE);
+//            receivables.setVisibility(View.GONE);
+//        }
         String num = String.valueOf(0);
         String num1 = String.valueOf(0);
         AppCompatImageView imageView = (AppCompatImageView) v;
         if (!TextUtils.isEmpty(imageView.getTag().toString())
-                && getString(R.string.view_state_display).equals(imageView.getTag().toString())) {
+                && getString(R.string.view_state_display).equals(imageView.getTag().toString())
+                && flag) {
             imageView.setTag(getString(R.string.view_state_hide));
             imageView.setImageResource(R.mipmap.home_eye_off);
             num = "****";
@@ -325,7 +302,7 @@ public class HomeFragment extends BaseFragment {
                 GetBannerDataResponse response = (GetBannerDataResponse) res;
                 if (response.getCode() == 200) {
                     headItem = response.getData();
-                    homeEye(eye);
+                    homeEye(eye, false);
                     setCountUI();
                 }
             } catch (Exception e) {

@@ -28,6 +28,7 @@ import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.ScreenUtil;
 import com.tami.vmanager.utils.TimeUtils;
+import com.tami.vmanager.view.MeetingStateView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -92,9 +93,11 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
             public void convert(ViewHolder holder, AllMeetingsResponse.Item.ElementElements elements) {
                 //名称
                 TextView nameView = holder.getView(R.id.item_meeting_name);
+//                nameView.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(getContext(), R.mipmap.meeting_level_zhi), null);
                 setNameTextLayoutParams(nameView, elements.getMeetingName());
                 //会议状态
-                holder.setText(R.id.item_meeting_state, elements.getMeetingStatus());
+                MeetingStateView stateView = holder.getView(R.id.item_meeting_state);
+                stateView.setMeetingStateText(elements.getMeetingStatus());
                 //时间
                 holder.setText(R.id.item_meeting_start_time, TimeUtils.milliseconds2String(elements.getStartTime()));
                 holder.setText(R.id.item_meeting_end_time, TimeUtils.milliseconds2String(elements.getEndTime()));

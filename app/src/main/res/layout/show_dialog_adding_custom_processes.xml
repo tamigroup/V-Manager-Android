@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="265dp"
+    android:layout_height="200dp"
+    android:background="@android:color/white">
+
+    <TextView
+        android:id="@+id/sdacp_title"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginRight="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_20"
+        android:gravity="center_vertical|left"
+        android:text="@string/adding_custom_processes"
+        android:textColor="@color/color_303030"
+        android:textSize="@dimen/sp_16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/sdacp_edit"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="@dimen/dp_45"
+        android:layout_marginTop="@dimen/dp_30"
+        android:ems="15"
+        android:hint="@string/please_enter_process_title"
+        android:inputType="text"
+        android:lines="1"
+        android:textColor="@color/color_303030"
+        android:textColorHint="@color/color_888888"
+        android:textSize="@dimen/sp_14"
+        app:layout_constraintEnd_toEndOf="@+id/sdacp_title"
+        app:layout_constraintStart_toStartOf="@+id/sdacp_title"
+        app:layout_constraintTop_toBottomOf="@+id/sdacp_title" />
+
+    <TextView
+        android:id="@+id/sdacp_word_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textColor="@color/color_888888"
+        android:textSize="@dimen/sp_13"
+        app:layout_constraintEnd_toEndOf="@+id/sdacp_edit"
+        app:layout_constraintTop_toBottomOf="@+id/sdacp_edit" />
+
+    <TextView
+        android:id="@+id/sdacp_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_20"
+        android:layout_marginRight="@dimen/dp_40"
+        android:gravity="center"
+        android:padding="@dimen/dp_10"
+        android:text="@string/confirm"
+        android:textColor="@color/color_FF5657"
+        android:textSize="@dimen/sp_16"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/sdacp_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/dp_20"
+        android:padding="@dimen/dp_10"
+        android:text="@string/cancel"
+        android:textColor="@color/color_FF5657"
+        android:textSize="@dimen/sp_16"
+        app:layout_constraintBottom_toBottomOf="@+id/sdacp_confirm"
+        app:layout_constraintEnd_toStartOf="@+id/sdacp_confirm"
+        app:layout_constraintTop_toTopOf="@+id/sdacp_confirm"
+        app:layout_constraintVertical_bias="1.0" />
+
+</android.support.constraint.ConstraintLayout>
