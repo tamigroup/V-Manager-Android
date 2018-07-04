@@ -15,24 +15,24 @@ import com.tami.vmanager.utils.Logger;
  */
 @Database(entities = {SearchHistoryBean.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
-    private static final String TAG = "AppDatabase";
     private static AppDatabase INSTANCE;
-    private static final Object app_lock = new Object();
-    private static final String DB_NAME = "app_catch_v";
+    private static final String DB_NAME = "tami";
     private static final int DB_VERSION = 1;
     private static String DB_FILE_NAME = DB_NAME + DB_VERSION + ".db";
 
     public abstract SearchHistoryDao searchHistoryDao();
 
     public static AppDatabase getInstance(Context context) {
-        synchronized (app_lock) {
-            if (INSTANCE == null) {
-                INSTANCE = Room.databaseBuilder(context.getApplicationContext(),AppDatabase.class, DB_FILE_NAME)
-                        .fallbackToDestructiveMigration()
-                        .build();
+        if (INSTANCE == null) {
+            synchronized (AppDatabase.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, DB_FILE_NAME)
+                            .fallbackToDestructiveMigration()
+                            .build();
+                }
             }
-            return INSTANCE;
         }
+        return INSTANCE;
     }
 
     /**

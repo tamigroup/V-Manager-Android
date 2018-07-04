@@ -66,9 +66,12 @@
     <string name="search_history">搜索历史</string>
     <string name="search_content_tv1">会议名称</string>
     <string name="search_content_tv2">V智会</string>
-    <string name="search_content_tv3">重要</string>
-    <string name="search_content_tv4">销售姓名</string>
-    <string name="search_content_tv5">会议地点</string>
+    <string name="search_content_tv3">销售姓名</string>
+    <string name="search_content_tv4">会议地点</string>
+    <string name="search_content_tv5">VIP1</string>
+    <string name="search_content_tv6">VIP2</string>
+    <string name="search_content_tv7">VIP3</string>
+    <string name="search_content_tv8">VIP4</string>
 
     <!--    新建会议    -->
     <string name="new_meeting">新建会议</string>

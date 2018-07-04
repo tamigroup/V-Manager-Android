@@ -42,6 +42,7 @@ public class SearchActivity extends BaseActivity {
     private SearchHistoryDao dao;
     private SearchHistoryBean searchHistoryBean;
     private AppDatabase db;
+    private View line;
 
     @Override
     public int getContentViewId() {
@@ -52,6 +53,7 @@ public class SearchActivity extends BaseActivity {
     public void initView() {
         search_back_btn = findViewById(R.id.search_back_btn);
         searchView = findViewById(R.id.searchView);
+        line = findViewById(R.id.line);
         search_make_content = findViewById(R.id.search_make_content);
         search_content_tv = findViewById(R.id.search_content_tv);
         search_history = findViewById(R.id.search_history);
@@ -67,8 +69,8 @@ public class SearchActivity extends BaseActivity {
         search_history_tv2 = findViewById(R.id.search_history_tv2);
         search_history_tv3 = findViewById(R.id.search_history_tv3);
         search_history_tv4 = findViewById(R.id.search_history_tv4);
-        search_history_tv5 = findViewById(R.id.search_history_tv5);
-        search_history_tv6 = findViewById(R.id.search_history_tv6);
+//        search_history_tv5 = findViewById(R.id.search_history_tv5);
+//        search_history_tv6 = findViewById(R.id.search_history_tv6);
 
         db = AppDatabase.getInstance(getApplicationContext());
         dao = db.searchHistoryDao();
@@ -92,26 +94,17 @@ public class SearchActivity extends BaseActivity {
                             search_history_tv.setVisibility(View.GONE);
                             break;
                         case 1:
-                            search_history_tv.setVisibility(View.VISIBLE);
-                            search_history_tv1.setVisibility(View.VISIBLE);
                             for (int i = 0; i < searchHistoryBeans.size(); i++) {
                                 search_history_tv1.setText(searchHistoryBeans.get(0).getSearchHistory());
                             }
                             break;
                         case 2:
-                            search_history_tv.setVisibility(View.VISIBLE);
-                            search_history_tv1.setVisibility(View.VISIBLE);
-                            search_history_tv2.setVisibility(View.VISIBLE);
                             for (int i = 0; i < searchHistoryBeans.size(); i++) {
                                 search_history_tv1.setText(searchHistoryBeans.get(0).getSearchHistory());
                                 search_history_tv2.setText(searchHistoryBeans.get(1).getSearchHistory());
                             }
                             break;
                         case 3:
-                            search_history_tv.setVisibility(View.VISIBLE);
-                            search_history_tv1.setVisibility(View.VISIBLE);
-                            search_history_tv2.setVisibility(View.VISIBLE);
-                            search_history_tv3.setVisibility(View.VISIBLE);
                             for (int i = 0; i < searchHistoryBeans.size(); i++) {
                                 search_history_tv1.setText(searchHistoryBeans.get(0).getSearchHistory());
                                 search_history_tv2.setText(searchHistoryBeans.get(1).getSearchHistory());
@@ -119,11 +112,6 @@ public class SearchActivity extends BaseActivity {
                             }
                             break;
                         case 4:
-                            search_history_tv.setVisibility(View.VISIBLE);
-                            search_history_tv1.setVisibility(View.VISIBLE);
-                            search_history_tv2.setVisibility(View.VISIBLE);
-                            search_history_tv3.setVisibility(View.VISIBLE);
-                            search_history_tv4.setVisibility(View.VISIBLE);
                             for (int i = 0; i < searchHistoryBeans.size(); i++) {
                                 search_history_tv1.setText(searchHistoryBeans.get(0).getSearchHistory());
                                 search_history_tv2.setText(searchHistoryBeans.get(1).getSearchHistory());
@@ -132,35 +120,22 @@ public class SearchActivity extends BaseActivity {
                             }
                             break;
                         case 5:
-                            search_history_tv.setVisibility(View.VISIBLE);
-                            search_history_tv1.setVisibility(View.VISIBLE);
-                            search_history_tv2.setVisibility(View.VISIBLE);
-                            search_history_tv3.setVisibility(View.VISIBLE);
-                            search_history_tv4.setVisibility(View.VISIBLE);
-                            search_history_tv5.setVisibility(View.VISIBLE);
                             for (int i = 0; i < searchHistoryBeans.size(); i++) {
                                 search_history_tv1.setText(searchHistoryBeans.get(0).getSearchHistory());
                                 search_history_tv2.setText(searchHistoryBeans.get(1).getSearchHistory());
                                 search_history_tv3.setText(searchHistoryBeans.get(2).getSearchHistory());
                                 search_history_tv4.setText(searchHistoryBeans.get(3).getSearchHistory());
-                                search_history_tv5.setText(searchHistoryBeans.get(4).getSearchHistory());
+//                                search_history_tv5.setText(searchHistoryBeans.get(4).getSearchHistory());
                             }
                             break;
                         case 6:
-                            search_history_tv.setVisibility(View.VISIBLE);
-                            search_history_tv1.setVisibility(View.VISIBLE);
-                            search_history_tv2.setVisibility(View.VISIBLE);
-                            search_history_tv3.setVisibility(View.VISIBLE);
-                            search_history_tv4.setVisibility(View.VISIBLE);
-                            search_history_tv5.setVisibility(View.VISIBLE);
-                            search_history_tv6.setVisibility(View.VISIBLE);
                             for (int i = 0; i < searchHistoryBeans.size(); i++) {
                                 search_history_tv1.setText(searchHistoryBeans.get(0).getSearchHistory());
                                 search_history_tv2.setText(searchHistoryBeans.get(1).getSearchHistory());
                                 search_history_tv3.setText(searchHistoryBeans.get(2).getSearchHistory());
                                 search_history_tv4.setText(searchHistoryBeans.get(3).getSearchHistory());
-                                search_history_tv5.setText(searchHistoryBeans.get(4).getSearchHistory());
-                                search_history_tv6.setText(searchHistoryBeans.get(5).getSearchHistory());
+//                                search_history_tv5.setText(searchHistoryBeans.get(4).getSearchHistory());
+//                                search_history_tv6.setText(searchHistoryBeans.get(5).getSearchHistory());
                             }
                             break;
                     }
@@ -171,8 +146,8 @@ public class SearchActivity extends BaseActivity {
             search_content_tv.setVisibility(View.GONE);
             search_history.setVisibility(View.GONE);
             search_history_tv.setVisibility(View.GONE);
+            line.setVisibility(View.GONE);
         });
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -200,7 +175,6 @@ public class SearchActivity extends BaseActivity {
 
     @Override
     public void emptyObject() {
-        db.RoomClose();
     }
 
     @Override
@@ -208,7 +182,7 @@ public class SearchActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.search_back_btn:
-                this.onBackPressed();
+                finish();
                 break;
         }
     }
