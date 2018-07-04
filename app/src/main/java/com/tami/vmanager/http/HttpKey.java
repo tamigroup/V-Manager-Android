@@ -64,6 +64,8 @@ public class HttpKey {
     public static final String GET_MEETING_ITEMS = "meeting/getMeetingItems";
     // 图片上传
     public static final String UPLOAD_IMAGE = "upload/uploadImage";
+    //搜索会议
+    public static final String SEARCH_MEETING = "meeting/searchMeetingPage";
 
     //---------------------------------------------------------------------------
 
