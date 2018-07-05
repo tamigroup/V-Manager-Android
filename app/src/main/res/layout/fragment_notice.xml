@@ -1,7 +1,16 @@
-<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.jwenfeng.library.pulltorefresh.PullToRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/notice_recycler_view"
+    android:id="@+id/feedback_PullToRefreshLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white" />
+    android:layout_height="wrap_content"
+    app:layout_constraintTop_toBottomOf="@+id/search_title_layout">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/notice_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"/>
+
+</com.jwenfeng.library.pulltorefresh.PullToRefreshLayout>
