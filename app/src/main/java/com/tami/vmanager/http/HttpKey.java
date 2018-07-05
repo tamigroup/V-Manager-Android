@@ -70,6 +70,8 @@ public class HttpKey {
     public static final String FEED_BACK = "chat/feedBackPage";
     // 获取公告
     public static final String GET_NOTICE = "notice/getNotice";
+    //分页查询公告列表
+    public static final String GET_NOTICE_LIST = "notice/noticePage";
 
     //---------------------------------------------------------------------------
 

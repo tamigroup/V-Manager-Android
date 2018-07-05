@@ -1,15 +1,21 @@
 package com.tami.vmanager.fragment;
 
-import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.TextView;
+import android.widget.ImageView;
+
+import com.jwenfeng.library.pulltorefresh.BaseRefreshListener;
+import com.jwenfeng.library.pulltorefresh.PullToRefreshLayout;
+import com.squareup.picasso.Picasso;
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.ViewPagerBaseFragment;
-import com.tami.vmanager.entity.NoticeEntity;
-import com.tami.vmanager.view.CircleImageView;
+import com.tami.vmanager.entity.NoticeRequestBean;
+import com.tami.vmanager.entity.NoticeResponseBean;
+import com.tami.vmanager.http.NetworkBroker;
+import com.tami.vmanager.utils.Logger;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +27,11 @@ import java.util.List;
 public class NoticeFragment extends ViewPagerBaseFragment {
 
     private RecyclerView recyclerView;
+    private NetworkBroker networkBroker;
+    private int CurPage = 1;
+    private PullToRefreshLayout pullToRefreshLayout;
+    private CommonAdapter<NoticeResponseBean.DataBean.ElementsBean> commonAdapter;
+    private List<NoticeResponseBean.DataBean.ElementsBean> listData;
 
     @Override
     public int getContentViewId() {
@@ -30,45 +41,73 @@ public class NoticeFragment extends ViewPagerBaseFragment {
     @Override
     public void initView() {
         recyclerView = findViewById(R.id.notice_recycler_view);
+        pullToRefreshLayout = findViewById(R.id.feedback_PullToRefreshLayout);
+        networkBroker = new NetworkBroker(getContext());
     }
 
     @Override
     public void initListener() {
-
-    }
-
-    @Override
-    public void initData() {
-        //创建一个线性的布局管理器并设置
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(new CommonAdapter<NoticeEntity>(getActivity(), R.layout.item_notice, getData()) {
+        pullToRefreshLayout.setRefreshListener(new BaseRefreshListener() {
             @Override
-            protected void convert(ViewHolder holder, NoticeEntity noticeEntity, int position) {
-
+            public void refresh() {
             }
 
             @Override
-            public void convert(ViewHolder holder, NoticeEntity noticeEntity) {
-                //头像
-                CircleImageView circleImageView = holder.getView(R.id.in_avatar_image);
-                //发送者
-                TextView name = holder.getView(R.id.in_name);
-                name.setText(noticeEntity.getName());
-                //发送内容
-                TextView content = holder.getView(R.id.in_content);
-                content.setText(noticeEntity.getContent());
-                //发送时间
-                TextView time = holder.getView(R.id.in_time);
-                time.setText(noticeEntity.getTime());
+            public void loadMore() {
+                requestNetwork();
             }
         });
     }
 
     @Override
-    public void requestNetwork() {
+    public void initData() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(layoutManager);
+        listData = new ArrayList<>();
+        commonAdapter = new CommonAdapter<NoticeResponseBean.DataBean.ElementsBean>(getActivity(), R.layout.item_notice, listData) {
+            @Override
+            protected void convert(ViewHolder holder, NoticeResponseBean.DataBean.ElementsBean noticeEntity, int position) {
+                ImageView image = holder.getView(R.id.in_avatar_image);
+                Picasso.get().load(noticeEntity.getIconUrl()).into(image);
+                holder.setText(R.id.in_name, noticeEntity.getUserName());
+                holder.setText(R.id.item_content_tv, noticeEntity.getTitle());
+                holder.setText(R.id.item_content, noticeEntity.getContent());
+            }
+        };
+        recyclerView.setAdapter(commonAdapter);
+        pullToRefreshLayout.setCanRefresh(false);
+    }
 
+    @Override
+    public void requestNetwork() {
+        NoticeRequestBean noticeRequestBean = new NoticeRequestBean();
+        noticeRequestBean.setSystemId(4);
+        noticeRequestBean.setMeetingId(1);
+        noticeRequestBean.setGroupType(1);
+        noticeRequestBean.setNoticeType(0);
+        noticeRequestBean.setCurPage(CurPage++);
+        noticeRequestBean.setPageSize(10);
+
+        networkBroker.ask(noticeRequestBean, (ex1, res) -> {
+            if (null != ex1) {
+                Logger.d(ex1.getMessage() + "-" + ex1);
+                return;
+            }
+            try {
+                NoticeResponseBean response = (NoticeResponseBean) res;
+                if (response.getCode() == 200) {
+                    List<NoticeResponseBean.DataBean.ElementsBean> data = response.getData().getElements();
+                    if (data != null && data.size() > 0) {
+                        listData.addAll(data);
+                        commonAdapter.notifyDataSetChanged();
+                    }
+                    pullToRefreshLayout.finishLoadMore();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override
@@ -79,18 +118,5 @@ public class NoticeFragment extends ViewPagerBaseFragment {
     @Override
     public void emptyObject() {
 
-    }
-
-    private List<NoticeEntity> getData() {
-        List<NoticeEntity> data = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            NoticeEntity noticeEntity = new NoticeEntity();
-            noticeEntity.setId(i);
-            noticeEntity.setName("公告测试数据" + i);
-            noticeEntity.setContent("公告测试内容" + i);
-            noticeEntity.setTime("6月19日 15:00");
-            data.add(noticeEntity);
-        }
-        return data;
     }
 }
