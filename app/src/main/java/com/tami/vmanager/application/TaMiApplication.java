@@ -4,7 +4,10 @@ import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
+import com.tami.vmanager.BuildConfig;
 import com.tami.vmanager.utils.Constants;
+import com.tencent.bugly.Bugly;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.log.LoggerInterceptor;
 
@@ -31,12 +34,22 @@ public class TaMiApplication extends Application {
 
     private void init() {
         initOkHttp();
+        initBugly();
+    }
 
+    private void initBugly() {
+        CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(this);
+        strategy.setAppChannel("tencent");
+        strategy.setAppVersion("1.0");
+        strategy.setAppPackageName("com.tami.vmanager");
+        CrashReport.setIsDevelopmentDevice(this, BuildConfig.DEBUG);
+        CrashReport.initCrashReport(getApplicationContext(), "93294bd277", BuildConfig.DEBUG,strategy);
+        Bugly.init(this, "93294bd277", BuildConfig.DEBUG, strategy);
     }
 
     private void initOkHttp() {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .addInterceptor(new LoggerInterceptor(Constants.LOG_TAG,true))
+                .addInterceptor(new LoggerInterceptor(Constants.LOG_TAG, true))
                 .connectTimeout(30000L, TimeUnit.MILLISECONDS)
                 .readTimeout(30000L, TimeUnit.MILLISECONDS)
                 //其他配置
