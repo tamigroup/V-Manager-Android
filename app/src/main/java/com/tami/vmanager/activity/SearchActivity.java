@@ -527,7 +527,6 @@ public class SearchActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.search_content_tv1:
-                setClickColor(search_content_tv1, R.color.color_344266, R.drawable.shape_cricle_line, R.string.search_content_tv1);
                 setClickColor(search_content_tv2, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv2);
                 setClickColor(search_content_tv3, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv3);
                 setClickColor(search_content_tv4, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv4);
@@ -535,56 +534,57 @@ public class SearchActivity extends BaseActivity {
                 setClickColor(search_content_tv6, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv6);
                 setClickColor(search_content_tv7, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv7);
                 setClickColor(search_content_tv8, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv8);
+                setClickColor(search_content_tv1, R.color.color_344266, R.drawable.shape_cricle_line, R.string.search_content_tv1);
 
-                RequestData(SearchType.MEETING_NAME.getName(),SearchType.MEETING_NAME.getType());
+                RequestData(SearchType.MEETING_NAME.getName(), SearchType.MEETING_NAME.getType());
                 break;
             case R.id.search_content_tv2:
                 setClickColor(search_content_tv1, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv1);
-                setClickColor(search_content_tv2, R.color.color_344266, R.drawable.shape_cricle_line, R.string.search_content_tv2);
                 setClickColor(search_content_tv3, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv3);
                 setClickColor(search_content_tv4, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv4);
                 setClickColor(search_content_tv5, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv5);
                 setClickColor(search_content_tv6, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv6);
                 setClickColor(search_content_tv7, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv7);
                 setClickColor(search_content_tv8, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv8);
+                setClickColor(search_content_tv2, R.color.color_344266, R.drawable.shape_cricle_line, R.string.search_content_tv2);
 
-                RequestData(SearchType.V_MEETING.getName(),SearchType.V_MEETING.getType());
+                RequestData(SearchType.V_MEETING.getName(), SearchType.V_MEETING.getType());
                 break;
             case R.id.search_content_tv3:
                 setClickColor(search_content_tv1, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv1);
                 setClickColor(search_content_tv2, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv2);
-                setClickColor(search_content_tv3, R.color.color_344266, R.drawable.shape_cricle_line, R.string.search_content_tv3);
                 setClickColor(search_content_tv4, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv4);
                 setClickColor(search_content_tv5, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv5);
                 setClickColor(search_content_tv6, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv6);
                 setClickColor(search_content_tv7, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv7);
                 setClickColor(search_content_tv8, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv8);
+                setClickColor(search_content_tv3, R.color.color_344266, R.drawable.shape_cricle_line, R.string.search_content_tv3);
 
-                RequestData(SearchType.SALE_NAME.getName(),SearchType.SALE_NAME.getType());
+                RequestData(SearchType.SALE_NAME.getName(), SearchType.SALE_NAME.getType());
                 break;
             case R.id.search_content_tv4:
                 setClickColor(search_content_tv1, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv1);
                 setClickColor(search_content_tv2, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv2);
                 setClickColor(search_content_tv3, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv3);
-                setClickColor(search_content_tv4, R.color.color_344266, R.drawable.shape_cricle_line, R.string.search_content_tv4);
                 setClickColor(search_content_tv5, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv5);
                 setClickColor(search_content_tv6, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv6);
                 setClickColor(search_content_tv7, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv7);
                 setClickColor(search_content_tv8, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv8);
+                setClickColor(search_content_tv4, R.color.color_344266, R.drawable.shape_cricle_line, R.string.search_content_tv4);
 
-                RequestData(SearchType.MEETING_ADDRESS.getName(),SearchType.MEETING_ADDRESS.getType());
+                RequestData(SearchType.MEETING_ADDRESS.getName(), SearchType.MEETING_ADDRESS.getType());
                 break;
             case R.id.search_content_tv5:
                 setClickColor(search_content_tv1, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv1);
                 setClickColor(search_content_tv2, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv2);
                 setClickColor(search_content_tv3, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv3);
                 setClickColor(search_content_tv4, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv4);
-                setClickColor(search_content_tv5, R.color.color_344266, R.drawable.shape_cricle_line, R.string.search_content_tv5);
                 setClickColor(search_content_tv6, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv6);
                 setClickColor(search_content_tv7, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv7);
                 setClickColor(search_content_tv8, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv8);
+                setClickColor(search_content_tv5, R.color.color_344266, R.drawable.shape_cricle_line, R.string.search_content_tv5);
 
-                RequestData(SearchType.VIP1.getName(),SearchType.VIP1.getType());
+                RequestData(SearchType.VIP1.getName(), SearchType.VIP1.getType());
                 break;
             case R.id.search_content_tv6:
                 setClickColor(search_content_tv1, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv1);
@@ -592,11 +592,11 @@ public class SearchActivity extends BaseActivity {
                 setClickColor(search_content_tv3, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv3);
                 setClickColor(search_content_tv4, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv4);
                 setClickColor(search_content_tv5, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv5);
-                setClickColor(search_content_tv6, R.color.color_344266, R.drawable.shape_cricle_line, R.string.search_content_tv6);
                 setClickColor(search_content_tv7, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv7);
                 setClickColor(search_content_tv8, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv8);
+                setClickColor(search_content_tv6, R.color.color_344266, R.drawable.shape_cricle_line, R.string.search_content_tv6);
 
-                RequestData(SearchType.VIP2.getName(),SearchType.VIP2.getType());
+                RequestData(SearchType.VIP2.getName(), SearchType.VIP2.getType());
                 break;
             case R.id.search_content_tv7:
                 setClickColor(search_content_tv1, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv1);
@@ -605,10 +605,10 @@ public class SearchActivity extends BaseActivity {
                 setClickColor(search_content_tv4, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv4);
                 setClickColor(search_content_tv5, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv5);
                 setClickColor(search_content_tv6, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv6);
-                setClickColor(search_content_tv7, R.color.color_344266, R.drawable.shape_cricle_line, R.string.search_content_tv7);
                 setClickColor(search_content_tv8, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv8);
+                setClickColor(search_content_tv7, R.color.color_344266, R.drawable.shape_cricle_line, R.string.search_content_tv7);
 
-                RequestData(SearchType.VIP3.getName(),SearchType.VIP3.getType());
+                RequestData(SearchType.VIP3.getName(), SearchType.VIP3.getType());
                 break;
             case R.id.search_content_tv8:
                 setClickColor(search_content_tv1, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv1);
@@ -620,7 +620,7 @@ public class SearchActivity extends BaseActivity {
                 setClickColor(search_content_tv7, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, R.string.search_content_tv7);
                 setClickColor(search_content_tv8, R.color.color_344266, R.drawable.shape_cricle_line, R.string.search_content_tv8);
 
-                RequestData(SearchType.VIP4.getName(),SearchType.VIP4.getType());
+                RequestData(SearchType.VIP4.getName(), SearchType.VIP4.getType());
                 break;
         }
     }
@@ -629,17 +629,23 @@ public class SearchActivity extends BaseActivity {
      * 设置TextView点击颜色
      */
     private void setClickColor(TextView textView, int cor, int draw, int str) {
-        textView.setTextColor(getResources().getColor(cor));
-        textView.setBackgroundResource(draw);
+        setSearchView(textView, cor, draw);
         searchView.setQueryHint("搜索" + getResources().getString(str));
     }
 
     private void setClickColor(TextView textView, int cor, int draw, String str) {
+        setSearchView(textView, cor, draw);
+        searchView.setQueryHint("搜索" + str);
+    }
+
+    /**
+     * 设置searchView
+     */
+    private void setSearchView(TextView textView, int cor, int draw) {
         textView.setTextColor(getResources().getColor(cor));
         textView.setBackgroundResource(draw);
         searchView.setIconifiedByDefault(true);
         searchView.setSubmitButtonEnabled(true);
         searchView.onActionViewExpanded();
-        searchView.setQueryHint("搜索" + str);
     }
 }
