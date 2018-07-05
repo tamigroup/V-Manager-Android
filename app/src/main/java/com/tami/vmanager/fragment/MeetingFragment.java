@@ -1,12 +1,15 @@
 package com.tami.vmanager.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+
 import com.tami.vmanager.R;
+import com.tami.vmanager.activity.SearchActivity;
 import com.tami.vmanager.adapter.GuidePageFragmentPagerAdapter;
 import com.tami.vmanager.base.BaseFragment;
 import com.tami.vmanager.utils.Constants;
@@ -22,7 +25,7 @@ public class MeetingFragment extends BaseFragment {
     private int onClickId = R.id.meeting_group_whole;
     private NoScrollViewPager viewPager;//列表数据
     private Fragment[] arrayFragment;
-    private final int[] meetingType = new int[]{Constants.MEETING_TYPE_WHOLE, Constants.MEETING_TYPE_PENDING_PAYMENT,Constants.MEETING_TYPE_PERFECTED, Constants.MEETING_TYPE_DAY, Constants.MEETING_TYPE_MONTH, Constants.MEETING_TYPE_YEAR};
+    private final int[] meetingType = new int[]{Constants.MEETING_TYPE_WHOLE, Constants.MEETING_TYPE_PENDING_PAYMENT, Constants.MEETING_TYPE_PERFECTED, Constants.MEETING_TYPE_DAY, Constants.MEETING_TYPE_MONTH, Constants.MEETING_TYPE_YEAR};
 
     @Override
     public boolean isTitle() {
@@ -46,9 +49,9 @@ public class MeetingFragment extends BaseFragment {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 RadioButton unselectBtn = group.findViewById(onClickId);
-                unselectBtn.setTextColor(ContextCompat.getColor(getActivity(),R.color.press));
+                unselectBtn.setTextColor(ContextCompat.getColor(getActivity(), R.color.press));
                 RadioButton selectBtn = group.findViewById(checkedId);
-                selectBtn.setTextColor(ContextCompat.getColor(getActivity(),R.color.nomal));
+                selectBtn.setTextColor(ContextCompat.getColor(getActivity(), R.color.nomal));
                 onClickId = checkedId;
                 switch (checkedId) {
                     case R.id.meeting_group_whole:
@@ -79,9 +82,8 @@ public class MeetingFragment extends BaseFragment {
             }
         });
 
-//        viewPager.addOnPageChangeListener(this);
+        //        viewPager.addOnPageChangeListener(this);
     }
-
 
 
     @Override
@@ -109,7 +111,7 @@ public class MeetingFragment extends BaseFragment {
 
     @Override
     public void removeListener() {
-//        viewPager.removeOnPageChangeListener(this);
+        //        viewPager.removeOnPageChangeListener(this);
     }
 
     @Override
@@ -144,7 +146,7 @@ public class MeetingFragment extends BaseFragment {
         viewPager.setCurrentItem(Constants.MEETING_TYPE_PENDING_PAYMENT);
     }
 
-    private void groupPerfected(){
+    private void groupPerfected() {
         viewPager.setCurrentItem(Constants.MEETING_TYPE_PERFECTED);
     }
 
@@ -169,47 +171,57 @@ public class MeetingFragment extends BaseFragment {
         viewPager.setCurrentItem(Constants.MEETING_TYPE_YEAR);
     }
 
-//    @Override
-//    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//    }
-//
-//    @Override
-//    public void onPageSelected(int position) {
-//        meetingGroup.check(getRadioGroupId(position));
-//    }
-//
-//    @Override
-//    public void onPageScrollStateChanged(int state) {
-//
-//    }
+    @Override
+    public void onClick(View v) {
+        super.onClick(v);
+        switch (v.getId()) {
+            case R.id.titleRightBtn:
+                startActivity(new Intent(getActivity(), SearchActivity.class));
+                break;
+        }
+    }
 
-//    /**
-//     * 获取RadioButton ID
-//     *
-//     * @param type
-//     * @return
-//     */
-//    private int getRadioGroupId(int type) {
-//        int id = R.id.meeting_group_whole;
-//        switch (type) {
-//            case Constants.MEETING_TYPE_WHOLE:
-//                id = R.id.meeting_group_whole;
-//                break;
-//            case Constants.MEETING_TYPE_PENDING_PAYMENT:
-//                id = R.id.meeting_group_pending_payment;
-//                break;
-//            case Constants.MEETING_TYPE_DAY:
-//                id = R.id.meeting_group_day;
-//                break;
-//            case Constants.MEETING_TYPE_MONTH:
-//                id = R.id.meeting_group_month;
-//                break;
-//            case Constants.MEETING_TYPE_YEAR:
-//                id = R.id.meeting_group_year;
-//                break;
-//
-//        }
-//        return id;
-//    }
+    //    @Override
+    //    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+    //    }
+    //
+    //    @Override
+    //    public void onPageSelected(int position) {
+    //        meetingGroup.check(getRadioGroupId(position));
+    //    }
+    //
+    //    @Override
+    //    public void onPageScrollStateChanged(int state) {
+    //
+    //    }
+
+    //    /**
+    //     * 获取RadioButton ID
+    //     *
+    //     * @param type
+    //     * @return
+    //     */
+    //    private int getRadioGroupId(int type) {
+    //        int id = R.id.meeting_group_whole;
+    //        switch (type) {
+    //            case Constants.MEETING_TYPE_WHOLE:
+    //                id = R.id.meeting_group_whole;
+    //                break;
+    //            case Constants.MEETING_TYPE_PENDING_PAYMENT:
+    //                id = R.id.meeting_group_pending_payment;
+    //                break;
+    //            case Constants.MEETING_TYPE_DAY:
+    //                id = R.id.meeting_group_day;
+    //                break;
+    //            case Constants.MEETING_TYPE_MONTH:
+    //                id = R.id.meeting_group_month;
+    //                break;
+    //            case Constants.MEETING_TYPE_YEAR:
+    //                id = R.id.meeting_group_year;
+    //                break;
+    //
+    //        }
+    //        return id;
+    //    }
 
 }

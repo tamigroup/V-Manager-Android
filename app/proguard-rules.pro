@@ -176,5 +176,8 @@
 -dontwarn com.fasterxml.jackson.databind.**
 -keep class com.fasterxml.jackson.databind.**{*;}
 
+#bugly
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}
 
 
