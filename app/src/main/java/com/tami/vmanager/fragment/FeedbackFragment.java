@@ -4,6 +4,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
+import com.jwenfeng.library.pulltorefresh.PullToRefreshLayout;
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.ViewPagerBaseFragment;
 import com.tami.vmanager.entity.NoticeEntity;
@@ -22,6 +23,7 @@ import java.util.List;
 public class FeedbackFragment extends ViewPagerBaseFragment {
 
     private RecyclerView recyclerView;
+    private PullToRefreshLayout feedback_pullToRefreshLayout;
 
     @Override
     public int getContentViewId() {
@@ -31,6 +33,7 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
     @Override
     public void initView() {
         recyclerView = findViewById(R.id.notice_recycler_view);
+        feedback_pullToRefreshLayout = findViewById(R.id.feedback_PullToRefreshLayout);
     }
 
     @Override
@@ -40,7 +43,6 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
 
     @Override
     public void initData() {
-        //创建一个线性的布局管理器并设置
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
@@ -58,10 +60,10 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
                 TextView name = holder.getView(R.id.in_name);
                 name.setText(noticeEntity.getName());
                 //发送内容
-                TextView content = holder.getView(R.id.in_content);
+                TextView content = holder.getView(R.id.item_content_tv);
                 content.setText(noticeEntity.getContent());
                 //发送时间
-                TextView time = holder.getView(R.id.in_time);
+                TextView time = holder.getView(R.id.item_time);
                 time.setText(noticeEntity.getTime());
             }
         });
