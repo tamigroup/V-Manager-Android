@@ -1,11 +1,14 @@
 package com.tami.vmanager.entity;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.tami.vmanager.utils.TimeUtils;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 
@@ -35,13 +38,24 @@ public class GetMeetingItemsResponse extends MobileMessage implements Serializab
             public int orderBy;	/*0*/
             public int status;	/*0*/
             public String name;	/*会场就绪*/
-            public Long createOn;	/*1526972249000*/
-            public Long updateOn;	/*1526972253000*/
+            public long createOn;	/*1526972249000*/
+            public long updateOn;	/*1526972253000*/
             public int roleId;	/*3*/
 
+            public boolean isCustom;
+            public boolean isSelected;
+
             @Override
-            public int compareTo(@NonNull Item o) {
-                return this.createOn.compareTo(o.createOn);
+            public int compareTo(@NonNull Item item) {
+                if (createOn == 0) {
+                    return -1;
+                }
+                if (item.createOn == 0) {
+                    return 1;
+                }
+                String thisOrderTime = TimeUtils.date2String(new Date(createOn), TimeUtils.DATE_HHMM_SLASH);
+                String orderTime = TimeUtils.date2String(new Date(item.createOn), TimeUtils.DATE_HHMM_SLASH);
+                return thisOrderTime.compareTo(orderTime);
             }
         }
     }

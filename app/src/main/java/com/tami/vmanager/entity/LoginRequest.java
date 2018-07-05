@@ -22,7 +22,7 @@ public class LoginRequest  extends MobileMessage implements Serializable{
 	private String mobile;
 	private String passWord;
 	private String smsCode;
-	private String flag;
+//	private String flag;
 
 	public LoginRequest() {
 		super();
@@ -64,13 +64,13 @@ public class LoginRequest  extends MobileMessage implements Serializable{
 	}
 
 
-	public String getFlag() {
-		return flag;
-	}
-
-	public void setFlag(String flag) {
-		this.flag = flag;
-	}
+//	public String getFlag() {
+//		return flag;
+//	}
+//
+//	public void setFlag(String flag) {
+//		this.flag = flag;
+//	}
 
 	@Override
 

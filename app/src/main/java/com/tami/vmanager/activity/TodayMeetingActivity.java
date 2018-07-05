@@ -105,22 +105,16 @@ public class TodayMeetingActivity extends BaseActivity {
                 holder.setText(R.id.item_meeting_room, elements.getMeetingAddress());
                 //关注按钮点击
                 TextView follow = holder.getView(R.id.item_meeting_follow);
-                follow.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                follow.setOnClickListener((View v) -> {
 
-                    }
                 });
                 holder.setText(R.id.item_meeting_payment_state, "待付款");
                 TextView paymentState = holder.getView(R.id.item_meeting_payment_state);
                 paymentState.setText(getString(R.string.pending_payment));
 
                 ConstraintLayout itemLayout = holder.getView(R.id.item_meeting_layout);
-                itemLayout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startActivity(new Intent(getApplicationContext(), MeetingOverviewActivity.class));
-                    }
+                itemLayout.setOnClickListener((View v) -> {
+                    startActivity(new Intent(getApplicationContext(), MeetingOverviewActivity.class));
                 });
             }
 

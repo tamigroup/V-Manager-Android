@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+
 import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.RecycleViewDivider;
 import com.tami.vmanager.base.BaseActivity;
@@ -20,6 +21,7 @@ import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,17 +76,14 @@ public class MeetingPlaceSelectActivity extends BaseActivity {
                 ConstraintLayout constraintLayout = holder.getView(R.id.imp_layout);
                 AppCompatImageView imageView = holder.getView(R.id.imp_selected);
                 imageView.setVisibility(item.isState ? View.VISIBLE : View.GONE);
-                constraintLayout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (onClick != -1) {
-                            AppCompatImageView onClickView = recyclerView.getChildAt(onClick).findViewById(R.id.imp_selected);
-                            onClickView.setVisibility(View.GONE);
-                        }
-                        item.isState = !item.isState;
-                        imageView.setVisibility(item.isState ? View.VISIBLE : View.GONE);
-                        onClick = position;
+                constraintLayout.setOnClickListener((View v) -> {
+                    if (onClick != -1) {
+                        AppCompatImageView onClickView = recyclerView.getChildAt(onClick).findViewById(R.id.imp_selected);
+                        onClickView.setVisibility(View.GONE);
                     }
+                    item.isState = !item.isState;
+                    imageView.setVisibility(item.isState ? View.VISIBLE : View.GONE);
+                    onClick = position;
                 });
             }
         };

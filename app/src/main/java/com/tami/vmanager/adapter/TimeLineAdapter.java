@@ -65,11 +65,8 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
             holder.lineView.setVisibility(View.VISIBLE);
         }
         holder.contentView.setText(list.get(position).getConetnt());
-        holder.stateBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                context.startActivity(new Intent(context, MeetingLinkConfirmedActivity.class));
-            }
+        holder.stateBtn.setOnClickListener((View view) -> {
+            context.startActivity(new Intent(context, MeetingLinkConfirmedActivity.class));
         });
     }
 

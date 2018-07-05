@@ -8,7 +8,7 @@
 
     <TextView
         android:id="@+id/sdacp_title"
-        android:layout_width="@dimen/dp_0"
+        android:layout_width="225dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_20"
         android:layout_marginRight="@dimen/dp_20"
@@ -41,7 +41,7 @@
         android:id="@+id/sdacp_word_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:text="@string/word_count"
         android:textColor="@color/color_888888"
         android:textSize="@dimen/sp_13"
         app:layout_constraintEnd_toEndOf="@+id/sdacp_edit"
@@ -56,8 +56,10 @@
         android:gravity="center"
         android:padding="@dimen/dp_10"
         android:text="@string/confirm"
+        android:layout_marginTop="@dimen/dp_20"
         android:textColor="@color/color_FF5657"
         android:textSize="@dimen/sp_16"
+        app:layout_constraintTop_toBottomOf="@+id/sdacp_word_count"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

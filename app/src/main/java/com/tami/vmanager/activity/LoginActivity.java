@@ -195,7 +195,7 @@ public class LoginActivity extends BaseActivity {
             loginRequest.setRequestUrl(HttpKey.USER_LOGIN_SMS);
             loginRequest.setSmsCode(login_password.getText().toString());
         }
-        loginRequest.setFlag(String.valueOf(2));
+//        loginRequest.setFlag(String.valueOf(2));
         networkBroker.ask(loginRequest, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);

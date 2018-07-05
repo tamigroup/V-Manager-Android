@@ -63,13 +63,10 @@ public class MeetingFlowActivity extends BaseActivity {
                 //赋值
                 TextView timeView = holder.getView(R.id.meeting_flow_time);
                 timeView.setText(s);
-                timeView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getApplicationContext(), CreateServiceFlowActivity.class);
-                        intent.putExtra(Constants.KEY_DAY, s);
-                        startActivity(intent);
-                    }
+                timeView.setOnClickListener((View view) -> {
+                    Intent intent = new Intent(getApplicationContext(), CreateServiceFlowActivity.class);
+                    intent.putExtra(Constants.KEY_DAY, s);
+                    startActivity(intent);
                 });
             }
         });

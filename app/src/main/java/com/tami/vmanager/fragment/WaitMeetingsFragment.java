@@ -108,22 +108,16 @@ public class WaitMeetingsFragment extends ViewPagerBaseFragment {
                 //关注按钮点击
                 final TextView follow = holder.getView(R.id.item_meeting_follow);
                 followOnClick(follow, elements.getFollowStatus());
-                follow.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        followUserMeeting(follow, elements);
-                    }
+                follow.setOnClickListener((View v) -> {
+                    followUserMeeting(follow, elements);
                 });
                 //待付款
                 TextView paymentState = holder.getView(R.id.item_meeting_payment_state);
                 paymentState.setVisibility(elements.getFromPlat() == 1 ? View.VISIBLE : View.GONE);
                 //ITEM点击
                 ConstraintLayout itemLayout = holder.getView(R.id.item_meeting_layout);
-                itemLayout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startActivity(new Intent(getActivity(), MeetingOverviewActivity.class));
-                    }
+                itemLayout.setOnClickListener((View v) -> {
+                    startActivity(new Intent(getActivity(), MeetingOverviewActivity.class));
                 });
             }
 

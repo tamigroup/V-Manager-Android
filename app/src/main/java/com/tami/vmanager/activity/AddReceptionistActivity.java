@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
 import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.SectionDecoration;
 import com.tami.vmanager.base.BaseActivity;
@@ -21,6 +22,7 @@ import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.Utils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -119,13 +121,10 @@ public class AddReceptionistActivity extends BaseActivity {
                 holder.setText(R.id.iar_name, contentList.realName);
                 AppCompatImageView selectImage = holder.getView(R.id.iar_select_image);
                 selectImage.setImageResource(contentList.isSelected ? R.mipmap.people_checkbox_selected : R.mipmap.people_checkbox_unselected);
-                holder.getView(R.id.rar_layout).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        contentList.isSelected = !contentList.isSelected;
-                        selectImage.setImageResource(contentList.isSelected ? R.mipmap.people_checkbox_selected : R.mipmap.people_checkbox_unselected);
-                        setPeople(count = contentList.isSelected ? ++count : --count);
-                    }
+                holder.getView(R.id.rar_layout).setOnClickListener((View v) -> {
+                    contentList.isSelected = !contentList.isSelected;
+                    selectImage.setImageResource(contentList.isSelected ? R.mipmap.people_checkbox_selected : R.mipmap.people_checkbox_unselected);
+                    setPeople(count = contentList.isSelected ? ++count : --count);
                 });
             }
         };

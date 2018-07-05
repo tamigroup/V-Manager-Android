@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.AppCompatImageView;
 import android.view.View;
 import android.widget.Button;
+
 import com.tami.vmanager.R;
 import com.tami.vmanager.activity.LoginActivity;
 import com.tami.vmanager.base.ViewPagerBaseFragment;
@@ -53,24 +54,18 @@ public class GuidePageFragment extends ViewPagerBaseFragment {
             if (skipBtnFlag) {
                 immediate_experience.setVisibility(View.GONE);
                 skip_btn.setVisibility(View.VISIBLE);
-                skip_btn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        getActivity().startActivity(new Intent(getActivity(), LoginActivity.class));
-                        getActivity().finish();
-                    }
+                skip_btn.setOnClickListener((View view) -> {
+                    getActivity().startActivity(new Intent(getActivity(), LoginActivity.class));
+                    getActivity().finish();
                 });
             }
             boolean experienceFlag = bundle.getBoolean(Constants.EXPERIENCE);
             if (experienceFlag) {
                 skip_btn.setVisibility(View.GONE);
                 immediate_experience.setVisibility(View.VISIBLE);
-                immediate_experience.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        getActivity().startActivity(new Intent(getActivity(), LoginActivity.class));
-                        getActivity().finish();
-                    }
+                immediate_experience.setOnClickListener((View view) -> {
+                    getActivity().startActivity(new Intent(getActivity(), LoginActivity.class));
+                    getActivity().finish();
                 });
             }
         }

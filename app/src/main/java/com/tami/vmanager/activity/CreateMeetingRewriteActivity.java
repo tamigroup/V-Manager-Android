@@ -444,11 +444,8 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
                 if (contentList.id == -1000) {
                     group.setVisibility(View.GONE);
                     defaultImage.setVisibility(View.VISIBLE);
-                    defaultImage.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            startActivityForResult(new Intent(getApplicationContext(), AddReceptionistActivity.class), Constants.CREATE_MEETING_JIEDAIREN);
-                        }
+                    defaultImage.setOnClickListener((View v) -> {
+                        startActivityForResult(new Intent(getApplicationContext(), AddReceptionistActivity.class), Constants.CREATE_MEETING_JIEDAIREN);
                     });
                     return;
                 } else {
@@ -459,12 +456,9 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
                         Picasso.get().load(contentList.iconUrl).into(avatarImage);
                     }
                     AppCompatImageView deleteImage = holder.getView(R.id.icmr_delete_image);
-                    deleteImage.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            receptionistListData.remove(position);
-                            receptionistListAdapter.notifyDataSetChanged();
-                        }
+                    deleteImage.setOnClickListener((View v) -> {
+                        receptionistListData.remove(position);
+                        receptionistListAdapter.notifyDataSetChanged();
                     });
                     holder.setText(R.id.icmr_name, contentList.realName);
                 }
@@ -492,22 +486,16 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
                     group.setVisibility(View.VISIBLE);
                     defaultImage.setVisibility(View.GONE);
                     AppCompatImageView deleteImage = holder.getView(R.id.icmpi_delete);
-                    deleteImage.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            vipListData.remove(position);
-                            vipAdapter.notifyDataSetChanged();
-                        }
+                    deleteImage.setOnClickListener((View v) -> {
+                        vipListData.remove(position);
+                        vipAdapter.notifyDataSetChanged();
                     });
                     holder.setText(R.id.icmpi_name, item.getName());
                 } else {
                     group.setVisibility(View.GONE);
                     defaultImage.setVisibility(View.VISIBLE);
-                    defaultImage.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            startActivityForResult(new Intent(getApplicationContext(), VIPPersonageIntroductionActivity.class), Constants.CREATE_MEETING_VIP);
-                        }
+                    defaultImage.setOnClickListener((View v) -> {
+                        startActivityForResult(new Intent(getApplicationContext(), VIPPersonageIntroductionActivity.class), Constants.CREATE_MEETING_VIP);
                     });
                     return;
                 }
@@ -532,16 +520,13 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
         final Calendar endDate = Calendar.getInstance();
 //        startDate.set(2018, 0, 1);
         endDate.set(2020, 11, 31);
-        TimePickerView pvTime = new TimePickerBuilder(this, new OnTimeSelectListener() {
-            @Override
-            public void onTimeSelect(Date date, View v) {
-                if (dataFlag) {
-                    recordStartDate = date;
-                } else {
-                    recordEndDate = date;
-                }
-                view.setText(TimeUtils.date2String(date));
+        TimePickerView pvTime = new TimePickerBuilder(this, (Date selectDate, View v) -> {
+            if (dataFlag) {
+                recordStartDate = selectDate;
+            } else {
+                recordEndDate = selectDate;
             }
+            view.setText(TimeUtils.date2String(selectDate));
         }).setType(new boolean[]{true, true, true, true, true, true})
                 .setDate(selectedDate)// 如果不设置的话，默认是系统时间*/
                 .setRangDate(startDate, endDate)//起始终止年月日设定
