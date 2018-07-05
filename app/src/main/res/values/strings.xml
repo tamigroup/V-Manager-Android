@@ -117,8 +117,8 @@
     <string name="close">关闭</string>
 
     <!--   意见箱     -->
-    <string name="complaints_box">意见箱</string>
-    <string name="host">举办方(%s)</string>
+    <string name="complaints_box">满意度</string>
+    <string name="host">主办方(%s)</string>
     <string name="participants">参会方(%s)</string>
     <string name="score">打分：</string>
     <string name="environment">环境：</string>
@@ -175,7 +175,7 @@
     <!--    会议服务群    -->
     <string name="conference_service_group">会议服务群</string>
     <string name="tab_conference_information">会议信息</string>
-    <string name="tab_group_chat">群聊</string>
+    <string name="tab_group_chat">群消息</string>
     <string name="tab_feedback">反馈</string>
     <string name="tab_notice">公告</string>
 
@@ -186,7 +186,6 @@
     <string name="see">查看</string>
     <string name="meeting_details">会议详情</string>
     <string name="vip_details">VIP详情</string>
-
     <!--    主办方成员    -->
     <string name="group_chat_members">群聊成员</string>
     <string name="common_n_people">共%s人</string>
