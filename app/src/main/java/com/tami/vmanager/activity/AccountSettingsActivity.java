@@ -1,6 +1,9 @@
 package com.tami.vmanager.activity;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -66,26 +69,36 @@ public class AccountSettingsActivity extends BaseActivity {
     @Override
     public void initListener() {
         newMessage.setOnCheckedChangeListener((SwitchButton view, boolean isChecked) -> {
-
+            if (isChecked) {
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    Intent intent = new Intent();
+                    intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+                    intent.putExtra("app_package", getPackageName());
+                    intent.putExtra("app_uid", getApplicationInfo().uid);
+                    startActivity(intent);
+                } else if (android.os.Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
+                    Intent intent = new Intent();
+                    intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    intent.addCategory(Intent.CATEGORY_DEFAULT);
+                    intent.setData(Uri.parse("package:" + getPackageName()));
+                    startActivity(intent);
+                }
+            }
         });
         changeDemand.setOnCheckedChangeListener((SwitchButton view, boolean isChecked) -> {
-            changeDemandState.setText(isChecked?getString(R.string.on):getString(R.string.off));
+//            changeDemandState.setText(isChecked ? getString(R.string.on) : getString(R.string.off));
             setUserNoticeConfig();
         });
         groupMessage.setOnCheckedChangeListener((SwitchButton view, boolean isChecked) -> {
-            groupMessageState.setText(isChecked?getString(R.string.on):getString(R.string.off));
+//            groupMessageState.setText(isChecked ? getString(R.string.on) : getString(R.string.off));
             setUserNoticeConfig();
         });
         satisfaction.setOnCheckedChangeListener((SwitchButton view, boolean isChecked) -> {
-            satisfactionState.setText(isChecked?getString(R.string.on):getString(R.string.off));
-            setUserNoticeConfig();
-        });
-        satisfaction.setOnCheckedChangeListener((SwitchButton view, boolean isChecked) -> {
-            satisfactionState.setText(isChecked?getString(R.string.on):getString(R.string.off));
+//            satisfactionState.setText(isChecked ? getString(R.string.on) : getString(R.string.off));
             setUserNoticeConfig();
         });
         taskAssignment.setOnCheckedChangeListener((SwitchButton view, boolean isChecked) -> {
-            taskAssignmentState.setText(isChecked?getString(R.string.on):getString(R.string.off));
+//            taskAssignmentState.setText(isChecked ? getString(R.string.on) : getString(R.string.off));
             setUserNoticeConfig();
         });
 
@@ -132,7 +145,7 @@ public class AccountSettingsActivity extends BaseActivity {
      * 更改密码
      */
     private void changePassword() {
-
+        startActivity(new Intent(getApplicationContext(), ModifyPasswordActivity.class));
     }
 
     /**

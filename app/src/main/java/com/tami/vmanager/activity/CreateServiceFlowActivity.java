@@ -2,12 +2,18 @@ package com.tami.vmanager.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.os.Handler;
+import android.support.constraint.ConstraintLayout;
 import android.support.constraint.Group;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatImageView;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -26,6 +32,7 @@ import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.TimeUtils;
+import com.tami.vmanager.view.MeetingStateView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -41,6 +48,9 @@ import java.util.List;
  */
 public class CreateServiceFlowActivity extends BaseActivity {
 
+    private TextView dateSelected;//日期
+    private AppCompatImageView dateSelectedImage;//多天的时候显示
+
     private RecyclerView topRecyclerView;//服务器固定项
     private RecyclerView bottomRecyclerView;//追加自定义项
     private CommonAdapter<GetMeetingItemsResponse.Array.Item> topAdapter;
@@ -50,7 +60,8 @@ public class CreateServiceFlowActivity extends BaseActivity {
     private TextView addView;//添加按钮
     private Button saveBtn;//保存按钮
     private NetworkBroker networkBroker;
-    private ServiceFlowDialog serviceFlowDialog;
+    private ServiceFlowDialog serviceFlowDialog;//创建流程
+    private BottomSheetDialog mBottomSheetDialog;//选择角色
 
     @Override
     public boolean isTitle() {
@@ -62,9 +73,11 @@ public class CreateServiceFlowActivity extends BaseActivity {
         return R.layout.activity_create_service_flow;
     }
 
-
     @Override
     public void initView() {
+        dateSelected = findViewById(R.id.acsf_date_selected);
+        dateSelectedImage = findViewById(R.id.acsf_date_selected_image);
+
         topRecyclerView = findViewById(R.id.acsf_top_recyclerview);
         bottomRecyclerView = findViewById(R.id.acsf_bottom_recyclerview);
         addView = findViewById(R.id.fcsf_add_process);
@@ -146,34 +159,29 @@ public class CreateServiceFlowActivity extends BaseActivity {
         topAdapter = new CommonAdapter<GetMeetingItemsResponse.Array.Item>(getApplicationContext(), R.layout.item_create_service_flow, topData) {
             @Override
             protected void convert(ViewHolder holder, GetMeetingItemsResponse.Array.Item item, int position) {
-                //流程名称
-                holder.setText(R.id.icsf_name, item.name);
-
-                //编辑时间
-                TextView timeView = holder.getView(R.id.icsf_editing_time);
-                //勾选的时间颜色会变
-                timeView.setHintTextColor(ContextCompat.getColor(getApplicationContext(), item.isSelected ? R.color.color_3B89E9 : R.color.color_888888));
-                //时间不为空时添充
-                if (item.createOn != 0) {
-                    timeView.setText(TimeUtils.date2String(new Date(item.createOn), TimeUtils.DATE_HHMM_SLASH));
-                }
-                timeView.setOnClickListener((View view) -> {
-                    createTime(timeView, position, true);
-                });
-
-                //选中图片
-                AppCompatImageView selectedView = holder.getView(R.id.icsf_selected);
-                selectedView.setImageResource(item.isSelected ? R.mipmap.people_checkbox_selected : R.mipmap.people_checkbox_unselected);
-                selectedView.setOnClickListener((View view) -> {
-                    item.isSelected = !item.isSelected;
-                    selectedView.setImageResource(item.isSelected ? R.mipmap.people_checkbox_selected : R.mipmap.people_checkbox_unselected);
-                    timeView.setHintTextColor(ContextCompat.getColor(getApplicationContext(), item.isSelected ? R.color.color_3B89E9 : R.color.color_888888));
-                });
-
+                //角色
+                TextView customRole = holder.getView(R.id.icsf_custom_role);
                 //删除组隐藏显示
                 Group group = holder.getView(R.id.icsf_group);
                 if (item.isCustom) {
                     group.setVisibility(View.VISIBLE);
+                    holder.getView(R.id.icsf_editing_time).setVisibility(View.GONE);
+                    customRole.setOnClickListener((View v) -> {
+                        showCustomRole();
+                    });
+                    if (item.isSelected) {
+                        customRole.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_3B89E9));
+                        if (item.role != null && !TextUtils.isEmpty(item.role.name)) {
+                            //角色不为空时添加角色名称
+                            customRole.setText(item.role.name);
+                        }
+                        customRole.setEnabled(true);
+                    } else {
+                        customRole.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_888888));
+                        customRole.setText(null);
+                        customRole.setEnabled(false);
+                    }
+                    //删除图片
                     AppCompatImageView deleteView = holder.getView(R.id.icsf_delete);
                     deleteView.setOnClickListener((View view) -> {
                         topData.remove(position);
@@ -181,7 +189,63 @@ public class CreateServiceFlowActivity extends BaseActivity {
                     });
                 } else {
                     group.setVisibility(View.GONE);
+                    holder.getView(R.id.icsf_editing_time).setVisibility(View.VISIBLE);
                 }
+                //流程名称
+                holder.setText(R.id.icsf_name, item.name);
+                //编辑时间
+                TextView timeView = holder.getView(item.isCustom ? R.id.icsf_custom_editing_time : R.id.icsf_editing_time);
+                //选中图片
+                AppCompatImageView selectedView = holder.getView(R.id.icsf_selected);
+
+                if (item.isSelected) {
+                    //勾选的时间颜色会变
+                    timeView.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_3B89E9));
+                    selectedView.setImageResource(R.mipmap.people_checkbox_selected);
+                } else {
+                    //勾选的时间颜色会变
+                    timeView.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_888888));
+                    selectedView.setImageResource(R.mipmap.people_checkbox_unselected);
+                }
+                //如果为选中状态则设置时间可点击
+                timeView.setOnClickListener((View view) -> {
+                    createTime(timeView, position, true);
+                });
+                timeView.setEnabled(item.isSelected ? true : false);
+
+                //时间不为空时添充
+                if (item.createOn != 0) {
+                    timeView.setText(TimeUtils.date2String(new Date(item.createOn), TimeUtils.DATE_HHMM_SLASH));
+                    timeView.setEnabled(true);
+                }
+
+                selectedView.setOnClickListener((View view) -> {
+                    item.isSelected = !item.isSelected;
+                    if (item.isSelected) {
+                        selectedView.setImageResource(R.mipmap.people_checkbox_selected);
+                        timeView.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_3B89E9));
+                        timeView.setEnabled(true);
+                        if (item.isCustom) {
+                            customRole.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_3B89E9));
+                            customRole.setEnabled(true);
+                        }
+                    } else {
+                        if (item.isCustom) {
+                            customRole.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_888888));
+                            customRole.setEnabled(false);
+                            bottomData.add(topData.get(position));
+                            bottomAdapter.notifyDataSetChanged();
+                            topData.remove(position);
+                            topAdapter.notifyDataSetChanged();
+                            bottomRecyclerView.setVisibility(View.VISIBLE);
+                            return;
+                        }
+                        selectedView.setImageResource(R.mipmap.people_checkbox_unselected);
+                        timeView.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_888888));
+                        timeView.setEnabled(false);
+                    }
+                });
+
             }
         };
         topRecyclerView.setAdapter(topAdapter);
@@ -190,34 +254,68 @@ public class CreateServiceFlowActivity extends BaseActivity {
         bottomAdapter = new CommonAdapter<GetMeetingItemsResponse.Array.Item>(getApplicationContext(), R.layout.item_create_service_flow, bottomData) {
             @Override
             protected void convert(ViewHolder holder, GetMeetingItemsResponse.Array.Item item, int position) {
-                //流程名称
-                holder.setText(R.id.icsf_name, item.name);
-
-                //编辑时间
-                TextView timeView = holder.getView(R.id.icsf_editing_time);
-                //勾选的时间颜色会变
-                timeView.setHintTextColor(ContextCompat.getColor(getApplicationContext(), item.isSelected ? R.color.color_3B89E9 : R.color.color_888888));
-                //时间不为空时添充
-                if (item.createOn != 0) {
-                    timeView.setText(TimeUtils.date2String(new Date(item.createOn), TimeUtils.DATE_HHMM_SLASH));
-                }
-                timeView.setOnClickListener((View view) -> {
-                    createTime(timeView, position, false);
-                });
-
-                //选中图片
-                AppCompatImageView selectedView = holder.getView(R.id.icsf_selected);
-                selectedView.setImageResource(item.isSelected ? R.mipmap.people_checkbox_selected : R.mipmap.people_checkbox_unselected);
-                selectedView.setOnClickListener((View view) -> {
-                    item.isSelected = !item.isSelected;
-                    selectedView.setImageResource(item.isSelected ? R.mipmap.people_checkbox_selected : R.mipmap.people_checkbox_unselected);
-                    timeView.setHintTextColor(ContextCompat.getColor(getApplicationContext(), item.isSelected ? R.color.color_3B89E9 : R.color.color_888888));
-                });
-
                 //删除组隐藏显示
                 Group group = holder.getView(R.id.icsf_group);
                 group.setVisibility(View.VISIBLE);
+                //隐藏默认的编辑时间
+                holder.getView(R.id.icsf_editing_time).setVisibility(View.GONE);
+                //流程名称
+                holder.setText(R.id.icsf_name, item.name);
+                //编辑时间
+                TextView timeView = holder.getView(R.id.icsf_custom_editing_time);
+                //角色
+                TextView customRole = holder.getView(R.id.icsf_custom_role);
+                //选中图片
+                AppCompatImageView selectedView = holder.getView(R.id.icsf_selected);
+                //删除图片
                 AppCompatImageView deleteView = holder.getView(R.id.icsf_delete);
+                //勾选的时间可点击
+                timeView.setOnClickListener((View view) -> {
+                    createTime(timeView, position, false);
+                });
+                //角色选择
+                customRole.setOnClickListener((View v) -> {
+                    showCustomRole();
+                });
+                if (item.isSelected) {
+                    //勾选的时间颜色会变
+                    timeView.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_3B89E9));
+                    customRole.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_3B89E9));
+                    if (item.role != null && !TextUtils.isEmpty(item.role.name)) {
+                        customRole.setText(item.role.name);
+                    }
+                    selectedView.setImageResource(R.mipmap.people_checkbox_selected);
+                    timeView.setEnabled(true);
+                    customRole.setEnabled(true);
+                } else {
+                    //勾选的时间颜色会变
+                    timeView.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_888888));
+                    customRole.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_888888));
+                    //清空显示默认值
+                    customRole.setText(null);
+                    timeView.setText(null);
+                    selectedView.setImageResource(R.mipmap.people_checkbox_unselected);
+                    timeView.setEnabled(false);
+                    customRole.setEnabled(false);
+                }
+                //选中
+                selectedView.setOnClickListener((View view) -> {
+                    item.isSelected = !item.isSelected;
+                    if (item.isSelected) {
+                        selectedView.setImageResource(R.mipmap.people_checkbox_selected);
+                        customRole.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_3B89E9));
+                        timeView.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_3B89E9));
+                        timeView.setEnabled(true);
+                        customRole.setEnabled(true);
+                    } else {
+                        selectedView.setImageResource(R.mipmap.people_checkbox_unselected);
+                        customRole.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_888888));
+                        timeView.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_888888));
+                        timeView.setEnabled(false);
+                        customRole.setEnabled(false);
+                    }
+                });
+                //删除
                 deleteView.setOnClickListener((View view) -> {
                     bottomData.remove(position);
                     notifyDataSetChanged();
@@ -329,4 +427,54 @@ public class CreateServiceFlowActivity extends BaseActivity {
         });
     }
 
+    private RecyclerView roleRecyclerView;
+    private List<String> roleData = new ArrayList<>();
+    private CommonAdapter<String> croleAdapter;
+    private int selectIndex = -1;
+
+    public void showCustomRole() {
+        mBottomSheetDialog = new BottomSheetDialog(this);
+        ConstraintLayout cLayout = (ConstraintLayout) getLayoutInflater().inflate(R.layout.show_menu_service_flow, null);
+        TextView cancle = cLayout.findViewById(R.id.smsf_cancel);
+        TextView confirm = cLayout.findViewById(R.id.smsf_confirm);
+        cancle.setOnClickListener((View v) -> {
+            mBottomSheetDialog.dismiss();
+        });
+        confirm.setOnClickListener((View v) -> {
+            mBottomSheetDialog.dismiss();
+        });
+        setData1();
+        roleRecyclerView = cLayout.findViewById(R.id.smsf_recyclerview);
+        GridLayoutManager layoutManage = new GridLayoutManager(getApplicationContext(), 3);
+        roleRecyclerView.setLayoutManager(layoutManage);
+        croleAdapter = new CommonAdapter<String>(getApplicationContext(), R.layout.item_role, roleData) {
+            @Override
+            protected void convert(ViewHolder holder, String s, int position) {
+                MeetingStateView roleView = holder.getView(R.id.item_role_txt);
+                roleView.setTextStyle(s, R.color.color_333333, android.R.color.black, 1, 5);
+                roleView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (selectIndex == -1) {
+                            roleView.setTextStyle(s, R.color.color_3B89E9, R.color.color_3B89E9, 1, 5);
+                        } else {
+                            MeetingStateView selectView = roleRecyclerView.getChildAt(selectIndex).findViewById(R.id.item_role_txt);
+                            selectView.setTextStyle(s, R.color.color_333333, android.R.color.black, 1, 5);
+                            roleView.setTextStyle(s, R.color.color_3B89E9, R.color.color_3B89E9, 1, 5);
+                        }
+                        selectIndex = position;
+                    }
+                });
+            }
+        };
+        roleRecyclerView.setAdapter(croleAdapter);
+        mBottomSheetDialog.setContentView(cLayout);
+        mBottomSheetDialog.show();
+    }
+
+    private void setData1() {
+        for (int i = 0; i < 10; i++) {
+            roleData.add("name" + i);
+        }
+    }
 }

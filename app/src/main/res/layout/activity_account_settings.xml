@@ -31,14 +31,13 @@
             android:id="@+id/aas_new_message_notice_sb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/dp_20"
             app:layout_constraintBottom_toBottomOf="@+id/aas_new_message_notice_txt"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/aas_new_message_notice_txt"
             app:sb_background="@android:color/white"
             app:sb_button_color="@android:color/white"
-            app:sb_checked="true"
-            app:sb_checked_color="@color/default_bg"
+            app:sb_checked="false"
+            app:sb_checked_color="@color/color_FF5657"
             app:sb_show_indicator="false" />
     </android.support.constraint.ConstraintLayout>
 
@@ -88,7 +87,7 @@
             app:sb_background="@android:color/white"
             app:sb_button_color="@android:color/white"
             app:sb_checked="true"
-            app:sb_checked_color="@color/default_bg"
+            app:sb_checked_color="@color/color_FF5657"
             app:sb_show_indicator="false" />
 
         <TextView
@@ -97,6 +96,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/dp_20"
             android:gravity="center_vertical"
+            android:visibility="gone"
             android:text="@string/on"
             app:layout_constraintBottom_toBottomOf="@+id/aas_change_demand_notice_txt"
             app:layout_constraintEnd_toStartOf="@+id/aas_change_demand_notice_sb"
@@ -132,7 +132,7 @@
             app:sb_background="@android:color/white"
             app:sb_button_color="@android:color/white"
             app:sb_checked="true"
-            app:sb_checked_color="@color/default_bg"
+            app:sb_checked_color="@color/color_FF5657"
             app:sb_show_indicator="false" />
 
         <TextView
@@ -140,6 +140,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/dp_20"
+            android:visibility="gone"
             android:text="@string/on"
             app:layout_constraintBottom_toBottomOf="@+id/aas_group_message_notice_txt"
             app:layout_constraintEnd_toStartOf="@+id/aas_group_message_notice_sb"
@@ -175,13 +176,14 @@
             app:sb_background="@android:color/white"
             app:sb_button_color="@android:color/white"
             app:sb_checked="true"
-            app:sb_checked_color="@color/default_bg"
+            app:sb_checked_color="@color/color_FF5657"
             app:sb_show_indicator="false" />
 
         <TextView
             android:id="@+id/ass_satisfaction_notice_state"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:layout_marginRight="@dimen/dp_20"
             android:text="@string/on"
             app:layout_constraintBottom_toBottomOf="@+id/ass_satisfaction_notice_txt"
@@ -219,7 +221,7 @@
             app:sb_background="@android:color/white"
             app:sb_button_color="@android:color/white"
             app:sb_checked="true"
-            app:sb_checked_color="@color/default_bg"
+            app:sb_checked_color="@color/color_FF5657"
             app:sb_show_indicator="false" />
 
         <TextView
@@ -227,6 +229,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/dp_20"
+            android:visibility="gone"
             android:text="@string/on"
             app:layout_constraintBottom_toBottomOf="@+id/ass_task_assignment_notice_txt"
             app:layout_constraintEnd_toStartOf="@+id/ass_task_assignment_notice_sb"

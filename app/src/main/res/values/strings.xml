@@ -256,4 +256,8 @@
     <string name="group_members">群成员</string>
     <string name="group_notice">群公告</string>
 
+    <string name="modify_password_true">密码修改成功！</string>
+    <string name="modify_password_false">密码修改失败！</string>
+
+    <string name="select_role">选择角色</string>
 </resources>

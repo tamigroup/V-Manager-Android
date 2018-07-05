@@ -27,10 +27,12 @@ public class GetMeetingItemsResponse extends MobileMessage implements Serializab
 
     public Array data;
 
+    @JsonInclude(Include.NON_NULL)
     public static class Array {
 
         public List<Item> dataList;
 
+        @JsonInclude(Include.NON_NULL)
         public static class Item implements Comparable<Item> {
             public int id;	/*1*/
             public int selStatus;	/*0*/
@@ -56,6 +58,14 @@ public class GetMeetingItemsResponse extends MobileMessage implements Serializab
                 String thisOrderTime = TimeUtils.date2String(new Date(createOn), TimeUtils.DATE_HHMM_SLASH);
                 String orderTime = TimeUtils.date2String(new Date(item.createOn), TimeUtils.DATE_HHMM_SLASH);
                 return thisOrderTime.compareTo(orderTime);
+            }
+
+            public Role role;
+
+            @JsonInclude(Include.NON_NULL)
+            public static class Role {
+                public int id;
+                public String name;
             }
         }
     }

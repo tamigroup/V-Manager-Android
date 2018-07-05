@@ -20,12 +20,10 @@ public class ChangePasswordResponse extends MobileMessage implements Serializabl
 	 */
 	private static final long serialVersionUID = 1L;
 
-
-
 	public ChangePasswordResponse() {
 		super();
 	}
 
-	
+	public boolean data;
 
 }

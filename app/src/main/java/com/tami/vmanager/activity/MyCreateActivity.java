@@ -4,9 +4,11 @@ import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
 
 /**
+ * 我的创建
  * Created by why on 2018/7/5.
  */
 public class MyCreateActivity extends BaseActivity {
+
 
     @Override
     public boolean isTitle() {
@@ -20,12 +22,10 @@ public class MyCreateActivity extends BaseActivity {
 
     @Override
     public void initView() {
-
     }
 
     @Override
     public void initListener() {
-
     }
 
     @Override
@@ -35,7 +35,6 @@ public class MyCreateActivity extends BaseActivity {
 
     @Override
     public void requestNetwork() {
-
     }
 
     @Override
