@@ -25,9 +25,15 @@ import com.tami.vmanager.view.SwitchButton;
  */
 public class AccountSettingsActivity extends BaseActivity {
 
-    private SwitchButton sponsor;//主办方
+    private SwitchButton newMessage;//新消息
+    private SwitchButton changeDemand;//需求变化
+    private TextView changeDemandState;
+    private SwitchButton groupMessage;//群消息
+    private TextView groupMessageState;
     private SwitchButton satisfaction;//满意度
-    private SwitchButton groupChat;//
+    private TextView satisfactionState;
+    private SwitchButton taskAssignment;//任务分配通知
+    private TextView taskAssignmentState;
     private TextView changePassword;
     private Button exitBtn;
     private NetworkBroker networkBroker;
@@ -44,32 +50,43 @@ public class AccountSettingsActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        sponsor = findViewById(R.id.aas_sponsor_notification_sb);
-        satisfaction = findViewById(R.id.aas_satisfaction_notification_sb);
-        groupChat = findViewById(R.id.ass_group_chat_notification_sb);
+        newMessage = findViewById(R.id.aas_new_message_notice_sb);
+        changeDemand = findViewById(R.id.aas_change_demand_notice_sb);
+        changeDemandState = findViewById(R.id.aas_change_demand_notice_state);
+        groupMessage = findViewById(R.id.aas_group_message_notice_sb);
+        groupMessageState = findViewById(R.id.aas_group_message_notice_state);
+        satisfaction = findViewById(R.id.ass_satisfaction_notice_sb);
+        satisfactionState = findViewById(R.id.ass_satisfaction_notice_state);
+        taskAssignment = findViewById(R.id.ass_task_assignment_notice_sb);
+        taskAssignmentState = findViewById(R.id.ass_task_assignment_notice_state);
         changePassword = findViewById(R.id.aas_change_the_password);
         exitBtn = findViewById(R.id.aas_exit_login);
     }
 
     @Override
     public void initListener() {
-        sponsor.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(SwitchButton view, boolean isChecked) {
-                setUserNoticeConfig();
-            }
+        newMessage.setOnCheckedChangeListener((SwitchButton view, boolean isChecked) -> {
+
         });
-        satisfaction.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(SwitchButton view, boolean isChecked) {
-                setUserNoticeConfig();
-            }
+        changeDemand.setOnCheckedChangeListener((SwitchButton view, boolean isChecked) -> {
+            changeDemandState.setText(isChecked?getString(R.string.on):getString(R.string.off));
+            setUserNoticeConfig();
         });
-        groupChat.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(SwitchButton view, boolean isChecked) {
-                setUserNoticeConfig();
-            }
+        groupMessage.setOnCheckedChangeListener((SwitchButton view, boolean isChecked) -> {
+            groupMessageState.setText(isChecked?getString(R.string.on):getString(R.string.off));
+            setUserNoticeConfig();
+        });
+        satisfaction.setOnCheckedChangeListener((SwitchButton view, boolean isChecked) -> {
+            satisfactionState.setText(isChecked?getString(R.string.on):getString(R.string.off));
+            setUserNoticeConfig();
+        });
+        satisfaction.setOnCheckedChangeListener((SwitchButton view, boolean isChecked) -> {
+            satisfactionState.setText(isChecked?getString(R.string.on):getString(R.string.off));
+            setUserNoticeConfig();
+        });
+        taskAssignment.setOnCheckedChangeListener((SwitchButton view, boolean isChecked) -> {
+            taskAssignmentState.setText(isChecked?getString(R.string.on):getString(R.string.off));
+            setUserNoticeConfig();
         });
 
         changePassword.setOnClickListener(this);
@@ -160,14 +177,16 @@ public class AccountSettingsActivity extends BaseActivity {
                 GetUserNoticeConfigResponse response = (GetUserNoticeConfigResponse) res;
                 if (response.getCode() == 200) {
                     if (response.data == null) {
-                        sponsor.setChecked(false);
+                        changeDemand.setChecked(false);
+                        groupMessage.setChecked(false);
                         satisfaction.setChecked(false);
-                        groupChat.setChecked(false);
+                        taskAssignment.setChecked(false);
                     } else {
                         GetUserNoticeConfigResponse.Item noticeItem = response.data;
-                        sponsor.setChecked(noticeItem.getHostNotice() == 1 ? true : false);
-                        satisfaction.setChecked(noticeItem.getSatisfactionNotice() == 1 ? true : false);
-                        groupChat.setChecked(noticeItem.getGroupchatNotice() == 1 ? true : false);
+//                        changeDemand.setChecked(noticeItem. == 1 ? true : false);
+                        groupMessage.setChecked(noticeItem.groupchatNotice == 1 ? true : false);
+                        satisfaction.setChecked(noticeItem.satisfactionNotice == 1 ? true : false);
+//                        taskAssignment.setChecked(noticeItem. == 1 ? true : false);
                     }
                 }
             } catch (Exception e) {
@@ -185,11 +204,11 @@ public class AccountSettingsActivity extends BaseActivity {
         if (item != null) {
             setUserNoticeConfigRequest.setUserId(item.getId());
         }
-        setUserNoticeConfigRequest.setSystemNotice(String.valueOf(0));
-        setUserNoticeConfigRequest.setHostNotice(String.valueOf(sponsor.isChecked() ? 1 : 0));
-        setUserNoticeConfigRequest.setMeetingNotice(String.valueOf(0));
-        setUserNoticeConfigRequest.setSatisfactionNotice(String.valueOf(satisfaction.isChecked() ? 1 : 0));
-        setUserNoticeConfigRequest.setGroupChatNotice(String.valueOf(groupChat.isChecked() ? 1 : 0));
+//        setUserNoticeConfigRequest.setSystemNotice(String.valueOf(0));
+//        setUserNoticeConfigRequest.setHostNotice(String.valueOf(changeDemand.isChecked() ? 1 : 0));
+//        setUserNoticeConfigRequest.setMeetingNotice(String.valueOf(0));
+//        setUserNoticeConfigRequest.setSatisfactionNotice(String.valueOf(groupMessage.isChecked() ? 1 : 0));
+//        setUserNoticeConfigRequest.setsatisfactionNotice(String.valueOf(satisfaction.isChecked() ? 1 : 0));
         networkBroker.ask(setUserNoticeConfigRequest, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);

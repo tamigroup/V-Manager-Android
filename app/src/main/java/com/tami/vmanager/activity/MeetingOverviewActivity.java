@@ -111,6 +111,7 @@ public class MeetingOverviewActivity extends BaseActivity {
         functionBtn.setOnClickListener(this);
         editBtn.setOnClickListener(this);
         lookBtn.setOnClickListener(this);
+        actualNumber.setOnClickListener(this);
 
         confirmEnterMeetingDialog.setConfirmEnterMeetingListener(new ConfirmEnterMeetingListener() {
             @Override
@@ -164,7 +165,11 @@ public class MeetingOverviewActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.meeting_overview_look_eo:
                 //查看EO单
-
+                startActivity(new Intent(getApplicationContext(), LookEOActivity.class));
+                break;
+            case R.id.meeting_overview_actual_number:
+                //实到人数
+                startActivity(new Intent(getApplicationContext(), PersonnelListActivity.class));
                 break;
             case R.id.meeting_overview_already_paid_item:
                 //待付款项

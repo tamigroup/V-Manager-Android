@@ -138,6 +138,38 @@
         <activity
             android:name=".activity.AddReceptionistActivity"
             android:screenOrientation="portrait"></activity>
+        <!--    我的创建    -->
+        <activity
+            android:name=".activity.MyCreateActivity"
+            android:screenOrientation="portrait"></activity>
+        <!--    更改密码    -->
+        <activity
+            android:name=".activity.ModifyPasswordActivity"
+            android:screenOrientation="portrait"></activity>
+        <!--    查看EO单    -->
+        <activity
+            android:name=".activity.LookEOActivity"
+            android:screenOrientation="portrait"></activity>
+        <!--    人员名单    -->
+        <activity
+            android:name=".activity.PersonnelListActivity"
+            android:screenOrientation="portrait"></activity>
+        <!--    添加负责人    -->
+        <activity
+            android:name=".activity.AddPersonChargeActivty"
+            android:screenOrientation="portrait"></activity>
+        <!--    VIP详情    -->
+        <activity
+            android:name=".activity.VIPDetailsActivity"
+            android:screenOrientation="portrait"></activity>
+        <!--    群成员    -->
+        <activity
+            android:name=".activity.GroupMembersActivty"
+            android:screenOrientation="portrait"></activity>
+        <!--    群公告    -->
+        <activity
+            android:name=".activity.GroupNoticeActivity"
+            android:screenOrientation="portrait"></activity>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

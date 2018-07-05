@@ -18,8 +18,6 @@ import com.tami.vmanager.adapter.RecycleViewDivider;
 import com.tami.vmanager.base.ViewPagerBaseFragment;
 import com.tami.vmanager.entity.AllMeetingsRequest;
 import com.tami.vmanager.entity.AllMeetingsResponse;
-import com.tami.vmanager.entity.FollowUserMeetingRequest;
-import com.tami.vmanager.entity.FollowUserMeetingResponse;
 import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.http.HttpKey;
 import com.tami.vmanager.http.NetworkBroker;
@@ -28,6 +26,7 @@ import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.ScreenUtil;
 import com.tami.vmanager.utils.TimeUtils;
+import com.tami.vmanager.view.MeetingStateView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -47,7 +46,7 @@ public class FollowMeetingsFragment extends ViewPagerBaseFragment {
     private List<AllMeetingsResponse.Item.ElementElements> listData;
     private int followType;//标识点击哪个进入到的页面
     private NetworkBroker networkBroker;
-    private int CurPage = 0;
+    private int CurPage = 1;
 
 
     @Override
@@ -84,7 +83,7 @@ public class FollowMeetingsFragment extends ViewPagerBaseFragment {
         recyclerView.addItemDecoration(new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL,
                 1, ContextCompat.getColor(getActivity(), R.color.percentage_10)));
         listData = new ArrayList<>();
-        commonAdapter = new CommonAdapter<AllMeetingsResponse.Item.ElementElements>(getActivity(), R.layout.item_meeting, listData) {
+        commonAdapter = new CommonAdapter<AllMeetingsResponse.Item.ElementElements>(getActivity(), R.layout.item_today_meeting, listData) {
             @Override
             protected void convert(ViewHolder holder, AllMeetingsResponse.Item.ElementElements elementElements, int position) {
 
@@ -96,7 +95,8 @@ public class FollowMeetingsFragment extends ViewPagerBaseFragment {
                 TextView nameView = holder.getView(R.id.item_meeting_name);
                 setNameTextLayoutParams(nameView, elements.getMeetingName());
                 //会议状态
-                holder.setText(R.id.item_meeting_state, elements.getMeetingStatus());
+                MeetingStateView stateView = holder.getView(R.id.item_meeting_state);
+                stateView.setMeetingStateText(elements.getMeetingStatus(), 20);
                 //时间
                 holder.setText(R.id.item_meeting_start_time, TimeUtils.milliseconds2String(elements.getStartTime()));
                 holder.setText(R.id.item_meeting_end_time, TimeUtils.milliseconds2String(elements.getEndTime()));
@@ -107,19 +107,10 @@ public class FollowMeetingsFragment extends ViewPagerBaseFragment {
                 AppCompatImageView imageView1 = holder.getView(R.id.item_meeting_level_icon1);
                 imageView1.setVisibility(elements.getFromPlat() == 1 ? View.VISIBLE : View.GONE);
                 holder.setText(R.id.item_meeting_room, elements.getMeetingAddress());
-                //关注按钮点击
-                final TextView follow = holder.getView(R.id.item_meeting_follow);
-                followOnClick(follow, elements.getFollowStatus());
-                follow.setOnClickListener((View v) -> {
-                    followUserMeeting(follow, elements);
-                });
-                //待付款
-                TextView paymentState = holder.getView(R.id.item_meeting_payment_state);
-                paymentState.setVisibility(elements.getFromPlat() == 1 ? View.VISIBLE : View.GONE);
                 //ITEM点击
                 ConstraintLayout itemLayout = holder.getView(R.id.item_meeting_layout);
                 itemLayout.setOnClickListener((View v) -> {
-                    startActivity(new Intent(getActivity(), MeetingOverviewActivity.class));
+                    startActivity(new Intent(getContext(), MeetingOverviewActivity.class));
                 });
             }
 
@@ -134,7 +125,7 @@ public class FollowMeetingsFragment extends ViewPagerBaseFragment {
                 int spec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
                 nameView.measure(spec, spec);
                 int measuredWidthTicketNum = nameView.getMeasuredWidth();
-                int maxWidth = ScreenUtil.sp2px(getContext(), 270);
+                int maxWidth = ScreenUtil.sp2px(getContext(), 330);
                 if (measuredWidthTicketNum > maxWidth) {
                     setLayoutParams(nameView, maxWidth);
                 }
@@ -165,6 +156,7 @@ public class FollowMeetingsFragment extends ViewPagerBaseFragment {
         }
         networkBroker = new NetworkBroker(getActivity());
         networkBroker.setCancelTag(getTAG());
+        CurPage = 1;
         query();
     }
 
@@ -214,54 +206,5 @@ public class FollowMeetingsFragment extends ViewPagerBaseFragment {
             }
 
         });
-    }
-
-    /**
-     * 关注/取消关注会议
-     */
-    private void followUserMeeting(TextView follow, AllMeetingsResponse.Item.ElementElements elements) {
-        FollowUserMeetingRequest followUserMeetingRequest = new FollowUserMeetingRequest();
-        LoginResponse.Item item = GlobaVariable.getInstance().item;
-        if (item != null) {
-            followUserMeetingRequest.setUserId(item.getId());
-        }
-        followUserMeetingRequest.setMeetingId(String.valueOf(elements.getMeetingId()));
-        followUserMeetingRequest.setRequsetUrl(elements.getFollowStatus() ? HttpKey.CANCEL_USER_MEETING : HttpKey.FOLLOW_USER_MEETING);
-        networkBroker.ask(followUserMeetingRequest, (ex1, res) -> {
-            if (null != ex1) {
-                Logger.d(ex1.getMessage() + "-" + ex1);
-                return;
-            }
-            try {
-                FollowUserMeetingResponse response = (FollowUserMeetingResponse) res;
-                if (response.getCode() == 200) {
-                    if (response.data) {
-                        followOnClick(follow, !elements.getFollowStatus());
-                        elements.setFollowStatus(!elements.getFollowStatus());
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        });
-    }
-
-    /**
-     * 设置关注点击效果
-     *
-     * @param follow
-     * @param status
-     */
-    private void followOnClick(TextView follow, boolean status) {
-        if (status) {
-            follow.setText(getString(R.string.yi_attention));
-            follow.setTextColor(ContextCompat.getColor(getContext(), R.color.color_FF5657));
-            follow.setBackgroundResource(R.drawable.item_meeting_follow_selected);
-        } else {
-            follow.setText(getString(R.string.attention));
-            follow.setTextColor(ContextCompat.getColor(getContext(), R.color.color_333333));
-            follow.setBackgroundResource(R.drawable.item_meeting_follow_unselected);
-        }
     }
 }

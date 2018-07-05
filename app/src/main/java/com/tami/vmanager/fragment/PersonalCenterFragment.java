@@ -21,6 +21,7 @@ import com.squareup.picasso.Picasso;
 import com.tami.vmanager.R;
 import com.tami.vmanager.activity.AccountSettingsActivity;
 import com.tami.vmanager.activity.ClipPictureActivity;
+import com.tami.vmanager.activity.MyCreateActivity;
 import com.tami.vmanager.base.BaseFragment;
 import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.entity.UpdateUserIconRequest;
@@ -352,7 +353,7 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
      * 我的创建
      */
     private void myCreation() {
-
+        startActivity(new Intent(getActivity(), MyCreateActivity.class));
     }
 
     /**

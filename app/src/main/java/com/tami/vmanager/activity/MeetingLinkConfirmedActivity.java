@@ -1,5 +1,6 @@
 package com.tami.vmanager.activity;
 
+import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -108,12 +109,13 @@ public class MeetingLinkConfirmedActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.mlc_add_the_person_in_charge:
-                if (recyclerView.getMeasuredHeight() > ScreenUtil.dip2px(getApplicationContext(), 320)) {
-                    ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) recyclerView.getLayoutParams();
-                    layoutParams.height = ScreenUtil.dip2px(getApplicationContext(), 320);
-                }
-                listData.add("测试数据");
-                commonAdapter.notifyDataSetChanged();
+//                if (recyclerView.getMeasuredHeight() > ScreenUtil.dip2px(getApplicationContext(), 320)) {
+//                    ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) recyclerView.getLayoutParams();
+//                    layoutParams.height = ScreenUtil.dip2px(getApplicationContext(), 320);
+//                }
+//                listData.add("测试数据");
+//                commonAdapter.notifyDataSetChanged();
+                startActivity(new Intent(getApplicationContext(), AddPersonChargeActivty.class));
                 break;
         }
     }

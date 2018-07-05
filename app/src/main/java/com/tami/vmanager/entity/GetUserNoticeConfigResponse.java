@@ -18,7 +18,7 @@ public class GetUserNoticeConfigResponse extends MobileMessage implements Serial
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	public static final long serialVersionUID = 1L;
 
 
 	public GetUserNoticeConfigResponse() {
@@ -28,68 +28,14 @@ public class GetUserNoticeConfigResponse extends MobileMessage implements Serial
 	public Item data;
 
 	public static class Item{
-		private String createOn;
-		private int groupchatNotice;
-		private int hostNotice;
-		private int meetingNotice;
-		private int satisfactionNotice;
-		private int systemNotice;
-		private String updateOn;
-
-		public String getCreateOn() {
-			return createOn;
-		}
-
-		public void setCreateOn(String createOn) {
-			this.createOn = createOn;
-		}
-
-		public int getGroupchatNotice() {
-			return groupchatNotice;
-		}
-
-		public void setGroupchatNotice(int groupchatNotice) {
-			this.groupchatNotice = groupchatNotice;
-		}
-
-		public int getHostNotice() {
-			return hostNotice;
-		}
-
-		public void setHostNotice(int hostNotice) {
-			this.hostNotice = hostNotice;
-		}
-
-		public int getMeetingNotice() {
-			return meetingNotice;
-		}
-
-		public void setMeetingNotice(int meetingNotice) {
-			this.meetingNotice = meetingNotice;
-		}
-
-		public int getSatisfactionNotice() {
-			return satisfactionNotice;
-		}
-
-		public void setSatisfactionNotice(int satisfactionNotice) {
-			this.satisfactionNotice = satisfactionNotice;
-		}
-
-		public int getSystemNotice() {
-			return systemNotice;
-		}
-
-		public void setSystemNotice(int systemNotice) {
-			this.systemNotice = systemNotice;
-		}
-
-		public String getUpdateOn() {
-			return updateOn;
-		}
-
-		public void setUpdateOn(String updateOn) {
-			this.updateOn = updateOn;
-		}
+		public	int	id;	/*1*/
+		public	int	meetingNotice;	/*1*/
+		public	int	groupchatNotice;	/*0*/
+		public	int	satisfactionNotice;	/*0*/
+		public	int	systemNotice;	/*1*/
+		public	int	hostNotice;	/*1*/
+		public	int	userId;	/*1*/
+		public	Long	createOn;	/*1528767815000*/
+		public	Long	updateOn;	/*1528768343000*/
 	}
 }

@@ -203,7 +203,7 @@
 
     <!--    帐号设置    -->
     <string name="sponsor_notification">主办方通知</string>
-    <string name="satisfaction_notification">满意度通知</string>
+    <string name="satisfaction">满意度</string>
     <string name="group_chat_notification">群聊通知</string>
     <string name="on">开</string>
     <string name="off">关</string>
@@ -238,4 +238,22 @@
     <string name="word_count">%d/15</string>
 
     <string name="please_seting_listener">请设置监听</string>
+    <string name="my_create">我的创建</string>
+    <string name="new_message_notice">新消息通知</string>
+    <string name="setting_prompt">关闭或开启新消息通知,请在你的设备“设置-通知中心-V管家”进行更改</string>
+    <string name="group_message">群消息</string>
+    <string name="task_assignment">任务分配通知</string>
+
+    <string name="old_password">旧密码</string>
+    <string name="confirm_password">确认密码</string>
+    <string name="please_add_old_password">请添写旧密码</string>
+    <string name="please_add_new_password">请添写新密码</string>
+
+    <string name="forget_old_code">忘记旧密码?</string>
+    <string name="look_eo">查看EO单</string>
+    <string name="personnel_list">人员名单</string>
+    <string name="add_person_charge">添加负责人</string>
+    <string name="group_members">群成员</string>
+    <string name="group_notice">群公告</string>
+
 </resources>

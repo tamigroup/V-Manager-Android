@@ -1,16 +1,15 @@
 package com.tami.vmanager.fragment;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
-
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.ViewPagerBaseFragment;
 import com.tami.vmanager.entity.NoticeEntity;
 import com.tami.vmanager.view.CircleImageView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
-
 import java.util.ArrayList;
 import java.util.List;
 

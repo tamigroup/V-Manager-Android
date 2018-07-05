@@ -80,6 +80,7 @@ public class EnterMeetingActivity extends BaseActivity {
     @Override
     public void initListener() {
         lookEO.setOnClickListener(this);
+        actualNumber.setOnClickListener(this);
         serviceGroup.setOnClickListener(this);
         sponsorMember.setOnClickListener(this);
         meetingDetails.setOnClickListener(this);
@@ -125,6 +126,10 @@ public class EnterMeetingActivity extends BaseActivity {
             case R.id.meeting_overview_look_eo:
                 //查看EO单
                 lookEO();
+                break;
+            case R.id.meeting_overview_actual_number:
+                //查看人员
+                startActivity(new Intent(getApplicationContext(), AddPersonChargeActivty.class));
                 break;
             case R.id.enter_meeting_service_group_layout:
                 //会议服务群
@@ -187,7 +192,7 @@ public class EnterMeetingActivity extends BaseActivity {
      * 查看EO单
      */
     private void lookEO() {
-
+        startActivity(new Intent(getApplicationContext(), LookEOActivity.class));
     }
 
     /**
@@ -215,7 +220,7 @@ public class EnterMeetingActivity extends BaseActivity {
      * VIP详情
      */
     private void vipDetails() {
-
+        startActivity(new Intent(getApplicationContext(),VIPDetailsActivity.class));
     }
 
 }

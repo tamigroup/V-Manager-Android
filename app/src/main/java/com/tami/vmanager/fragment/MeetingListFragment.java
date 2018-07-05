@@ -46,7 +46,7 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
     private List<AllMeetingsResponse.Item.ElementElements> listData;
     private int meetingType;//标识点击哪个进入到的页面
     private NetworkBroker networkBroker;
-    private int CurPage = 0;
+    private int CurPage = 1;
 
     @Override
     public int getContentViewId() {
@@ -166,6 +166,7 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
         }
         networkBroker = new NetworkBroker(getActivity());
         networkBroker.setCancelTag(getTAG());
+        CurPage = 1;
         query();
     }
 

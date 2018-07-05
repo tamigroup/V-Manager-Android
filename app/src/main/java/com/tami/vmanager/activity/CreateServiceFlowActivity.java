@@ -41,14 +41,14 @@ import java.util.List;
  */
 public class CreateServiceFlowActivity extends BaseActivity {
 
-    private RecyclerView topRecyclerView;
-    private RecyclerView bottomRecyclerView;
+    private RecyclerView topRecyclerView;//服务器固定项
+    private RecyclerView bottomRecyclerView;//追加自定义项
     private CommonAdapter<GetMeetingItemsResponse.Array.Item> topAdapter;
     private CommonAdapter<GetMeetingItemsResponse.Array.Item> bottomAdapter;
     private List<GetMeetingItemsResponse.Array.Item> topData;
     private List<GetMeetingItemsResponse.Array.Item> bottomData;
-    private TextView addView;
-    private Button saveBtn;
+    private TextView addView;//添加按钮
+    private Button saveBtn;//保存按钮
     private NetworkBroker networkBroker;
     private ServiceFlowDialog serviceFlowDialog;
 
