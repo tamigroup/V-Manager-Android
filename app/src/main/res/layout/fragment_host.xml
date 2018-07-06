@@ -2,7 +2,6 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_F2F4F5">
@@ -11,8 +10,8 @@
         android:id="@+id/cl_evaluate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/color_white"
-        android:layout_marginTop="@dimen/dp_10">
+        android:layout_marginTop="@dimen/dp_10"
+        android:background="@color/color_white">
 
         <TextView
             android:id="@+id/comprehensive_score"
@@ -20,34 +19,40 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="@dimen/dp_27"
-            android:text="综合打分"
+            android:text="@string/comprehensive_score"
             android:textColor="@color/color_333333"
             android:textSize="@dimen/dp_16"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
-        <RatingBar
+        <com.tami.vmanager.view.RatingBar.BaseRatingBar
             android:id="@+id/rating_bar"
-            style="@style/Widget.MaterialRatingBar.RatingBar.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_10"
             android:layout_marginTop="@dimen/dp_20"
-            android:isIndicator="true"
-            android:numStars="5"
-            android:rating="3"
             app:layout_constraintStart_toEndOf="@+id/comprehensive_score"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:srb_drawableEmpty="@mipmap/icon_star_no"
+            app:srb_drawableFilled="@mipmap/icon_star"
+            app:srb_isIndicator="true"
+            app:srb_numStars="5"
+            app:srb_rating="3"
+            app:srb_starHeight="29dp"
+            app:srb_starPadding="4dp"
+            app:srb_starWidth="29dp"
+            />
 
         <TextView
             android:id="@+id/service"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_20"
             android:layout_marginLeft="@dimen/dp_20"
             android:layout_marginTop="@dimen/dp_20"
-            android:text="服务:一般"
+            android:text="@string/service"
             android:textColor="@color/color_333333"
             android:textSize="@dimen/dp_16"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/comprehensive_score"/>
 
@@ -55,9 +60,10 @@
             android:id="@+id/environmental"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_20"
             android:layout_marginLeft="@dimen/dp_30"
             android:layout_marginTop="@dimen/dp_20"
-            android:text="环境:非常好"
+            android:text="@string/environment"
             android:textColor="@color/color_333333"
             android:textSize="@dimen/dp_16"
             app:layout_constraintStart_toEndOf="@+id/service"
@@ -77,18 +83,27 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_20"
             android:layout_marginTop="@dimen/dp_14"
-            android:text="评论(%s)"
+            android:text="@string/comment"
             android:textColor="@color/color_333333"
             android:textSize="@dimen/sp_14"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyc"
+
+        <com.jwenfeng.library.pulltorefresh.PullToRefreshLayout
+            android:id="@+id/pull"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_27"
-            app:layout_constraintTop_toBottomOf="@+id/comment"/>
+            android:layout_marginTop="@dimen/dp_7"
+            app:layout_constraintTop_toBottomOf="@+id/comment">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyc"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </com.jwenfeng.library.pulltorefresh.PullToRefreshLayout>
+
 
     </android.support.constraint.ConstraintLayout>
 
