@@ -77,6 +77,11 @@ public class HttpKey {
     //根据会议ID查询会议节点信息
     public static final String GET_MEETING_ITEMS_BY_MEETING_ID = "meeting/getMeetingItemsByMeetingId";
 
+    // 综合分数
+    public static final String GET_AVG = "meetingEvaluate/getAvg";
+    // 意见箱 评价列表
+    public static final String GET_EVALUATEPAGE_LIST = "meetingEvaluate/evaluatePage";
+
     //---------------------------------------------------------------------------
 
 //    //手机号
