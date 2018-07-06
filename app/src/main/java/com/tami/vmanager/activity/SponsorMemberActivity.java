@@ -1,7 +1,8 @@
 package com.tami.vmanager.activity;
 
-import android.view.View;
-import android.widget.TextView;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
 
@@ -11,9 +12,7 @@ import com.tami.vmanager.base.BaseActivity;
  */
 public class SponsorMemberActivity extends BaseActivity {
 
-    private TextView expandAll;//展开全部
-    private TextView tabNotice;//会告
-    private TextView outMeeting;//退出会议
+    private RecyclerView recyclerView;
 
     @Override
     public boolean isTitle() {
@@ -27,21 +26,23 @@ public class SponsorMemberActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        expandAll = findViewById(R.id.sm_expand_all);
-        tabNotice = findViewById(R.id.sm_tab_notice);
-        outMeeting = findViewById(R.id.sm_sign_out_meeting);
+        recyclerView = findViewById(R.id.recyc);
     }
 
     @Override
     public void initListener() {
-        expandAll.setOnClickListener(this);
-        tabNotice.setOnClickListener(this);
-        outMeeting.setOnClickListener(this);
     }
 
     @Override
     public void initData() {
         setTitleName(R.string.sponsor_member);
+        initRecyc();
+    }
+
+    private void initRecyc() {
+        GridLayoutManager layoutManager = new GridLayoutManager(this,5);
+        recyclerView.setLayoutManager(layoutManager);
+
     }
 
     @Override
@@ -56,46 +57,6 @@ public class SponsorMemberActivity extends BaseActivity {
 
     @Override
     public void emptyObject() {
-
-    }
-
-    @Override
-    public void onClick(View v) {
-        super.onClick(v);
-        switch (v.getId()) {
-            case R.id.sm_expand_all:
-                //展开全部
-                expandAll();
-                break;
-            case R.id.sm_tab_notice:
-                tabNotice();
-                //会告
-                break;
-            case R.id.sm_sign_out_meeting:
-                outMeeting();
-                //退出会议
-                break;
-        }
-    }
-
-    /**
-     * 展开全部
-     */
-    private void expandAll() {
-
-    }
-
-    /**
-     * 会告
-     */
-    private void tabNotice() {
-
-    }
-
-    /**
-     * 退出会议
-     */
-    private void outMeeting() {
 
     }
 }

@@ -81,6 +81,8 @@ public class HttpKey {
     public static final String GET_AVG = "meetingEvaluate/getAvg";
     // 意见箱 评价列表
     public static final String GET_EVALUATEPAGE_LIST = "meetingEvaluate/evaluatePage";
+    // VIP详情
+    public static final String VIP_DETAIL = "vip/vipGusetPage";
 
     //---------------------------------------------------------------------------
 
