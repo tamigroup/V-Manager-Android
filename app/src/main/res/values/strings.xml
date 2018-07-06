@@ -120,10 +120,10 @@
     <string name="complaints_box">满意度</string>
     <string name="host">主办方(%s)</string>
     <string name="participants">参会方(%s)</string>
-    <string name="score">打分：</string>
+    <string name="score">打分</string>
     <string name="environment">环境：</string>
     <string name="service">服务：</string>
-    <string name="comment">评论：</string>
+    <string name="comment">评论(%s)</string>
     <string name="no_feedback">暂无反馈哦</string>
 
     <string name="enter_the_meeting">进入会议</string>
@@ -172,6 +172,11 @@
     <string name="confirmation_content">确认内容</string>
     <string name="add_the_person_in_charge">添加负责人</string>
 
+    <!--会议信息-->
+    <string name="host_name">主办方: %s</string>
+    <string name="meeting_address">鸿山亭: </string>
+    <string name="salename">销售人: %s</string>
+    <string name="service_flow">服务流程</string>
     <!--    会议服务群    -->
     <string name="conference_service_group">会议服务群</string>
     <string name="tab_conference_information">会议信息</string>
@@ -254,6 +259,7 @@
     <string name="add_person_charge">添加负责人</string>
     <string name="group_members">群成员</string>
     <string name="group_notice">群公告</string>
+    <string name="comprehensive_score">综合打分</string>
 
     <string name="modify_password_true">密码修改成功！</string>
     <string name="modify_password_false">密码修改失败！</string>
