@@ -52,7 +52,7 @@ public class ConferenceServiceGroupActivity extends BaseActivity {
     public void initData() {
         setTitleName(R.string.conference_service_group);
         //设置右边功能按钮图片
-        setTitleRightBtn(android.R.drawable.btn_star);
+        setTitleRightBtn(R.mipmap.icon_people);
 
         //添充数据
         arrayFragment = new Fragment[4];
