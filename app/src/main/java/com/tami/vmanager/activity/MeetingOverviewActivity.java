@@ -354,6 +354,7 @@ public class MeetingOverviewActivity extends BaseActivity {
      */
     private void getMeetingItemsByMeetingId() {
         GetMeetingItemsByMeetingIdRequest gmibmir = new GetMeetingItemsByMeetingIdRequest();
+//        gmibmir.setMeetingId(String.valueOf(meetingId));
         gmibmir.setMeetingId(String.valueOf(9));
         networkBroker.ask(gmibmir, (ex1, res) -> {
             if (null != ex1) {
