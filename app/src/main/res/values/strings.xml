@@ -172,6 +172,11 @@
     <string name="confirmation_content">确认内容</string>
     <string name="add_the_person_in_charge">添加负责人</string>
 
+    <!--会议信息-->
+    <string name="host_name">主办方: %s</string>
+    <string name="meeting_address">鸿山亭: </string>
+    <string name="salename">销售人: %s</string>
+    <string name="service_flow">服务流程</string>
     <!--    会议服务群    -->
     <string name="conference_service_group">会议服务群</string>
     <string name="tab_conference_information">会议信息</string>
