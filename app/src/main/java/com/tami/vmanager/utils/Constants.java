@@ -70,4 +70,5 @@ public class Constants {
 
     //会议ID
     public static final String KEY_MEETING_ID = "meetingId";
+    public static final String KEY_EO_URL = "eoUrl";
 }

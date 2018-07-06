@@ -190,7 +190,9 @@ public class MeetingOverviewActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.meeting_overview_look_eo:
                 //查看EO单
-                startActivity(new Intent(getApplicationContext(), LookEOActivity.class));
+                Intent lookEOIntent = new Intent(getApplicationContext(), LookEOActivity.class);
+                lookEOIntent.putExtra(Constants.KEY_EO_URL, eoUrl);
+                startActivity(lookEOIntent);
                 break;
             case R.id.meeting_overview_actual_number:
                 //实到人数
