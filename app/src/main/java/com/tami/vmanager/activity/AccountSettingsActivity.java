@@ -1,9 +1,14 @@
 package com.tami.vmanager.activity;
 
+import android.annotation.TargetApi;
+import android.app.AppOpsManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.v4.app.NotificationManagerCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -21,6 +26,10 @@ import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.view.SwitchButton;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * 帐号设置
@@ -69,7 +78,7 @@ public class AccountSettingsActivity extends BaseActivity {
     @Override
     public void initListener() {
         newMessage.setOnCheckedChangeListener((SwitchButton view, boolean isChecked) -> {
-            if (isChecked) {
+            if (!isNotificationEnabled()) {
                 if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     Intent intent = new Intent();
                     intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
@@ -111,6 +120,8 @@ public class AccountSettingsActivity extends BaseActivity {
         setTitleName(R.string.account_settings);
         networkBroker = new NetworkBroker(this);
         networkBroker.setCancelTag(getTAG());
+
+        newMessage.setChecked(!isNotificationEnabled());
     }
 
     @Override
@@ -237,4 +248,35 @@ public class AccountSettingsActivity extends BaseActivity {
             }
         });
     }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private boolean isNotificationEnabled() {
+        String CHECK_OP_NO_THROW = "checkOpNoThrow";
+        String OP_POST_NOTIFICATION = "OP_POST_NOTIFICATION";
+        AppOpsManager mAppOps = (AppOpsManager) getSystemService(Context.APP_OPS_SERVICE);
+        ApplicationInfo appInfo = getApplicationInfo();
+        String pkg = getApplicationContext().getPackageName();
+        int uid = appInfo.uid;
+        Class appOpsClass = null;
+        try {
+            appOpsClass = Class.forName(AppOpsManager.class.getName());
+            Method checkOpNoThrowMethod = appOpsClass.getMethod(CHECK_OP_NO_THROW, Integer.TYPE, Integer.TYPE,
+                    String.class);
+            Field opPostNotificationValue = appOpsClass.getDeclaredField(OP_POST_NOTIFICATION);
+            int value = (Integer) opPostNotificationValue.get(Integer.class);
+            return ((Integer) checkOpNoThrowMethod.invoke(mAppOps, value, uid, pkg) == AppOpsManager.MODE_ALLOWED);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }

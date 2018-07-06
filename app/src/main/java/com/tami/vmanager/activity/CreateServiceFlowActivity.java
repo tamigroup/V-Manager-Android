@@ -2,7 +2,9 @@ package com.tami.vmanager.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.os.Handler;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.Group;
 import android.support.design.widget.BottomSheetDialog;
@@ -13,12 +15,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
-import android.view.TextureView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
@@ -31,6 +35,7 @@ import com.tami.vmanager.entity.GetMeetingItemsResponse;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
+import com.tami.vmanager.utils.ScreenUtil;
 import com.tami.vmanager.utils.TimeUtils;
 import com.tami.vmanager.view.MeetingStateView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -86,6 +91,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
 
     @Override
     public void initListener() {
+        dateSelected.setOnClickListener(this);
         saveBtn.setOnClickListener(this);
         addView.setOnClickListener(this);
     }
@@ -123,6 +129,14 @@ public class CreateServiceFlowActivity extends BaseActivity {
             serviceFlowDialog.dismiss();
         }
         serviceFlowDialog = null;
+        if (mBottomSheetDialog != null && mBottomSheetDialog.isShowing()) {
+            mBottomSheetDialog.dismiss();
+        }
+        mBottomSheetDialog = null;
+        if (popupWindow != null && popupWindow.isShowing()) {
+            popupWindow.dismiss();
+        }
+        popupWindow = null;
         networkBroker.cancelAllRequests();
     }
 
@@ -130,6 +144,9 @@ public class CreateServiceFlowActivity extends BaseActivity {
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
+            case R.id.acsf_date_selected:
+                showPopWindow(dateSelected);
+                break;
             case R.id.acsf_save_btn:
                 //保存
                 break;
@@ -167,7 +184,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
                     group.setVisibility(View.VISIBLE);
                     holder.getView(R.id.icsf_editing_time).setVisibility(View.GONE);
                     customRole.setOnClickListener((View v) -> {
-                        showCustomRole();
+                        showCustomRole(customRole);
                     });
                     if (item.isSelected) {
                         customRole.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_3B89E9));
@@ -275,7 +292,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
                 });
                 //角色选择
                 customRole.setOnClickListener((View v) -> {
-                    showCustomRole();
+                    showCustomRole(customRole);
                 });
                 if (item.isSelected) {
                     //勾选的时间颜色会变
@@ -432,7 +449,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
     private CommonAdapter<String> croleAdapter;
     private int selectIndex = -1;
 
-    public void showCustomRole() {
+    public void showCustomRole(TextView textView) {
         mBottomSheetDialog = new BottomSheetDialog(this);
         ConstraintLayout cLayout = (ConstraintLayout) getLayoutInflater().inflate(R.layout.show_menu_service_flow, null);
         TextView cancle = cLayout.findViewById(R.id.smsf_cancel);
@@ -459,9 +476,10 @@ public class CreateServiceFlowActivity extends BaseActivity {
                             roleView.setTextStyle(s, R.color.color_3B89E9, R.color.color_3B89E9, 1, 5);
                         } else {
                             MeetingStateView selectView = roleRecyclerView.getChildAt(selectIndex).findViewById(R.id.item_role_txt);
-                            selectView.setTextStyle(s, R.color.color_333333, android.R.color.black, 1, 5);
+                            selectView.setTextStyle(selectView.getText().toString(), R.color.color_333333, android.R.color.black, 1, 5);
                             roleView.setTextStyle(s, R.color.color_3B89E9, R.color.color_3B89E9, 1, 5);
                         }
+                        textView.setText(s);
                         selectIndex = position;
                     }
                 });
@@ -477,4 +495,42 @@ public class CreateServiceFlowActivity extends BaseActivity {
             roleData.add("name" + i);
         }
     }
+
+    private PopupWindow popupWindow;
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void showPopWindow(TextView view) {
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View view1 = layoutInflater.inflate(R.layout.show_menu_date, null);
+        RecyclerView recyclerView = view1.findViewById(R.id.smd_recyclerview);
+        List<String> str = new ArrayList<>();
+        str.add("测试一");
+        str.add("测试二");
+        str.add("测试三");
+
+        CommonAdapter<String> commonAdapter = new CommonAdapter<String>(getApplicationContext(), R.layout.show_menu_date_item, str) {
+            @Override
+            protected void convert(ViewHolder holder, String s, int position) {
+                TextView dataView = holder.getView(R.id.menu_item_data);
+                dataView.setText(s);
+                dataView.setOnClickListener((View v) -> {
+                    popupWindow.dismiss();
+                    view.setText(dataView.getText().toString());
+                });
+            }
+        };
+        LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
+        manager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(manager);
+        recyclerView.setAdapter(commonAdapter);
+        popupWindow = new PopupWindow(recyclerView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(true);
+        ColorDrawable cd = new ColorDrawable(0x00ffffff);// 背景颜色全透明
+        popupWindow.setBackgroundDrawable(cd);
+        popupWindow.setAnimationStyle(R.style.style_pop_animation);// 动画效果必须放在showAsDropDown()方法上边，否则无效
+        popupWindow.showAsDropDown(view, -ScreenUtil.dip2px(getApplicationContext(), 50), 0, Gravity.CENTER);
+    }
+
+
 }
