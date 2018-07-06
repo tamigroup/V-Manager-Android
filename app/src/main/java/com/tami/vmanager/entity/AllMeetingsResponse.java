@@ -38,32 +38,31 @@ public class AllMeetingsResponse extends MobileMessage implements Serializable {
     @JsonInclude(Include.NON_NULL)
     public static class Item {
 
-        /**
-         * @see com.bwapi.TM.message.entity.AllMeetingsResponse#getElements
-         */
         @JsonInclude(Include.NON_NULL)
-        public static class ElementElements {
+        public static class ElementElements implements Serializable{
 
+            private static final long serialVersionUID = 8899967346975287665L;
             private	int	saleUserId;	/*1*/
             private	String	saleUserName;	/*小塔米*/
             private	String	meetingAddress;	/*满月楼*/
             private	int	actualNum;	/*0*/
-            private	String	eoUrl;	/**/
+            private	String	eoUrl;	/*http://vgj.oss-cn-beijing.aliyuncs.com/app/af20180704180454_87882.png*/
             private	String	isPay;	/*待付款*/
             private	String	perfectStatus;	/*待完善*/
-            private	int	estimateNum;	/*200*/
+            private	int	estimateNum;	/*300*/
             private	int	meetingAddressId;	/*2*/
-            private	Long	endTime;	/*1530316800000*/
-            private	int	minNum;	/*180*/
+            private	Long	endTime;	/*1531742400000*/
+            private	int	minNum;	/*280*/
             private	int	fromPlat;	/*2*/
-            private	int	isImportant;	/*3*/
-            private	Long	startTime;	/*1530144000000*/
-            private	Boolean	followStatus;	/*false*/
-            private	String	meetingName;	/*王者大会5*/
-            private	Object	sponsorName;	/*Object*/
-            private	String	meetingStatus;	/*会前*/
-            private	String	autoDayTime;	/*6月28日08:00~6月30日08:00*/
-            private	int	meetingId;	/*19*/
+            private	int	isImportant;	/*4*/
+            private	Long	startTime;	/*1531612800000*/
+            private	int	followStatus;	/*0*/
+            private	String	meetingName;	/*测试会议rbq20180705*/
+            private	String	sponsorName;	/**/
+            private	String	meetingStatus;	/*待执行*/
+            private	String	autoDayTime;	/*7月15日08:00~7月16日20:00*/
+            private	int	meetingId;	/*32*/
+            private	String	salesUserMobile;	/*13800138000*/
             private	int	vzhStatus;	/*1*/
 
             public int getSaleUserId() {
@@ -178,11 +177,11 @@ public class AllMeetingsResponse extends MobileMessage implements Serializable {
                 this.startTime = startTime;
             }
 
-            public Boolean getFollowStatus() {
+            public int getFollowStatus() {
                 return followStatus;
             }
 
-            public void setFollowStatus(Boolean followStatus) {
+            public void setFollowStatus(int followStatus) {
                 this.followStatus = followStatus;
             }
 
@@ -194,11 +193,11 @@ public class AllMeetingsResponse extends MobileMessage implements Serializable {
                 this.meetingName = meetingName;
             }
 
-            public Object getSponsorName() {
+            public String getSponsorName() {
                 return sponsorName;
             }
 
-            public void setSponsorName(Object sponsorName) {
+            public void setSponsorName(String sponsorName) {
                 this.sponsorName = sponsorName;
             }
 
@@ -224,6 +223,14 @@ public class AllMeetingsResponse extends MobileMessage implements Serializable {
 
             public void setMeetingId(int meetingId) {
                 this.meetingId = meetingId;
+            }
+
+            public String getSalesUserMobile() {
+                return salesUserMobile;
+            }
+
+            public void setSalesUserMobile(String salesUserMobile) {
+                this.salesUserMobile = salesUserMobile;
             }
 
             public int getVzhStatus() {

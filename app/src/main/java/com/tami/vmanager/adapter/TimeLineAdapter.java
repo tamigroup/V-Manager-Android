@@ -8,12 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.tami.vmanager.R;
 import com.tami.vmanager.activity.MeetingLinkConfirmedActivity;
-import com.tami.vmanager.entity.TimeLine;
-
+import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdResponse;
+import com.tami.vmanager.utils.TimeUtils;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,7 +20,7 @@ import java.util.List;
  */
 public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLineHolder> {
 
-    private List<TimeLine> list;
+    private List<GetMeetingItemsByMeetingIdResponse.Array.Item> list;
     private Context context;
 
     private static final int TOP = 0;
@@ -43,14 +42,14 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         return NORMAL;
     }
 
-    public TimeLineAdapter(List<TimeLine> list, Context context) {
+    public TimeLineAdapter(List<GetMeetingItemsByMeetingIdResponse.Array.Item> list, Context context) {
         this.list = list;
         this.context = context;
     }
 
     @Override
     public void onBindViewHolder(TimeLineHolder holder, final int position) {
-
+        GetMeetingItemsByMeetingIdResponse.Array.Item item = list.get(position);
         if (getItemViewType(position) == TOP) {
             holder.topView.setVisibility(View.INVISIBLE);
             holder.bottomView.setVisibility(View.VISIBLE);
@@ -64,7 +63,22 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
             holder.bottomView.setVisibility(View.VISIBLE);
             holder.lineView.setVisibility(View.VISIBLE);
         }
-        holder.contentView.setText(list.get(position).getConetnt());
+        holder.contentView.setText(TimeUtils.date2String(new Date(item.startOn), TimeUtils.DATE_HHMM_SLASH) + "  " + item.meetingItemName);
+
+        if (position != 0 && list.get(position - 1).selectStatus == 1) {
+            holder.topView.setBackgroundResource(R.color.color_34DB8E);
+        }else{
+            holder.topView.setBackgroundResource(R.color.color_EAEAEA);
+        }
+        if (item.selectStatus == 1) {
+            holder.stateBtn.setText(context.getString(R.string.confirmed));
+            holder.middlePic.setImageResource(R.mipmap.middle_pic_selected);
+            holder.bottomView.setBackgroundResource(R.color.color_34DB8E);
+        } else {
+            holder.stateBtn.setText(context.getString(R.string.ready));
+            holder.middlePic.setImageResource(R.mipmap.middle_pic_unselected);
+            holder.bottomView.setBackgroundResource(R.color.color_EAEAEA);
+        }
         holder.stateBtn.setOnClickListener((View view) -> {
             context.startActivity(new Intent(context, MeetingLinkConfirmedActivity.class));
         });

@@ -35,6 +35,8 @@ public class MeetingLinkConfirmedActivity extends BaseActivity {
     private SwitchButton switchbtn;
     private TextView important;
     private Button confirmBtn;
+    private List<String> listData;
+    private CommonAdapter commonAdapter;
 
     @Override
     public boolean isTitle() {
@@ -58,12 +60,9 @@ public class MeetingLinkConfirmedActivity extends BaseActivity {
 
     @Override
     public void initListener() {
-        switchbtn.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(SwitchButton view, boolean isChecked) {
-                //TODO do your job
-                Toast.makeText(getApplicationContext(), String.valueOf(isChecked), Toast.LENGTH_SHORT).show();
-            }
+        switchbtn.setOnCheckedChangeListener((SwitchButton view, boolean isChecked) -> {
+            //TODO do your job
+            Toast.makeText(getApplicationContext(), String.valueOf(isChecked), Toast.LENGTH_SHORT).show();
         });
         addPerson.setOnClickListener(this);
     }
@@ -78,16 +77,11 @@ public class MeetingLinkConfirmedActivity extends BaseActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new RecycleViewDivider(getApplicationContext(), LinearLayoutManager.HORIZONTAL,
                 1, ContextCompat.getColor(getApplicationContext(), R.color.percentage_10)));
-        listData = getData();
+        listData = new ArrayList<>();
         commonAdapter = new CommonAdapter<String>(getApplicationContext(), R.layout.item_meeting_link_confirmed, listData) {
             @Override
             protected void convert(ViewHolder holder, String s, int position) {
 
-            }
-
-            @Override
-            public void convert(ViewHolder holder, String s) {
-                //赋值
             }
         };
         recyclerView.setAdapter(commonAdapter);
@@ -125,14 +119,5 @@ public class MeetingLinkConfirmedActivity extends BaseActivity {
         switchbtn = null;
     }
 
-    List<String> listData;
-    CommonAdapter commonAdapter;
 
-    private List<String> getData() {
-        List<String> data = new ArrayList<String>();
-        for (int i = 0; i < 5; i++) {
-            data.add("测试数据" + i);
-        }
-        return data;
-    }
 }

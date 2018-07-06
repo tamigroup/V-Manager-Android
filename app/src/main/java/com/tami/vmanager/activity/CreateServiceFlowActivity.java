@@ -140,6 +140,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
         networkBroker.cancelAllRequests();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onClick(View v) {
         super.onClick(v);

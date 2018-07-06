@@ -259,4 +259,6 @@
     <string name="modify_password_false">密码修改失败！</string>
 
     <string name="select_role">选择角色</string>
+    <string name="ready">就绪</string>
+    <string name="confirmed">已确认</string>
 </resources>

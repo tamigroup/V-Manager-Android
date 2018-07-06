@@ -29,7 +29,7 @@ public class TaMiApplication extends Application {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        MultiDex.install(getApplicationContext());
+        MultiDex.install(base);
     }
 
     private void init() {

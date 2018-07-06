@@ -180,4 +180,11 @@
 -dontwarn com.tencent.bugly.**
 -keep public class com.tencent.bugly.**{*;}
 
+#侧滑删除
+-keepclasseswithmembers class android.support.v7.widget.RecyclerView$ViewHolder {
+   public final View *;
+}
+-dontwarn com.yanzhenjie.recyclerview.swipe.**
+-keep class com.yanzhenjie.recyclerview.swipe.** {*;}
+
 

@@ -20,7 +20,18 @@ import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.dialog.AlreadyPaidItemDialog;
 import com.tami.vmanager.dialog.ConfirmEnterMeetingDialog;
 import com.tami.vmanager.dialog.ConfirmEnterMeetingListener;
+import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdRequest;
+import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdResponse;
+import com.tami.vmanager.entity.GetMeetingRequest;
+import com.tami.vmanager.entity.GetMeetingResponse;
+import com.tami.vmanager.entity.LoginResponse;
+import com.tami.vmanager.entity.SendVerifyCodeRequest;
+import com.tami.vmanager.entity.SendVerifyCodeResponse;
 import com.tami.vmanager.entity.TimeLine;
+import com.tami.vmanager.http.NetworkBroker;
+import com.tami.vmanager.manager.GlobaVariable;
+import com.tami.vmanager.utils.Constants;
+import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.Utils;
 import com.tami.vmanager.view.CircleProgressBar;
 
@@ -59,6 +70,12 @@ public class MeetingOverviewActivity extends BaseActivity {
     private Button functionBtn;//创建流程及进入会意按钮
 
     private ConfirmEnterMeetingDialog confirmEnterMeetingDialog;//弹框查看会议
+
+    private int meetingId;//会议ID
+    private String eoUrl;
+    private NetworkBroker networkBroker;
+    private List<GetMeetingItemsByMeetingIdResponse.Array.Item> listData;
+    private TimeLineAdapter adapter;
 
     @Override
     public boolean isTitle() {
@@ -130,19 +147,26 @@ public class MeetingOverviewActivity extends BaseActivity {
     public void initData() {
         setTitleName(R.string.meeting_ganlan);
 
-        initUIdata();
         initListView();
 
+        Intent intent = getIntent();
+        if (intent != null) {
+            meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 0);
+        }
 //        pleaseCreateConference.setVisibility(View.GONE);
 //        xufuLayout.setVisibility(View.GONE);
 //        recyclerView.setVisibility(View.GONE);
 
         recyclerView.setVisibility(View.VISIBLE);
+
+        networkBroker = new NetworkBroker(this);
+        networkBroker.setCancelTag(getTAG());
     }
 
     @Override
     public void requestNetwork() {
-
+        getMeeting();
+        getMeetingItemsByMeetingId();
     }
 
     @Override
@@ -157,6 +181,7 @@ public class MeetingOverviewActivity extends BaseActivity {
             confirmEnterMeetingDialog.dismiss();
         }
         confirmEnterMeetingDialog = null;
+        networkBroker.cancelAllRequests();
     }
 
     @Override
@@ -210,38 +235,42 @@ public class MeetingOverviewActivity extends BaseActivity {
     /**
      * 页面UI赋值
      */
-    private void initUIdata() {
-        meetingName.setText("夏普8K黑科技，改变你看世界的方式！");
-        meetingTime.setText("6月14日 9:00-17:00");
-        meetingRoom.setText("高级VIP房间");
-        meetingPersonnel.setText("销售：张三");
+    private void initUIdata(GetMeetingResponse.Item item) {
+        if (item != null) {
+            meetingName.setText(item.meetingName);
+            meetingTime.setText(item.autoDayTime);
+            meetingRoom.setText(item.meetingAddress);
+            meetingPersonnel.setText(item.saleUserName);
 
-        initUITxt(predeterminedNumber, String.valueOf(100), R.string.predetermined_number, android.R.color.white);
-        initUITxt(bottomNumber, String.valueOf(60), R.string.bottom_number, android.R.color.white);
-        initUITxt(actualNumber, String.valueOf(88), R.string.actual_number, R.color.color_FF5657);
+            initUITxt(predeterminedNumber, String.valueOf(item.estimateNum), R.string.predetermined_number, android.R.color.white);
+            initUITxt(bottomNumber, String.valueOf(item.minNum), R.string.bottom_number, android.R.color.white);
+            initUITxt(actualNumber, String.valueOf(item.actualNum), R.string.actual_number, R.color.color_FF5657);
 
-        new AsyncTask<Void, Integer, Void>() {
+            alreadyPaidItem.setProgress(90);
+            eoUrl = item.eoUrl;
+        }
 
-            @Override
-            protected void onProgressUpdate(Integer... values) {
-                super.onProgressUpdate(values);
-                alreadyPaidItem.setProgress(values[0]);
-            }
-
-            @Override
-            protected Void doInBackground(Void... params) {
-                for (int i = 0; i <= 90; i += 10) {
-                    try {
-                        Thread.sleep(50);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    publishProgress(i);
-                }
-                return null;
-            }
-        }.execute();
-
+//        new AsyncTask<Void, Integer, Void>() {
+//
+//            @Override
+//            protected void onProgressUpdate(Integer... values) {
+//                super.onProgressUpdate(values);
+//                alreadyPaidItem.setProgress(values[0]);
+//            }
+//
+//            @Override
+//            protected Void doInBackground(Void... params) {
+//                for (int i = 0; i <= 90; i += 10) {
+//                    try {
+//                        Thread.sleep(50);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                    publishProgress(i);
+//                }
+//                return null;
+//            }
+//        }.execute();
     }
 
     /**
@@ -257,22 +286,15 @@ public class MeetingOverviewActivity extends BaseActivity {
         tv.setText(Utils.getSplicing(getApplicationContext(), resStr, 0, num.length(), 16, colorId));
     }
 
+    /**
+     * 初始化时间轴
+     */
     private void initListView() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        TimeLineAdapter adapter = new TimeLineAdapter(getData(), this);
+        listData = new ArrayList<>();
+        adapter = new TimeLineAdapter(listData, this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
-    }
-
-    private List<TimeLine> getData() {
-        List<TimeLine> models = new ArrayList<TimeLine>();
-        TimeLine timeLine = null;
-        for (int i = 0; i < 8; i++) {
-            timeLine = new TimeLine();
-            timeLine.setConetnt("参数名" + i);
-            models.add(timeLine);
-        }
-        return models;
     }
 
     /**
@@ -299,5 +321,61 @@ public class MeetingOverviewActivity extends BaseActivity {
             //进入
             startActivity(new Intent(getApplicationContext(), EnterMeetingActivity.class));
         }
+    }
+
+    /**
+     * 获取会议信息
+     */
+    private void getMeeting() {
+        GetMeetingRequest gmr = new GetMeetingRequest();
+        gmr.setMeetingId(String.valueOf(meetingId));
+        networkBroker.ask(gmr, (ex1, res) -> {
+            if (null != ex1) {
+                Logger.d(ex1.getMessage() + "-" + ex1);
+                return;
+            }
+            try {
+                GetMeetingResponse response = (GetMeetingResponse) res;
+                if (response.getCode() == 200) {
+                    if (response != null) {
+                        GetMeetingResponse.Item meetingItem = response.data;
+                        initUIdata(meetingItem);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        });
+    }
+
+    /**
+     * 根据会议ID查询会议节点信息
+     */
+    private void getMeetingItemsByMeetingId() {
+        GetMeetingItemsByMeetingIdRequest gmibmir = new GetMeetingItemsByMeetingIdRequest();
+        gmibmir.setMeetingId(String.valueOf(9));
+        networkBroker.ask(gmibmir, (ex1, res) -> {
+            if (null != ex1) {
+                Logger.d(ex1.getMessage() + "-" + ex1);
+                return;
+            }
+            try {
+                GetMeetingItemsByMeetingIdResponse response = (GetMeetingItemsByMeetingIdResponse) res;
+                if (response.getCode() == 200) {
+                    if (response != null) {
+                        GetMeetingItemsByMeetingIdResponse.Array array = response.data;
+                        if (array != null && array.dataList != null && array.dataList.size() > 0) {
+                            //对时间轴赋值
+                            listData.addAll(array.dataList);
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        });
     }
 }

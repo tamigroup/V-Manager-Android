@@ -172,7 +172,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_16"
-                    android:text="@string/flow_chart"
+                    android:text="@string/activity_flow"
                     android:textColor="@color/color_303030"
                     android:textSize="@dimen/sp_15"
                     app:layout_constraintBottom_toBottomOf="parent"

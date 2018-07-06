@@ -120,7 +120,9 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
                 //ITEM点击
                 ConstraintLayout itemLayout = holder.getView(R.id.item_meeting_layout);
                 itemLayout.setOnClickListener((View v) -> {
-                    startActivity(new Intent(getActivity(), MeetingOverviewActivity.class));
+                    Intent intent = new Intent(getActivity(), MeetingOverviewActivity.class);
+                    intent.putExtra(Constants.KEY_MEETING_ID, elements.getMeetingId());
+                    startActivity(intent);
                 });
             }
 
@@ -228,7 +230,7 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
             followUserMeetingRequest.setUserId(item.getId());
         }
         followUserMeetingRequest.setMeetingId(String.valueOf(elements.getMeetingId()));
-        followUserMeetingRequest.setRequsetUrl(elements.getFollowStatus() ? HttpKey.CANCEL_USER_MEETING : HttpKey.FOLLOW_USER_MEETING);
+        followUserMeetingRequest.setRequsetUrl(elements.getFollowStatus() == 0 ? HttpKey.FOLLOW_USER_MEETING : HttpKey.CANCEL_USER_MEETING);
         networkBroker.ask(followUserMeetingRequest, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);
@@ -238,8 +240,8 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
                 FollowUserMeetingResponse response = (FollowUserMeetingResponse) res;
                 if (response.getCode() == 200) {
                     if (response.data) {
-                        followOnClick(follow, !elements.getFollowStatus());
-                        elements.setFollowStatus(!elements.getFollowStatus());
+                        elements.setFollowStatus(elements.getFollowStatus() == 1 ? 0 : 1);
+                        followOnClick(follow, elements.getFollowStatus());
                     }
                 }
             } catch (Exception e) {
@@ -255,8 +257,8 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
      * @param follow
      * @param status
      */
-    private void followOnClick(TextView follow, boolean status) {
-        if (status) {
+    private void followOnClick(TextView follow, int status) {
+        if (status == 1) {
             follow.setText(getString(R.string.yi_attention));
             follow.setTextColor(ContextCompat.getColor(getContext(), R.color.color_FF5657));
             follow.setBackgroundResource(R.drawable.item_meeting_follow_selected);

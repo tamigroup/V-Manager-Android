@@ -72,6 +72,10 @@ public class HttpKey {
     public static final String GET_NOTICE = "notice/getNotice";
     //分页查询公告列表
     public static final String GET_NOTICE_LIST = "notice/noticePage";
+    //查询会议概览信息/查看EO单
+    public static final String GET_MEETING = "meeting/getMeeting";
+    //根据会议ID查询会议节点信息
+    public static final String GET_MEETING_ITEMS_BY_MEETING_ID = "meeting/getMeetingItemsByMeetingId";
 
     //---------------------------------------------------------------------------
 

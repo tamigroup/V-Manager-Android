@@ -67,4 +67,7 @@ public class Constants {
     public static final String RESULT_JIEDAIREN = "jiedairen";
     public static final int CREATE_MEETING_VIP = 0x12;
     public static final String RESULT_VIP = "vip";
+
+    //会议ID
+    public static final String KEY_MEETING_ID = "meetingId";
 }
