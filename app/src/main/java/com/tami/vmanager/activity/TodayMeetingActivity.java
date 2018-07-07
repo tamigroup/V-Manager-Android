@@ -83,7 +83,7 @@ public class TodayMeetingActivity extends BaseActivity {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new RecycleViewDivider(getApplicationContext(), LinearLayoutManager.HORIZONTAL,
-                1, ContextCompat.getColor(getApplicationContext(), R.color.percentage_10)));
+                1, ContextCompat.getColor(getApplicationContext(), R.color.color_EAEAEA)));
         listData = new ArrayList<>();
         commonAdapter = new CommonAdapter<AllMeetingsResponse.Item.ElementElements>(getApplicationContext(), R.layout.item_today_meeting, listData) {
             @Override

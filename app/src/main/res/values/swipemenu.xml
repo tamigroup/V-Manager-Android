@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="smContentView" type="id" />
+    <item name="smMenuViewLeft" type="id" />
+    <item name="smMenuViewRight" type="id" />
+    <item name="smMenuViewTop" type="id" />
+    <item name="smMenuViewBottom" type="id" />
+
+    <declare-styleable name="SwipeMenu">
+        <attr name="sml_scroller_duration" format="integer" />
+        <attr name="sml_auto_open_percent" format="float" />
+        <attr name="sml_scroller_interpolator" format="reference" />
+    </declare-styleable>
+</resources>
