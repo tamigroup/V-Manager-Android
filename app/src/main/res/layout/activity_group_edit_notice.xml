@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             android:background="@color/color_F2F4F5">
+
+    <EditText
+        android:id="@+id/title_edit"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_45"
+        android:layout_marginTop="@dimen/dp_10"
+        android:background="@drawable/shape_white_line"
+        android:gravity="top|left"
+        android:padding="@dimen/dp_15"
+        android:hint="标题（必填）"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <EditText
+        android:id="@+id/content_edit"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@drawable/shape_white_line"
+        android:layout_marginTop="@dimen/dp_10"
+        android:gravity="top|left"
+        android:padding="@dimen/dp_15"
+        android:hint="正文（必填）"
+        app:layout_constraintTop_toBottomOf="@+id/title_edit"/>
+
+</android.support.constraint.ConstraintLayout>

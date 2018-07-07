@@ -65,6 +65,7 @@ public class ConferenceServiceGroupActivity extends BaseActivity {
         viewPager.setAdapter(guidePageFragmentPagerAdapter);
         tabLayoutOnPageChangeListener = new TabLayout.TabLayoutOnPageChangeListener(tabLayout);
         viewPager.addOnPageChangeListener(tabLayoutOnPageChangeListener);
+        viewPager.setOffscreenPageLimit(3);
         viewPagerOnTabSelectedListener = new TabLayout.ViewPagerOnTabSelectedListener(viewPager);
         tabLayout.addOnTabSelectedListener(viewPagerOnTabSelectedListener);
     }

@@ -4,11 +4,10 @@ import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
 
 /**
- * 会议公告 群公告
- * Created by why on 2018/7/5.
+ * Created by Tang on 2018/7/7
+ * 编辑群公告
  */
-public class GroupNoticeActivity extends BaseActivity {
-
+public class GroupEditNoticeActivity extends BaseActivity {
     @Override
     public boolean isTitle() {
         return true;
@@ -16,11 +15,13 @@ public class GroupNoticeActivity extends BaseActivity {
 
     @Override
     public int getContentViewId() {
-        return R.layout.activity_group_notice;
+        return R.layout.activity_group_edit_notice;
     }
 
     @Override
     public void initView() {
+        setTitleName(R.string.group_edit);
+        setTitleRightTxt(R.string.group_release);
 
     }
 
@@ -31,8 +32,7 @@ public class GroupNoticeActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        setTitleName(getString(R.string.group_notice));
-        setTitleRightBtn(R.mipmap.icon_people);
+
     }
 
     @Override

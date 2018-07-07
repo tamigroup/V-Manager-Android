@@ -271,4 +271,8 @@
     <string name="modify">修改</string>
     <string name="editor">编辑</string>
     <string name="no_search">没有找到“%s”哦~</string>
+    <string name="group_edit">编辑公告</string>
+    <string name="group_release">发布</string>
+    <string name="load_more">查看更多群成员</string>
+    <string name="out_meeting">退出此会议</string>
 </resources>
