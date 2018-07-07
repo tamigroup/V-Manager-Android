@@ -8,10 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.tami.vmanager.R;
 import com.tami.vmanager.activity.MeetingLinkConfirmedActivity;
 import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdResponse;
+import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.TimeUtils;
+
 import java.util.Date;
 import java.util.List;
 
@@ -67,7 +70,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
 
         if (position != 0 && list.get(position - 1).selectStatus == 1) {
             holder.topView.setBackgroundResource(R.color.color_34DB8E);
-        }else{
+        } else {
             holder.topView.setBackgroundResource(R.color.color_EAEAEA);
         }
         if (item.selectStatus == 1) {
@@ -80,7 +83,9 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
             holder.bottomView.setBackgroundResource(R.color.color_EAEAEA);
         }
         holder.stateBtn.setOnClickListener((View view) -> {
-            context.startActivity(new Intent(context, MeetingLinkConfirmedActivity.class));
+            Intent intent = new Intent(context, MeetingLinkConfirmedActivity.class);
+            intent.putExtra(Constants.KEY_MEETING_LINK, item);
+            context.startActivity(intent);
         });
     }
 

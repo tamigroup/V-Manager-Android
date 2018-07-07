@@ -60,7 +60,7 @@ public class Constants {
     public static final String FIRST_LANDING = "firstLanding";
     //每页记录条数
     public static final int PAGE_SIZE = 10;
-
+    //创建会议跳转requestCode
     public static final int CREATE_MEETING_DIDIAN = 0x10;
     public static final String RESULT_DIDIAN = "didian";
     public static final int CREATE_MEETING_JIEDAIREN = 0x11;
@@ -70,5 +70,11 @@ public class Constants {
 
     //会议ID
     public static final String KEY_MEETING_ID = "meetingId";
+    //EO单URL
     public static final String KEY_EO_URL = "eoUrl";
+    //会议待确认
+    public static final String KEY_MEETING_LINK = "meetingLink";
+
+    //添加接待人requestCode
+    public static final int ADD_PERSON_CHARGE = 0x13;
 }

@@ -181,8 +181,8 @@
 
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/meeting_overview_suspension_step"
-                    android:layout_width="@dimen/dp_25"
-                    android:layout_height="@dimen/dp_25"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/dp_16"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

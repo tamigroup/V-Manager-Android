@@ -33,7 +33,6 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/dp_20"
             android:gravity="center_vertical"
-            android:text="测试内容"
             android:textColor="@color/color_333333"
             android:textSize="@dimen/sp_16"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -42,77 +41,91 @@
 
     </android.support.constraint.ConstraintLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/meeting_link_confirmed_listview"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_20"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/confirmation_content_layout" />
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/amlc_nsv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_0"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@+id/mlc_confirm_btn"
+        app:layout_constraintTop_toBottomOf="@+id/confirmation_content_layout">
 
-    <TextView
-        android:id="@+id/mlc_add_the_person_in_charge"
-        android:layout_width="@dimen/dp_0"
-        android:layout_height="@dimen/dp_50"
-        android:background="@android:color/white"
-        android:gravity="center"
-        android:text="@string/add_the_person_in_charge"
-        android:textColor="@color/color_D7D7D7"
-        android:textSize="@dimen/sp_14"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/meeting_link_confirmed_listview" />
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/mlc_have_problem"
-        android:layout_width="@dimen/dp_0"
-        android:layout_height="@dimen/dp_50"
-        android:layout_marginTop="@dimen/dp_20"
-        android:background="@android:color/white"
-        android:paddingLeft="@dimen/dp_20"
-        android:paddingRight="@dimen/dp_20"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mlc_add_the_person_in_charge">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/meeting_link_confirmed_listview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_20"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:text="有无问题"
-            android:textColor="@color/color_303030"
-            android:textSize="@dimen/sp_14"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/mlc_add_the_person_in_charge"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_50"
+                android:background="@android:color/white"
+                android:gravity="center"
+                android:text="@string/add_the_person_in_charge"
+                android:textColor="@color/color_D7D7D7"
+                android:textSize="@dimen/sp_14"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/meeting_link_confirmed_listview" />
 
-        <com.tami.vmanager.view.SwitchButton
-            android:id="@+id/mlc_switchbtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:sb_background="@color/color_FF5657"
-            app:sb_button_color="@android:color/white"
-            app:sb_checked="true"
-            app:sb_checked_color="@color/default_bg"
-            app:sb_show_indicator="false" />
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/mlc_have_problem"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_50"
+                android:layout_marginTop="@dimen/dp_20"
+                android:background="@android:color/white"
+                android:paddingLeft="@dimen/dp_20"
+                android:paddingRight="@dimen/dp_20"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mlc_add_the_person_in_charge">
 
-        <TextView
-            android:id="@+id/mlc_important"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/dp_10"
-            android:text="有"
-            android:textColor="@color/color_333333"
-            android:textSize="@dimen/sp_14"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/mlc_switchbtn"
-            app:layout_constraintTop_toTopOf="parent" />
-    </android.support.constraint.ConstraintLayout>
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="有无问题"
+                    android:textColor="@color/color_303030"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.tami.vmanager.view.SwitchButton
+                    android:id="@+id/mlc_switchbtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:sb_background="@color/color_FF5657"
+                    app:sb_button_color="@android:color/white"
+                    app:sb_checked="true"
+                    app:sb_checked_color="@color/default_bg"
+                    app:sb_show_indicator="false" />
+
+                <TextView
+                    android:id="@+id/mlc_important"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:text="有"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/mlc_switchbtn"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </android.support.constraint.ConstraintLayout>
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v4.widget.NestedScrollView>
 
     <Button
         android:id="@+id/mlc_confirm_btn"

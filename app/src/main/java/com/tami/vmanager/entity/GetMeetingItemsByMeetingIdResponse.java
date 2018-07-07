@@ -33,14 +33,16 @@ public class GetMeetingItemsByMeetingIdResponse extends MobileMessage implements
         public List<Item> dataList;
 
         @JsonInclude(Include.NON_NULL)
-        public static class Item {
-            public	Long	startOn;	/*1527091200000*/
-            public	int	meetingItemId;	/*3*/
-            public	int	parentId;	/*0*/
-            public	int	selectStatus;	/*0*/
-            public	int	meetingItemSetId;	/*49*/
-            public	String	meetingItemSetFlowUserList;	/**/
-            public	String	meetingItemName;	/*茶歇就绪*/
+        public static class Item implements Serializable {
+            private static final long serialVersionUID = 5267019805566075419L;
+
+            public Long startOn;	/*1527091200000*/
+            public int meetingItemId;	/*3*/
+            public int parentId;	/*0*/
+            public int selectStatus;	/*0*/
+            public int meetingItemSetId;	/*49*/
+            public String meetingItemSetFlowUserList;	/**/
+            public String meetingItemName;	/*茶歇就绪*/
 
         }
     }
