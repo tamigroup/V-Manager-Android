@@ -270,4 +270,5 @@
     <string name="xiaovtixing">加餐或减餐建议、增加茶歇或减少荼歇建议。\n更多功能，敬请期待！</string>
     <string name="modify">修改</string>
     <string name="editor">编辑</string>
+    <string name="no_search">没有找到“%s”哦~</string>
 </resources>

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "45de4e517de7bcafea2b37a490975146",
+    "identityHash": "b0eafc5ff129aa50f964b75dc4ce24ba",
     "entities": [
       {
         "tableName": "SearchHistoryBean",
@@ -29,11 +29,43 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "SearchVipHistoryBean",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `SearchVipHistory` TEXT, `header_imageUrl` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "SearchVipHistory",
+            "columnName": "SearchVipHistory",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "header_imageUrl",
+            "columnName": "header_imageUrl",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"45de4e517de7bcafea2b37a490975146\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"b0eafc5ff129aa50f964b75dc4ce24ba\")"
     ]
   }
 }

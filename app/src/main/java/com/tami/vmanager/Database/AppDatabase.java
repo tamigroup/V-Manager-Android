@@ -6,14 +6,16 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
 import com.tami.vmanager.Database.dao.SearchHistoryDao;
+import com.tami.vmanager.Database.dao.SearchVipHistoryDao;
 import com.tami.vmanager.Database.entity.SearchHistoryBean;
+import com.tami.vmanager.Database.entity.SearchVipHistoryBean;
 import com.tami.vmanager.utils.Logger;
 
 /**
  * Created by Tang on 2018/7/3
  * room
  */
-@Database(entities = {SearchHistoryBean.class}, version = 1)
+@Database(entities = {SearchHistoryBean.class, SearchVipHistoryBean.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase INSTANCE;
     private static final String DB_NAME = "tami";
@@ -21,6 +23,7 @@ public abstract class AppDatabase extends RoomDatabase {
     private static String DB_FILE_NAME = DB_NAME + DB_VERSION + ".db";
 
     public abstract SearchHistoryDao searchHistoryDao();
+    public abstract SearchVipHistoryDao searchVipHistoryDao();
 
     public static AppDatabase getInstance(Context context) {
         if (INSTANCE == null) {
