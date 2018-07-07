@@ -55,10 +55,11 @@
             android:id="@+id/acsf_date_selected_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_5"
             app:layout_constraintBottom_toBottomOf="@+id/acsf_date_selected"
             app:layout_constraintStart_toEndOf="@+id/acsf_date_selected"
             app:layout_constraintTop_toTopOf="@+id/acsf_date_selected"
-            app:srcCompat="@mipmap/meeting_level_zhi" />
+            app:srcCompat="@mipmap/xiasanjiao" />
 
     </android.support.constraint.ConstraintLayout>
 

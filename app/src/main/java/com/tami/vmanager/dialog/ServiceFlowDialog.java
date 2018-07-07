@@ -112,7 +112,9 @@ public class ServiceFlowDialog extends Dialog implements View.OnClickListener, T
     }
 
     public void removeListener() {
-        flowNameView.removeTextChangedListener(this);
+        if (flowNameView != null) {
+            flowNameView.removeTextChangedListener(this);
+        }
     }
 
     @Override
