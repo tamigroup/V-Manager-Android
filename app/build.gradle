@@ -80,6 +80,8 @@ dependencies {
     //bugly
     api 'com.tencent.bugly:crashreport:2.6.6'
     api 'com.tencent.bugly:nativecrashreport:3.3.1'
+
+    api 'com.github.qdxxxx:StickyHeaderDecoration:1.0.1'
 }
 
 def buildTime() {
