@@ -1,13 +1,13 @@
 package com.tami.vmanager.activity;
 
 import android.content.Intent;
-import android.support.v7.widget.AppCompatImageView;
 import android.text.TextUtils;
 
 import com.squareup.picasso.Picasso;
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.utils.Constants;
+import com.tami.vmanager.view.photoview.PhotoView;
 
 /**
  * 查看EO单
@@ -16,7 +16,7 @@ import com.tami.vmanager.utils.Constants;
 public class LookEOActivity extends BaseActivity {
 
     private String eoUrl;
-    private AppCompatImageView appCompatImageView;
+    private PhotoView photoView;
 
     @Override
     public boolean isTitle() {
@@ -30,7 +30,7 @@ public class LookEOActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        appCompatImageView = findViewById(R.id.ale_image);
+        photoView = findViewById(R.id.ale_image);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class LookEOActivity extends BaseActivity {
         if (intent != null) {
             eoUrl = intent.getStringExtra(Constants.KEY_EO_URL);
             if (!TextUtils.isEmpty(eoUrl)) {
-                Picasso.get().load(eoUrl).into(appCompatImageView);
+                Picasso.get().load(eoUrl).into(photoView);
             } else {
                 finish();
             }
