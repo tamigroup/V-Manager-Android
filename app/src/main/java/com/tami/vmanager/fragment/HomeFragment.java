@@ -291,7 +291,7 @@ public class HomeFragment extends BaseFragment {
     private void getBannerData() {
         GetBannerDataRequest getBannerDataRequest = new GetBannerDataRequest();
         LoginResponse.Item item = GlobaVariable.getInstance().item;
-        getBannerDataRequest.setUserId(item.getId());
+        getBannerDataRequest.setUserId(String.valueOf(item.getId()));
         getBannerDataRequest.setType(getTypeId());
         networkBroker.ask(getBannerDataRequest, (ex1, res) -> {
             if (null != ex1) {
@@ -361,7 +361,7 @@ public class HomeFragment extends BaseFragment {
     private void getIndex() {
         GetIndexRequest getIndexRequest = new GetIndexRequest();
         LoginResponse.Item item = GlobaVariable.getInstance().item;
-        getIndexRequest.setUserId(item.getId());
+        getIndexRequest.setUserId(String.valueOf(item.getId()));
         networkBroker.ask(getIndexRequest, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);

@@ -73,6 +73,9 @@ public class WaitMeetingsFragment extends ViewPagerBaseFragment {
 
     @Override
     public void initData() {
+        networkBroker = new NetworkBroker(getActivity());
+        networkBroker.setCancelTag(getTAG());
+
         //创建一个线性的布局管理器并设置
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -151,8 +154,6 @@ public class WaitMeetingsFragment extends ViewPagerBaseFragment {
         if (bundle != null) {
             waitType = bundle.getInt(Constants.WAIT_TYPE);
         }
-        networkBroker = new NetworkBroker(getActivity());
-        networkBroker.setCancelTag(getTAG());
         CurPage = 1;
         query();
     }
@@ -174,7 +175,7 @@ public class WaitMeetingsFragment extends ViewPagerBaseFragment {
         AllMeetingsRequest allMeetingsRequest = new AllMeetingsRequest();
         LoginResponse.Item item = GlobaVariable.getInstance().item;
         if (item != null) {
-            allMeetingsRequest.setUserId(item.getId());
+            allMeetingsRequest.setUserId(String.valueOf(item.getId()));
         }
         allMeetingsRequest.setSearchType(String.valueOf(waitType + 1));
         allMeetingsRequest.setCurPage(String.valueOf(CurPage++));

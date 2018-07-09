@@ -83,6 +83,10 @@ public class HttpKey {
     public static final String GET_EVALUATEPAGE_LIST = "meetingEvaluate/evaluatePage";
     // VIP详情
     public static final String VIP_DETAIL = "vip/vipGusetPage";
+    //创建公告
+    public static final String CREATE_NOTICE="notice/createNotice";
+    //获取会议群组中的用户成员
+    public static final String MEETING_USER_GROUP_PAGE="group/meetingUserGroupPage";
 
     //---------------------------------------------------------------------------
 

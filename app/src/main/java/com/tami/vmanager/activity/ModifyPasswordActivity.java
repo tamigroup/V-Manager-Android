@@ -94,7 +94,7 @@ public class ModifyPasswordActivity extends BaseActivity {
             ChangePasswordRequest cpr = new ChangePasswordRequest();
             LoginResponse.Item item = GlobaVariable.getInstance().item;
             if (item != null) {
-                cpr.setUserId(item.getId());
+                cpr.setUserId(String.valueOf(item.getId()));
             }
             cpr.setOldPassWord(oldPassWord.getText().toString());
             cpr.setNewPassWord(newPassWord.getText().toString());

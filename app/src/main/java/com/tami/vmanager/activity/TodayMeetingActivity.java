@@ -161,7 +161,7 @@ public class TodayMeetingActivity extends BaseActivity {
         AllMeetingsRequest allMeetingsRequest = new AllMeetingsRequest();
         LoginResponse.Item item = GlobaVariable.getInstance().item;
         if (item != null) {
-            allMeetingsRequest.setUserId(item.getId());
+            allMeetingsRequest.setUserId(String.valueOf(item.getId()));
         }
         allMeetingsRequest.setCurPage(String.valueOf(CurPage++));
         allMeetingsRequest.setPageSize(String.valueOf(Constants.PAGE_SIZE));

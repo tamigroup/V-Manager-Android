@@ -165,7 +165,7 @@ public class AccountSettingsActivity extends BaseActivity {
     private void editLogin() {
         LoginOutRequest loginOutRequest = new LoginOutRequest();
         LoginResponse.Item item = GlobaVariable.getInstance().item;
-        loginOutRequest.setUserId(item.getId());
+        loginOutRequest.setUserId(String.valueOf(item.getId()));
         networkBroker.ask(loginOutRequest, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);
@@ -190,7 +190,7 @@ public class AccountSettingsActivity extends BaseActivity {
         GetUserNoticeConfigRequest getUserNoticeConfigRequest = new GetUserNoticeConfigRequest();
         LoginResponse.Item item = GlobaVariable.getInstance().item;
         if (item != null) {
-            getUserNoticeConfigRequest.setUserId(item.getId());
+            getUserNoticeConfigRequest.setUserId(String.valueOf(item.getId()));
         }
         networkBroker.ask(getUserNoticeConfigRequest, (ex1, res) -> {
             if (null != ex1) {
@@ -226,7 +226,7 @@ public class AccountSettingsActivity extends BaseActivity {
         SetUserNoticeConfigRequest setUserNoticeConfigRequest = new SetUserNoticeConfigRequest();
         LoginResponse.Item item = GlobaVariable.getInstance().item;
         if (item != null) {
-            setUserNoticeConfigRequest.setUserId(item.getId());
+            setUserNoticeConfigRequest.setUserId(String.valueOf(item.getId()));
         }
 //        setUserNoticeConfigRequest.setSystemNotice(String.valueOf(0));
 //        setUserNoticeConfigRequest.setHostNotice(String.valueOf(changeDemand.isChecked() ? 1 : 0));

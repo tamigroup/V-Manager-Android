@@ -115,7 +115,7 @@ public class AddPersonChargeActivty extends BaseActivity {
     private void initRecyclerView() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        commonAdapter = new CommonAdapter<UserListOfPositionResponse.Item.TitleItem.ContentList>(getApplicationContext(), R.layout.item_add_receptionist, contentList) {
+        commonAdapter = new CommonAdapter<UserListOfPositionResponse.Item.TitleItem.ContentList>(getApplicationContext(), R.layout.item_add_person_charge, contentList) {
             @Override
             protected void convert(ViewHolder holder, UserListOfPositionResponse.Item.TitleItem.ContentList contentList, int position) {
                 holder.setText(R.id.iapc_position, contentList.realName);
@@ -158,7 +158,7 @@ public class AddPersonChargeActivty extends BaseActivity {
         UserListOfPositionRequest userListOfPositionRequest = new UserListOfPositionRequest();
         LoginResponse.Item item = GlobaVariable.getInstance().item;
         if (item != null) {
-            userListOfPositionRequest.setSystemId(item.getSystemId());
+            userListOfPositionRequest.setSystemId(String.valueOf(item.getSystemId()));
         }
         networkBroker.ask(userListOfPositionRequest, (ex1, res) -> {
             if (null != ex1) {

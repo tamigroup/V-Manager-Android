@@ -1,62 +1,57 @@
 package com.tami.vmanager.entity;
 
+import com.tami.vmanager.http.HttpKey;
+
 import java.io.Serializable;
 
 
 /**
  * 获取会议群组中的用户成员.客户端请求
- * 
+ *
  * @author 代码生成器v1.0
- * 
  */
-public class MeetingUserGroupPageRequest implements Serializable{
+public class MeetingUserGroupPageRequest extends MobileMessage implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -4867280010470397182L;
+    private int curPage;
+    private int meetingId;
+    private int pageSize;
 
+    public MeetingUserGroupPageRequest() {
+        super();
+    }
 
-	private String curPage;
-	private String meetingId;
-	private String pageSize;
+    public int getCurPage() {
+        return curPage;
+    }
 
-	public MeetingUserGroupPageRequest() {
-		super();
-	}	
+    public void setCurPage(int curPage) {
+        this.curPage = curPage;
+    }
 
-	/**
-	 * @return 页码
-	 */
-	public String getCurPage() {
-		return curPage;
-	}
+    public int getMeetingId() {
+        return meetingId;
+    }
 
-	public void setCurPage(String curPage) {
-		this.curPage = curPage;
-	}
+    public void setMeetingId(int meetingId) {
+        this.meetingId = meetingId;
+    }
 
-	/**
-	 * @return 会议ID
-	 */
-	public String getMeetingId() {
-		return meetingId;
-	}
+    public int getPageSize() {
+        return pageSize;
+    }
 
-	public void setMeetingId(String meetingId) {
-		this.meetingId = meetingId;
-	}
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
 
-	/**
-	 * @return 页大小
-	 */
-	public String getPageSize() {
-		return pageSize;
-	}
+    @Override
+    public String getRequestUrl() {
+        return HttpKey.MEETING_USER_GROUP_PAGE;
+    }
 
-	public void setPageSize(String pageSize) {
-		this.pageSize = pageSize;
-	}
-
-
+    @Override
+    public Class getResponseClass() {
+        return MeetingUserGroupPageResponse.class;
+    }
 }

@@ -208,7 +208,7 @@ public class SearchActivity extends BaseActivity {
         searchRequestBean.setSearchType(searchType);
         LoginResponse.Item item = GlobaVariable.getInstance().item;
         if (item != null) {
-            searchRequestBean.setUserId(item.getId());
+            searchRequestBean.setUserId(String.valueOf(item.getId()));
         }
         networkBroker.ask(searchRequestBean, (ex1, res) -> {
             if (null != ex1) {

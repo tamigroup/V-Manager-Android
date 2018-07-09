@@ -118,6 +118,7 @@ public class AddReceptionistActivity extends BaseActivity {
         commonAdapter = new CommonAdapter<UserListOfPositionResponse.Item.TitleItem.ContentList>(getApplicationContext(), R.layout.item_add_receptionist, contentList) {
             @Override
             protected void convert(ViewHolder holder, UserListOfPositionResponse.Item.TitleItem.ContentList contentList, int position) {
+                holder.setText(R.id.iapc_position, contentList.realName);
                 holder.setText(R.id.iar_name, contentList.realName);
                 AppCompatImageView selectImage = holder.getView(R.id.iar_select_image);
                 selectImage.setImageResource(contentList.isSelected ? R.mipmap.people_checkbox_selected : R.mipmap.people_checkbox_unselected);
@@ -157,7 +158,7 @@ public class AddReceptionistActivity extends BaseActivity {
         UserListOfPositionRequest userListOfPositionRequest = new UserListOfPositionRequest();
         LoginResponse.Item item = GlobaVariable.getInstance().item;
         if (item != null) {
-            userListOfPositionRequest.setSystemId(item.getSystemId());
+            userListOfPositionRequest.setSystemId(String.valueOf(item.getSystemId()));
         }
         networkBroker.ask(userListOfPositionRequest, (ex1, res) -> {
             if (null != ex1) {

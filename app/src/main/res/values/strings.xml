@@ -271,8 +271,16 @@
     <string name="modify">修改</string>
     <string name="editor">编辑</string>
     <string name="no_search">没有找到“%s”哦~</string>
-    <string name="group_edit">编辑公告</string>
+    <string name="group_edit">编辑群公告</string>
     <string name="group_release">发布</string>
     <string name="load_more">查看更多群成员</string>
     <string name="out_meeting">退出此会议</string>
+
+    <string name="required_title">标题（必填）</string>
+    <string name="required_content">正文（必填）</string>
+    <string name="must_add_item_not_empty">必添项不可为空！</string>
+
+    <string name="success">成功</string>
+    <string name="failure">失败</string>
+    <string name="announcements">发布公告%s!</string>
 </resources>

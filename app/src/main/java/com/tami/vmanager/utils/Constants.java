@@ -77,4 +77,9 @@ public class Constants {
 
     //添加接待人requestCode
     public static final int ADD_PERSON_CHARGE = 0x13;
+
+    //创建公告
+    public static final int EDIT_NOTICE = 0X14;
+    //查看全部群成员中的总页数
+    public static final String TOTAL = "total";
 }

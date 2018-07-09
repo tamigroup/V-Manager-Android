@@ -1,13 +1,11 @@
 package com.tami.vmanager.activity;
 
 import android.content.Intent;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.View;
-import android.widget.TextView;
+
 import com.squareup.picasso.Picasso;
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
@@ -18,25 +16,22 @@ import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 群成员
- * Created by why on 2018/7/5.
+ * 查看全部群成员
+ * Created by why on 2018/7/9.
  */
-public class GroupMembersActivty extends BaseActivity {
+public class GroupMembersAllActivity extends BaseActivity {
 
-    private int meetingId;
-    private TextView notice;
     private RecyclerView recyclerView;
-    private ConstraintLayout constraintLayout;
-    private TextView load_more;
-    private TextView out_meeting;
     private List<MeetingUserGroupPageResponse.Array.Item> data;
     private CommonAdapter<MeetingUserGroupPageResponse.Array.Item> commonAdapter;
     private NetworkBroker networkBroker;
-    private int total = 0;//传给查看全部的条数
+    private int total = 0;
+    private int meetingId;
 
     @Override
     public boolean isTitle() {
@@ -45,47 +40,53 @@ public class GroupMembersActivty extends BaseActivity {
 
     @Override
     public int getContentViewId() {
-        return R.layout.activity_group_members;
+        return R.layout.activity_group_members_all;
     }
 
     @Override
     public void initView() {
-        recyclerView = findViewById(R.id.recyc);
-        notice = findViewById(R.id.agm_notice);
-        constraintLayout = findViewById(R.id.cl);
-        load_more = findViewById(R.id.load_more);
-        out_meeting = findViewById(R.id.out_meeting);
-
+        recyclerView = findViewById(R.id.agma_recyclerview);
     }
 
     @Override
     public void initListener() {
-        out_meeting.setOnClickListener(this);
-        notice.setOnClickListener(this);
-        constraintLayout.setOnClickListener(this);
+
     }
 
     @Override
     public void initData() {
         Intent intent = getIntent();
         if (intent != null) {
+            total = intent.getIntExtra(Constants.TOTAL, 0);
             meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 0);
         }
+
         setTitleName(getString(R.string.group_members));
-        initRecyc();
 
         networkBroker = new NetworkBroker(this);
         networkBroker.setCancelTag(getTAG());
+        initRecyclerView();
     }
 
-    private void initRecyc() {
+    @Override
+    public void requestNetwork() {
+        meetingUserGroupPage();
+    }
+
+    @Override
+    public void removeListener() {
+
+    }
+
+    @Override
+    public void emptyObject() {
+        networkBroker.cancelAllRequests();
+    }
+
+    public void initRecyclerView() {
         recyclerView.setLayoutManager(new GridLayoutManager(this, 5));
         data = new ArrayList<>();
-        setCommondAdapter(data);
-    }
-
-    private void setCommondAdapter(List<MeetingUserGroupPageResponse.Array.Item> sub_data) {
-        commonAdapter = new CommonAdapter<MeetingUserGroupPageResponse.Array.Item>(this, R.layout.item_activity_sponsor_member, sub_data) {
+        commonAdapter = new CommonAdapter<MeetingUserGroupPageResponse.Array.Item>(this, R.layout.item_activity_sponsor_member, data) {
             @Override
             protected void convert(ViewHolder holder, MeetingUserGroupPageResponse.Array.Item item, int position) {
                 holder.setText(R.id.item_name, item.realName);
@@ -98,42 +99,6 @@ public class GroupMembersActivty extends BaseActivity {
         recyclerView.setAdapter(commonAdapter);
     }
 
-    @Override
-    public void requestNetwork() {
-        meetingUserGroupPage();
-    }
-
-    @Override
-    public void removeListener() {
-    }
-
-    @Override
-    public void emptyObject() {
-        networkBroker.cancelAllRequests();
-    }
-
-    @Override
-    public void onClick(View v) {
-        super.onClick(v);
-        switch (v.getId()) {
-            case R.id.cl:
-                Intent intentAll = new Intent(getApplicationContext(), GroupMembersAllActivity.class);
-                intentAll.putExtra(Constants.TOTAL, total);
-                intentAll.putExtra(Constants.KEY_MEETING_ID, meetingId);
-                startActivity(intentAll);
-                break;
-            case R.id.out_meeting:
-                finish();
-                break;
-            case R.id.agm_notice:
-                //跳转
-                Intent intent = new Intent(getApplicationContext(), GroupNoticeActivity.class);
-                intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
-                startActivity(intent);
-                break;
-        }
-    }
-
     /**
      * 获取会议群组中的用户成员
      */
@@ -141,10 +106,7 @@ public class GroupMembersActivty extends BaseActivity {
         MeetingUserGroupPageRequest mugpr = new MeetingUserGroupPageRequest();
         mugpr.setMeetingId(meetingId);
         mugpr.setCurPage(1);
-        mugpr.setPageSize(10);
-//        mugpr.setMeetingId(1);
-//        mugpr.setCurPage(1);
-//        mugpr.setPageSize(10);
+        mugpr.setPageSize(total);
         networkBroker.ask(mugpr, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);
@@ -162,12 +124,6 @@ public class GroupMembersActivty extends BaseActivity {
                             }
                             data.addAll(item);
                             commonAdapter.notifyDataSetChanged();
-                            if (array.lastPage) {
-                                load_more.setVisibility(View.VISIBLE);
-                                total = array.totalElements;
-                            } else {
-                                load_more.setVisibility(View.GONE);
-                            }
                         }
                     }
                 }

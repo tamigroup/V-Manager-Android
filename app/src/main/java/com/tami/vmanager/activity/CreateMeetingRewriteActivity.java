@@ -572,10 +572,10 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
     private void createMeetingRequest(String eoUrl) {
         CreateMeetingRequest cmr = new CreateMeetingRequest();
         LoginResponse.Item item = GlobaVariable.getInstance().item;
-        cmr.setSystemId(item.getSystemId());
+        cmr.setSystemId(String.valueOf(item.getSystemId()));
         cmr.setMeetingName(nameView.getText().toString());
         cmr.setSponsorName(sponsorView.getText().toString());
-        cmr.setCreateMeetingUserId(item.getId());
+        cmr.setCreateMeetingUserId(String.valueOf(item.getId()));
         cmr.setMeetingAddressId(String.valueOf(addressId));
         cmr.setStartDate(TimeUtils.date2String(recordStartDate));
         cmr.setEndDate(TimeUtils.date2String(recordEndDate));
@@ -658,7 +658,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
                 || TextUtils.isEmpty(estimatedNumberPeople.getText())
                 || TextUtils.isEmpty(bottomNumberPeople.getText())
                 ) {
-            showToast("必添项不可为空！");
+            showToast(getString(R.string.must_add_item_not_empty));
             return false;
         }
         return true;

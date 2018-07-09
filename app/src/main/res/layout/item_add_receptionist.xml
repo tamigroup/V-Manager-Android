@@ -19,16 +19,27 @@
         app:srcCompat="@mipmap/people_checkbox_unselected" />
 
     <TextView
+        android:id="@+id/iapc_position"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:gravity="center_vertical|left"
+        android:textColor="@color/color_888888"
+        android:textSize="@dimen/sp_16"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iar_select_image"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
         android:id="@+id/iar_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_20"
         android:gravity="center_vertical|left"
-        android:text="@string/setting_avatar"
         android:textColor="@color/color_303030"
         android:textSize="@dimen/sp_16"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/iar_select_image"
+        app:layout_constraintStart_toEndOf="@+id/iapc_position"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView

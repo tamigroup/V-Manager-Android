@@ -110,10 +110,15 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
                 holder.setText(R.id.item_meeting_room, elements.getMeetingAddress());
                 //关注按钮点击
                 final TextView follow = holder.getView(R.id.item_meeting_follow);
-                followOnClick(follow, elements.getFollowStatus());
-                follow.setOnClickListener((View v) -> {
-                    followUserMeeting(follow, elements);
-                });
+                if (!getString(R.string.finished).equals(elements.getFollowStatus())) {
+                    follow.setVisibility(View.VISIBLE);
+                    followOnClick(follow, elements.getFollowStatus());
+                    follow.setOnClickListener((View v) -> {
+                        followUserMeeting(follow, elements);
+                    });
+                } else {
+                    follow.setVisibility(View.GONE);
+                }
                 //待付款
                 TextView paymentState = holder.getView(R.id.item_meeting_payment_state);
                 paymentState.setVisibility(elements.getFromPlat() == 1 ? View.VISIBLE : View.GONE);
@@ -189,7 +194,7 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
         AllMeetingsRequest allMeetingsRequest = new AllMeetingsRequest();
         LoginResponse.Item item = GlobaVariable.getInstance().item;
         if (item != null) {
-            allMeetingsRequest.setUserId(item.getId());
+            allMeetingsRequest.setUserId(String.valueOf(item.getId()));
         }
         allMeetingsRequest.setSearchType(String.valueOf(meetingType + 1));
         allMeetingsRequest.setCurPage(String.valueOf(CurPage++));
@@ -227,7 +232,7 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
         FollowUserMeetingRequest followUserMeetingRequest = new FollowUserMeetingRequest();
         LoginResponse.Item item = GlobaVariable.getInstance().item;
         if (item != null) {
-            followUserMeetingRequest.setUserId(item.getId());
+            followUserMeetingRequest.setUserId(String.valueOf(item.getId()));
         }
         followUserMeetingRequest.setMeetingId(String.valueOf(elements.getMeetingId()));
         followUserMeetingRequest.setRequsetUrl(elements.getFollowStatus() == 0 ? HttpKey.FOLLOW_USER_MEETING : HttpKey.CANCEL_USER_MEETING);

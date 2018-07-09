@@ -377,7 +377,7 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
         UpdateUserIconRequest updateUserIconRequest = new UpdateUserIconRequest();
         LoginResponse.Item item = GlobaVariable.getInstance().item;
         if (item != null) {
-            updateUserIconRequest.setUserId(item.getId());
+            updateUserIconRequest.setUserId(String.valueOf(item.getId()));
         }
         updateUserIconRequest.setIconUrl(imageUrl);
         networkBroker.ask(updateUserIconRequest, (ex1, res) -> {

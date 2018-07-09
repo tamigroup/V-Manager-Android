@@ -177,7 +177,7 @@ public class FollowMeetingsFragment extends ViewPagerBaseFragment {
         AllMeetingsRequest allMeetingsRequest = new AllMeetingsRequest();
         LoginResponse.Item item = GlobaVariable.getInstance().item;
         if (item != null) {
-            allMeetingsRequest.setUserId(item.getId());
+            allMeetingsRequest.setUserId(String.valueOf(item.getId()));
         }
         allMeetingsRequest.setSearchType(String.valueOf(followType + 1));
         allMeetingsRequest.setCurPage(String.valueOf(CurPage++));

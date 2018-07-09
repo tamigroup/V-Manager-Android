@@ -133,7 +133,7 @@ public class MeetingPlaceSelectActivity extends BaseActivity {
         GetMeetingAddressListRequest gma = new GetMeetingAddressListRequest();
         LoginResponse.Item item = GlobaVariable.getInstance().item;
         if (item != null) {
-            gma.setSystemId(item.getSystemId());
+            gma.setSystemId(String.valueOf(item.getSystemId()));
         }
         networkBroker.ask(gma, (ex1, res) -> {
             if (null != ex1) {

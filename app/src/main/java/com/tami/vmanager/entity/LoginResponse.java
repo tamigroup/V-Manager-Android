@@ -40,56 +40,66 @@ public class LoginResponse extends MobileMessage implements Serializable {
         @JsonInclude(Include.NON_NULL)
         public static class ElementUserRoleList {
 
-            public	Integer	id;	/*1*/
-            public	Integer	status;	/*0*/
-            public	Integer	userId;	/*1*/
+            public	int	id;	/*1*/
+            public	int	status;	/*0*/
+            public	int	userId;	/*1*/
             public	String	createOn;	/*2018-05-22 08:17:24*/
             public	String	updateOn;	/*2018-05-22 08:17:22*/
-            public	Integer	roleId;	/*2*/
+            public	int	roleId;	/*2*/
         }
 
-        private String createOn;
-        private String depId;
-        private String depName;
-        private String fromPlat;
-        private String iconUrl;
-        private String id;
-        private String isAdmin;
-        private String mobile;
-        private String nickName;
-        private String password;
-        private String positionId;
-        private String positionName;
-        private String realName;
-        private String roleId;
-        private String status;
-        private String systemId;
-        private String systemName;
-        private String token;
-        private String updateOn;
+        private	String	registrationId;	/**/
+        private	int	status;	/*0*/
+        private	String	iconUrl;	/*http://vgj.oss-cn-beijing.aliyuncs.com/app/af20180703181234_43342.jpg*/
+        private	String	systemName;	/*塔米智能大酒店中关村店*/
+        private	String	depName;	/**/
+        private	int	depId;	/*6*/
+        private	String	password;	/*3f57efeb8c91c6bae91ccd6e8790f8ad*/
+        private	int	fromPlat;	/*0*/
+        private	int	id;	/*33*/
+        private	String	nickName;	/*李双希*/
+        private	String	token;	/*74382bda6c8b48e3b56fbb5f2c91bc0f*/
+        private	int	positionId;	/*6*/
+        private	String	realName;	/*李双希*/
+        private	int	isAdmin;	/*0*/
+        private	int	systemId;	/*4*/
+        private	String	positionName;	/*研发部*/
+        private	Long	createOn;	/*1529907675000*/
+        private	String	mobile;	/*15901125418*/
+        private	int	roleId;	/*0*/
+        private	Long	updateOn;	/*1530612754000*/
         private List<ElementUserRoleList> userRoleList;
 
-
-        /**
-         * @return 创建时间
-         */
-        public String getCreateOn() {
-            return createOn;
+        public String getRegistrationId() {
+            return registrationId;
         }
 
-        public void setCreateOn(String createOn) {
-            this.createOn = createOn;
+        public void setRegistrationId(String registrationId) {
+            this.registrationId = registrationId;
         }
 
-        /**
-         * @return 所属部门ID
-         */
-        public String getDepId() {
-            return depId;
+        public int getStatus() {
+            return status;
         }
 
-        public void setDepId(String depId) {
-            this.depId = depId;
+        public void setStatus(int status) {
+            this.status = status;
+        }
+
+        public String getIconUrl() {
+            return iconUrl;
+        }
+
+        public void setIconUrl(String iconUrl) {
+            this.iconUrl = iconUrl;
+        }
+
+        public String getSystemName() {
+            return systemName;
+        }
+
+        public void setSystemName(String systemName) {
+            this.systemName = systemName;
         }
 
         public String getDepName() {
@@ -100,75 +110,14 @@ public class LoginResponse extends MobileMessage implements Serializable {
             this.depName = depName;
         }
 
-        /**
-         * @return 来自于平台ID
-         */
-        public String getFromPlat() {
-            return fromPlat;
+        public int getDepId() {
+            return depId;
         }
 
-        public void setFromPlat(String fromPlat) {
-            this.fromPlat = fromPlat;
+        public void setDepId(int depId) {
+            this.depId = depId;
         }
 
-        /**
-         * @return 用户Id
-         */
-        public String getIconUrl() {
-            return iconUrl;
-        }
-
-        public void setIconUrl(String iconUrl) {
-            this.iconUrl = iconUrl;
-        }
-
-        /**
-         * @return 创建时间
-         */
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        /**
-         * @return 是否管理员用户
-         */
-        public String getIsAdmin() {
-            return isAdmin;
-        }
-
-        public void setIsAdmin(String isAdmin) {
-            this.isAdmin = isAdmin;
-        }
-
-        /**
-         * @return 登陆手机号
-         */
-        public String getMobile() {
-            return mobile;
-        }
-
-        public void setMobile(String mobile) {
-            this.mobile = mobile;
-        }
-
-        /**
-         * @return 昵称
-         */
-        public String getNickName() {
-            return nickName;
-        }
-
-        public void setNickName(String nickName) {
-            this.nickName = nickName;
-        }
-
-        /**
-         * @return 密码
-         */
         public String getPassword() {
             return password;
         }
@@ -177,86 +126,30 @@ public class LoginResponse extends MobileMessage implements Serializable {
             this.password = password;
         }
 
-        /**
-         * @return 职位ID
-         */
-        public String getPositionId() {
-            return positionId;
+        public int getFromPlat() {
+            return fromPlat;
         }
 
-        public void setPositionId(String positionId) {
-            this.positionId = positionId;
+        public void setFromPlat(int fromPlat) {
+            this.fromPlat = fromPlat;
         }
 
-        /**
-         * @return 职位名称
-         */
-        public String getPositionName() {
-            return positionName;
+        public int getId() {
+            return id;
         }
 
-        public void setPositionName(String positionName) {
-            this.positionName = positionName;
+        public void setId(int id) {
+            this.id = id;
         }
 
-        /**
-         * @return 真实姓名
-         */
-        public String getRealName() {
-            return realName;
+        public String getNickName() {
+            return nickName;
         }
 
-        public void setRealName(String realName) {
-            this.realName = realName;
+        public void setNickName(String nickName) {
+            this.nickName = nickName;
         }
 
-        /**
-         * @return 用户角色ID
-         */
-        public String getRoleId() {
-            return roleId;
-        }
-
-        public void setRoleId(String roleId) {
-            this.roleId = roleId;
-        }
-
-        /**
-         * @return 用户状态     0-->正常  1-->停用   -1-->删除
-         */
-        public String getStatus() {
-            return status;
-        }
-
-        public void setStatus(String status) {
-            this.status = status;
-        }
-
-        /**
-         * @return 所属机构ID
-         */
-        public String getSystemId() {
-            return systemId;
-        }
-
-        public void setSystemId(String systemId) {
-            this.systemId = systemId;
-        }
-
-        /**
-         * @return 用户所属机构
-         */
-        public String getSystemName() {
-            return systemName;
-        }
-
-        public void setSystemName(String systemName) {
-            this.systemName = systemName;
-        }
-
-        /**
-         * @return token
-         */
         public String getToken() {
             return token;
         }
@@ -265,14 +158,75 @@ public class LoginResponse extends MobileMessage implements Serializable {
             this.token = token;
         }
 
-        /**
-         * @return 更新时间
-         */
-        public String getUpdateOn() {
+        public int getPositionId() {
+            return positionId;
+        }
+
+        public void setPositionId(int positionId) {
+            this.positionId = positionId;
+        }
+
+        public String getRealName() {
+            return realName;
+        }
+
+        public void setRealName(String realName) {
+            this.realName = realName;
+        }
+
+        public int getIsAdmin() {
+            return isAdmin;
+        }
+
+        public void setIsAdmin(int isAdmin) {
+            this.isAdmin = isAdmin;
+        }
+
+        public int getSystemId() {
+            return systemId;
+        }
+
+        public void setSystemId(int systemId) {
+            this.systemId = systemId;
+        }
+
+        public String getPositionName() {
+            return positionName;
+        }
+
+        public void setPositionName(String positionName) {
+            this.positionName = positionName;
+        }
+
+        public Long getCreateOn() {
+            return createOn;
+        }
+
+        public void setCreateOn(Long createOn) {
+            this.createOn = createOn;
+        }
+
+        public String getMobile() {
+            return mobile;
+        }
+
+        public void setMobile(String mobile) {
+            this.mobile = mobile;
+        }
+
+        public int getRoleId() {
+            return roleId;
+        }
+
+        public void setRoleId(int roleId) {
+            this.roleId = roleId;
+        }
+
+        public Long getUpdateOn() {
             return updateOn;
         }
 
-        public void setUpdateOn(String updateOn) {
+        public void setUpdateOn(Long updateOn) {
             this.updateOn = updateOn;
         }
 

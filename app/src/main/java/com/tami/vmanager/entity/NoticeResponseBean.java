@@ -177,6 +177,15 @@ public class NoticeResponseBean extends MobileMessage implements Serializable {
             private long updateOn;
             private int userId;
             private String userName;
+            private String relativeDate;
+
+            public String getRelativeDate() {
+                return relativeDate;
+            }
+
+            public void setRelativeDate(String relativeDate) {
+                this.relativeDate = relativeDate;
+            }
 
             public String getContent() {
                 return content;
