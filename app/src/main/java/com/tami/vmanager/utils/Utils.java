@@ -1,11 +1,14 @@
 package com.tami.vmanager.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 /**
  * Created by why on 2018/6/11.
@@ -100,6 +103,28 @@ public class Utils {
     public static int sp2px(Context context, float spValue) {
         final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
         return (int) (spValue * fontScale + 0.5f);
+    }
+
+    /**
+     * 显示软键盘，Dialog使用
+     * @param activity 当前Activity
+     */
+    public static void showSoftInput(Activity activity) {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+        activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+    }
+
+    /**
+     * 隐藏软键盘
+     * @param activity 当前Activity
+     */
+    public static void hideSoftInput(Activity activity) {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(
+                activity.getWindow().getDecorView().getWindowToken(), 0);
     }
 
 }

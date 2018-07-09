@@ -82,6 +82,8 @@ dependencies {
     api 'com.tencent.bugly:nativecrashreport:3.3.1'
 
     api 'com.github.qdxxxx:StickyHeaderDecoration:1.0.1'
+    //dialog
+    api 'com.orhanobut:dialogplus:1.11@aar'
 }
 
 def buildTime() {

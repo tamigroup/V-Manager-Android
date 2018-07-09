@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <EditText
+        android:id="@+id/reply_edit"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:layout_marginLeft="@dimen/dp_5"
+        android:layout_marginRight="@dimen/dp_50"
+        android:layout_marginTop="@dimen/dp_10"
+        android:background="@drawable/shape_white_line"
+        android:gravity="left|top"
+        android:hint="回复:"
+        android:padding="@dimen/dp_5"
+        android:cursorVisible="true"
+        android:textCursorDrawable="@android:color/black"
+        android:focusable="true"
+        android:editable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/send"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/send"
+        android:textSize="@dimen/sp_16"
+        android:textColor="@color/color_999999"
+        android:layout_marginRight="@dimen/dp_5"
+        android:layout_marginLeft="@dimen/dp_5"
+        android:layout_marginBottom="@dimen/dp_10"
+        app:layout_constraintStart_toEndOf="@+id/reply_edit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+</android.support.constraint.ConstraintLayout>

@@ -147,7 +147,8 @@
         <!--    需求变化    -->
         <activity
             android:name=".activity.ChangeDemandActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
         <!--    添加接待人    -->
         <activity
             android:name=".activity.AddReceptionistActivity"
