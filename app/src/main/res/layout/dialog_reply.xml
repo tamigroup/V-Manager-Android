@@ -16,7 +16,7 @@
         android:layout_marginTop="@dimen/dp_10"
         android:background="@drawable/shape_white_line"
         android:gravity="left|top"
-        android:hint="回复:"
+        android:hint="@string/hint_replay"
         android:padding="@dimen/dp_5"
         android:cursorVisible="true"
         android:textCursorDrawable="@android:color/black"

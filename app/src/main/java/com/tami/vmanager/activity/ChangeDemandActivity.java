@@ -1,5 +1,6 @@
 package com.tami.vmanager.activity;
 
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -7,17 +8,30 @@ import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.jwenfeng.library.pulltorefresh.BaseRefreshListener;
+import com.jwenfeng.library.pulltorefresh.PullToRefreshLayout;
 import com.orhanobut.dialogplus.DialogPlus;
+import com.squareup.picasso.Picasso;
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
+import com.tami.vmanager.entity.ChangeDemandReplayRequestBean;
+import com.tami.vmanager.entity.ChangeDemandReplayResponseBean;
+import com.tami.vmanager.entity.ChangeDemandRequestBean;
+import com.tami.vmanager.entity.ChangeDemandResponseBean;
+import com.tami.vmanager.entity.MobileMessage;
+import com.tami.vmanager.http.NetworkBroker;
+import com.tami.vmanager.manager.GlobaVariable;
+import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.Utils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,8 +41,16 @@ import java.util.List;
 public class ChangeDemandActivity extends BaseActivity {
 
     private RecyclerView recyclerView;
-    List<String> data = Arrays.asList("dadda", "sadadad", "sdasda");
     private DialogPlus dialog;
+    private PullToRefreshLayout pullToRefreshLayout;
+    private NetworkBroker networkBroker;
+    private int CurPage = 1;
+    List<ChangeDemandResponseBean.DataBean.ElementsBean> listData;
+    private CommonAdapter<ChangeDemandResponseBean.DataBean.ElementsBean> commonAdapter;
+    private TextView have_reply;
+    private TextView item_reply_content;
+    private TextView item_reply_name;
+    Handler handler = new Handler();
 
     @Override
     public boolean isTitle() {
@@ -43,28 +65,67 @@ public class ChangeDemandActivity extends BaseActivity {
     @Override
     public void initView() {
         recyclerView = findViewById(R.id.recyc);
+        pullToRefreshLayout = findViewById(R.id.pullRL);
+        networkBroker = new NetworkBroker(this);
     }
 
     @Override
     public void initListener() {
+        pullToRefreshLayout.setRefreshListener(new BaseRefreshListener() {
+            @Override
+            public void refresh() {
+                queryData();
+                handler.postDelayed(() -> pullToRefreshLayout.finishRefresh(), 2000);
+            }
 
+            @Override
+            public void loadMore() {
+                queryData();
+                handler.postDelayed(() -> pullToRefreshLayout.finishLoadMore(), 2000);
+            }
+        });
     }
 
     @Override
     public void initData() {
         setTitleName(R.string.change_demand);
+        listData = new ArrayList<>();
         initRecyc();
     }
 
     private void initRecyc() {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        CommonAdapter<String> commonAdapter = new CommonAdapter<String>(this, R.layout.item_feedback, data) {
+        commonAdapter = new CommonAdapter<ChangeDemandResponseBean.DataBean.ElementsBean>(this, R.layout.item_feedback, listData) {
 
             @Override
-            protected void convert(ViewHolder holder, String s, int position) {
-                holder.setText(R.id.item_content_tv, s);
+            protected void convert(ViewHolder holder, ChangeDemandResponseBean.DataBean.ElementsBean item, int position) {
+                if (!item.getRequestIconUrl().trim().isEmpty()) {
+                    ImageView in_avatar_image = holder.getView(R.id.in_avatar_image);
+                    Picasso.get().load(item.getRequestIconUrl()).into(in_avatar_image);
+                }
+
+                have_reply = holder.getView(R.id.have_reply);
+                item_reply_content = holder.getView(R.id.item_reply_content);
+                item_reply_name = holder.getView(R.id.item_reply_name);
+                holder.setText(R.id.item_content_tv, item.getRequestContent());
+                holder.setText(R.id.in_name, item.getRequestUserName());
+                holder.setText(R.id.item_time, item.getRequestTime());
+                if (item.getReplyUserName().trim().isEmpty() && item.getReplyContent().trim().isEmpty()) {
+                    have_reply.setText(getResources().getString(R.string.no_replay));
+                    have_reply.setTextColor(getResources().getColor(R.color.color_999999));
+                    item_reply_content.setVisibility(View.GONE);
+                    item_reply_name.setVisibility(View.GONE);
+                } else {
+                    item_reply_content.setVisibility(View.VISIBLE);
+                    item_reply_name.setVisibility(View.VISIBLE);
+                    holder.setText(R.id.item_reply_name, item.getReplyUserName());
+                    holder.setText(R.id.item_reply_content, String.format(getResources().getString(R.string.replay_content), item.getReplyContent()));
+                }
+
             }
         };
+        commonAdapter.notifyDataSetChanged();
+        recyclerView.setAdapter(commonAdapter);
         commonAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
@@ -77,6 +138,7 @@ public class ChangeDemandActivity extends BaseActivity {
                 EditText reply_edit = (EditText) dialog.findViewById(R.id.reply_edit);
                 TextView send = (TextView) dialog.findViewById(R.id.send);
                 Utils.showSoftInput(ChangeDemandActivity.this);
+                reply_edit.setHint(String.format(getResources().getString(R.string.hint_replay), listData.get(position).getRequestUserName()));
                 reply_edit.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -89,14 +151,18 @@ public class ChangeDemandActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void afterTextChanged(Editable s) {
-
+                    public void afterTextChanged(Editable content) {
+                        send.setOnClickListener(v -> {
+                            String trim = reply_edit.getText().toString().trim();
+                            if (trim.isEmpty()) {
+                                Toast.makeText(ChangeDemandActivity.this, "发送内容不能为空", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            requestNet(content.toString().trim(), listData.get(position).getId(), GlobaVariable.getInstance().item.getId(), holder);
+                            Utils.hideSoftInput(ChangeDemandActivity.this);
+                            dialog.dismiss();
+                        });
                     }
-                });
-
-                send.setOnClickListener(v -> {
-                    Utils.hideSoftInput(ChangeDemandActivity.this);
-                    dialog.dismiss();
                 });
             }
 
@@ -105,12 +171,69 @@ public class ChangeDemandActivity extends BaseActivity {
                 return false;
             }
         });
-        recyclerView.setAdapter(commonAdapter);
+    }
+
+    private void requestNet(String content, int meetingRequirementId, int replyUserId, RecyclerView.ViewHolder holder) {
+        ChangeDemandReplayRequestBean changeDemandReplayRequestBean = new ChangeDemandReplayRequestBean();
+        changeDemandReplayRequestBean.setMeetingRequirementId(meetingRequirementId);
+        changeDemandReplayRequestBean.setReplyContent(content);
+        changeDemandReplayRequestBean.setReplyUserId(replyUserId);
+        networkBroker.ask(changeDemandReplayRequestBean, (exl, res) -> {
+            if (null != exl) {
+                Logger.d(exl.getMessage() + "-" + exl);
+                return;
+            }
+            ChangeDemandReplayResponseBean replayResponse = (ChangeDemandReplayResponseBean) res;
+            if (replayResponse.getCode() == 200) {
+                if (replayResponse.isData()) {
+                    showToast("回复成功");
+                    TextView have_reply = holder.itemView.findViewById(R.id.have_reply);
+                    have_reply.setText(getResources().getString(R.string.has_replay));
+                    have_reply.setTextColor(getResources().getColor(R.color.color_21AE1D));
+                    TextView item_reply_content = holder.itemView.findViewById(R.id.item_reply_content);
+                    item_reply_content.setVisibility(View.VISIBLE);
+                    item_reply_content.setText(String.format(getResources().getString(R.string.replay_content), content));
+                    TextView item_reply_name = holder.itemView.findViewById(R.id.item_reply_name);
+                    item_reply_name.setVisibility(View.VISIBLE);
+                    item_reply_name.setText(GlobaVariable.getInstance().item.getNickName());
+                } else {
+                    showToast("回复失败");
+                }
+            }
+        });
     }
 
     @Override
     public void requestNetwork() {
+        queryData();
+    }
 
+    private void queryData() {
+        ChangeDemandRequestBean changeDemandRequestBean = new ChangeDemandRequestBean();
+        changeDemandRequestBean.setMeetingId(6);
+        changeDemandRequestBean.setCurPage(CurPage++);
+        changeDemandRequestBean.setPageSize(10);
+        networkBroker.ask(changeDemandRequestBean, (Exception exl, MobileMessage res) -> {
+            if (null != exl) {
+                Logger.d(exl.getMessage() + "-" + exl);
+                return;
+            }
+            try {
+                ChangeDemandResponseBean response = (ChangeDemandResponseBean) res;
+                if (response.getCode() == 200) {
+                    ChangeDemandResponseBean.DataBean data = response.getData();
+                    if (data != null && data.getElements() != null && data.getElements().size() > 0) {
+                        listData.addAll(data.getElements());
+                        commonAdapter.notifyDataSetChanged();
+                    }
+                    if (data.isLastPage()) {
+                        pullToRefreshLayout.setCanLoadMore(false);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override
@@ -125,9 +248,9 @@ public class ChangeDemandActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if (dialog!=null && dialog.isShowing()){
+        if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
-        }else {
+        } else {
             super.onBackPressed();
         }
     }

@@ -101,6 +101,13 @@ public class HttpKey {
     public static final String DELETE_USER_MEETING = "meeting/deleteUserMeeting";
     // 获取流程天数
     public static final String GET_MEETING_DAYS = "meting/getMeetingDays";
+    //获取需求变化(活动变化)分页数据
+    public static final String GET_MEETING_REQUIREMENT_PAGE = "meeting/meetingRequirementPage";
+    // 回复会议变化(活动变化)需求
+    public static final String REPLY_MEETING_REQUIREMENT = "meeting/replyMeetingRequirement";
+    //创建会议变化(活动变化)需求
+    public static final String CREATE_MEETING_REQUIREMENT = "meeting/createMeetingRequirement";
+
 
     //---------------------------------------------------------------------------
 
