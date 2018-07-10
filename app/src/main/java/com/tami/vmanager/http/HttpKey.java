@@ -86,19 +86,21 @@ public class HttpKey {
     // VIP详情
     public static final String VIP_DETAIL = "vip/vipGusetPage";
     //创建公告
-    public static final String CREATE_NOTICE="notice/createNotice";
+    public static final String CREATE_NOTICE = "notice/createNotice";
     //获取会议群组中的用户成员
-    public static final String MEETING_USER_GROUP_PAGE="group/meetingUserGroupPage";
+    public static final String MEETING_USER_GROUP_PAGE = "group/meetingUserGroupPage";
     //群消息列表
     public static final String GET_MEETING_GROUP_CHAT = "chat/meetingChatPage";
     //发送群消息
     public static final String SEND_CHAT_MSG = "chat/sendMsg";
     // 查询我创建的会议列表
-    public static final String MY_MEETINGS ="meeting/myMeetings";
+    public static final String MY_MEETINGS = "meeting/myMeetings";
     // 获取会议流程单
-    public static final String GET_MEETING_ITEM_FLOW ="meeting/getMeetingItemFlow";
+    public static final String GET_MEETING_ITEM_FLOW = "meeting/getMeetingItemFlow";
     // 获取会议流程单
-    public static final String DELETE_USER_MEETING ="meeting/deleteUserMeeting";
+    public static final String DELETE_USER_MEETING = "meeting/deleteUserMeeting";
+    // 获取流程天数
+    public static final String GET_MEETING_DAYS = "meting/getMeetingDays";
 
     //---------------------------------------------------------------------------
 

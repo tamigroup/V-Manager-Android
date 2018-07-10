@@ -99,23 +99,6 @@ public class MyCreateActivity extends BaseActivity {
                     shmlView.smoothCloseEndMenu();
                     deleteUserMeeting(item.meetingId, position);
                 });
-                //编辑按钮
-                TextView editView = viewHolder.getItemView(R.id.item_content_editor);
-                editView.setOnClickListener((View v) -> {
-                    shmlView.smoothOpenEndMenu();
-                });
-
-                shmlView.setSwipeListener(new SwipeRightSwitchListener() {
-                    @Override
-                    public void endMenuClosed(SwipeMenuLayout swipeMenuLayout) {
-                        editView.setVisibility(View.VISIBLE);
-                    }
-
-                    @Override
-                    public void endMenuOpened(SwipeMenuLayout swipeMenuLayout) {
-                        editView.setVisibility(View.GONE);
-                    }
-                });
 
                 //名称
                 TextView nameView = viewHolder.getItemView(R.id.item_content_name);
@@ -142,7 +125,7 @@ public class MyCreateActivity extends BaseActivity {
                 int spec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
                 nameView.measure(spec, spec);
                 int measuredWidthTicketNum = nameView.getMeasuredWidth();
-                int maxWidth = ScreenUtil.sp2px(getApplicationContext(), 270);
+                int maxWidth = ScreenUtil.sp2px(getApplicationContext(), 330);
                 if (measuredWidthTicketNum > maxWidth) {
                     setLayoutParams(nameView, maxWidth);
                 }

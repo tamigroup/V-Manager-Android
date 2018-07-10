@@ -33,6 +33,7 @@ public class EnterMeetingActivity extends BaseActivity {
     private TextView meetingName;//会议名称
     private TextView meetingTime;//会议时间
     private TextView meetingRoom;//会议房间
+    private TextView memhMponsor;//主办方
     private TextView meetingPersonnel;//会议人员及岗位
 
     private TextView predeterminedNumber;//预定人数
@@ -48,7 +49,7 @@ public class EnterMeetingActivity extends BaseActivity {
     private TextView vipDetails;//VIP详情
 
     private int meetingId;//会议ID
-    private String eoUrl;
+    private GetMeetingResponse.Item item;
     private NetworkBroker networkBroker;
     private List<GetMeetingItemFlowResponse.Array.Item> listData;
     private TimeLineHorizontalAdapter adapter;
@@ -69,6 +70,7 @@ public class EnterMeetingActivity extends BaseActivity {
         meetingName = findViewById(R.id.meeting_overview_meeting_name);
         meetingTime = findViewById(R.id.meeting_overview_meeting_time);
         meetingRoom = findViewById(R.id.meeting_overview_meeting_room);
+        memhMponsor = findViewById(R.id.memh_sponsor);
         meetingPersonnel = findViewById(R.id.meeting_overview_meeting_personnel);
         //人数与EO查看数据
         predeterminedNumber = findViewById(R.id.meeting_overview_predetermined_number);
@@ -101,7 +103,6 @@ public class EnterMeetingActivity extends BaseActivity {
     @Override
     public void initData() {
         Intent intent = getIntent();
-        GetMeetingResponse.Item item = null;
         if (intent != null) {
             meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 0);
             item = (GetMeetingResponse.Item) intent.getSerializableExtra(Constants.MEETING_INFO);
@@ -152,7 +153,7 @@ public class EnterMeetingActivity extends BaseActivity {
                 break;
             case R.id.meeting_overview_actual_number:
                 //查看人员
-                startActivity(new Intent(getApplicationContext(), AddPersonChargeActivty.class));
+                startActivity(new Intent(getApplicationContext(), PersonnelListActivity.class));
                 break;
             case R.id.enter_meeting_service_group_layout:
                 //会议服务群
@@ -181,12 +182,12 @@ public class EnterMeetingActivity extends BaseActivity {
             meetingName.setText(item.meetingName);
             meetingTime.setText(item.autoDayTime);
             meetingRoom.setText(item.meetingAddress);
+            memhMponsor.setText(item.sponsorName);
             meetingPersonnel.setText(item.saleUserName);
 
             initUITxt(predeterminedNumber, String.valueOf(item.estimateNum), R.string.predetermined_number, android.R.color.white);
             initUITxt(bottomNumber, String.valueOf(item.minNum), R.string.bottom_number, android.R.color.white);
             initUITxt(actualNumber, String.valueOf(item.actualNum), R.string.actual_number, R.color.color_FF5657);
-            eoUrl = item.eoUrl;
         }
     }
 
@@ -208,7 +209,7 @@ public class EnterMeetingActivity extends BaseActivity {
      */
     private void lookEO() {
         Intent intent = new Intent(getApplicationContext(), LookEOActivity.class);
-        intent.putExtra(Constants.KEY_EO_URL, eoUrl);
+        intent.putExtra(Constants.KEY_EO_URL, item.eoUrl);
         startActivity(intent);
     }
 
@@ -241,7 +242,7 @@ public class EnterMeetingActivity extends BaseActivity {
     private void vipDetails() {
         Intent intent = new Intent(getApplicationContext(), VIPDetailsActivity.class);
         intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
-        intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
+        intent.putExtra(Constants.MEETING_INFO, item);
         startActivity(intent);
     }
 

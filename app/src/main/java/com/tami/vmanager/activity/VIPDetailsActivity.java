@@ -1,6 +1,7 @@
 package com.tami.vmanager.activity;
 
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -50,7 +51,7 @@ public class VIPDetailsActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        title = findViewById(R.id.title);
+        title = findViewById(R.id.avd_title);
         recyclerView = findViewById(R.id.recyc);
         networkBroker = new NetworkBroker(this);
     }
@@ -65,6 +66,13 @@ public class VIPDetailsActivity extends BaseActivity {
         Intent intent = getIntent();
         if (intent != null) {
             meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 0);
+            GetMeetingResponse.Item item = (GetMeetingResponse.Item) intent.getSerializableExtra(Constants.MEETING_INFO);
+            if (item != null) {
+                title.setText(item.meetingName);
+                if (item.fromPlat == 1) {
+                    title.setCompoundDrawables(ContextCompat.getDrawable(getApplicationContext(), R.mipmap.meeting_level_zhi), null, null, null);
+                }
+            }
         }
         setTitleName(getString(R.string.vip_details));
         initRecyc();
@@ -100,18 +108,18 @@ public class VIPDetailsActivity extends BaseActivity {
     @Override
     public void requestNetwork() {
         VIPDetailsRequestBean vipDetailsRequestBean = new VIPDetailsRequestBean();
-//        vipDetailsRequestBean.setMeetingId(meetingId);
-//        LoginResponse.Item item = GlobaVariable.getInstance().item;
-//        if (item != null) {
-//            vipDetailsRequestBean.setSystemId(item.getSystemId());
-//        }
-//        vipDetailsRequestBean.setCurPage(CurPage++);
-//        vipDetailsRequestBean.setPageSize(Constants.PAGE_SIZE);
-
-        vipDetailsRequestBean.setMeetingId(1);
-        vipDetailsRequestBean.setSystemId(4);
+        vipDetailsRequestBean.setMeetingId(meetingId);
+        LoginResponse.Item item = GlobaVariable.getInstance().item;
+        if (item != null) {
+            vipDetailsRequestBean.setSystemId(item.getSystemId());
+        }
         vipDetailsRequestBean.setCurPage(CurPage++);
-        vipDetailsRequestBean.setPageSize(10);
+        vipDetailsRequestBean.setPageSize(Constants.PAGE_SIZE);
+
+//        vipDetailsRequestBean.setMeetingId(1);
+//        vipDetailsRequestBean.setSystemId(4);
+//        vipDetailsRequestBean.setCurPage(CurPage++);
+//        vipDetailsRequestBean.setPageSize(10);
         networkBroker.ask(vipDetailsRequestBean, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);

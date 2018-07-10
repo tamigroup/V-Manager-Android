@@ -82,17 +82,4 @@
         app:layout_constraintStart_toEndOf="@+id/item_content_level_icon1"
         app:layout_constraintTop_toTopOf="@+id/item_content_level_icon1" />
 
-    <TextView
-        android:id="@+id/item_content_editor"
-        android:layout_width="@dimen/dp_60"
-        android:layout_height="@dimen/dp_30"
-        android:background="@drawable/item_meeting_follow_selected"
-        android:gravity="center"
-        android:text="@string/editor"
-        android:textColor="@color/color_333333"
-        android:textSize="@dimen/sp_12"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
 </android.support.constraint.ConstraintLayout>

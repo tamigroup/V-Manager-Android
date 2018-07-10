@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="160dp"
+    android:layout_height="wrap_content"
     android:background="@drawable/personal_center_avatar_bg">
 
     <TextView
@@ -43,7 +43,7 @@
         app:layout_constraintTop_toBottomOf="@+id/meeting_overview_meeting_time" />
 
     <TextView
-        android:id="@+id/meeting_overview_meeting_personnel"
+        android:id="@+id/memh_sponsor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_8"
@@ -51,6 +51,18 @@
         android:textSize="@dimen/sp_12"
         app:layout_constraintStart_toStartOf="@+id/meeting_overview_meeting_room"
         app:layout_constraintTop_toBottomOf="@+id/meeting_overview_meeting_room" />
+
+    <TextView
+        android:id="@+id/meeting_overview_meeting_personnel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_8"
+        android:layout_marginTop="@dimen/dp_8"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/sp_12"
+        app:layout_constraintBottom_toTopOf="@+id/meeting_overview_predetermined_number"
+        app:layout_constraintStart_toStartOf="@+id/memh_sponsor"
+        app:layout_constraintTop_toBottomOf="@+id/memh_sponsor" />
 
     <TextView
         android:id="@+id/meeting_overview_predetermined_number"

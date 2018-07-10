@@ -43,6 +43,7 @@ public class MeetingOverviewActivity extends BaseActivity {
     private TextView meetingName;//会议名称
     private TextView meetingTime;//会议时间
     private TextView meetingRoom;//会议房间
+    private TextView mmohSponsor;
     private TextView meetingPersonnel;//会议人员及岗位
 
     private TextView predeterminedNumber;//预定人数
@@ -87,6 +88,7 @@ public class MeetingOverviewActivity extends BaseActivity {
         meetingName = findViewById(R.id.meeting_overview_meeting_name);
         meetingTime = findViewById(R.id.meeting_overview_meeting_time);
         meetingRoom = findViewById(R.id.meeting_overview_meeting_room);
+        mmohSponsor = findViewById(R.id.mmoh_sponsor);
         meetingPersonnel = findViewById(R.id.meeting_overview_meeting_personnel);
         //人数与EO查看数据
         predeterminedNumber = findViewById(R.id.meeting_overview_predetermined_number);
@@ -239,6 +241,7 @@ public class MeetingOverviewActivity extends BaseActivity {
             meetingName.setText(item.meetingName);
             meetingTime.setText(item.autoDayTime);
             meetingRoom.setText(item.meetingAddress);
+            mmohSponsor.setText(item.sponsorName);
             meetingPersonnel.setText(item.saleUserName);
 
             initUITxt(predeterminedNumber, String.valueOf(item.estimateNum), R.string.predetermined_number, android.R.color.white);
