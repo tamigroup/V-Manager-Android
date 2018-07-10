@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.tami.vmanager.R;
+import com.tami.vmanager.entity.GetMeetingItemFlowResponse;
 import com.tami.vmanager.entity.TimeLine;
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
  */
 public class TimeLineHorizontalAdapter extends RecyclerView.Adapter<TimeLineHorizontalAdapter.TimeLineHorizontaHolder> {
 
-    private List<TimeLine> list;
+    private List<GetMeetingItemFlowResponse.Array.Item> list;
     private static final int TOP = 0;
     private static final int FOOT = 1;
     private static final int NORMAL = 2;
@@ -35,7 +36,7 @@ public class TimeLineHorizontalAdapter extends RecyclerView.Adapter<TimeLineHori
         return NORMAL;
     }
 
-    public TimeLineHorizontalAdapter(List<TimeLine> list) {
+    public TimeLineHorizontalAdapter(List<GetMeetingItemFlowResponse.Array.Item> list) {
         this.list = list;
     }
 
@@ -51,7 +52,7 @@ public class TimeLineHorizontalAdapter extends RecyclerView.Adapter<TimeLineHori
             holder.leftView.setVisibility(View.VISIBLE);
             holder.rightView.setVisibility(View.VISIBLE);
         }
-        holder.stateTxt.setText(list.get(position).getConetnt());
+        holder.stateTxt.setText(list.get(position).meetingItemName);
     }
 
     @Override

@@ -283,4 +283,7 @@
     <string name="success">成功</string>
     <string name="failure">失败</string>
     <string name="announcements">发布公告%s!</string>
+
+    <string name="attention_prompt">关注%s！</string>
+    <string name="attention_cancel_prompt">取消关注%s！</string>
 </resources>

@@ -28,14 +28,16 @@ public class GetUserNoticeConfigResponse extends MobileMessage implements Serial
 	public Item data;
 
 	public static class Item{
-		public	int	id;	/*1*/
-		public	int	meetingNotice;	/*1*/
-		public	int	groupchatNotice;	/*0*/
-		public	int	satisfactionNotice;	/*0*/
-		public	int	systemNotice;	/*1*/
+		public	int	meetingNotice;	/*0*/
+		public	int	id;	/*2*/
+		public	int	groupchatNotice;	/*1*/
+		public	int	satisfactionNotice;	/*1*/
+		public	int	systemNotice;	/*0*/
 		public	int	hostNotice;	/*1*/
-		public	int	userId;	/*1*/
-		public	Long	createOn;	/*1528767815000*/
-		public	Long	updateOn;	/*1528768343000*/
+		public	int	userId;	/*33*/
+		public	Long	createOn;	/*1530755883000*/
+		public	int	taskDistribution;	/*0*/
+		public	Long	updateOn;	/*1530755884000*/
+
 	}
 }

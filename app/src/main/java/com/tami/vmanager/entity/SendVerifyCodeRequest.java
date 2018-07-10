@@ -43,8 +43,14 @@ public class SendVerifyCodeRequest extends MobileMessage implements Serializable
 		return SendVerifyCodeResponse.class;
 	}
 
+	private String requestUrl;
+
+	public void setRequestUrl(String requestUrl) {
+		this.requestUrl = requestUrl;
+	}
+
 	@Override
 	public String getRequestUrl() {
-		return HttpKey.USER_SEND_VERIFY_CODE;
+		return this.requestUrl;
 	}
 }

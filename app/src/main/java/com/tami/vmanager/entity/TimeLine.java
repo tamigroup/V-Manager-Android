@@ -3,7 +3,7 @@ package com.tami.vmanager.entity;
 /**
  * Created by why on 2018/5/29.
  */
-
+@Deprecated
 public class TimeLine {
 
     private String conetnt;

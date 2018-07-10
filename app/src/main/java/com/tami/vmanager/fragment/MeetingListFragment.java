@@ -42,8 +42,8 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
 
     private RecyclerView recyclerView;
     private PullToRefreshLayout pullToRefreshLayout;
-    private CommonAdapter<AllMeetingsResponse.Item.ElementElements> commonAdapter;
-    private List<AllMeetingsResponse.Item.ElementElements> listData;
+    private CommonAdapter<AllMeetingsResponse.Array.Item> commonAdapter;
+    private List<AllMeetingsResponse.Array.Item> listData;
     private int meetingType;//标识点击哪个进入到的页面
     private NetworkBroker networkBroker;
     private int CurPage = 1;
@@ -83,50 +83,45 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
         recyclerView.addItemDecoration(new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL,
                 1, ContextCompat.getColor(getActivity(), R.color.percentage_10)));
         listData = new ArrayList<>();
-        commonAdapter = new CommonAdapter<AllMeetingsResponse.Item.ElementElements>(getActivity(), R.layout.item_meeting, listData) {
+        commonAdapter = new CommonAdapter<AllMeetingsResponse.Array.Item>(getActivity(), R.layout.item_meeting, listData) {
             @Override
-            protected void convert(ViewHolder holder, AllMeetingsResponse.Item.ElementElements elementElements, int position) {
-
-            }
-
-            @Override
-            public void convert(ViewHolder holder, AllMeetingsResponse.Item.ElementElements elements) {
-                //名称
+            protected void convert(ViewHolder holder, AllMeetingsResponse.Array.Item item, int position) {
+//名称
                 TextView nameView = holder.getView(R.id.item_meeting_name);
 //                nameView.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(getContext(), R.mipmap.meeting_level_zhi), null);
-                setNameTextLayoutParams(nameView, elements.getMeetingName());
+                setNameTextLayoutParams(nameView, item.meetingName);
                 //会议状态
                 MeetingStateView stateView = holder.getView(R.id.item_meeting_state);
-                stateView.setMeetingStateText(elements.getMeetingStatus());
+                stateView.setMeetingStateText(item.meetingStatus);
                 //时间
-                holder.setText(R.id.item_meeting_start_time, TimeUtils.milliseconds2String(elements.getStartTime()));
-                holder.setText(R.id.item_meeting_end_time, TimeUtils.milliseconds2String(elements.getEndTime()));
+                holder.setText(R.id.item_meeting_start_time, TimeUtils.milliseconds2String(item.startTime));
+                holder.setText(R.id.item_meeting_end_time, TimeUtils.milliseconds2String(item.endTime));
                 //V图片
                 AppCompatImageView imageView = holder.getView(R.id.item_meeting_level_icon);
                 imageView.setVisibility(View.VISIBLE);
                 //智图片
                 AppCompatImageView imageView1 = holder.getView(R.id.item_meeting_level_icon1);
-                imageView1.setVisibility(elements.getFromPlat() == 1 ? View.VISIBLE : View.GONE);
-                holder.setText(R.id.item_meeting_room, elements.getMeetingAddress());
+                imageView1.setVisibility(item.fromPlat == 1 ? View.VISIBLE : View.GONE);
+                holder.setText(R.id.item_meeting_room, item.meetingAddress);
                 //关注按钮点击
                 final TextView follow = holder.getView(R.id.item_meeting_follow);
-                if (!getString(R.string.finished).equals(elements.getFollowStatus())) {
+                if (!getString(R.string.finished).equals(item.followStatus)) {
                     follow.setVisibility(View.VISIBLE);
-                    followOnClick(follow, elements.getFollowStatus());
+                    followOnClick(follow, item.followStatus);
                     follow.setOnClickListener((View v) -> {
-                        followUserMeeting(follow, elements);
+                        followUserMeeting(follow, item);
                     });
                 } else {
                     follow.setVisibility(View.GONE);
                 }
                 //待付款
                 TextView paymentState = holder.getView(R.id.item_meeting_payment_state);
-                paymentState.setVisibility(elements.getFromPlat() == 1 ? View.VISIBLE : View.GONE);
+                paymentState.setVisibility(item.fromPlat == 1 ? View.VISIBLE : View.GONE);
                 //ITEM点击
                 ConstraintLayout itemLayout = holder.getView(R.id.item_meeting_layout);
                 itemLayout.setOnClickListener((View v) -> {
                     Intent intent = new Intent(getActivity(), MeetingOverviewActivity.class);
-                    intent.putExtra(Constants.KEY_MEETING_ID, elements.getMeetingId());
+                    intent.putExtra(Constants.KEY_MEETING_ID, item.meetingId);
                     startActivity(intent);
                 });
             }
@@ -203,22 +198,26 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
         networkBroker.ask(allMeetingsRequest, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);
+                pullToRefreshLayout.setCanLoadMore(false);
                 return;
             }
             try {
                 AllMeetingsResponse response = (AllMeetingsResponse) res;
                 if (response.getCode() == 200) {
-                    AllMeetingsResponse.Item aItem = response.getData();
-                    if (aItem != null && aItem.getElements() != null && aItem.getElements().size() > 0) {
-                        listData.addAll(aItem.getElements());
+                    AllMeetingsResponse.Array array = response.data;
+                    if (array != null && array.elements != null && array.elements.size() > 0) {
+                        listData.addAll(array.elements);
                         commonAdapter.notifyDataSetChanged();
                     }
                     pullToRefreshLayout.finishLoadMore();
-                    if (!aItem.getLastPage()) {
+                    if (array.lastPage) {
                         pullToRefreshLayout.setCanLoadMore(false);
                     }
+                } else {
+                    pullToRefreshLayout.setCanLoadMore(false);
                 }
             } catch (Exception e) {
+                pullToRefreshLayout.setCanLoadMore(false);
                 e.printStackTrace();
             }
 
@@ -228,14 +227,14 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
     /**
      * 关注/取消关注会议
      */
-    private void followUserMeeting(TextView follow, AllMeetingsResponse.Item.ElementElements elements) {
+    private void followUserMeeting(TextView follow, AllMeetingsResponse.Array.Item onClickItem) {
         FollowUserMeetingRequest followUserMeetingRequest = new FollowUserMeetingRequest();
         LoginResponse.Item item = GlobaVariable.getInstance().item;
         if (item != null) {
             followUserMeetingRequest.setUserId(String.valueOf(item.getId()));
         }
-        followUserMeetingRequest.setMeetingId(String.valueOf(elements.getMeetingId()));
-        followUserMeetingRequest.setRequsetUrl(elements.getFollowStatus() == 0 ? HttpKey.FOLLOW_USER_MEETING : HttpKey.CANCEL_USER_MEETING);
+        followUserMeetingRequest.setMeetingId(String.valueOf(onClickItem.meetingId));
+        followUserMeetingRequest.setRequsetUrl(onClickItem.followStatus == 0 ? HttpKey.FOLLOW_USER_MEETING : HttpKey.CANCEL_USER_MEETING);
         networkBroker.ask(followUserMeetingRequest, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);
@@ -245,8 +244,19 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
                 FollowUserMeetingResponse response = (FollowUserMeetingResponse) res;
                 if (response.getCode() == 200) {
                     if (response.data) {
-                        elements.setFollowStatus(elements.getFollowStatus() == 1 ? 0 : 1);
-                        followOnClick(follow, elements.getFollowStatus());
+                        onClickItem.followStatus = (onClickItem.followStatus == 1 ? 0 : 1);
+                        followOnClick(follow, onClickItem.followStatus);
+                        if(onClickItem.followStatus == 1){
+                            showToast(getString(R.string.attention_prompt,getString(R.string.success)));
+                        }else{
+                            showToast(getString(R.string.attention_cancel_prompt,getString(R.string.success)));
+                        }
+                    }
+                }else{
+                    if(onClickItem.followStatus == 0){
+                        showToast(getString(R.string.attention_prompt,getString(R.string.failure)));
+                    }else{
+                        showToast(getString(R.string.attention_cancel_prompt,getString(R.string.failure)));
                     }
                 }
             } catch (Exception e) {

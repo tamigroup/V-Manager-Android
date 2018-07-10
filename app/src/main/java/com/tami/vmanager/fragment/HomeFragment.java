@@ -291,7 +291,9 @@ public class HomeFragment extends BaseFragment {
     private void getBannerData() {
         GetBannerDataRequest getBannerDataRequest = new GetBannerDataRequest();
         LoginResponse.Item item = GlobaVariable.getInstance().item;
-        getBannerDataRequest.setUserId(String.valueOf(item.getId()));
+        if (item != null) {
+            getBannerDataRequest.setUserId(String.valueOf(item.getId()));
+        }
         getBannerDataRequest.setType(getTypeId());
         networkBroker.ask(getBannerDataRequest, (ex1, res) -> {
             if (null != ex1) {

@@ -132,6 +132,7 @@ public class LoginActivity extends BaseActivity {
     private void getVerificationCode() {
         SendVerifyCodeRequest sendVerifyCodeRequest = new SendVerifyCodeRequest();
         sendVerifyCodeRequest.setMobile(logoin_phone.getText().toString());
+        sendVerifyCodeRequest.setRequestUrl(HttpKey.USER_SEND_VERIFY_CODE_LOGIN);
         networkBroker.ask(sendVerifyCodeRequest, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);

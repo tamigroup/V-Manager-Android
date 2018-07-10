@@ -17,82 +17,72 @@ public class SetUserNoticeConfigRequest extends MobileMessage implements Seriali
      */
     private static final long serialVersionUID = 1L;
 
-
-    private String groupChatNotice;
-    private String hostNotice;
-    private String meetingNotice;
-    private String satisfactionNotice;
-    private String systemNotice;
-    private String userId;
-
     public SetUserNoticeConfigRequest() {
         super();
     }
 
-    /**
-     * @return 群聊通知
-     */
-    public String getGroupChatNotice() {
+    private int groupChatNotice;
+    private int hostNotice;
+    private int meetingNotice;
+    private int satisfactionNotice;
+    private int systemNotice;
+    private int userId;
+    private int taskDistribution;
+
+    public int getGroupChatNotice() {
         return groupChatNotice;
     }
 
-    public void setGroupChatNotice(String groupChatNotice) {
+    public void setGroupChatNotice(int groupChatNotice) {
         this.groupChatNotice = groupChatNotice;
     }
 
-    /**
-     * @return 主办方消息
-     */
-    public String getHostNotice() {
+    public int getHostNotice() {
         return hostNotice;
     }
 
-    public void setHostNotice(String hostNotice) {
+    public void setHostNotice(int hostNotice) {
         this.hostNotice = hostNotice;
     }
 
-    /**
-     * @return 会务广播
-     */
-    public String getMeetingNotice() {
+    public int getMeetingNotice() {
         return meetingNotice;
     }
 
-    public void setMeetingNotice(String meetingNotice) {
+    public void setMeetingNotice(int meetingNotice) {
         this.meetingNotice = meetingNotice;
     }
 
-    /**
-     * @return 满意度通知
-     */
-    public String getSatisfactionNotice() {
+    public int getSatisfactionNotice() {
         return satisfactionNotice;
     }
 
-    public void setSatisfactionNotice(String satisfactionNotice) {
+    public void setSatisfactionNotice(int satisfactionNotice) {
         this.satisfactionNotice = satisfactionNotice;
     }
 
-    /**
-     * @return 系统消息
-     */
-    public String getSystemNotice() {
+    public int getSystemNotice() {
         return systemNotice;
     }
 
-    public void setSystemNotice(String systemNotice) {
+    public void setSystemNotice(int systemNotice) {
         this.systemNotice = systemNotice;
     }
 
-    /**
-     * @return 用户ID
-     */
-    public String getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public int getTaskDistribution() {
+        return taskDistribution;
+    }
+
+    public void setTaskDistribution(int taskDistribution) {
+        this.taskDistribution = taskDistribution;
     }
 
     @Override

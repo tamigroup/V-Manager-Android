@@ -15,21 +15,17 @@ public class GetMeetingItemsByMeetingIdRequest extends MobileMessage implements 
      */
     private static final long serialVersionUID = 1L;
 
-
-    private String meetingId;
-
     public GetMeetingItemsByMeetingIdRequest() {
         super();
     }
 
-    /**
-     * @return 会议ID
-     */
-    public String getMeetingId() {
+    private int meetingId;
+
+    public int getMeetingId() {
         return meetingId;
     }
 
-    public void setMeetingId(String meetingId) {
+    public void setMeetingId(int meetingId) {
         this.meetingId = meetingId;
     }
 

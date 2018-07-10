@@ -29,6 +29,7 @@ import com.tami.vmanager.utils.TimeUtils;
 import com.tami.vmanager.view.MeetingStateView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,8 +41,8 @@ public class WaitMeetingsFragment extends ViewPagerBaseFragment {
 
     private RecyclerView recyclerView;
     private PullToRefreshLayout pullToRefreshLayout;
-    private CommonAdapter<AllMeetingsResponse.Item.ElementElements> commonAdapter;
-    private List<AllMeetingsResponse.Item.ElementElements> listData;
+    private CommonAdapter<AllMeetingsResponse.Array.Item> commonAdapter;
+    private List<AllMeetingsResponse.Array.Item> listData;
     private int waitType;//标识点击哪个进入到的页面
     private NetworkBroker networkBroker;
     private int CurPage = 1;
@@ -73,9 +74,6 @@ public class WaitMeetingsFragment extends ViewPagerBaseFragment {
 
     @Override
     public void initData() {
-        networkBroker = new NetworkBroker(getActivity());
-        networkBroker.setCancelTag(getTAG());
-
         //创建一个线性的布局管理器并设置
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -83,30 +81,26 @@ public class WaitMeetingsFragment extends ViewPagerBaseFragment {
         recyclerView.addItemDecoration(new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL,
                 1, ContextCompat.getColor(getActivity(), R.color.percentage_10)));
         listData = new ArrayList<>();
-        commonAdapter = new CommonAdapter<AllMeetingsResponse.Item.ElementElements>(getActivity(), R.layout.item_today_meeting, listData) {
+        commonAdapter = new CommonAdapter<AllMeetingsResponse.Array.Item>(getActivity(), R.layout.item_today_meeting, listData) {
             @Override
-            protected void convert(ViewHolder holder, AllMeetingsResponse.Item.ElementElements elementElements, int position) {
-
-            }
-
-            @Override
-            public void convert(ViewHolder holder, AllMeetingsResponse.Item.ElementElements elements) {
+            protected void convert(ViewHolder holder, AllMeetingsResponse.Array.Item item, int position) {
                 //名称
                 TextView nameView = holder.getView(R.id.item_meeting_name);
-                setNameTextLayoutParams(nameView, elements.getMeetingName());
+                setNameTextLayoutParams(nameView, item.meetingName);
                 //会议状态
                 MeetingStateView stateView = holder.getView(R.id.item_meeting_state);
-                stateView.setMeetingStateText(elements.getMeetingStatus(), 20);
+                stateView.setMeetingStateText(item.meetingStatus, 20);
                 //时间
-                holder.setText(R.id.item_meeting_start_time, TimeUtils.milliseconds2String(elements.getStartTime()));
-                holder.setText(R.id.item_meeting_end_time, TimeUtils.milliseconds2String(elements.getEndTime()));
+                holder.setText(R.id.item_meeting_start_time, item.autoDayTime);
+//                holder.setText(R.id.item_meeting_start_time, TimeUtils.milliseconds2String(elements.getStartTime()));
+//                holder.setText(R.id.item_meeting_end_time, TimeUtils.milliseconds2String(elements.getEndTime()));
                 //V图片
                 AppCompatImageView imageView = holder.getView(R.id.item_meeting_level_icon);
                 imageView.setVisibility(View.VISIBLE);
                 //智图片
                 AppCompatImageView imageView1 = holder.getView(R.id.item_meeting_level_icon1);
-                imageView1.setVisibility(elements.getFromPlat() == 1 ? View.VISIBLE : View.GONE);
-                holder.setText(R.id.item_meeting_room, elements.getMeetingAddress());
+                imageView1.setVisibility(item.fromPlat == 1 ? View.VISIBLE : View.GONE);
+                holder.setText(R.id.item_meeting_room, item.meetingAddress);
                 //ITEM点击
                 ConstraintLayout itemLayout = holder.getView(R.id.item_meeting_layout);
                 itemLayout.setOnClickListener((View v) -> {
@@ -154,6 +148,8 @@ public class WaitMeetingsFragment extends ViewPagerBaseFragment {
         if (bundle != null) {
             waitType = bundle.getInt(Constants.WAIT_TYPE);
         }
+        networkBroker = new NetworkBroker(getActivity());
+        networkBroker.setCancelTag(getTAG());
         CurPage = 1;
         query();
     }
@@ -184,22 +180,26 @@ public class WaitMeetingsFragment extends ViewPagerBaseFragment {
         networkBroker.ask(allMeetingsRequest, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);
+                pullToRefreshLayout.finishLoadMore();
                 return;
             }
             try {
                 AllMeetingsResponse response = (AllMeetingsResponse) res;
                 if (response.getCode() == 200) {
-                    AllMeetingsResponse.Item aItem = response.getData();
-                    if (aItem != null && aItem.getElements() != null && aItem.getElements().size() > 0) {
-                        listData.addAll(aItem.getElements());
+                    AllMeetingsResponse.Array array = response.data;
+                    if (array != null && array.elements != null && array.elements.size() > 0) {
+                        listData.addAll(array.elements);
                         commonAdapter.notifyDataSetChanged();
                     }
                     pullToRefreshLayout.finishLoadMore();
-                    if (!aItem.getLastPage()) {
+                    if (array.lastPage) {
                         pullToRefreshLayout.setCanLoadMore(false);
                     }
+                } else {
+                    pullToRefreshLayout.finishLoadMore();
                 }
             } catch (Exception e) {
+                pullToRefreshLayout.finishLoadMore();
                 e.printStackTrace();
             }
 

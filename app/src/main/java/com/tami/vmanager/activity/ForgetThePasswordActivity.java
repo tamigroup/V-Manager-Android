@@ -14,6 +14,7 @@ import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.entity.ResetPwdRequest;
 import com.tami.vmanager.entity.SendVerifyCodeRequest;
 import com.tami.vmanager.entity.SendVerifyCodeResponse;
+import com.tami.vmanager.http.HttpKey;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Logger;
@@ -128,39 +129,40 @@ public class ForgetThePasswordActivity extends BaseActivity {
      * 发送验证码点击
      */
     private void sentVerificationCode() {
-//        if (TextUtils.isEmpty(value.getText())) {
-//            showToast("请输入手机号");
-//            return;
-//        }
+        if (TextUtils.isEmpty(value.getText())) {
+            showToast("请输入手机号");
+            return;
+        }
         mobile = value.getText().toString();
-//        SendVerifyCodeRequest sendVerifyCodeRequest = new SendVerifyCodeRequest();
-//        sendVerifyCodeRequest.setMobile(value.getText().toString());
-//        networkBroker.ask(sendVerifyCodeRequest, (ex1, res) -> {
-//            if (null != ex1) {
-//                Logger.d(ex1.getMessage() + "-" + ex1);
-//                return;
-//            }
-//            try {
-//                SendVerifyCodeResponse response = (SendVerifyCodeResponse) res;
-//                if (response.getCode() == 200) {
-        title.setText(getString(R.string.input_authentication_code));
-        prompt.setVisibility(View.INVISIBLE);
-        name.setText(getString(R.string.authentication_code));
-        value.setInputType(InputType.TYPE_CLASS_NUMBER);
-        value.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});
-        value.setText(null);
-        value.setFocusable(true);
-        value.setFocusableInTouchMode(true);
-        value.requestFocus();
-        codeView.setVisibility(View.VISIBLE);
-        verificationCode.start();
-        confirmBtn.setText(getString(R.string.confirm));
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//
-//        });
+        SendVerifyCodeRequest sendVerifyCodeRequest = new SendVerifyCodeRequest();
+        sendVerifyCodeRequest.setMobile(value.getText().toString());
+        sendVerifyCodeRequest.setRequestUrl(HttpKey.USER_SEND_VERIFY_CODE);
+        networkBroker.ask(sendVerifyCodeRequest, (ex1, res) -> {
+            if (null != ex1) {
+                Logger.d(ex1.getMessage() + "-" + ex1);
+                return;
+            }
+            try {
+                SendVerifyCodeResponse response = (SendVerifyCodeResponse) res;
+                if (response.getCode() == 200) {
+                    title.setText(getString(R.string.input_authentication_code));
+                    prompt.setVisibility(View.INVISIBLE);
+                    name.setText(getString(R.string.authentication_code));
+                    value.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    value.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});
+                    value.setText(null);
+                    value.setFocusable(true);
+                    value.setFocusableInTouchMode(true);
+                    value.requestFocus();
+                    codeView.setVisibility(View.VISIBLE);
+                    verificationCode.start();
+                    confirmBtn.setText(getString(R.string.confirm));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        });
     }
 
     /**

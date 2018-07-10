@@ -13,6 +13,8 @@ public class HttpKey {
     // 绑定用户RegistrationId
     public static final String USER_REGISTRATION_ID = "user/setUserRegistrationId";
     //请求发送验证码
+    public static final String USER_SEND_VERIFY_CODE_LOGIN = "sms/sendVerifyCodeLogin";
+    //找回密码的验证码
     public static final String USER_SEND_VERIFY_CODE = "sms/sendVerifyCode";
     //注销登录
     public static final String USER_LOGIN_OUT = "user/loginOut";
@@ -87,6 +89,10 @@ public class HttpKey {
     public static final String CREATE_NOTICE="notice/createNotice";
     //获取会议群组中的用户成员
     public static final String MEETING_USER_GROUP_PAGE="group/meetingUserGroupPage";
+    // 查询我创建的会议列表
+    public static final String MY_MEETINGS ="meeting/myMeetings";
+    // 获取会议流程单
+    public static final String GET_MEETING_ITEM_FLOW ="meeting/getMeetingItemFlow";
 
     //---------------------------------------------------------------------------
 

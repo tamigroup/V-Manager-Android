@@ -321,7 +321,9 @@ public class MeetingOverviewActivity extends BaseActivity {
             startActivity(new Intent(getApplicationContext(), ConferenceServiceContentActivity.class));
         } else {
             //进入
-            startActivity(new Intent(getApplicationContext(), EnterMeetingActivity.class));
+            Intent intent = new Intent(getApplicationContext(), EnterMeetingActivity.class);
+            intent.putExtra(Constants.KEY_MEETING_ID,meetingId);
+            startActivity(intent);
         }
     }
 
@@ -356,8 +358,8 @@ public class MeetingOverviewActivity extends BaseActivity {
      */
     private void getMeetingItemsByMeetingId() {
         GetMeetingItemsByMeetingIdRequest gmibmir = new GetMeetingItemsByMeetingIdRequest();
-//        gmibmir.setMeetingId(String.valueOf(meetingId));
-        gmibmir.setMeetingId(String.valueOf(9));
+        gmibmir.setMeetingId(meetingId);
+//        gmibmir.setMeetingId(1);
         networkBroker.ask(gmibmir, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);

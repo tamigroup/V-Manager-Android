@@ -13,7 +13,14 @@ import android.widget.TextView;
 import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.TimeLineHorizontalAdapter;
 import com.tami.vmanager.base.BaseActivity;
+import com.tami.vmanager.entity.GetMeetingItemFlowRequest;
+import com.tami.vmanager.entity.GetMeetingItemFlowResponse;
+import com.tami.vmanager.entity.GetMeetingRequest;
+import com.tami.vmanager.entity.GetMeetingResponse;
 import com.tami.vmanager.entity.TimeLine;
+import com.tami.vmanager.http.NetworkBroker;
+import com.tami.vmanager.utils.Constants;
+import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.Utils;
 
 import java.util.ArrayList;
@@ -41,6 +48,11 @@ public class EnterMeetingActivity extends BaseActivity {
     private ConstraintLayout sponsorMember; //主办方成员
     private TextView meetingDetails;//会议详情
     private TextView vipDetails;//VIP详情
+
+    private int meetingId;
+    private NetworkBroker networkBroker;
+    private List<GetMeetingItemFlowResponse.Array.Item> listData;
+    private TimeLineHorizontalAdapter adapter;
 
     @Override
     public boolean isTitle() {
@@ -89,11 +101,20 @@ public class EnterMeetingActivity extends BaseActivity {
 
     @Override
     public void initData() {
+        Intent intent = getIntent();
+        if (intent != null) {
+            meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 0);
+        }
+
+        networkBroker = new NetworkBroker(this);
+        networkBroker.setCancelTag(getTAG());
+
         setTitleName(R.string.get_into_meeting);
 
+        listData = new ArrayList<>();
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        TimeLineHorizontalAdapter adapter = new TimeLineHorizontalAdapter(getData());
+        adapter = new TimeLineHorizontalAdapter(listData);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
@@ -102,7 +123,7 @@ public class EnterMeetingActivity extends BaseActivity {
 
     @Override
     public void requestNetwork() {
-
+        getMeetingItemFlow();
     }
 
     @Override
@@ -116,6 +137,7 @@ public class EnterMeetingActivity extends BaseActivity {
             recyclerView.removeAllViews();
             recyclerView = null;
         }
+        networkBroker.cancelAllRequests();
     }
 
 
@@ -177,17 +199,6 @@ public class EnterMeetingActivity extends BaseActivity {
         tv.setText(Utils.getSplicing(getApplicationContext(), resStr, 0, num.length(), 16, colorId));
     }
 
-    private List<TimeLine> getData() {
-        List<TimeLine> models = new ArrayList<TimeLine>();
-        TimeLine timeLine = null;
-        for (int i = 0; i < 8; i++) {
-            timeLine = new TimeLine();
-            timeLine.setConetnt("上午会场\n就绪");
-            models.add(timeLine);
-        }
-        return models;
-    }
-
     /**
      * 查看EO单
      */
@@ -199,7 +210,9 @@ public class EnterMeetingActivity extends BaseActivity {
      * 会议服务群
      */
     private void serviceGroup() {
-        startActivity(new Intent(getApplicationContext(), ConferenceServiceGroupActivity.class));
+        Intent intent = new Intent(getApplicationContext(), ConferenceServiceGroupActivity.class);
+        intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
+        startActivity(intent);
     }
 
     /**
@@ -220,7 +233,34 @@ public class EnterMeetingActivity extends BaseActivity {
      * VIP详情
      */
     private void vipDetails() {
-        startActivity(new Intent(getApplicationContext(),VIPDetailsActivity.class));
+        startActivity(new Intent(getApplicationContext(), VIPDetailsActivity.class));
     }
 
+    /**
+     * 获取会议流程单*
+     */
+    private void getMeetingItemFlow() {
+        GetMeetingItemFlowRequest gmifr = new GetMeetingItemFlowRequest();
+//        gmifr.setMeetingId(meetingId);
+        gmifr.setMeetingId(1);
+        networkBroker.ask(gmifr, (ex1, res) -> {
+            if (null != ex1) {
+                Logger.d(ex1.getMessage() + "-" + ex1);
+                return;
+            }
+            try {
+                GetMeetingItemFlowResponse response = (GetMeetingItemFlowResponse) res;
+                if (response.getCode() == 200) {
+                    GetMeetingItemFlowResponse.Array array = response.data;
+                    if (array != null && array.dataList != null && array.dataList.size() > 0) {
+                        listData.addAll(array.dataList);
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        });
+    }
 }

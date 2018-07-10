@@ -207,10 +207,10 @@ public class AccountSettingsActivity extends BaseActivity {
                         taskAssignment.setChecked(false);
                     } else {
                         GetUserNoticeConfigResponse.Item noticeItem = response.data;
-//                        changeDemand.setChecked(noticeItem. == 1 ? true : false);
+                        changeDemand.setChecked(noticeItem.hostNotice == 1 ? true : false);
                         groupMessage.setChecked(noticeItem.groupchatNotice == 1 ? true : false);
                         satisfaction.setChecked(noticeItem.satisfactionNotice == 1 ? true : false);
-//                        taskAssignment.setChecked(noticeItem. == 1 ? true : false);
+                        taskAssignment.setChecked(noticeItem.taskDistribution == 1 ? true : false);
                     }
                 }
             } catch (Exception e) {
@@ -226,13 +226,13 @@ public class AccountSettingsActivity extends BaseActivity {
         SetUserNoticeConfigRequest setUserNoticeConfigRequest = new SetUserNoticeConfigRequest();
         LoginResponse.Item item = GlobaVariable.getInstance().item;
         if (item != null) {
-            setUserNoticeConfigRequest.setUserId(String.valueOf(item.getId()));
+            setUserNoticeConfigRequest.setUserId(item.getId());
         }
-//        setUserNoticeConfigRequest.setSystemNotice(String.valueOf(0));
-//        setUserNoticeConfigRequest.setHostNotice(String.valueOf(changeDemand.isChecked() ? 1 : 0));
-//        setUserNoticeConfigRequest.setMeetingNotice(String.valueOf(0));
-//        setUserNoticeConfigRequest.setSatisfactionNotice(String.valueOf(groupMessage.isChecked() ? 1 : 0));
-//        setUserNoticeConfigRequest.setsatisfactionNotice(String.valueOf(satisfaction.isChecked() ? 1 : 0));
+//        setUserNoticeConfigRequest.setSystemNotice(0);
+        setUserNoticeConfigRequest.setHostNotice(changeDemand.isChecked() ? 1 : 0);
+        setUserNoticeConfigRequest.setGroupChatNotice(groupMessage.isChecked() ? 1 : 0);
+        setUserNoticeConfigRequest.setSatisfactionNotice(satisfaction.isChecked() ? 1 : 0);
+        setUserNoticeConfigRequest.setTaskDistribution(taskAssignment.isChecked() ? 1 : 0);
         networkBroker.ask(setUserNoticeConfigRequest, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);

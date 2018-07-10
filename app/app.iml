@@ -130,6 +130,7 @@
     <orderEntry type="library" name="com.github.bumptech.glide:gifdecoder:4.0.0-RC1@jar" level="project" />
     <orderEntry type="library" name="com.zhy:okhttputils-2.6.2" level="project" />
     <orderEntry type="library" name="com.zhy:base-rvadapter-3.0.3" level="project" />
+    <orderEntry type="library" name="com.orhanobut:dialogplus-1.11" level="project" />
     <orderEntry type="library" name="android.arch.lifecycle:viewmodel-1.1.0" level="project" />
     <orderEntry type="library" name="com.tencent.bugly:crashreport-2.6.6" level="project" />
     <orderEntry type="library" scope="TEST" name="com.android.support:multidex-instrumentation-1.0.2" level="project" />

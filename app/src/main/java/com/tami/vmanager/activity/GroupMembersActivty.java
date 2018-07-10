@@ -27,7 +27,6 @@ import java.util.List;
  */
 public class GroupMembersActivty extends BaseActivity {
 
-    private int meetingId;
     private TextView notice;
     private RecyclerView recyclerView;
     private ConstraintLayout constraintLayout;
@@ -36,6 +35,7 @@ public class GroupMembersActivty extends BaseActivity {
     private List<MeetingUserGroupPageResponse.Array.Item> data;
     private CommonAdapter<MeetingUserGroupPageResponse.Array.Item> commonAdapter;
     private NetworkBroker networkBroker;
+    private int meetingId;
     private int total = 0;//传给查看全部的条数
 
     @Override
@@ -162,7 +162,7 @@ public class GroupMembersActivty extends BaseActivity {
                             }
                             data.addAll(item);
                             commonAdapter.notifyDataSetChanged();
-                            if (array.lastPage) {
+                            if (!array.lastPage) {
                                 load_more.setVisibility(View.VISIBLE);
                                 total = array.totalElements;
                             } else {

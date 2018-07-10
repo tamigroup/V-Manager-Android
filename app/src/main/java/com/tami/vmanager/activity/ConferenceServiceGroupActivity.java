@@ -13,6 +13,7 @@ import com.tami.vmanager.fragment.ConferenceInformationFragment;
 import com.tami.vmanager.fragment.FeedbackFragment;
 import com.tami.vmanager.fragment.GroupChatFragment;
 import com.tami.vmanager.fragment.NoticeFragment;
+import com.tami.vmanager.utils.Constants;
 
 /**
  * 会议服务群
@@ -26,6 +27,7 @@ public class ConferenceServiceGroupActivity extends BaseActivity {
     private Fragment[] arrayFragment;
     private TabLayout.TabLayoutOnPageChangeListener tabLayoutOnPageChangeListener;
     private TabLayout.ViewPagerOnTabSelectedListener viewPagerOnTabSelectedListener;
+    private int meetingId;
 
     @Override
     public boolean isTitle() {
@@ -50,6 +52,10 @@ public class ConferenceServiceGroupActivity extends BaseActivity {
 
     @Override
     public void initData() {
+        Intent intent = getIntent();
+        if (intent != null) {
+            meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 0);
+        }
         setTitleName(R.string.conference_service_group);
         //设置右边功能按钮图片
         setTitleRightBtn(R.mipmap.icon_people);
@@ -95,7 +101,9 @@ public class ConferenceServiceGroupActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.titleRightBtn:
-                startActivity(new Intent(getApplicationContext(), GroupMembersActivty.class));
+                Intent intent = new Intent(getApplicationContext(), GroupMembersActivty.class);
+                intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
+                startActivity(intent);
                 break;
         }
     }
