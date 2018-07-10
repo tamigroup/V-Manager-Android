@@ -47,9 +47,6 @@ public class ChangeDemandActivity extends BaseActivity {
     private int CurPage = 1;
     List<ChangeDemandResponseBean.DataBean.ElementsBean> listData;
     private CommonAdapter<ChangeDemandResponseBean.DataBean.ElementsBean> commonAdapter;
-    private TextView have_reply;
-    private TextView item_reply_content;
-    private TextView item_reply_name;
     Handler handler = new Handler();
 
     @Override
@@ -104,9 +101,9 @@ public class ChangeDemandActivity extends BaseActivity {
                     Picasso.get().load(item.getRequestIconUrl()).into(in_avatar_image);
                 }
 
-                have_reply = holder.getView(R.id.have_reply);
-                item_reply_content = holder.getView(R.id.item_reply_content);
-                item_reply_name = holder.getView(R.id.item_reply_name);
+                TextView have_reply = holder.getView(R.id.have_reply);
+                TextView item_reply_content = holder.getView(R.id.item_reply_content);
+                TextView item_reply_name = holder.getView(R.id.item_reply_name);
                 holder.setText(R.id.item_content_tv, item.getRequestContent());
                 holder.setText(R.id.in_name, item.getRequestUserName());
                 holder.setText(R.id.item_time, item.getRequestTime());
