@@ -212,12 +212,12 @@ public class HomeFragment extends BaseFragment {
      * 眼睛
      */
     private void homeEye(View v, boolean flag) {
-//        LoginResponse.Item item = GlobaVariable.getInstance().item;
-//        if (item.getRoleId()) {
-//            eye.setVisibility(View.GONE);
-//            contract_money.setVisibility(View.GONE);
-//            receivables.setVisibility(View.GONE);
-//        }
+        //        LoginResponse.Item item = GlobaVariable.getInstance().item;
+        //        if (item.getRoleId()) {
+        //            eye.setVisibility(View.GONE);
+        //            contract_money.setVisibility(View.GONE);
+        //            receivables.setVisibility(View.GONE);
+        //        }
         String num = String.valueOf(0);
         String num1 = String.valueOf(0);
         AppCompatImageView imageView = (AppCompatImageView) v;

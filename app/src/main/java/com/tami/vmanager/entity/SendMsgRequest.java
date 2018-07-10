@@ -1,5 +1,7 @@
 package com.tami.vmanager.entity;
 
+import com.tami.vmanager.http.HttpKey;
+
 import java.io.Serializable;
 
 
@@ -9,7 +11,7 @@ import java.io.Serializable;
  * @author 代码生成器v1.0
  * 
  */
-public class SendMsgRequest implements Serializable{
+public class SendMsgRequest extends MobileMessage implements Serializable{
 
 	/**
 	 * 
@@ -95,4 +97,13 @@ public class SendMsgRequest implements Serializable{
 	}
 
 
+	@Override
+	public Class getResponseClass() {
+		return SendMsgResponse.class;
+	}
+
+	@Override
+	public String getRequestUrl() {
+		return HttpKey.SEND_CHAT_MSG;
+	}
 }

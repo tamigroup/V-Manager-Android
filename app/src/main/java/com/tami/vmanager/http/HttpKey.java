@@ -89,6 +89,10 @@ public class HttpKey {
     public static final String CREATE_NOTICE="notice/createNotice";
     //获取会议群组中的用户成员
     public static final String MEETING_USER_GROUP_PAGE="group/meetingUserGroupPage";
+    //群消息列表
+    public static final String GET_MEETING_GROUP_CHAT = "chat/meetingChatPage";
+    //发送群消息
+    public static final String SEND_CHAT_MSG = "chat/sendMsg";
     // 查询我创建的会议列表
     public static final String MY_MEETINGS ="meeting/myMeetings";
     // 获取会议流程单

@@ -1,9 +1,9 @@
 package com.tami.vmanager.entity;
 
-import java.io.Serializable;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import java.io.Serializable;
 
 
 /**
@@ -19,13 +19,23 @@ public class SendMsgResponse extends MobileMessage implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	/**
+	 * data : true
+	 */
 
+	private boolean data;
 
 
 	public SendMsgResponse() {
 		super();
 	}
 
-	
 
+	public boolean isData() {
+		return data;
+	}
+
+	public void setData(boolean data) {
+		this.data = data;
+	}
 }

@@ -66,6 +66,8 @@ public abstract class BaseActivity extends FragmentActivity implements IBaseActi
         initListener();
         initData();
         ActivityManager.getInstance().addActivity(this);
+        //注册JIM sdk的event用于接收各种event事件 需要重写onEvent
+//        JMessageClient.registerEventReceiver(this);
     }
 
     @Override
@@ -86,6 +88,7 @@ public abstract class BaseActivity extends FragmentActivity implements IBaseActi
 
     @Override
     protected void onDestroy() {
+//        JMessageClient.unRegisterEventReceiver(this);
         removeListener();
         emptyObject();
         layoutInflater = null;

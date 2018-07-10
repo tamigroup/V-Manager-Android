@@ -5,20 +5,22 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.tami.vmanager.R;
+import com.tami.vmanager.adapter.MsgComingItemDelagate;
+import com.tami.vmanager.adapter.MsgSendItemDelagate;
 import com.tami.vmanager.base.ViewPagerBaseFragment;
-import com.tami.vmanager.entity.NoticeEntity;
-import com.tami.vmanager.view.CircleImageView;
-import com.zhy.adapter.recyclerview.CommonAdapter;
-import com.zhy.adapter.recyclerview.base.ViewHolder;
+import com.tami.vmanager.entity.MeetingChatPageRequest;
+import com.tami.vmanager.entity.MeetingChatPageResponse;
+import com.tami.vmanager.http.NetworkBroker;
+import com.tami.vmanager.utils.Logger;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 群聊
+ * 群聊 群消息
  * Created by why on 2018/6/16.
  */
 public class GroupChatFragment extends ViewPagerBaseFragment {
@@ -26,6 +28,10 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
     private RecyclerView recyclerView;//聊天记录
     private EditText sendTxt;//发送文本
     private Button sendBtn;//发送按钮
+    private int CurPage = 1;
+    private NetworkBroker networkBroker;
+    private MultiItemTypeAdapter adapter;
+    private List<MeetingChatPageResponse.DataBean.ElementsBean> listData;
 
     @Override
     public int getContentViewId() {
@@ -34,9 +40,12 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
 
     @Override
     public void initView() {
+//        JMessageClient.registerEventReceiver(getContext()); 需要重写OnEvent
         recyclerView = findViewById(R.id.fgc_recycler_view);
         sendTxt = findViewById(R.id.fgc_send_txt);
         sendBtn = findViewById(R.id.fgc_send_btn);
+
+        networkBroker = new NetworkBroker(getContext());
     }
 
     @Override
@@ -46,32 +55,46 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
 
     @Override
     public void initData() {
-//创建一个线性的布局管理器并设置
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(new CommonAdapter<NoticeEntity>(getActivity(), R.layout.item_group_chat, getData()) {
-            @Override
-            protected void convert(ViewHolder holder, NoticeEntity noticeEntity, int position) {
-
-            }
-
-            @Override
-            public void convert(ViewHolder holder, NoticeEntity noticeEntity) {
-                //头像
-                CircleImageView circleImageView = holder.getView(R.id.igc_avatar_image);
-                //发送者职位和姓名
-                TextView name = holder.getView(R.id.igc_position_name);
-                name.setText(noticeEntity.getName());
-                //发送内容
-                TextView content = holder.getView(R.id.igc_left_content);
-                content.setText(noticeEntity.getContent());
-            }
-        });
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        listData = new ArrayList<>();
+        adapter = new MultiItemTypeAdapter(getContext(), listData);
+        adapter.addItemViewDelegate(new MsgSendItemDelagate());
+        adapter.addItemViewDelegate(new MsgComingItemDelagate());
+        adapter.notifyDataSetChanged();
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
     public void requestNetwork() {
+        MeetingChatPageRequest meetingChatPageRequest = new MeetingChatPageRequest();
+        meetingChatPageRequest.setMeetingId(1);
+        meetingChatPageRequest.setType(1);
+        meetingChatPageRequest.setCurPage(CurPage++);
+        meetingChatPageRequest.setPageSize(10);
+        networkBroker.ask(meetingChatPageRequest, (ex1, res) -> {
+            if (null != ex1) {
+                Logger.d(ex1.getMessage() + "-" + ex1);
+                return;
+            }
+            try {
+                MeetingChatPageResponse response = (MeetingChatPageResponse) res;
+                if (response.getCode() == 200) {
+                    MeetingChatPageResponse.DataBean responseData = response.getData();
+                    if (responseData != null && responseData.getElements() != null && responseData.getElements().size() > 0) {
+                        listData.addAll(responseData.getElements());
+                        adapter.notifyDataSetChanged();
+                    }
+                    //                    pullToRefreshLayout.finishLoadMore();
+                    //                    if (!aItem.getLastPage()) {
+                    //                        pullToRefreshLayout.setCanLoadMore(false);
+                    //                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+        });
 
     }
 
@@ -96,16 +119,9 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
         }
     }
 
-    private List<NoticeEntity> getData() {
-        List<NoticeEntity> data = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            NoticeEntity noticeEntity = new NoticeEntity();
-            noticeEntity.setId(i);
-            noticeEntity.setName("销售-张三");
-            noticeEntity.setContent("AA聚餐吃了近千元，损友相继溜走，最后留下的他这样逃单……看了好疼！");
-//            noticeEntity.setTime("6月19日 15:00");
-            data.add(noticeEntity);
-        }
-        return data;
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+//        JMessageClient.unRegisterEventReceiver(getContext());
     }
 }

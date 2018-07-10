@@ -1,5 +1,7 @@
 package com.tami.vmanager.entity;
 
+import com.tami.vmanager.http.HttpKey;
+
 import java.io.Serializable;
 
 
@@ -9,7 +11,7 @@ import java.io.Serializable;
  * @author 代码生成器v1.0
  * 
  */
-public class MeetingChatPageRequest implements Serializable{
+public class MeetingChatPageRequest extends MobileMessage implements Serializable{
 
 	/**
 	 * 
@@ -17,10 +19,10 @@ public class MeetingChatPageRequest implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 
-	private String curPage;
-	private String meetingId;
-	private String pageSize;
-	private String type;
+	private int curPage;
+	private int meetingId;
+	private int pageSize;
+	private int type;
 
 	public MeetingChatPageRequest() {
 		super();
@@ -29,46 +31,54 @@ public class MeetingChatPageRequest implements Serializable{
 	/**
 	 * @return 当前页
 	 */
-	public String getCurPage() {
+	public int getCurPage() {
 		return curPage;
 	}
 
-	public void setCurPage(String curPage) {
+	public void setCurPage(int curPage) {
 		this.curPage = curPage;
 	}
 
 	/**
 	 * @return 会议ID
 	 */
-	public String getMeetingId() {
+	public int getMeetingId() {
 		return meetingId;
 	}
 
-	public void setMeetingId(String meetingId) {
+	public void setMeetingId(int meetingId) {
 		this.meetingId = meetingId;
 	}
 
 	/**
 	 * @return 页大小
 	 */
-	public String getPageSize() {
+	public int getPageSize() {
 		return pageSize;
 	}
 
-	public void setPageSize(String pageSize) {
+	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
 	}
 
 	/**
 	 * @return 类别  1-v管家  2-v智会 3-VV群
 	 */
-	public String getType() {
+	public int getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(int type) {
 		this.type = type;
 	}
 
+	@Override
+	public Class getResponseClass() {
+		return MeetingChatPageResponse.class;
+	}
 
+	@Override
+	public String getRequestUrl() {
+		return HttpKey.GET_MEETING_GROUP_CHAT;
+	}
 }

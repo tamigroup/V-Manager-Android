@@ -1,7 +1,6 @@
 package com.tami.vmanager.activity;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
@@ -24,12 +23,7 @@ import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdRequest;
 import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdResponse;
 import com.tami.vmanager.entity.GetMeetingRequest;
 import com.tami.vmanager.entity.GetMeetingResponse;
-import com.tami.vmanager.entity.LoginResponse;
-import com.tami.vmanager.entity.SendVerifyCodeRequest;
-import com.tami.vmanager.entity.SendVerifyCodeResponse;
-import com.tami.vmanager.entity.TimeLine;
 import com.tami.vmanager.http.NetworkBroker;
-import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.Utils;
@@ -362,7 +356,7 @@ public class MeetingOverviewActivity extends BaseActivity {
     private void getMeetingItemsByMeetingId() {
         GetMeetingItemsByMeetingIdRequest gmibmir = new GetMeetingItemsByMeetingIdRequest();
         gmibmir.setMeetingId(meetingId);
-//        gmibmir.setMeetingId(1);
+        gmibmir.setMeetingId(1);
         networkBroker.ask(gmibmir, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);

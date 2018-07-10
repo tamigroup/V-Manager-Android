@@ -15,6 +15,8 @@ import com.tami.vmanager.fragment.GroupChatFragment;
 import com.tami.vmanager.fragment.NoticeFragment;
 import com.tami.vmanager.utils.Constants;
 
+import cn.jiguang.api.JCoreInterface;
+
 /**
  * 会议服务群
  * Created by why on 2018/6/16.
@@ -106,5 +108,17 @@ public class ConferenceServiceGroupActivity extends BaseActivity {
                 startActivity(intent);
                 break;
         }
+    }
+
+    @Override
+    protected void onPause() {
+        JCoreInterface.onPause(this);
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        JCoreInterface.onResume(this);
+        super.onResume();
     }
 }
