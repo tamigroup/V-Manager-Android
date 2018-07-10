@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
@@ -17,6 +18,9 @@ import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.VerificationCode;
+
+import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.api.BasicCallback;
 
 /**
  * 登陆
@@ -84,7 +88,7 @@ public class LoginActivity extends BaseActivity {
         networkBroker = new NetworkBroker(this);
         networkBroker.setCancelTag(getTAG());
         logoin_phone.setText("15901125418");
-//        logoin_phone.setText("13800138000");
+        //        logoin_phone.setText("13800138000");
         login_password.setText("111111");
     }
 
@@ -196,7 +200,7 @@ public class LoginActivity extends BaseActivity {
             loginRequest.setRequestUrl(HttpKey.USER_LOGIN_SMS);
             loginRequest.setSmsCode(login_password.getText().toString());
         }
-//        loginRequest.setFlag(String.valueOf(2));
+        //        loginRequest.setFlag(String.valueOf(2));
         networkBroker.ask(loginRequest, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);
@@ -206,10 +210,33 @@ public class LoginActivity extends BaseActivity {
                 LoginResponse response = (LoginResponse) res;
                 if (response.getCode() == 200) {
                     GlobaVariable.getInstance().item = response.getData();
+                    Login_JIM(response.getData().getMobile(), response.getData().getPassword());
                     startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+            }
+        });
+    }
+
+    /**
+     * 极光IM登录
+     *
+     * @param username 用户名
+     * @param password 密码
+     */
+    private void Login_JIM(String username, String password) {
+        Logger.e("username=" + username + " password=" + password);
+        JMessageClient.login(username, "111111", new BasicCallback() {
+            @Override
+            public void gotResult(int responseCode, String LoginDesc) {
+                if (responseCode == 0) {
+                    Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "登录失败" + LoginDesc, Toast.LENGTH_SHORT).show();
+                    Logger.e("responseCode=" + responseCode + " LoginDesc=" + LoginDesc);
+                }
             }
         });
     }

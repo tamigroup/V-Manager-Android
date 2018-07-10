@@ -19,6 +19,12 @@ android {
         ndk {
             abiFilters 'armeabi','armeabi-v7a','arm64-v8a' //'x86','x86_64'
         }
+
+        manifestPlaceholders = [
+                JPUSH_PKGNAME : applicationId,
+                JPUSH_APPKEY : "3da91343a0089af98125d6d4",
+                JPUSH_CHANNEL : "developer-default",
+        ]
     }
     buildTypes {
         debug {
@@ -84,6 +90,10 @@ dependencies {
     api 'com.github.qdxxxx:StickyHeaderDecoration:1.0.1'
     //dialog
     api 'com.orhanobut:dialogplus:1.11@aar'
+    //极光IM
+    api 'cn.jiguang.sdk:jmessage:2.6.0'
+    api 'cn.jiguang.sdk:jcore:1.2.0'
+    api 'cn.jiguang.sdk:jpush:3.1.1'
 }
 
 def buildTime() {

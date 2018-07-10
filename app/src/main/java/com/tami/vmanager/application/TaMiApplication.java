@@ -13,6 +13,8 @@ import com.zhy.http.okhttp.log.LoggerInterceptor;
 
 import java.util.concurrent.TimeUnit;
 
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.im.android.api.JMessageClient;
 import okhttp3.OkHttpClient;
 
 /**
@@ -35,6 +37,17 @@ public class TaMiApplication extends Application {
     private void init() {
         initOkHttp();
         initBugly();
+
+        initJIM();
+    }
+
+    private void initJIM() {
+        //初始化IM
+        JMessageClient.setDebugMode(BuildConfig.DEBUG);
+        JMessageClient.init(getApplicationContext(), true);
+        //初始化推送
+        JPushInterface.setDebugMode(BuildConfig.DEBUG); 	// 设置开启日志,发布时请关闭日志
+        JPushInterface.init(this);     		// 初始化 JPush
     }
 
     private void initBugly() {
