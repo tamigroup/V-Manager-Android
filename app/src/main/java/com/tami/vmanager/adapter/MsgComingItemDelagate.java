@@ -6,6 +6,7 @@ import com.squareup.picasso.Picasso;
 import com.tami.vmanager.R;
 import com.tami.vmanager.entity.MeetingChatPageResponse;
 import com.tami.vmanager.manager.GlobaVariable;
+import com.tami.vmanager.utils.SPUtils;
 import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -29,6 +30,7 @@ public class MsgComingItemDelagate implements ItemViewDelegate<MeetingChatPageRe
     public void convert(ViewHolder holder, MeetingChatPageResponse.DataBean.ElementsBean list, int position) {
         ImageView igc_avatar_image = holder.getView(R.id.igc_avatar_image);
         Picasso.get().load(list.getUserIcon()).into(igc_avatar_image);
+        SPUtils.put(holder.itemView.getContext(),"username",list.getUserName());
         holder.setText(R.id.igc_position_name, list.getUserName());
         holder.setText(R.id.igc_left_content, list.getContent());
     }

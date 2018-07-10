@@ -169,10 +169,10 @@ public class MeetingChatPageResponse extends MobileMessage implements Serializab
 			private String content;
 			private long createOn;
 			private int id;
-			private int meetingId;
+			private String meetingId;
 			private String sendDate;
 			private int status;
-			private int type;
+			private String type;
 			private long updateOn;
 			private String userIcon;
 			private int userId;
@@ -202,11 +202,11 @@ public class MeetingChatPageResponse extends MobileMessage implements Serializab
 				this.id = id;
 			}
 
-			public int getMeetingId() {
+			public String getMeetingId() {
 				return meetingId;
 			}
 
-			public void setMeetingId(int meetingId) {
+			public void setMeetingId(String meetingId) {
 				this.meetingId = meetingId;
 			}
 
@@ -226,11 +226,11 @@ public class MeetingChatPageResponse extends MobileMessage implements Serializab
 				this.status = status;
 			}
 
-			public int getType() {
+			public String getType() {
 				return type;
 			}
 
-			public void setType(int type) {
+			public void setType(String type) {
 				this.type = type;
 			}
 

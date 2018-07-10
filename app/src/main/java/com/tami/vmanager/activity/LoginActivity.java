@@ -232,7 +232,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void gotResult(int responseCode, String LoginDesc) {
                 if (responseCode == 0) {
-                    Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "登录失败" + LoginDesc, Toast.LENGTH_SHORT).show();
                     Logger.e("responseCode=" + responseCode + " LoginDesc=" + LoginDesc);

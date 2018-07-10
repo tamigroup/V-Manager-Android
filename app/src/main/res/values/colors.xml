@@ -13,7 +13,7 @@
     <!--    页面背景色    -->
     <color name="page_background">#888888</color>
     <!--    个人中心页面背景色    -->
-    <color name="default_bg">#fff4f4f4</color>
+    <color name="default_bg">#f4f4f4</color>
     <!--    标题正文文字颜色    -->
     <color name="color_333333">#333333</color>
     <!--    辅助文字颜色    -->
