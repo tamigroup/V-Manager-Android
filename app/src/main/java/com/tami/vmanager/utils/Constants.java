@@ -82,4 +82,6 @@ public class Constants {
     public static final int EDIT_NOTICE = 0X14;
     //查看全部群成员中的总页数
     public static final String TOTAL = "total";
+    //会议信息
+    public static final String MEETING_INFO = "meetingInfo";
 }

@@ -27,5 +27,5 @@ public class DeleteUserMeetingResponse extends MobileMessage implements Serializ
 	}
 
 	
-
+	public boolean data;
 }

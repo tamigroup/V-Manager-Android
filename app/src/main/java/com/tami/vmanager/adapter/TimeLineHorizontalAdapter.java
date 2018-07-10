@@ -6,9 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.tami.vmanager.R;
 import com.tami.vmanager.entity.GetMeetingItemFlowResponse;
 import com.tami.vmanager.entity.TimeLine;
+import com.tami.vmanager.utils.TimeUtils;
+
+import java.sql.Time;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -52,7 +57,26 @@ public class TimeLineHorizontalAdapter extends RecyclerView.Adapter<TimeLineHori
             holder.leftView.setVisibility(View.VISIBLE);
             holder.rightView.setVisibility(View.VISIBLE);
         }
-        holder.stateTxt.setText(list.get(position).meetingItemName);
+
+        GetMeetingItemFlowResponse.Array.Item item = list.get(position);
+
+        if (position != 0 && list.get(position - 1).selectStatus == 1) {
+            holder.leftView.setBackgroundResource(R.color.color_34DB8E);
+        } else {
+            holder.leftView.setBackgroundResource(R.color.color_EAEAEA);
+        }
+        if (item.selectStatus == 1) {
+            holder.middlePic.setImageResource(R.mipmap.middle_pic_selected);
+            holder.rightView.setBackgroundResource(R.color.color_34DB8E);
+        } else {
+            holder.middlePic.setImageResource(R.mipmap.middle_pic_unselected);
+            holder.rightView.setBackgroundResource(R.color.color_EAEAEA);
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(TimeUtils.date2String(new Date(item.startOn), TimeUtils.DATE_HHMM_SLASH));
+        sb.append("\n");
+        sb.append(item.meetingItemName);
+        holder.stateTxt.setText(sb.toString());
     }
 
     @Override

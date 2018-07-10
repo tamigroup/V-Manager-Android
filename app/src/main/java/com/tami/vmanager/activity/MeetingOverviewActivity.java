@@ -72,7 +72,7 @@ public class MeetingOverviewActivity extends BaseActivity {
     private ConfirmEnterMeetingDialog confirmEnterMeetingDialog;//弹框查看会议
 
     private int meetingId;//会议ID
-    private String eoUrl;
+    private GetMeetingResponse.Item item;//会议信息
     private NetworkBroker networkBroker;
     private List<GetMeetingItemsByMeetingIdResponse.Array.Item> listData;
     private TimeLineAdapter adapter;
@@ -191,7 +191,9 @@ public class MeetingOverviewActivity extends BaseActivity {
             case R.id.meeting_overview_look_eo:
                 //查看EO单
                 Intent lookEOIntent = new Intent(getApplicationContext(), LookEOActivity.class);
-                lookEOIntent.putExtra(Constants.KEY_EO_URL, eoUrl);
+                if (item != null) {
+                    lookEOIntent.putExtra(Constants.KEY_EO_URL, item.eoUrl);
+                }
                 startActivity(lookEOIntent);
                 break;
             case R.id.meeting_overview_actual_number:
@@ -239,6 +241,7 @@ public class MeetingOverviewActivity extends BaseActivity {
      */
     private void initUIdata(GetMeetingResponse.Item item) {
         if (item != null) {
+            this.item = item;
             meetingName.setText(item.meetingName);
             meetingTime.setText(item.autoDayTime);
             meetingRoom.setText(item.meetingAddress);
@@ -249,7 +252,6 @@ public class MeetingOverviewActivity extends BaseActivity {
             initUITxt(actualNumber, String.valueOf(item.actualNum), R.string.actual_number, R.color.color_FF5657);
 
             alreadyPaidItem.setProgress(90);
-            eoUrl = item.eoUrl;
         }
 
 //        new AsyncTask<Void, Integer, Void>() {
@@ -322,7 +324,8 @@ public class MeetingOverviewActivity extends BaseActivity {
         } else {
             //进入
             Intent intent = new Intent(getApplicationContext(), EnterMeetingActivity.class);
-            intent.putExtra(Constants.KEY_MEETING_ID,meetingId);
+            intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
+            intent.putExtra(Constants.MEETING_INFO, item);
             startActivity(intent);
         }
     }

@@ -19,6 +19,11 @@ public class VipMessageActivity extends BaseActivity {
     private static String MESSAGE_EXTRA = "message_extra";
 
     @Override
+    public boolean isTitle() {
+        return true;
+    }
+
+    @Override
     public int getContentViewId() {
         return R.layout.activity_vip_message;
     }
@@ -34,7 +39,6 @@ public class VipMessageActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        setTitle(R.string.vip_details);
         vip_name = findViewById(R.id.vip_name);
         message = findViewById(R.id.message);
 
@@ -47,6 +51,8 @@ public class VipMessageActivity extends BaseActivity {
 
     @Override
     public void initData() {
+        setTitleName(R.string.vip_details);
+
         String name = intent.getStringExtra(NAME_EXTRA);
         String content = intent.getStringExtra(MESSAGE_EXTRA);
         vip_name.setText(name);

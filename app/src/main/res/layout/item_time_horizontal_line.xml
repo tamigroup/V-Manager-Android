@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/dp_84"
-    android:layout_height="@dimen/dp_90"
-    android:background="@android:color/white">
+    android:layout_height="@dimen/dp_90">
 
     <View
         android:id="@+id/thl_left_line"

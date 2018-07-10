@@ -93,6 +93,8 @@ public class HttpKey {
     public static final String MY_MEETINGS ="meeting/myMeetings";
     // 获取会议流程单
     public static final String GET_MEETING_ITEM_FLOW ="meeting/getMeetingItemFlow";
+    // 获取会议流程单
+    public static final String DELETE_USER_MEETING ="meeting/deleteUserMeeting";
 
     //---------------------------------------------------------------------------
 

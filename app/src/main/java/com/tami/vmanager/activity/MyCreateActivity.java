@@ -13,6 +13,8 @@ import com.tami.vmanager.adapter.ViewHolder;
 import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.entity.AllMeetingsRequest;
 import com.tami.vmanager.entity.AllMeetingsResponse;
+import com.tami.vmanager.entity.DeleteUserMeetingRequest;
+import com.tami.vmanager.entity.DeleteUserMeetingResponse;
 import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.http.HttpKey;
 import com.tami.vmanager.http.NetworkBroker;
@@ -89,13 +91,13 @@ public class MyCreateActivity extends BaseActivity {
                 TextView modifyView = viewHolder.getItemView(R.id.menu_modify);
                 modifyView.setOnClickListener((View v) -> {
                     shmlView.smoothCloseEndMenu();
-                    showToast("modifyView");
+                    modifyMeeting(item.meetingId);
                 });
                 //取消按钮
                 TextView cancelView = viewHolder.getItemView(R.id.menu_cancel);
                 cancelView.setOnClickListener((View v) -> {
                     shmlView.smoothCloseEndMenu();
-                    showToast("cancelView");
+                    deleteUserMeeting(item.meetingId, position);
                 });
                 //编辑按钮
                 TextView editView = viewHolder.getItemView(R.id.item_content_editor);
@@ -210,6 +212,48 @@ public class MyCreateActivity extends BaseActivity {
                 }
             } catch (Exception e) {
                 pullToRefreshLayout.finishLoadMore();
+                e.printStackTrace();
+            }
+        });
+    }
+
+    /**
+     * 修改会议
+     *
+     * @param meetingId
+     */
+    private void modifyMeeting(int meetingId) {
+
+    }
+
+    /**
+     * 取消会议
+     *
+     * @param meetingId
+     */
+    private void deleteUserMeeting(int meetingId, int position) {
+        DeleteUserMeetingRequest dmr = new DeleteUserMeetingRequest();
+        LoginResponse.Item item = GlobaVariable.getInstance().item;
+        if (item != null) {
+            dmr.setUserId(item.getId());
+        }
+        dmr.setMeetingId(meetingId);
+        networkBroker.ask(dmr, (ex1, res) -> {
+            if (null != ex1) {
+                ex1.printStackTrace();
+                Logger.d(ex1.getMessage() + "-" + ex1);
+                return;
+            }
+            try {
+                DeleteUserMeetingResponse response = (DeleteUserMeetingResponse) res;
+                if (response.getCode() == 200 && response.data) {
+                    showToast(getString(R.string.delete_meeting, getString(R.string.success)));
+                    listData.remove(position);
+                    listViewAdapter.notifyDataSetChanged();
+                } else {
+                    showToast(getString(R.string.delete_meeting, getString(R.string.failure)));
+                }
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         });

@@ -15,9 +15,7 @@ import com.tami.vmanager.adapter.TimeLineHorizontalAdapter;
 import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.entity.GetMeetingItemFlowRequest;
 import com.tami.vmanager.entity.GetMeetingItemFlowResponse;
-import com.tami.vmanager.entity.GetMeetingRequest;
 import com.tami.vmanager.entity.GetMeetingResponse;
-import com.tami.vmanager.entity.TimeLine;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
@@ -49,7 +47,8 @@ public class EnterMeetingActivity extends BaseActivity {
     private TextView meetingDetails;//会议详情
     private TextView vipDetails;//VIP详情
 
-    private int meetingId;
+    private int meetingId;//会议ID
+    private String eoUrl;
     private NetworkBroker networkBroker;
     private List<GetMeetingItemFlowResponse.Array.Item> listData;
     private TimeLineHorizontalAdapter adapter;
@@ -102,8 +101,10 @@ public class EnterMeetingActivity extends BaseActivity {
     @Override
     public void initData() {
         Intent intent = getIntent();
+        GetMeetingResponse.Item item = null;
         if (intent != null) {
             meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 0);
+            item = (GetMeetingResponse.Item) intent.getSerializableExtra(Constants.MEETING_INFO);
         }
 
         networkBroker = new NetworkBroker(this);
@@ -118,7 +119,7 @@ public class EnterMeetingActivity extends BaseActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
-        initUIdata();
+        initUIdata(item);
     }
 
     @Override
@@ -175,15 +176,18 @@ public class EnterMeetingActivity extends BaseActivity {
     /**
      * 页面UI赋值
      */
-    private void initUIdata() {
-        meetingName.setText("夏普8K黑科技，改变你看世界的方式！夏普8K黑科技，改变你看世界的方式！夏普8K黑科技，改变你看世界的方式！");
-        meetingTime.setText("6月14日 9:00-17:00");
-        meetingRoom.setText("高级VIP房间");
-        meetingPersonnel.setText("销售：张三");
+    private void initUIdata(GetMeetingResponse.Item item) {
+        if (item != null) {
+            meetingName.setText(item.meetingName);
+            meetingTime.setText(item.autoDayTime);
+            meetingRoom.setText(item.meetingAddress);
+            meetingPersonnel.setText(item.saleUserName);
 
-        initUITxt(predeterminedNumber, String.valueOf(100), R.string.predetermined_number, android.R.color.white);
-        initUITxt(bottomNumber, String.valueOf(60), R.string.bottom_number, android.R.color.white);
-        initUITxt(actualNumber, String.valueOf(88), R.string.actual_number, R.color.color_FF5657);
+            initUITxt(predeterminedNumber, String.valueOf(item.estimateNum), R.string.predetermined_number, android.R.color.white);
+            initUITxt(bottomNumber, String.valueOf(item.minNum), R.string.bottom_number, android.R.color.white);
+            initUITxt(actualNumber, String.valueOf(item.actualNum), R.string.actual_number, R.color.color_FF5657);
+            eoUrl = item.eoUrl;
+        }
     }
 
     /**
@@ -203,7 +207,9 @@ public class EnterMeetingActivity extends BaseActivity {
      * 查看EO单
      */
     private void lookEO() {
-        startActivity(new Intent(getApplicationContext(), LookEOActivity.class));
+        Intent intent = new Intent(getApplicationContext(), LookEOActivity.class);
+        intent.putExtra(Constants.KEY_EO_URL, eoUrl);
+        startActivity(intent);
     }
 
     /**
@@ -233,7 +239,10 @@ public class EnterMeetingActivity extends BaseActivity {
      * VIP详情
      */
     private void vipDetails() {
-        startActivity(new Intent(getApplicationContext(), VIPDetailsActivity.class));
+        Intent intent = new Intent(getApplicationContext(), VIPDetailsActivity.class);
+        intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
+        intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
+        startActivity(intent);
     }
 
     /**

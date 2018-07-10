@@ -1,5 +1,6 @@
 package com.tami.vmanager.activity;
 
+import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -7,9 +8,13 @@ import android.widget.TextView;
 
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
+import com.tami.vmanager.entity.GetMeetingResponse;
+import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.entity.VIPDetailsRequestBean;
 import com.tami.vmanager.entity.VIPDetailsResponseBean;
 import com.tami.vmanager.http.NetworkBroker;
+import com.tami.vmanager.manager.GlobaVariable;
+import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.view.GridSpacingItemDecoration;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -31,6 +36,7 @@ public class VIPDetailsActivity extends BaseActivity {
     private NetworkBroker networkBroker;
     private List<VIPDetailsResponseBean.DataBean.ElementsBean> listData;
     private CommonAdapter<VIPDetailsResponseBean.DataBean.ElementsBean> commonAdapter;
+    private int meetingId;//会议ID
 
     @Override
     public boolean isTitle() {
@@ -47,7 +53,6 @@ public class VIPDetailsActivity extends BaseActivity {
         title = findViewById(R.id.title);
         recyclerView = findViewById(R.id.recyc);
         networkBroker = new NetworkBroker(this);
-        getData();
     }
 
     @Override
@@ -57,6 +62,10 @@ public class VIPDetailsActivity extends BaseActivity {
 
     @Override
     public void initData() {
+        Intent intent = getIntent();
+        if (intent != null) {
+            meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 0);
+        }
         setTitleName(getString(R.string.vip_details));
         initRecyc();
     }
@@ -77,7 +86,7 @@ public class VIPDetailsActivity extends BaseActivity {
         commonAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                VipMessageActivity.Start(VIPDetailsActivity.this,listData.get(position).getName(),listData.get(position).getIntro());
+                VipMessageActivity.Start(VIPDetailsActivity.this, listData.get(position).getName(), listData.get(position).getIntro());
             }
 
             @Override
@@ -91,6 +100,14 @@ public class VIPDetailsActivity extends BaseActivity {
     @Override
     public void requestNetwork() {
         VIPDetailsRequestBean vipDetailsRequestBean = new VIPDetailsRequestBean();
+//        vipDetailsRequestBean.setMeetingId(meetingId);
+//        LoginResponse.Item item = GlobaVariable.getInstance().item;
+//        if (item != null) {
+//            vipDetailsRequestBean.setSystemId(item.getSystemId());
+//        }
+//        vipDetailsRequestBean.setCurPage(CurPage++);
+//        vipDetailsRequestBean.setPageSize(Constants.PAGE_SIZE);
+
         vipDetailsRequestBean.setMeetingId(1);
         vipDetailsRequestBean.setSystemId(4);
         vipDetailsRequestBean.setCurPage(CurPage++);
@@ -107,7 +124,6 @@ public class VIPDetailsActivity extends BaseActivity {
                     if (data != null && data.getElements() != null && data.getElements().size() > 0) {
                         List<VIPDetailsResponseBean.DataBean.ElementsBean> elements = data.getElements();
                         listData.addAll(data.getElements());
-                        listData.addAll(getData());
                         commonAdapter.notifyDataSetChanged();
                     }
                 }
@@ -129,22 +145,4 @@ public class VIPDetailsActivity extends BaseActivity {
     public void emptyObject() {
 
     }
-
-
-    private ArrayList<VIPDetailsResponseBean.DataBean.ElementsBean> getData() {
-        ArrayList<VIPDetailsResponseBean.DataBean.ElementsBean> data = new ArrayList<>();
-        VIPDetailsResponseBean.DataBean.ElementsBean elementsBean = new VIPDetailsResponseBean.DataBean.ElementsBean();
-        elementsBean.setName("张三");
-        data.add(elementsBean);
-        elementsBean.setName("李四");
-        data.add(elementsBean);
-        elementsBean.setName("李四");
-        data.add(elementsBean);
-        elementsBean.setName("李四");
-        data.add(elementsBean);
-        elementsBean.setName("李四");
-        data.add(elementsBean);
-        return data;
-    }
-
 }
