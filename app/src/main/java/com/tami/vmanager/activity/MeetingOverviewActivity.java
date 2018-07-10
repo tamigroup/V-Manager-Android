@@ -149,6 +149,8 @@ public class MeetingOverviewActivity extends BaseActivity {
         if (intent != null) {
             meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 0);
         }
+        meetingId = 1;
+
 //        pleaseCreateConference.setVisibility(View.GONE);
 //        xufuLayout.setVisibility(View.GONE);
 //        recyclerView.setVisibility(View.GONE);

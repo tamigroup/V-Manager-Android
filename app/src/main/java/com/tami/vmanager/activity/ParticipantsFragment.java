@@ -126,12 +126,7 @@ public class ParticipantsFragment extends ViewPagerBaseFragment {
     @SuppressLint("StringFormatMatches")
     private void getEvaluate() {
         EvaluatePageRequestBean evaluatePageRequestBean = new EvaluatePageRequestBean();
-//        evaluatePageRequestBean.setMeetingId(meetingId);
-//        evaluatePageRequestBean.setType(3);
-//        evaluatePageRequestBean.setCurPage(CurPag++);
-//        evaluatePageRequestBean.setPageSize(Constants.PAGE_SIZE);
-
-        evaluatePageRequestBean.setMeetingId(1);
+        evaluatePageRequestBean.setMeetingId(meetingId);
         evaluatePageRequestBean.setType(3);
         evaluatePageRequestBean.setCurPage(CurPag++);
         evaluatePageRequestBean.setPageSize(Constants.PAGE_SIZE);
@@ -161,10 +156,7 @@ public class ParticipantsFragment extends ViewPagerBaseFragment {
      */
     private void getAvg() {
         IdeasBoxRequestBean ideasBoxRequestBean = new IdeasBoxRequestBean();
-//        ideasBoxRequestBean.setMeetingId(meetingId);
-//        ideasBoxRequestBean.setType(3);
-
-        ideasBoxRequestBean.setMeetingId(1);
+        ideasBoxRequestBean.setMeetingId(meetingId);
         ideasBoxRequestBean.setType(3);
         networkBroker.ask(ideasBoxRequestBean, (ex1, res) -> {
             if (null != ex1) {
