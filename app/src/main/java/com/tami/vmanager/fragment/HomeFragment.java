@@ -363,7 +363,9 @@ public class HomeFragment extends BaseFragment {
     private void getIndex() {
         GetIndexRequest getIndexRequest = new GetIndexRequest();
         LoginResponse.Item item = GlobaVariable.getInstance().item;
-        getIndexRequest.setUserId(String.valueOf(item.getId()));
+        if (item != null) {
+            getIndexRequest.setUserId(String.valueOf(item.getId()));
+        }
         networkBroker.ask(getIndexRequest, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);

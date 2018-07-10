@@ -1,11 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:textColor="@color/color_red"
-    android:text="123456789"/>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_evaluate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
+        android:background="@color/color_white">
+
+        <TextView
+            android:id="@+id/comprehensive_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="@dimen/dp_27"
+            android:text="@string/comprehensive_score"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/dp_16"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <com.tami.vmanager.view.RatingBar.BaseRatingBar
+            android:id="@+id/rating_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            app:layout_constraintStart_toEndOf="@+id/comprehensive_score"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srb_drawableEmpty="@mipmap/icon_star_no"
+            app:srb_drawableFilled="@mipmap/icon_star"
+            app:srb_isIndicator="true"
+            app:srb_numStars="5"
+            app:srb_rating="3"
+            app:srb_starHeight="29dp"
+            app:srb_starPadding="4dp"
+            app:srb_starWidth="29dp"
+            />
+
+        <TextView
+            android:id="@+id/service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_20"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_20"
+            android:text="@string/service"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/dp_16"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/comprehensive_score"/>
+
+        <TextView
+            android:id="@+id/environmental"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_20"
+            android:layout_marginLeft="@dimen/dp_30"
+            android:layout_marginTop="@dimen/dp_20"
+            android:text="@string/environment"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/dp_16"
+            app:layout_constraintStart_toEndOf="@+id/service"
+            app:layout_constraintTop_toBottomOf="@+id/comprehensive_score"/>
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
+        android:background="@color/color_white"
+        app:layout_constraintTop_toBottomOf="@+id/cl_evaluate">
+
+        <TextView
+            android:id="@+id/comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_14"
+            android:text="@string/comment"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+
+        <com.jwenfeng.library.pulltorefresh.PullToRefreshLayout
+            android:id="@+id/pull"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_7"
+            app:layout_constraintTop_toBottomOf="@+id/comment">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyc"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </com.jwenfeng.library.pulltorefresh.PullToRefreshLayout>
+
+
+    </android.support.constraint.ConstraintLayout>
+
+
 </android.support.constraint.ConstraintLayout>

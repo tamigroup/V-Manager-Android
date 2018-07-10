@@ -1,22 +1,26 @@
 package com.tami.vmanager.fragment;
 
 import android.annotation.SuppressLint;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jwenfeng.library.pulltorefresh.BaseRefreshListener;
 import com.jwenfeng.library.pulltorefresh.PullToRefreshLayout;
+import com.squareup.picasso.Picasso;
 import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.RecycleViewDivider;
-import com.tami.vmanager.base.BaseFragment;
+import com.tami.vmanager.base.ViewPagerBaseFragment;
 import com.tami.vmanager.entity.EvaluatePageRequestBean;
 import com.tami.vmanager.entity.EvaluatePageResponseBean;
 import com.tami.vmanager.entity.IdeasBoxRequestBean;
 import com.tami.vmanager.entity.IdeasBoxResponsetBean;
 import com.tami.vmanager.http.NetworkBroker;
+import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.view.RatingBar.BaseRatingBar;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -29,7 +33,7 @@ import java.util.List;
  * Created by Tang on 2018/7/5
  * 主办方
  */
-public class HostFragment extends BaseFragment {
+public class HostFragment extends ViewPagerBaseFragment {
 
     private BaseRatingBar ratingBar;
     private RecyclerView recyclerview;
@@ -41,6 +45,8 @@ public class HostFragment extends BaseFragment {
     private CommonAdapter<EvaluatePageResponseBean.DataBean.ElementsBean> commonAdapter;
     private List<EvaluatePageResponseBean.DataBean.ElementsBean> listData;
     private TextView comment;
+
+    private int meetingId;//会议ID
 
     @Override
     public int getContentViewId() {
@@ -55,7 +61,6 @@ public class HostFragment extends BaseFragment {
         environmental = findViewById(R.id.environmental);
         recyclerview = findViewById(R.id.recyc);
         pulltorefreshlayout = findViewById(R.id.pull);
-        networkBroker = new NetworkBroker(getContext());
     }
 
     @Override
@@ -74,6 +79,11 @@ public class HostFragment extends BaseFragment {
 
     @Override
     public void initData() {
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            meetingId = bundle.getInt(Constants.KEY_MEETING_ID);
+        }
+
         initRecyc();
     }
 
@@ -88,16 +98,14 @@ public class HostFragment extends BaseFragment {
 
             @Override
             protected void convert(ViewHolder holder, EvaluatePageResponseBean.DataBean.ElementsBean elementsBean, int position) {
-                ImageView header_image = holder.getView(R.id.header_image);
-                if (elementsBean.getIconUrl() != null){
-//                    Picasso.get().load(elementsBean.getIconUrl()).into(header_image);
+                if (!TextUtils.isEmpty(elementsBean.getIconUrl())) {
+                    ImageView header_image = holder.getView(R.id.header_image);
+                    Picasso.get().load(elementsBean.getIconUrl()).into(header_image);
                 }
-
-                holder.setText(R.id.header_name,elementsBean.getUserName());
+                holder.setText(R.id.header_name, elementsBean.getUserName());
                 BaseRatingBar rating_bar = holder.getView(R.id.rating_bar);
                 rating_bar.setRating(elementsBean.getScore());
-                holder.setText(R.id.item_content,elementsBean.getContent());
-
+                holder.setText(R.id.item_content, elementsBean.getContent());
             }
         };
         recyclerview.setAdapter(commonAdapter);
@@ -106,6 +114,8 @@ public class HostFragment extends BaseFragment {
 
     @Override
     public void requestNetwork() {
+        networkBroker = new NetworkBroker(getContext());
+        networkBroker.setCancelTag(getTAG());
         getAvg();
         getEvaluate();
     }
@@ -116,10 +126,15 @@ public class HostFragment extends BaseFragment {
     @SuppressLint("StringFormatMatches")
     private void getEvaluate() {
         EvaluatePageRequestBean evaluatePageRequestBean = new EvaluatePageRequestBean();
+//        evaluatePageRequestBean.setMeetingId(meetingId);
+//        evaluatePageRequestBean.setType(2);
+//        evaluatePageRequestBean.setCurPage(CurPag++);
+//        evaluatePageRequestBean.setPageSize(Constants.PAGE_SIZE);
+
         evaluatePageRequestBean.setMeetingId(1);
         evaluatePageRequestBean.setType(2);
         evaluatePageRequestBean.setCurPage(CurPag++);
-        evaluatePageRequestBean.setPageSize(10);
+        evaluatePageRequestBean.setPageSize(Constants.PAGE_SIZE);
         networkBroker.ask(evaluatePageRequestBean, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);
@@ -130,7 +145,7 @@ public class HostFragment extends BaseFragment {
                 EvaluatePageResponseBean.DataBean data = response.getData();
                 if (data.getElements() != null && data.getElements().size() > 0) {
                     int size = data.getElements().size();
-                    comment.setText(String.format(getResources().getString(R.string.comment,data.getElements().size())));
+                    comment.setText(String.format(getResources().getString(R.string.comment, data.getElements().size())));
                     listData.addAll(data.getElements());
                     commonAdapter.notifyDataSetChanged();
                 }
@@ -146,6 +161,9 @@ public class HostFragment extends BaseFragment {
      */
     private void getAvg() {
         IdeasBoxRequestBean ideasBoxRequestBean = new IdeasBoxRequestBean();
+//        ideasBoxRequestBean.setMeetingId(meetingId);
+//        ideasBoxRequestBean.setType(2);
+
         ideasBoxRequestBean.setMeetingId(1);
         ideasBoxRequestBean.setType(2);
         networkBroker.ask(ideasBoxRequestBean, (ex1, res) -> {
@@ -170,6 +188,8 @@ public class HostFragment extends BaseFragment {
 
     @Override
     public void emptyObject() {
-
+        if (networkBroker != null) {
+            networkBroker.cancelAllRequests();
+        }
     }
 }

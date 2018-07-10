@@ -156,7 +156,9 @@ public class WaitMeetingsFragment extends ViewPagerBaseFragment {
 
     @Override
     public void removeListener() {
-
+        if(networkBroker!=null){
+            networkBroker.cancelAllRequests();
+        }
     }
 
     @Override

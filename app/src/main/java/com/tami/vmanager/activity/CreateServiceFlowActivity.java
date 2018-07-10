@@ -30,6 +30,8 @@ import com.bigkoo.pickerview.view.TimePickerView;
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.dialog.ServiceFlowDialog;
+import com.tami.vmanager.entity.GetMeetingDayRequest;
+import com.tami.vmanager.entity.GetMeetingDayResponse;
 import com.tami.vmanager.entity.GetMeetingItemsRequest;
 import com.tami.vmanager.entity.GetMeetingItemsResponse;
 import com.tami.vmanager.http.NetworkBroker;
@@ -115,6 +117,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
 
     @Override
     public void requestNetwork() {
+        getMeetingDays();
         getMeetingItems();
     }
 
@@ -447,7 +450,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
 
     private RecyclerView roleRecyclerView;
     private List<String> roleData = new ArrayList<>();
-    private CommonAdapter<String> croleAdapter;
+    private CommonAdapter<String> roleAdapter;
     private int selectIndex = -1;
 
     public void showCustomRole(TextView textView) {
@@ -465,7 +468,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
         roleRecyclerView = cLayout.findViewById(R.id.smsf_recyclerview);
         GridLayoutManager layoutManage = new GridLayoutManager(getApplicationContext(), 3);
         roleRecyclerView.setLayoutManager(layoutManage);
-        croleAdapter = new CommonAdapter<String>(getApplicationContext(), R.layout.item_role, roleData) {
+        roleAdapter = new CommonAdapter<String>(getApplicationContext(), R.layout.item_role, roleData) {
             @Override
             protected void convert(ViewHolder holder, String s, int position) {
                 MeetingStateView roleView = holder.getView(R.id.item_role_txt);
@@ -486,7 +489,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
                 });
             }
         };
-        roleRecyclerView.setAdapter(croleAdapter);
+        roleRecyclerView.setAdapter(roleAdapter);
         mBottomSheetDialog.setContentView(cLayout);
         mBottomSheetDialog.show();
     }
@@ -533,5 +536,25 @@ public class CreateServiceFlowActivity extends BaseActivity {
         popupWindow.showAsDropDown(view, -ScreenUtil.dip2px(getApplicationContext(), 50), 0, Gravity.CENTER);
     }
 
+    /**
+     * 获取会议天数
+     */
+    public void getMeetingDays() {
+        GetMeetingDayRequest gmdr = new GetMeetingDayRequest();
+        gmdr.setMeetingId(29);
+        networkBroker.ask(gmdr, (ex1, res) -> {
+            if (null != ex1) {
+                Logger.d(ex1.getMessage() + "-" + ex1);
+                return;
+            }
+            try {
+                GetMeetingDayResponse response = (GetMeetingDayResponse) res;
+                if (response.getCode() == 200) {
 
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
 }

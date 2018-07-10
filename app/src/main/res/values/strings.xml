@@ -288,4 +288,15 @@
     <string name="attention_cancel_prompt">取消关注%s！</string>
 
     <string name="delete_meeting">删除会议%s！</string>
+
+    <string name="jiaxing_1">* 会议名称</string>
+    <string name="jiaxing_2">* 主办方</string>
+    <string name="jiaxing_3">* 开会地点</string>
+    <string name="jiaxing_4">* 开始时间</string>
+    <string name="jiaxing_5">* 结束时间</string>
+    <string name="jiaxing_6">* 合同金额</string>
+    <string name="jiaxing_7">* 待收金额</string>
+    <string name="jiaxing_8">* 参会人数</string>
+
+
 </resources>

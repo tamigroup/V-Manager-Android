@@ -404,14 +404,14 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
      * 初始化加星数据
      */
     private void initTextView() {
-        setTextView(nameTxtView, "* 会议名称");
-        setTextView(sponsorTxtView, "* 主办方");
-        setTextView(meeetingPlaceTxtView, "* 开会地点");
-        setTextView(startTimeTxtView, "* 开始时间");
-        setTextView(endTimeTxtView, "* 结束时间");
-        setTextView(contractAmountTxtView, "* 合同金额");
-        setTextView(receivedAmountTxtView, "* 待收金额");
-        setTextView(numberTxtView, "* 参会人数");
+        setTextView(nameTxtView, getString(R.string.jiaxing_1));
+        setTextView(sponsorTxtView, getString(R.string.jiaxing_2));
+        setTextView(meeetingPlaceTxtView, getString(R.string.jiaxing_3));
+        setTextView(startTimeTxtView, getString(R.string.jiaxing_4));
+        setTextView(endTimeTxtView, getString(R.string.jiaxing_5));
+        setTextView(contractAmountTxtView, getString(R.string.jiaxing_6));
+        setTextView(receivedAmountTxtView, getString(R.string.jiaxing_7));
+        setTextView(numberTxtView, getString(R.string.jiaxing_8));
     }
 
     /**

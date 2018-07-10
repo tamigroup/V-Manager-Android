@@ -100,7 +100,7 @@ public class HttpKey {
     // 获取会议流程单
     public static final String DELETE_USER_MEETING = "meeting/deleteUserMeeting";
     // 获取流程天数
-    public static final String GET_MEETING_DAYS = "meting/getMeetingDays";
+    public static final String GET_MEETING_DAYS = "meeting/getMeetingDays";
 
     //---------------------------------------------------------------------------
 

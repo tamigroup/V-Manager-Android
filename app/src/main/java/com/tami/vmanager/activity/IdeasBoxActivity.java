@@ -1,5 +1,7 @@
 package com.tami.vmanager.activity;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -8,6 +10,7 @@ import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.GuidePageFragmentPagerAdapter;
 import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.fragment.HostFragment;
+import com.tami.vmanager.utils.Constants;
 
 /**
  * 意见箱
@@ -15,6 +18,7 @@ import com.tami.vmanager.fragment.HostFragment;
  */
 public class IdeasBoxActivity extends BaseActivity {
 
+    private int meetingId;//会议ID
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private Fragment[] arrayFragment;
@@ -44,11 +48,20 @@ public class IdeasBoxActivity extends BaseActivity {
 
     @Override
     public void initData() {
+        Intent intent = getIntent();
+        if (intent != null) {
+            meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 0);
+        }
+
         setTitleName(R.string.complaints_box);
 
+        Bundle bundle = new Bundle();
+        bundle.putInt(Constants.KEY_MEETING_ID, meetingId);
         arrayFragment = new Fragment[2];
         arrayFragment[0] = new HostFragment();
+        arrayFragment[0].setArguments(bundle);
         arrayFragment[1] = new ParticipantsFragment();
+        arrayFragment[1].setArguments(bundle);
 
         GuidePageFragmentPagerAdapter guidePageFragmentPagerAdapter = new GuidePageFragmentPagerAdapter(getSupportFragmentManager(), arrayFragment);
         viewPager.setAdapter(guidePageFragmentPagerAdapter);

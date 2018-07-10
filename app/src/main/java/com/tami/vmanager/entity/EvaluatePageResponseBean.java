@@ -168,6 +168,15 @@ public class EvaluatePageResponseBean extends MobileMessage implements Serializa
             private long updateOn;
             private int userId;
             private String userName;
+            private	int	anonymous;	/*0*/
+
+            public int getAnonymous() {
+                return anonymous;
+            }
+
+            public void setAnonymous(int anonymous) {
+                this.anonymous = anonymous;
+            }
 
             public String getContent() {
                 return content;
