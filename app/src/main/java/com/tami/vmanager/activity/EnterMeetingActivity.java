@@ -219,6 +219,7 @@ public class EnterMeetingActivity extends BaseActivity {
     private void serviceGroup() {
         Intent intent = new Intent(getApplicationContext(), ConferenceServiceGroupActivity.class);
         intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
+        intent.putExtra(Constants.MEETING_INFO, item);
         startActivity(intent);
     }
 
@@ -270,7 +271,6 @@ public class EnterMeetingActivity extends BaseActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         });
     }
 }

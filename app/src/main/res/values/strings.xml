@@ -174,14 +174,14 @@
 
     <!--会议信息-->
     <string name="host_name">主办方: %s</string>
-    <string name="meeting_address">鸿山亭: </string>
+    <string name="meeting_address">%s: </string>
     <string name="salename">销售人: %s</string>
     <string name="service_flow">服务流程</string>
     <!--    会议服务群    -->
     <string name="conference_service_group">会议服务群</string>
     <string name="tab_conference_information">会议信息</string>
     <string name="tab_group_chat">群消息</string>
-    <string name="tab_feedback">反馈</string>
+    <string name="tab_feedback">活动变化</string>
     <string name="tab_notice">公告</string>
 
     <!--    进入会议    -->
@@ -267,6 +267,7 @@
     <string name="select_role">选择角色</string>
     <string name="ready">就绪</string>
     <string name="confirmed">已确认</string>
+    <string name="no_confirmed">未确认</string>
     <string name="xiaovtixing">加餐或减餐建议、增加茶歇或减少荼歇建议。\n更多功能，敬请期待！</string>
     <string name="modify">修改</string>
     <string name="editor">编辑</string>
