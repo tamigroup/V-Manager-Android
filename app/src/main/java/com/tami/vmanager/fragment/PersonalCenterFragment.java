@@ -61,14 +61,12 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
     private File headClipFile = null;// 裁剪后的头像
     private String headFileNameStr = "headIcon.jpg";
     private String clipFileNameStr = "clipIcon.jpg";
-    Uri imageUri;
+    private Uri imageUri;
     private final String IMAGE_TYPE = "image/*";
 
     //权限相关
     public static final int REQUEST_EXTERNAL_STORAGE = 103;
-    public static final String[] PERMISSIONS_STORAGE = {
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    public static final String[] PERMISSIONS_STORAGE = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     public static final int REQUEST_CAMERA = 104;
     public static final String[] PERMISSIONS_CAMERA = {Manifest.permission.CAMERA};
 
@@ -154,14 +152,14 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
                 accountSettings();
                 break;
             case R.id.personal_menu_album:
-                xiangCe();
                 //相册
                 mBottomSheetDialog.dismiss();
+                xiangCe();
                 break;
             case R.id.personal_menu_photograph:
                 //拍照
-                paiZhao();
                 mBottomSheetDialog.dismiss();
+                paiZhao();
                 break;
             case R.id.personal_menu_cancel:
                 //取消

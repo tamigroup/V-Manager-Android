@@ -43,20 +43,25 @@ public class GetMeetingItemsResponse extends MobileMessage implements Serializab
             public long createOn;	/*1526972249000*/
             public long updateOn;	/*1526972253000*/
             public int roleId;	/*3*/
+            public int pid;	/*1*/
+            public int defaultMinutes;	/*0*/
+            public long startOn;	/**/
+            public int meetingId;	/*0*/
+            public int systemId;	/*0*/
 
             public boolean isCustom;
             public boolean isSelected;
 
             @Override
             public int compareTo(@NonNull Item item) {
-                if (createOn == 0) {
-                    return -1;
-                }
-                if (item.createOn == 0) {
+                if (startOn == 0) {
                     return 1;
                 }
-                String thisOrderTime = TimeUtils.date2String(new Date(createOn), TimeUtils.DATE_HHMM_SLASH);
-                String orderTime = TimeUtils.date2String(new Date(item.createOn), TimeUtils.DATE_HHMM_SLASH);
+                if (item.startOn == 0) {
+                    return -1;
+                }
+                String thisOrderTime = TimeUtils.date2String(new Date(startOn), TimeUtils.DATE_HHMM_SLASH);
+                String orderTime = TimeUtils.date2String(new Date(item.startOn), TimeUtils.DATE_HHMM_SLASH);
                 return thisOrderTime.compareTo(orderTime);
             }
 

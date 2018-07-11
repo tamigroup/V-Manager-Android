@@ -6,12 +6,16 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.constraint.Group;
+import android.support.design.widget.BottomSheetDialog;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +23,10 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
-import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.squareup.picasso.Picasso;
 import com.tami.vmanager.R;
@@ -41,6 +45,7 @@ import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.FileSizeUtil;
 import com.tami.vmanager.utils.GetImagePath;
+import com.tami.vmanager.utils.ImageUtils;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.ScreenUtil;
 import com.tami.vmanager.utils.TimeUtils;
@@ -111,15 +116,23 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
     private int meetingLevelIndex = 0;//会议级别
 
     private NetworkBroker networkBroker;
-    private final String IMAGE_TYPE = "image/*";
-    private final int EO_DAN = 0X00;
     //会议地址ID
     private int addressId = -1;
     //图片路径
     private String filePath = null;
-
+    public static final String HEAD_ICON_DIC = Environment.getExternalStorageDirectory() + File.separator + "TaMiExternal";
+    protected final String TAG = getClass().getSimpleName();
+    private File eoFile = null;// 相册或者拍照保存的文件
+    private String eoFileNameStr = "eodan.jpg";
+    private Uri imageUri;
+    private final String IMAGE_TYPE = "image/*";
+    private final int EO_DAN_XIANGCE = 0X13;
+    private final int EO_DAN_PAIZHAO = 0X14;
     public static final int REQUEST_EXTERNAL_STORAGE = 103;
-    public static final String[] PERMISSIONS_STORAGE = {Manifest.permission.READ_EXTERNAL_STORAGE};
+    public static final String[] PERMISSIONS_STORAGE = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    public static final int REQUEST_CAMERA = 104;
+    public static final String[] PERMISSIONS_CAMERA = {Manifest.permission.CAMERA};
+    private BottomSheetDialog mBottomSheetDialog;
 
     @Override
     public boolean isTitle() {
@@ -213,6 +226,11 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
 
     @Override
     public void emptyObject() {
+        if (mBottomSheetDialog != null && mBottomSheetDialog.isShowing()) {
+            mBottomSheetDialog.dismiss();
+            mBottomSheetDialog.setContentView(null);
+            mBottomSheetDialog = null;
+        }
         networkBroker.cancelAllRequests();
     }
 
@@ -222,11 +240,25 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
         super.onResume();
         if (Build.VERSION.SDK_INT >= 23) {
             //权限请求与判断
-            if (!EasyPermissions.hasPermissions(getApplicationContext(), PERMISSIONS_STORAGE)) {
+            if (EasyPermissions.hasPermissions(this, PERMISSIONS_STORAGE)) {
+                initHeadIconFile();
+            } else {
                 EasyPermissions.requestPermissions(this, getString(R.string.app_name),
                         REQUEST_EXTERNAL_STORAGE, PERMISSIONS_STORAGE);
             }
+        } else {
+            initHeadIconFile();
         }
+    }
+
+    private void initHeadIconFile() {
+        eoFile = new File(HEAD_ICON_DIC);
+        Log.e(TAG, "initHeadIconFile()---headIconFile.exists() : " + eoFile.exists());
+        if (!eoFile.exists()) {
+            boolean mkdirs = eoFile.mkdirs();
+            Log.e(TAG, "initHeadIconFile()---mkdirs : " + mkdirs);
+        }
+        eoFile = new File(HEAD_ICON_DIC, eoFileNameStr);
     }
 
     @Override
@@ -276,7 +308,22 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
                         vipAdapter.notifyDataSetChanged();
                     }
                     break;
-                case EO_DAN:
+                case EO_DAN_PAIZHAO:
+                    //拍照
+                    //图片压缩
+                    Logger.d("拍照返回eoFile："+eoFile.getAbsolutePath());
+                    filePath = ImageUtils.compressImage(eoFile.getAbsolutePath());
+                    Logger.d("拍照返回filePath："+filePath);
+                    File pzFile = new File(filePath);
+                    if (pzFile.exists()) {
+                        addImage.setImageBitmap(ImageUtils.revitionImageSize(filePath));
+                        imageName.setText(pzFile.getName());
+                        imageSize.setText(FileSizeUtil.getAutoFileOrFilesSize(filePath));
+                        imageGroup.setVisibility(View.VISIBLE);
+                        addPicToGallery(filePath);
+                    }
+                    break;
+                case EO_DAN_XIANGCE:
                     //从相册选取照片后返回
                     if (resultCode == RESULT_OK) {
                         if (data != null) {
@@ -287,11 +334,14 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
                                 filePath = GetImagePath.getPath(getApplicationContext(), originalUri);
                             }
                             if (!TextUtils.isEmpty(filePath)) {
+                                //图片压缩
+                                filePath = ImageUtils.compressImage(filePath);
                                 File file = new File(filePath);
                                 if (file.exists()) {
                                     imageName.setText(file.getName());
                                     imageSize.setText(FileSizeUtil.getAutoFileOrFilesSize(filePath));
                                     imageGroup.setVisibility(View.VISIBLE);
+                                    addPicToGallery(filePath);
                                 }
                             }
                         }
@@ -327,6 +377,20 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
                 break;
             case R.id.acmr_eo_delete_image:
                 deleteImage();
+                break;
+            case R.id.personal_menu_album:
+                //相册
+                mBottomSheetDialog.dismiss();
+                xiangCe();
+                break;
+            case R.id.personal_menu_photograph:
+                //拍照
+                mBottomSheetDialog.dismiss();
+                paiZhao();
+                break;
+            case R.id.personal_menu_cancel:
+                //取消
+                mBottomSheetDialog.dismiss();
                 break;
         }
     }
@@ -378,15 +442,79 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
      * 添加图片EO单
      */
     private void addImage() {
+        mBottomSheetDialog = new BottomSheetDialog(this);
+        LinearLayout linearLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.show_menu_personal_pic, null);
+        TextView album = linearLayout.findViewById(R.id.personal_menu_album);
+        TextView photograph = linearLayout.findViewById(R.id.personal_menu_photograph);
+        TextView cancel = linearLayout.findViewById(R.id.personal_menu_cancel);
+        album.setOnClickListener(this);
+        photograph.setOnClickListener(this);
+        photograph.setVisibility(View.VISIBLE);
+        cancel.setOnClickListener(this);
+        mBottomSheetDialog.setContentView(linearLayout);
+        mBottomSheetDialog.show();
+    }
+
+    private void xiangCe() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-            startActivityForResult(new Intent(Intent.ACTION_GET_CONTENT).setType("image/*"), EO_DAN);
+            startActivityForResult(new Intent(Intent.ACTION_GET_CONTENT).setType("image/*"), EO_DAN_XIANGCE);
         } else {
             String state = Environment.getExternalStorageState();
             if (state.equals(Environment.MEDIA_MOUNTED)) {
                 Intent openAlbumIntent = new Intent(Intent.ACTION_GET_CONTENT);
                 openAlbumIntent.setType(IMAGE_TYPE);
-                startActivityForResult(openAlbumIntent, EO_DAN);
+                startActivityForResult(openAlbumIntent, EO_DAN_XIANGCE);
             }
+        }
+    }
+
+    @AfterPermissionGranted(REQUEST_CAMERA)
+    private void paiZhao() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (EasyPermissions.hasPermissions(this, PERMISSIONS_CAMERA)) {
+                openCamera();
+            } else {
+                EasyPermissions.requestPermissions(this, getString(R.string.app_name),
+                        REQUEST_CAMERA, PERMISSIONS_CAMERA);
+            }
+        } else {
+            openCamera();
+        }
+    }
+
+
+    /**
+     * 把图像添加进系统相册
+     *
+     * @param imgPath 图像路径
+     */
+    private void addPicToGallery(String imgPath) {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(imgPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        sendBroadcast(mediaScanIntent);
+    }
+
+    /**
+     * 打开系统摄像头拍照获取图片
+     */
+    private void openCamera() {
+        String state = Environment.getExternalStorageState();
+        if (state.equals(Environment.MEDIA_MOUNTED)) {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);//设置Action为拍照
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
+                imageUri = Uri.fromFile(eoFile);
+            } else {
+                //FileProvider为7.0新增应用间共享文件,在7.0上暴露文件路径会报FileUriExposedException
+                //为了适配7.0,所以需要使用FileProvider,具体使用百度一下即可
+                imageUri = FileProvider.getUriForFile(this,
+                        "com.tami.vmanager.fileprovider", eoFile);//通过FileProvider创建一个content类型的Uri
+            }
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); //添加这一句表示对目标应用临时授权该Uri所代表的文件
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+            startActivityForResult(intent, EO_DAN_PAIZHAO);
+            Log.e(TAG, "openCamera()---intent" + intent);
         }
     }
 
@@ -584,14 +712,14 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements View.O
         cmr.setEstimateNum(estimatedNumberPeople.getText().toString());
         cmr.setMinNum(bottomNumberPeople.getText().toString());
         cmr.setIsImportant(String.valueOf(meetingLevelIndex));
-        if (receptionistListData != null && receptionistListData.size() > 0) {
+        if (receptionistListData != null && receptionistListData.size() > 1) {
             cmr.setVipReceiveUserId(getStringIds());
         }
         if (!TextUtils.isEmpty(eoUrl)) {
             cmr.setEoUrl(eoUrl);
         }
         cmr.setIsVzh(String.valueOf(switchButton.isChecked() ? 1 : 0));
-        if (vipListData != null && vipListData.size() > 0) {
+        if (vipListData != null && vipListData.size() > 1) {
             cmr.setVipList(getVipList());
         }
         networkBroker.ask(cmr, (ex1, res) -> {

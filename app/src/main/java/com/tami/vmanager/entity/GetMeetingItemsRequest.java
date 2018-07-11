@@ -19,7 +19,7 @@ public class GetMeetingItemsRequest extends MobileMessage implements Serializabl
 	private static final long serialVersionUID = 1L;
 
 
-	private String meetingId;
+	private int meetingId;
 	private String startDate;
 
 	public GetMeetingItemsRequest() {
@@ -29,11 +29,11 @@ public class GetMeetingItemsRequest extends MobileMessage implements Serializabl
 	/**
 	 * @return 会议ID
 	 */
-	public String getMeetingId() {
+	public int getMeetingId() {
 		return meetingId;
 	}
 
-	public void setMeetingId(String meetingId) {
+	public void setMeetingId(int meetingId) {
 		this.meetingId = meetingId;
 	}
 

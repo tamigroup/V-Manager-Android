@@ -6,8 +6,8 @@ package com.tami.vmanager.dialog;
 
 public interface ConfirmEnterMeetingListener {
 
-    void viewOnly();
+    void leftBtn();
 
-    void confirm();
+    void rightBtn();
 
 }

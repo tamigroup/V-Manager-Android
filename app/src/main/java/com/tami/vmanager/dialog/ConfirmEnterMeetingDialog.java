@@ -3,9 +3,13 @@ package com.tami.vmanager.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
+
 import com.tami.vmanager.R;
 
 /**
@@ -34,8 +38,20 @@ public class ConfirmEnterMeetingDialog extends Dialog implements View.OnClickLis
     public void init() {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.show_dialog_meeting_overview, null);
-        view.findViewById(R.id.sdmo_view_only).setOnClickListener(this);
-        view.findViewById(R.id.sdmo_confirm).setOnClickListener(this);
+        TextView leftBtn = view.findViewById(R.id.sdmo_view_left_btn);
+        leftBtn.setOnClickListener(this);
+        if (!TextUtils.isEmpty(leftStr)) {
+            leftBtn.setText(leftStr);
+        }
+        TextView rightBtn = view.findViewById(R.id.sdmo_view_rigth_btn);
+        rightBtn.setOnClickListener(this);
+        if (!TextUtils.isEmpty(rightStr)) {
+            rightBtn.setText(rightStr);
+        }
+        TextView contentView = view.findViewById(R.id.sdmo_content);
+        if (!TextUtils.isEmpty(contentStr)) {
+            contentView.setText(contentStr);
+        }
         setCanceledOnTouchOutside(false);
 //        setCancelable(false);//对话框以后地方点击不消息包含返回键
         setContentView(view);
@@ -49,13 +65,13 @@ public class ConfirmEnterMeetingDialog extends Dialog implements View.OnClickLis
     public void onClick(View v) {
         if (confirmEnterMeetingListener != null) {
             switch (v.getId()) {
-                case R.id.sdmo_view_only:
+                case R.id.sdmo_view_left_btn:
                     dismiss();
-                    confirmEnterMeetingListener.viewOnly();
+                    confirmEnterMeetingListener.leftBtn();
                     break;
-                case R.id.sdmo_confirm:
+                case R.id.sdmo_view_rigth_btn:
                     dismiss();
-                    confirmEnterMeetingListener.confirm();
+                    confirmEnterMeetingListener.rightBtn();
                     break;
             }
         } else {
@@ -63,4 +79,41 @@ public class ConfirmEnterMeetingDialog extends Dialog implements View.OnClickLis
         }
     }
 
+    private String leftStr;
+    private String rightStr;
+    private String contentStr;
+
+    public void setLeftStr(String leftStr) {
+        this.leftStr = leftStr;
+    }
+
+    public void setRightStr(String rightStr) {
+        this.rightStr = rightStr;
+    }
+
+    public void setContentStr(String contentStr) {
+        this.contentStr = contentStr;
+    }
+
+    public void setLeftRes(int res) {
+        this.leftStr = context.getString(res);
+    }
+
+    public void setRightRes(int res) {
+        this.rightStr = context.getString(res);
+    }
+
+    public void setContentRes(int res) {
+        this.contentStr = context.getString(res);
+    }
+
+    public void init(String leftStr, String rightStr, String contentStr) {
+        this.leftStr = leftStr;
+        this.rightStr = rightStr;
+        this.contentStr = contentStr;
+    }
+
+    public void init(int leftRes, int rightRes, int contentRes) {
+        init(context.getString(leftRes), context.getString(rightRes), context.getString(contentRes));
+    }
 }

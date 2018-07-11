@@ -9,7 +9,6 @@
         android:id="@+id/menu_item_data"
         android:layout_width="200dp"
         android:layout_height="@dimen/dp_50"
-        android:background="@color/color_FF5657"
         android:gravity="center"
         android:text="@string/cancel"
         android:textColor="@color/color_333333"

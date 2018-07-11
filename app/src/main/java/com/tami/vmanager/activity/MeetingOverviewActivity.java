@@ -111,6 +111,8 @@ public class MeetingOverviewActivity extends BaseActivity {
         recyclerView = findViewById(R.id.meeting_overview_recycler_view);
 
         confirmEnterMeetingDialog = new ConfirmEnterMeetingDialog(this);
+        confirmEnterMeetingDialog.setLeftStr(getString(R.string.view_only));
+        confirmEnterMeetingDialog.setContentStr(getString(R.string.confirm_enter_the_meeting));
     }
 
     @Override
@@ -128,13 +130,13 @@ public class MeetingOverviewActivity extends BaseActivity {
 
         confirmEnterMeetingDialog.setConfirmEnterMeetingListener(new ConfirmEnterMeetingListener() {
             @Override
-            public void viewOnly() {
-                Toast.makeText(getApplicationContext(), "仅查看", Toast.LENGTH_SHORT).show();
+            public void leftBtn() {
+
             }
 
             @Override
-            public void confirm() {
-                Toast.makeText(getApplicationContext(), "确定", Toast.LENGTH_SHORT).show();
+            public void rightBtn() {
+
             }
         });
     }
@@ -216,15 +218,15 @@ public class MeetingOverviewActivity extends BaseActivity {
                 break;
             case R.id.meeting_overview_xuanfu_layout:
                 //悬浮布局
-
+                startActivity(new Intent(getApplicationContext(),CreateServiceFlowActivity.class));
                 break;
             case R.id.meeting_overview_suspension_edit:
                 //悬浮布局中按钮
-
+                startActivity(new Intent(getApplicationContext(),CreateServiceFlowActivity.class));
                 break;
             case R.id.meeting_overview_suspension_look:
                 //悬浮布局中按钮
-
+                startActivity(new Intent(getApplicationContext(),CreateServiceFlowActivity.class));
                 break;
             case R.id.meeting_overview_function_btn:
                 //功能按钮

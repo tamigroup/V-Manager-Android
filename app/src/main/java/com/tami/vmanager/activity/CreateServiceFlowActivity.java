@@ -27,13 +27,23 @@ import android.widget.TextView;
 
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.view.TimePickerView;
+import com.google.gson.Gson;
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
+import com.tami.vmanager.dialog.ConfirmEnterMeetingDialog;
+import com.tami.vmanager.dialog.ConfirmEnterMeetingListener;
 import com.tami.vmanager.dialog.ServiceFlowDialog;
+import com.tami.vmanager.entity.CreateUserMeetingItemRequest;
+import com.tami.vmanager.entity.CreateUserMeetingItemResponse;
 import com.tami.vmanager.entity.GetMeetingDayRequest;
 import com.tami.vmanager.entity.GetMeetingDayResponse;
 import com.tami.vmanager.entity.GetMeetingItemsRequest;
 import com.tami.vmanager.entity.GetMeetingItemsResponse;
+import com.tami.vmanager.entity.MeetingItemsJsonEntity;
+import com.tami.vmanager.entity.SetMeetingItemsRequest;
+import com.tami.vmanager.entity.SetMeetingItemsResponse;
+import com.tami.vmanager.entity.SystemRoleListRequest;
+import com.tami.vmanager.entity.SystemRoleListResponse;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
@@ -43,6 +53,8 @@ import com.tami.vmanager.view.MeetingStateView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -70,6 +82,21 @@ public class CreateServiceFlowActivity extends BaseActivity {
     private ServiceFlowDialog serviceFlowDialog;//创建流程
     private BottomSheetDialog mBottomSheetDialog;//选择角色
 
+    //日期选择框
+    private PopupWindow popupWindow;
+    private List<GetMeetingDayResponse.Array.Item> meetingDayList;
+    private CommonAdapter<GetMeetingDayResponse.Array.Item> meetingDayAdapter;
+    //选择角色
+    private RecyclerView roleRecyclerView;
+    private List<SystemRoleListResponse.Item> roleData;
+    private CommonAdapter<SystemRoleListResponse.Item> roleAdapter;
+    private int selectIndex = -1;
+    //保存弹框
+    private ConfirmEnterMeetingDialog cemd;
+
+    private int meetingId = 0;//会议ID
+
+
     @Override
     public boolean isTitle() {
         return true;
@@ -89,6 +116,10 @@ public class CreateServiceFlowActivity extends BaseActivity {
         bottomRecyclerView = findViewById(R.id.acsf_bottom_recyclerview);
         addView = findViewById(R.id.fcsf_add_process);
         saveBtn = findViewById(R.id.acsf_save_btn);
+
+        serviceFlowDialog = new ServiceFlowDialog(this);
+        cemd = new ConfirmEnterMeetingDialog(this);
+        cemd.setContentRes(R.string.do_you_save_current_process);
     }
 
     @Override
@@ -96,15 +127,28 @@ public class CreateServiceFlowActivity extends BaseActivity {
         dateSelected.setOnClickListener(this);
         saveBtn.setOnClickListener(this);
         addView.setOnClickListener(this);
+
+        cemd.setConfirmEnterMeetingListener(new ConfirmEnterMeetingListener() {
+            @Override
+            public void leftBtn() {
+                showToast(R.string.cancel);
+            }
+
+            @Override
+            public void rightBtn() {
+                showToast(R.string.confirm);
+            }
+        });
     }
 
     @Override
     public void initData() {
-        String day = null;
         Intent intent = getIntent();
         if (intent != null) {
-            day = intent.getStringExtra(Constants.KEY_DAY);
+            meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 0);
         }
+        meetingId = 1;
+
         setTitleName(R.string.flow_chart);
 
         networkBroker = new NetworkBroker(this);
@@ -112,13 +156,16 @@ public class CreateServiceFlowActivity extends BaseActivity {
 
         initRecyclerView();
 
-        serviceFlowDialog = new ServiceFlowDialog(this);
+        //日期
+        meetingDayList = new ArrayList<>();
+        //角色
+        roleData = new ArrayList<>();
     }
 
     @Override
     public void requestNetwork() {
         getMeetingDays();
-        getMeetingItems();
+        getSystemRoleList();
     }
 
     @Override
@@ -140,6 +187,10 @@ public class CreateServiceFlowActivity extends BaseActivity {
             popupWindow.dismiss();
         }
         popupWindow = null;
+        if (cemd != null && cemd.isShowing()) {
+            cemd.dismiss();
+        }
+        cemd = null;
         networkBroker.cancelAllRequests();
     }
 
@@ -153,6 +204,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
                 break;
             case R.id.acsf_save_btn:
                 //保存
+                createUserMeetingItem();
                 break;
             case R.id.fcsf_add_process:
                 //添加自定义
@@ -188,7 +240,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
                     group.setVisibility(View.VISIBLE);
                     holder.getView(R.id.icsf_editing_time).setVisibility(View.GONE);
                     customRole.setOnClickListener((View v) -> {
-                        showCustomRole(customRole);
+                        showCustomRole(customRole, item);
                     });
                     if (item.isSelected) {
                         customRole.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_3B89E9));
@@ -219,6 +271,13 @@ public class CreateServiceFlowActivity extends BaseActivity {
                 //选中图片
                 AppCompatImageView selectedView = holder.getView(R.id.icsf_selected);
 
+                //时间不为空时添充
+                if (item.startOn != 0) {
+                    timeView.setText(TimeUtils.date2String(new Date(item.startOn), TimeUtils.DATE_HHMM_SLASH));
+                    item.isSelected = true;
+                    timeView.setEnabled(true);
+                }
+
                 if (item.isSelected) {
                     //勾选的时间颜色会变
                     timeView.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_3B89E9));
@@ -234,12 +293,6 @@ public class CreateServiceFlowActivity extends BaseActivity {
                 });
                 timeView.setEnabled(item.isSelected ? true : false);
 
-                //时间不为空时添充
-                if (item.createOn != 0) {
-                    timeView.setText(TimeUtils.date2String(new Date(item.createOn), TimeUtils.DATE_HHMM_SLASH));
-                    timeView.setEnabled(true);
-                }
-
                 selectedView.setOnClickListener((View view) -> {
                     item.isSelected = !item.isSelected;
                     if (item.isSelected) {
@@ -254,7 +307,12 @@ public class CreateServiceFlowActivity extends BaseActivity {
                         if (item.isCustom) {
                             customRole.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_888888));
                             customRole.setEnabled(false);
-                            bottomData.add(topData.get(position));
+                            GetMeetingItemsResponse.Array.Item removeItem = topData.get(position);
+                            if (removeItem.role != null) {
+                                removeItem.role.name = null;
+                            }
+                            removeItem.startOn = 0;
+                            bottomData.add(removeItem);
                             bottomAdapter.notifyDataSetChanged();
                             topData.remove(position);
                             topAdapter.notifyDataSetChanged();
@@ -296,12 +354,15 @@ public class CreateServiceFlowActivity extends BaseActivity {
                 });
                 //角色选择
                 customRole.setOnClickListener((View v) -> {
-                    showCustomRole(customRole);
+                    showCustomRole(customRole, item);
                 });
                 if (item.isSelected) {
                     //勾选的时间颜色会变
                     timeView.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_3B89E9));
                     customRole.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_3B89E9));
+                    if(item.startOn!=0){
+                        timeView.setText(TimeUtils.date2String(new Date(item.startOn), TimeUtils.DATE_HHMM_SLASH));
+                    }
                     if (item.role != null && !TextUtils.isEmpty(item.role.name)) {
                         customRole.setText(item.role.name);
                     }
@@ -353,29 +414,42 @@ public class CreateServiceFlowActivity extends BaseActivity {
      */
     private void createTime(TextView view, int position, boolean flag) {
         Calendar selectedDate = Calendar.getInstance();
-//        Calendar startDate = Calendar.getInstance();
-//        Calendar endDate = Calendar.getInstance();
-//        endDate.set(2020, 11, 31);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date1 = null;
+        try {
+            date1 = sdf.parse(dateSelected.getText().toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (date1 != null) {
+            selectedDate.setTime(date1);
+        }
         TimePickerView pvTime = new TimePickerBuilder(this, (Date date, View v) -> {
             if (flag) {
-                topData.get(position).createOn = date.getTime();
+                topData.get(position).startOn = date.getTime();
                 Collections.sort(topData);
                 topAdapter.notifyDataSetChanged();
             } else {
                 //追加数据到TOPListView中
                 GetMeetingItemsResponse.Array.Item item = bottomData.get(position);
-                item.createOn = date.getTime();
-                topData.add(item);
-                Collections.sort(topData);
-                topAdapter.notifyDataSetChanged();
-                //底部列表移除数据
-                bottomData.remove(position);
-                //没有数据时隐藏一下
-                if (bottomData.size() > 0) {
+                item.startOn = date.getTime();
+                //只有时间和角色都选择后才向TOP追加
+                if (item.role != null && !TextUtils.isEmpty(item.role.name)) {
+                    topData.add(item);
+                    Collections.sort(topData);
+                    topAdapter.notifyDataSetChanged();
+                    //底部列表移除数据
+                    bottomData.remove(position);
+                    //没有数据时隐藏一下
+                    if (bottomData.size() > 0) {
+                        Collections.sort(bottomData);
+                        bottomAdapter.notifyDataSetChanged();
+                    } else {
+                        bottomRecyclerView.setVisibility(View.GONE);
+                    }
+                } else {
                     Collections.sort(bottomData);
                     bottomAdapter.notifyDataSetChanged();
-                } else {
-                    bottomRecyclerView.setVisibility(View.GONE);
                 }
             }
         }).setType(new boolean[]{false, false, false, true, true, false})
@@ -421,10 +495,10 @@ public class CreateServiceFlowActivity extends BaseActivity {
     /**
      * 获取服务器全部节点
      */
-    private void getMeetingItems() {
+    private void getMeetingItems(String day) {
         GetMeetingItemsRequest gmir = new GetMeetingItemsRequest();
-        gmir.setMeetingId(String.valueOf(29));
-        gmir.setStartDate("2018-07-10");
+        gmir.setMeetingId(meetingId);
+        gmir.setStartDate(day);
         networkBroker.ask(gmir, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);
@@ -448,12 +522,12 @@ public class CreateServiceFlowActivity extends BaseActivity {
         });
     }
 
-    private RecyclerView roleRecyclerView;
-    private List<String> roleData = new ArrayList<>();
-    private CommonAdapter<String> roleAdapter;
-    private int selectIndex = -1;
-
-    public void showCustomRole(TextView textView) {
+    /**
+     * 选择角色
+     *
+     * @param textView
+     */
+    public void showCustomRole(TextView textView, GetMeetingItemsResponse.Array.Item item) {
         mBottomSheetDialog = new BottomSheetDialog(this);
         ConstraintLayout cLayout = (ConstraintLayout) getLayoutInflater().inflate(R.layout.show_menu_service_flow, null);
         TextView cancle = cLayout.findViewById(R.id.smsf_cancel);
@@ -463,29 +537,32 @@ public class CreateServiceFlowActivity extends BaseActivity {
         });
         confirm.setOnClickListener((View v) -> {
             mBottomSheetDialog.dismiss();
+            if (selectIndex != -1) {
+                createUserMeetingItem(item);
+            }
         });
-        setData1();
         roleRecyclerView = cLayout.findViewById(R.id.smsf_recyclerview);
         GridLayoutManager layoutManage = new GridLayoutManager(getApplicationContext(), 3);
         roleRecyclerView.setLayoutManager(layoutManage);
-        roleAdapter = new CommonAdapter<String>(getApplicationContext(), R.layout.item_role, roleData) {
+        roleAdapter = new CommonAdapter<SystemRoleListResponse.Item>(getApplicationContext(), R.layout.item_role, roleData) {
             @Override
-            protected void convert(ViewHolder holder, String s, int position) {
+            protected void convert(ViewHolder holder, SystemRoleListResponse.Item roleItem, int position) {
                 MeetingStateView roleView = holder.getView(R.id.item_role_txt);
-                roleView.setTextStyle(s, R.color.color_333333, android.R.color.black, 1, 5);
-                roleView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (selectIndex == -1) {
-                            roleView.setTextStyle(s, R.color.color_3B89E9, R.color.color_3B89E9, 1, 5);
-                        } else {
-                            MeetingStateView selectView = roleRecyclerView.getChildAt(selectIndex).findViewById(R.id.item_role_txt);
-                            selectView.setTextStyle(selectView.getText().toString(), R.color.color_333333, android.R.color.black, 1, 5);
-                            roleView.setTextStyle(s, R.color.color_3B89E9, R.color.color_3B89E9, 1, 5);
-                        }
-                        textView.setText(s);
-                        selectIndex = position;
+                roleView.setTextStyle(roleItem.roleName, R.color.color_333333, android.R.color.black, 1, 5);
+                roleView.setOnClickListener((View v) -> {
+                    if (selectIndex == -1) {
+                        roleView.setTextStyle(roleItem.roleName, R.color.color_3B89E9, R.color.color_3B89E9, 1, 5);
+                    } else {
+                        MeetingStateView selectView = roleRecyclerView.getChildAt(selectIndex).findViewById(R.id.item_role_txt);
+                        selectView.setTextStyle(selectView.getText().toString(), R.color.color_333333, android.R.color.black, 1, 5);
+                        roleView.setTextStyle(roleItem.roleName, R.color.color_3B89E9, R.color.color_3B89E9, 1, 5);
                     }
+                    textView.setText(roleItem.roleName);
+                    if (item.role == null) {
+                        item.role = new GetMeetingItemsResponse.Array.Item.Role();
+                    }
+                    item.role.name = roleItem.roleName;
+                    selectIndex = position;
                 });
             }
         };
@@ -494,46 +571,34 @@ public class CreateServiceFlowActivity extends BaseActivity {
         mBottomSheetDialog.show();
     }
 
-    private void setData1() {
-        for (int i = 0; i < 10; i++) {
-            roleData.add("name" + i);
-        }
-    }
-
-    private PopupWindow popupWindow;
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void showPopWindow(TextView view) {
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         View view1 = layoutInflater.inflate(R.layout.show_menu_date, null);
         RecyclerView recyclerView = view1.findViewById(R.id.smd_recyclerview);
-        List<String> str = new ArrayList<>();
-        str.add("测试一");
-        str.add("测试二");
-        str.add("测试三");
-
-        CommonAdapter<String> commonAdapter = new CommonAdapter<String>(getApplicationContext(), R.layout.show_menu_date_item, str) {
+        meetingDayAdapter = new CommonAdapter<GetMeetingDayResponse.Array.Item>(getApplicationContext(), R.layout.show_menu_date_item, meetingDayList) {
             @Override
-            protected void convert(ViewHolder holder, String s, int position) {
+            protected void convert(ViewHolder holder, GetMeetingDayResponse.Array.Item item, int position) {
                 TextView dataView = holder.getView(R.id.menu_item_data);
-                dataView.setText(s);
+                dataView.setText(item.day);
                 dataView.setOnClickListener((View v) -> {
                     popupWindow.dismiss();
                     view.setText(dataView.getText().toString());
+
                 });
             }
         };
         LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(manager);
-        recyclerView.setAdapter(commonAdapter);
+        recyclerView.setAdapter(meetingDayAdapter);
         popupWindow = new PopupWindow(recyclerView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         popupWindow.setFocusable(true);
         popupWindow.setOutsideTouchable(true);
         ColorDrawable cd = new ColorDrawable(0x00ffffff);// 背景颜色全透明
         popupWindow.setBackgroundDrawable(cd);
         popupWindow.setAnimationStyle(R.style.style_pop_animation);// 动画效果必须放在showAsDropDown()方法上边，否则无效
-        popupWindow.showAsDropDown(view, -ScreenUtil.dip2px(getApplicationContext(), 50), 0, Gravity.CENTER);
+        popupWindow.showAsDropDown(view, -ScreenUtil.dip2px(getApplicationContext(), 60), 0, Gravity.CENTER);
     }
 
     /**
@@ -541,7 +606,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
      */
     public void getMeetingDays() {
         GetMeetingDayRequest gmdr = new GetMeetingDayRequest();
-        gmdr.setMeetingId(29);
+        gmdr.setMeetingId(meetingId);
         networkBroker.ask(gmdr, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);
@@ -550,11 +615,143 @@ public class CreateServiceFlowActivity extends BaseActivity {
             try {
                 GetMeetingDayResponse response = (GetMeetingDayResponse) res;
                 if (response.getCode() == 200) {
-
+                    GetMeetingDayResponse.Array array = response.data;
+                    if (array != null && array.dataList != null && array.dataList.size() > 0) {
+                        meetingDayList.addAll(array.dataList);
+                        dateSelected.setText(meetingDayList.get(0).day);
+                        if (meetingDayList.size() > 1) {
+                            dateSelectedImage.setVisibility(View.VISIBLE);
+                        } else {
+                            dateSelectedImage.setVisibility(View.GONE);
+                        }
+                        getMeetingItems(meetingDayList.get(0).day);
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
+    }
+
+    /**
+     * 获取角色数据
+     */
+    public void getSystemRoleList() {
+        SystemRoleListRequest srlr = new SystemRoleListRequest();
+        networkBroker.ask(srlr, (ex1, res) -> {
+            if (null != ex1) {
+                Logger.d(ex1.getMessage() + "-" + ex1);
+                return;
+            }
+            try {
+                SystemRoleListResponse response = (SystemRoleListResponse) res;
+                if (response.getCode() == 200) {
+                    List<SystemRoleListResponse.Item> list = response.data;
+                    if (list != null && list.size() > 0) {
+                        roleData.addAll(list);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    /**
+     * 创建自定义流程节点
+     */
+    private void createUserMeetingItem(GetMeetingItemsResponse.Array.Item item) {
+        CreateUserMeetingItemRequest cumir = new CreateUserMeetingItemRequest();
+        cumir.setMeetingId(meetingId);
+        cumir.setMeetingItemName(item.name);
+        cumir.setRoleId(roleData.get(selectIndex).id);
+        networkBroker.ask(cumir, (ex1, res) -> {
+            if (null != ex1) {
+                Logger.d(ex1.getMessage() + "-" + ex1);
+                return;
+            }
+            try {
+                CreateUserMeetingItemResponse response = (CreateUserMeetingItemResponse) res;
+                if (response.getCode() == 200) {
+                    CreateUserMeetingItemResponse.Item cItem = response.data;
+                    if (cItem != null) {
+                        item.id = cItem.id;
+                        //只有时间和角色都选择后才向TOP追加
+                        if (item.startOn != 0) {
+                            topData.add(item);
+                            Collections.sort(topData);
+                            topAdapter.notifyDataSetChanged();
+                            //底部列表移除数据
+                            bottomData.remove(item);
+                            //没有数据时隐藏一下
+                            if (bottomData.size() > 0) {
+                                Collections.sort(bottomData);
+                                bottomAdapter.notifyDataSetChanged();
+                            } else {
+                                bottomRecyclerView.setVisibility(View.GONE);
+                            }
+                        } else {
+                            Collections.sort(bottomData);
+                            bottomAdapter.notifyDataSetChanged();
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+
+    /**
+     * 保存流程节点
+     */
+    private void createUserMeetingItem() {
+        SetMeetingItemsRequest smir = new SetMeetingItemsRequest();
+        smir.setMeetingId(meetingId);
+        if (!TextUtils.isEmpty(dateSelected.getText())) {
+            smir.setStartOn(dateSelected.getText().toString());
+        }
+        smir.setMeetingItemsJson(getMeetingJson());
+        networkBroker.ask(smir, (ex1, res) -> {
+            if (null != ex1) {
+                Logger.d(ex1.getMessage() + "-" + ex1);
+                return;
+            }
+            try {
+                SetMeetingItemsResponse response = (SetMeetingItemsResponse) res;
+                if (response.getCode() == 200) {
+                    if (response.data) {
+                        showToast(getString(R.string.save_flow, getString(R.string.success)));
+                    } else {
+                        showToast(getString(R.string.save_flow, getString(R.string.failure)));
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    /**
+     * 返回JSON串
+     *
+     * @return
+     */
+    private String getMeetingJson() {
+        List<MeetingItemsJsonEntity> jsonList = new ArrayList<>();
+        for (GetMeetingItemsResponse.Array.Item item : topData) {
+            if (item.isSelected) {
+                MeetingItemsJsonEntity mie = new MeetingItemsJsonEntity();
+                mie.meetingItemId = item.id;
+                mie.startOn = item.startOn;
+                jsonList.add(mie);
+            }
+        }
+        String json = null;
+        if (jsonList.size() > 0) {
+            json = new Gson().toJson(jsonList);
+        }
+        return json;
     }
 }
