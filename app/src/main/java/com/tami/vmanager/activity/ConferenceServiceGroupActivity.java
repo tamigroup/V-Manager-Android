@@ -9,6 +9,7 @@ import android.view.View;
 import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.GuidePageFragmentPagerAdapter;
 import com.tami.vmanager.base.BaseActivity;
+import com.tami.vmanager.entity.GetMeetingResponse;
 import com.tami.vmanager.fragment.ConferenceInformationFragment;
 import com.tami.vmanager.fragment.FeedbackFragment;
 import com.tami.vmanager.fragment.GroupChatFragment;
@@ -30,6 +31,7 @@ public class ConferenceServiceGroupActivity extends BaseActivity {
     private TabLayout.TabLayoutOnPageChangeListener tabLayoutOnPageChangeListener;
     private TabLayout.ViewPagerOnTabSelectedListener viewPagerOnTabSelectedListener;
     private int meetingId;
+    private GetMeetingResponse.Item item;
 
     @Override
     public boolean isTitle() {
@@ -57,6 +59,7 @@ public class ConferenceServiceGroupActivity extends BaseActivity {
         Intent intent = getIntent();
         if (intent != null) {
             meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 0);
+            item = (GetMeetingResponse.Item) intent.getSerializableExtra(Constants.MEETING_INFO);
         }
         setTitleName(R.string.conference_service_group);
         //设置右边功能按钮图片
@@ -64,7 +67,7 @@ public class ConferenceServiceGroupActivity extends BaseActivity {
 
         //添充数据
         arrayFragment = new Fragment[4];
-        arrayFragment[0] = new ConferenceInformationFragment();
+        arrayFragment[0] = new ConferenceInformationFragment(meetingId,item);
         arrayFragment[1] = new GroupChatFragment();
         arrayFragment[2] = new FeedbackFragment();
         arrayFragment[3] = new NoticeFragment();

@@ -12,14 +12,16 @@
         android:layout_height="wrap_content"
         android:text="7:30"
         android:textSize="@dimen/sp_14"
-        android:textColor="@color/color_333333"
+        android:drawableLeft="@mipmap/time_gray"
+        android:drawablePadding="@dimen/dp_5"
+        android:textColor="@color/color_CACACA"
         android:layout_marginLeft="@dimen/dp_30"
         app:layout_constraintStart_toStartOf="parent"/>
     <TextView
         android:id="@+id/item_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/color_333333"
+        android:textColor="@color/color_CACACA"
         android:textSize="@dimen/sp_14"
         android:layout_marginLeft="@dimen/dp_15"
         app:layout_constraintStart_toEndOf="@+id/item_time"/>
@@ -28,10 +30,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/sp_14"
-        android:textColor="@color/color_34DB8E"
-        android:drawableRight="@mipmap/middle_pic_selected"
+        android:textColor="@color/color_CACACA"
+        android:text="@string/no_confirmed"
+        android:drawableRight="@mipmap/icon_ok_gray"
         android:drawablePadding="@dimen/dp_5"
         android:layout_marginRight="@dimen/dp_30"
-        app:layout_constraintStart_toEndOf="@+id/item_name"
         app:layout_constraintEnd_toEndOf="parent"/>
 </android.support.constraint.ConstraintLayout>

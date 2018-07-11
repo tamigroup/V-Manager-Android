@@ -1,13 +1,21 @@
 package com.tami.vmanager.fragment;
 
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.TextView;
 
+import com.jwenfeng.library.pulltorefresh.BaseRefreshListener;
 import com.jwenfeng.library.pulltorefresh.PullToRefreshLayout;
+import com.squareup.picasso.Picasso;
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.ViewPagerBaseFragment;
-import com.tami.vmanager.entity.NoticeEntity;
+import com.tami.vmanager.entity.ChangeDemandRequestBean;
+import com.tami.vmanager.entity.ChangeDemandResponseBean;
+import com.tami.vmanager.entity.MobileMessage;
+import com.tami.vmanager.http.NetworkBroker;
+import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.view.CircleImageView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -16,14 +24,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 反馈
+ * 反馈 活动变化
  * Created by why on 2018/6/16.
  */
 
 public class FeedbackFragment extends ViewPagerBaseFragment {
 
     private RecyclerView recyclerView;
-    private PullToRefreshLayout feedback_pullToRefreshLayout;
+    private PullToRefreshLayout pullToRefreshLayout;
+    private NetworkBroker networkBroker;
+    Handler handler = new Handler();
+    private int CurPage = 1;
+    List<ChangeDemandResponseBean.DataBean.ElementsBean> listData;
+    private CommonAdapter<ChangeDemandResponseBean.DataBean.ElementsBean> commonAdapter;
 
     @Override
     public int getContentViewId() {
@@ -33,46 +46,94 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
     @Override
     public void initView() {
         recyclerView = findViewById(R.id.notice_recycler_view);
-        feedback_pullToRefreshLayout = findViewById(R.id.feedback_PullToRefreshLayout);
+        pullToRefreshLayout = findViewById(R.id.feedback_PullToRefreshLayout);
+        networkBroker = new NetworkBroker(getContext());
     }
 
     @Override
     public void initListener() {
-
-    }
-
-    @Override
-    public void initData() {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(new CommonAdapter<NoticeEntity>(getActivity(), R.layout.item_feedback, getData()) {
+        pullToRefreshLayout.setRefreshListener(new BaseRefreshListener() {
             @Override
-            protected void convert(ViewHolder holder, NoticeEntity noticeEntity, int position) {
-
+            public void refresh() {
+                queryData();
+                handler.postDelayed(() -> pullToRefreshLayout.finishRefresh(), 2000);
             }
 
             @Override
-            public void convert(ViewHolder holder, NoticeEntity noticeEntity) {
-                //头像
-                CircleImageView circleImageView = holder.getView(R.id.in_avatar_image);
-                //发送者
-                TextView name = holder.getView(R.id.in_name);
-                name.setText(noticeEntity.getName());
-                //发送内容
-                TextView content = holder.getView(R.id.item_content_tv);
-                content.setText(noticeEntity.getContent());
-                //发送时间
-                TextView time = holder.getView(R.id.item_time);
-                time.setText(noticeEntity.getTime());
+            public void loadMore() {
+                queryData();
+                handler.postDelayed(() -> pullToRefreshLayout.finishLoadMore(), 2000);
             }
         });
     }
 
     @Override
-    public void requestNetwork() {
-
+    public void initData() {
+        listData = new ArrayList<>();
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        commonAdapter = new CommonAdapter<ChangeDemandResponseBean.DataBean.ElementsBean>(getActivity(), R.layout.item_feedback, listData) {
+            @Override
+            protected void convert(ViewHolder holder, ChangeDemandResponseBean.DataBean.ElementsBean item, int position) {
+                if (!item.getRequestIconUrl().trim().isEmpty()) {
+                    CircleImageView circleImageView = holder.getView(R.id.in_avatar_image);
+                    Picasso.get().load(item.getRequestIconUrl()).into(circleImageView);
+                }
+                TextView have_reply = holder.getView(R.id.have_reply);
+                TextView item_reply_content = holder.getView(R.id.item_reply_content);
+                TextView item_reply_name = holder.getView(R.id.item_reply_name);
+                holder.setText(R.id.item_content_tv, item.getRequestContent());
+                holder.setText(R.id.in_name, item.getRequestUserName());
+                holder.setText(R.id.item_time, item.getRequestTime());
+                if (item.getReplyUserName().trim().isEmpty() && item.getReplyContent().trim().isEmpty()) {
+                    have_reply.setText(getResources().getString(R.string.no_replay));
+                    have_reply.setTextColor(getResources().getColor(R.color.color_999999));
+                    item_reply_content.setVisibility(View.GONE);
+                    item_reply_name.setVisibility(View.GONE);
+                } else {
+                    item_reply_content.setVisibility(View.VISIBLE);
+                    item_reply_name.setVisibility(View.VISIBLE);
+                    holder.setText(R.id.item_reply_name, item.getReplyUserName());
+                    holder.setText(R.id.item_reply_content, String.format(getResources().getString(R.string.replay_content), item.getReplyContent()));
+                }
+            }
+        };
+        commonAdapter.notifyDataSetChanged();
+        recyclerView.setAdapter(commonAdapter);
     }
+
+    @Override
+    public void requestNetwork() {
+        queryData();
+    }
+
+    private void queryData() {
+        ChangeDemandRequestBean changeDemandRequestBean = new ChangeDemandRequestBean();
+        changeDemandRequestBean.setMeetingId(6);
+        changeDemandRequestBean.setCurPage(CurPage++);
+        changeDemandRequestBean.setPageSize(10);
+        networkBroker.ask(changeDemandRequestBean, (Exception exl, MobileMessage res) -> {
+            if (null != exl) {
+                Logger.d(exl.getMessage() + "-" + exl);
+                return;
+            }
+            try {
+                ChangeDemandResponseBean response = (ChangeDemandResponseBean) res;
+                if (response.getCode() == 200) {
+                    ChangeDemandResponseBean.DataBean data = response.getData();
+                    if (data != null && data.getElements() != null && data.getElements().size() > 0) {
+                        listData.addAll(data.getElements());
+                        commonAdapter.notifyDataSetChanged();
+                    }
+                    if (data.isLastPage()) {
+                        pullToRefreshLayout.setCanLoadMore(false);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
 
     @Override
     public void removeListener() {
@@ -82,18 +143,5 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
     @Override
     public void emptyObject() {
 
-    }
-
-    private List<NoticeEntity> getData() {
-        List<NoticeEntity> data = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            NoticeEntity noticeEntity = new NoticeEntity();
-            noticeEntity.setId(i);
-            noticeEntity.setName("反馈测试名称" + i);
-            noticeEntity.setContent("反馈测试内容" + i);
-            noticeEntity.setTime("6月19日 15:00");
-            data.add(noticeEntity);
-        }
-        return data;
     }
 }

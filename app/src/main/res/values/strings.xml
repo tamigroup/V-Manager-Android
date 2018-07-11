@@ -267,6 +267,7 @@
     <string name="select_role">选择角色</string>
     <string name="ready">就绪</string>
     <string name="confirmed">已确认</string>
+    <string name="no_confirmed">未确认</string>
     <string name="xiaovtixing">加餐或减餐建议、增加茶歇或减少荼歇建议。\n更多功能，敬请期待！</string>
     <string name="modify">修改</string>
     <string name="editor">编辑</string>
@@ -288,6 +289,13 @@
     <string name="attention_cancel_prompt">取消关注%s！</string>
 
     <string name="delete_meeting">删除会议%s！</string>
+    <string name="replay_content">回复：“%s”</string>
+    <string name="has_replay">已回复</string>
+    <string name="no_replay">未回复</string>
+    <string name="hint_replay">回复: %s</string>
+    <string name="total">总计</string>
+    <string name="complete">已完成</string>
+    <string name="no_complete">未完成</string>
 
     <string name="jiaxing_1">* 会议名称</string>
     <string name="jiaxing_2">* 主办方</string>
