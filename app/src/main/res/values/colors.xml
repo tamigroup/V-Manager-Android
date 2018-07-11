@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#364467</color>
+    <color name="color_364468">#364468</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
@@ -8,6 +9,7 @@
     <color name="color_D7D7D7">#D7D7D7</color>
     <color name="color_ff303030">#ff303030</color>
     <color name="color_e46a6a">#e46a6a</color>
+    <color name="color_FFFFFF">#FFFFFF</color>
 
 
     <!--    页面背景色    -->
@@ -84,5 +86,6 @@
     <color name="color_666666">#666666</color>
     <color name="color_FF930F">#FF930F</color>
     <color name="color_498AFF">#498AFF</color>
+    <color name="progress_bg">#1F2C4F</color>
 
 </resources>

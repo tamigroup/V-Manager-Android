@@ -133,7 +133,7 @@
     <string name="today">今天</string>
     <string name="this_week">本周</string>
     <string name="this_month">本月</string>
-    <string name="this_year">本年度</string>
+    <string name="this_year">本年</string>
     <string name="cancel">取消</string>
 
     <string name="album">相册</string>
@@ -293,4 +293,7 @@
     <string name="has_replay">已回复</string>
     <string name="no_replay">未回复</string>
     <string name="hint_replay">回复: %s</string>
+    <string name="total">总计</string>
+    <string name="complete">已完成</string>
+    <string name="no_complete">未完成</string>
 </resources>
