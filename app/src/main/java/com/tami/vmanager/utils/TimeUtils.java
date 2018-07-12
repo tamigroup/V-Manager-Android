@@ -186,6 +186,7 @@ public class TimeUtils {
     public static final SimpleDateFormat DATE_YYYYMMHH_SLASH = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
     public static final SimpleDateFormat DATE_YYYYMMDDHHMM_SLASH = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
     public static final SimpleDateFormat DATE_HHMM_SLASH = new SimpleDateFormat("HH:mm", Locale.getDefault());
+    public static final SimpleDateFormat DATE_YYYYMMDD_SLASH = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
     /**
      * 将时间戳转为时间字符串

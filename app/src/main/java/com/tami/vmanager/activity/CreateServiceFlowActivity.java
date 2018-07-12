@@ -1,5 +1,6 @@
 package com.tami.vmanager.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -53,6 +54,7 @@ import com.tami.vmanager.view.MeetingStateView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
+import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -136,7 +138,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
 
             @Override
             public void rightBtn() {
-                showToast(R.string.confirm);
+                createUserMeetingItem(true);
             }
         });
     }
@@ -200,11 +202,11 @@ public class CreateServiceFlowActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.acsf_date_selected:
-                showPopWindow(dateSelected);
+                cemd.show();
                 break;
             case R.id.acsf_save_btn:
                 //保存
-                createUserMeetingItem();
+                createUserMeetingItem(false);
                 break;
             case R.id.fcsf_add_process:
                 //添加自定义
@@ -360,7 +362,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
                     //勾选的时间颜色会变
                     timeView.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_3B89E9));
                     customRole.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_3B89E9));
-                    if(item.startOn!=0){
+                    if (item.startOn != 0) {
                         timeView.setText(TimeUtils.date2String(new Date(item.startOn), TimeUtils.DATE_HHMM_SLASH));
                     }
                     if (item.role != null && !TextUtils.isEmpty(item.role.name)) {
@@ -414,15 +416,9 @@ public class CreateServiceFlowActivity extends BaseActivity {
      */
     private void createTime(TextView view, int position, boolean flag) {
         Calendar selectedDate = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date date1 = null;
-        try {
-            date1 = sdf.parse(dateSelected.getText().toString());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        if (date1 != null) {
-            selectedDate.setTime(date1);
+        if (!TextUtils.isEmpty(dateSelected.getText())) {
+            Date selectData = TimeUtils.string2Date(dateSelected.getText().toString(), TimeUtils.DATE_YYYYMMDD_SLASH);
+            selectedDate.setTime(selectData);
         }
         TimePickerView pvTime = new TimePickerBuilder(this, (Date date, View v) -> {
             if (flag) {
@@ -510,6 +506,9 @@ public class CreateServiceFlowActivity extends BaseActivity {
                     if (response.data != null) {
                         GetMeetingItemsResponse.Array array = response.data;
                         if (array != null && array.dataList != null && array.dataList.size() > 0) {
+                            if (topData != null && topData.size() > 0) {
+                                topData.clear();
+                            }
                             topData.addAll(array.dataList);
                             Collections.sort(topData);
                             topAdapter.notifyDataSetChanged();
@@ -571,7 +570,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
         mBottomSheetDialog.show();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @SuppressLint("NewApi")
     private void showPopWindow(TextView view) {
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         View view1 = layoutInflater.inflate(R.layout.show_menu_date, null);
@@ -583,8 +582,14 @@ public class CreateServiceFlowActivity extends BaseActivity {
                 dataView.setText(item.day);
                 dataView.setOnClickListener((View v) -> {
                     popupWindow.dismiss();
-                    view.setText(dataView.getText().toString());
-
+                    String dataStr = dataView.getText().toString();
+                    view.setText(dataStr);
+                    getMeetingItems(dataStr);
+                    if (bottomData != null) {
+                        bottomData.clear();
+                    }
+                    bottomAdapter.notifyDataSetChanged();
+                    bottomRecyclerView.setVisibility(View.GONE);
                 });
             }
         };
@@ -706,7 +711,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
     /**
      * 保存流程节点
      */
-    private void createUserMeetingItem() {
+    private void createUserMeetingItem(boolean flag) {
         SetMeetingItemsRequest smir = new SetMeetingItemsRequest();
         smir.setMeetingId(meetingId);
         if (!TextUtils.isEmpty(dateSelected.getText())) {
@@ -723,6 +728,9 @@ public class CreateServiceFlowActivity extends BaseActivity {
                 if (response.getCode() == 200) {
                     if (response.data) {
                         showToast(getString(R.string.save_flow, getString(R.string.success)));
+                        if (flag) {
+                            showPopWindow(dateSelected);
+                        }
                     } else {
                         showToast(getString(R.string.save_flow, getString(R.string.failure)));
                     }

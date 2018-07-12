@@ -133,6 +133,7 @@ public class HostFragment extends ViewPagerBaseFragment {
         networkBroker.ask(evaluatePageRequestBean, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);
+                pulltorefreshlayout.finishLoadMore();
                 return;
             }
             EvaluatePageResponseBean response = (EvaluatePageResponseBean) res;
@@ -144,9 +145,12 @@ public class HostFragment extends ViewPagerBaseFragment {
                     listData.addAll(data.getElements());
                     commonAdapter.notifyDataSetChanged();
                 }
+                pulltorefreshlayout.finishLoadMore();
                 if (data.isLastPage()) {
                     pulltorefreshlayout.setCanLoadMore(false);
                 }
+            }else{
+                pulltorefreshlayout.finishLoadMore();
             }
         });
     }
