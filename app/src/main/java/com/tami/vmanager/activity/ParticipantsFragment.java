@@ -140,8 +140,8 @@ public class ParticipantsFragment extends ViewPagerBaseFragment {
             EvaluatePageResponseBean response = (EvaluatePageResponseBean) res;
             if (response.getCode() == 200) {
                 EvaluatePageResponseBean.DataBean data = response.getData();
+                comment.setText(getResources().getString(R.string.comment, data.getTotalElements()));
                 if (data.getElements() != null && data.getElements().size() > 0) {
-                    comment.setText(String.format(getResources().getString(R.string.comment, data.getElements().size())));
                     listData.addAll(data.getElements());
                     commonAdapter.notifyDataSetChanged();
                 }
@@ -172,10 +172,36 @@ public class ParticipantsFragment extends ViewPagerBaseFragment {
                 IdeasBoxResponsetBean.DataBean data = response.getData();
                 if (data != null) {
                     ratingBar.setRating(data.getAvg());
-                    ratingBar.setRating(2);
+                    switch (data.getAvg()) {
+                        case 0:
+                        case 1:
+                            setEvaluate(R.string.very_bad);
+                            break;
+                        case 2:
+                            setEvaluate(R.string.bad);
+                            break;
+                        case 3:
+                            setEvaluate(R.string.general);
+                            break;
+                        case 4:
+                            setEvaluate(R.string.good);
+                            break;
+                        case 5:
+                            setEvaluate(R.string.very_good);
+                            break;
+                    }
                 }
             }
         });
+    }
+
+    /**
+     * 评价服务与环境
+     * @param evaluate 评价
+     */
+    private void setEvaluate(int evaluate) {
+        environmental.setText(getResources().getString(R.string.environment, getResources().getString(evaluate)));
+        service.setText(getResources().getString(R.string.service, getResources().getString(evaluate)));
     }
 
     @Override

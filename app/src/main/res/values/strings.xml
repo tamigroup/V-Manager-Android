@@ -121,8 +121,13 @@
     <string name="host">主办方(%s)</string>
     <string name="participants">参会方(%s)</string>
     <string name="score">打分</string>
-    <string name="environment">环境：</string>
-    <string name="service">服务：</string>
+    <string name="environment">环境：%s</string>
+    <string name="very_good">非常好</string>
+    <string name="good">好</string>
+    <string name="general">一般</string>
+    <string name="bad">差</string>
+    <string name="very_bad">非常差</string>
+    <string name="service">服务：%s</string>
     <string name="comment">评论(%s)</string>
     <string name="no_feedback">暂无反馈哦</string>
 

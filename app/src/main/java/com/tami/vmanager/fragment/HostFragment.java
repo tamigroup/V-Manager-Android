@@ -80,11 +80,6 @@ public class HostFragment extends ViewPagerBaseFragment {
 
     @Override
     public void initData() {
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            meetingId = bundle.getInt(Constants.KEY_MEETING_ID);
-        }
-
         initRecyc();
     }
 
@@ -113,6 +108,11 @@ public class HostFragment extends ViewPagerBaseFragment {
     public void requestNetwork() {
         networkBroker = new NetworkBroker(getContext());
         networkBroker.setCancelTag(getTAG());
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            meetingId = bundle.getInt(Constants.KEY_MEETING_ID);
+        }
+
         getAvg();
         getEvaluate();
     }
@@ -137,7 +137,7 @@ public class HostFragment extends ViewPagerBaseFragment {
             if (response.getCode() == 200) {
                 EvaluatePageResponseBean.DataBean data = response.getData();
                 if (data.getElements() != null && data.getElements().size() > 0) {
-                    comment.setText(String.format(getResources().getString(R.string.comment, data.getElements().size())));
+                    comment.setText(getResources().getString(R.string.comment, data.getTotalElements()));
                     listData.addAll(data.getElements());
                     commonAdapter.notifyDataSetChanged();
                 }
@@ -145,7 +145,7 @@ public class HostFragment extends ViewPagerBaseFragment {
                 if (data.isLastPage()) {
                     pulltorefreshlayout.setCanLoadMore(false);
                 }
-            }else{
+            } else {
                 pulltorefreshlayout.finishLoadMore();
             }
         });
@@ -168,9 +168,36 @@ public class HostFragment extends ViewPagerBaseFragment {
                 IdeasBoxResponsetBean.DataBean data = response.getData();
                 if (data != null) {
                     ratingBar.setRating(data.getAvg());
+                    switch (data.getAvg()) {
+                        case 0:
+                        case 1:
+                            setEvaluate(R.string.very_bad);
+                            break;
+                        case 2:
+                            setEvaluate(R.string.bad);
+                            break;
+                        case 3:
+                            setEvaluate(R.string.general);
+                            break;
+                        case 4:
+                            setEvaluate(R.string.good);
+                            break;
+                        case 5:
+                            setEvaluate(R.string.very_good);
+                            break;
+                    }
                 }
             }
         });
+    }
+
+    /**
+     * 评价服务与环境
+     * @param evaluate 评价
+     */
+    private void setEvaluate(int evaluate) {
+        environmental.setText(getResources().getString(R.string.environment, getResources().getString(evaluate)));
+        service.setText(getResources().getString(R.string.service, getResources().getString(evaluate)));
     }
 
     @Override
