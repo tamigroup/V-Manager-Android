@@ -139,7 +139,7 @@ public class GroupEditNoticeActivity extends BaseActivity {
      * @return
      */
     private boolean isEmpty() {
-        if (TextUtils.isEmpty(title.getText()) || TextUtils.isEmpty(title.getText())) {
+        if (TextUtils.isEmpty(title.getText().toString().trim()) || TextUtils.isEmpty(content.getText().toString().trim())) {
             showToast(getString(R.string.must_add_item_not_empty));
             return false;
         }

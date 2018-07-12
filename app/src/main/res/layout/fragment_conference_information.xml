@@ -176,7 +176,6 @@
             android:id="@+id/recyc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_24"
             app:layout_constraintTop_toBottomOf="@+id/service_flow"/>
     </android.support.constraint.ConstraintLayout>
 
