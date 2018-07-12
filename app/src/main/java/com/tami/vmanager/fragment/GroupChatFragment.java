@@ -1,5 +1,6 @@
 package com.tami.vmanager.fragment;
 
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -21,6 +22,7 @@ import com.tami.vmanager.entity.SendMsgRequest;
 import com.tami.vmanager.entity.SendMsgResponse;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
+import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.SPUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
@@ -45,6 +47,8 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
     private LoginResponse.Item item;
     private PullToRefreshLayout pullToRefreshLayout;
     private boolean isRefresh = false;
+    private Bundle bundle;
+    private int meetingId;
 
     @Override
     public int getContentViewId() {
@@ -60,6 +64,10 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
         sendBtn = findViewById(R.id.fgc_send_btn);
 
         networkBroker = new NetworkBroker(getContext());
+        bundle = getArguments();
+        if (bundle != null){
+            meetingId = this.bundle.getInt(Constants.KEY_MEETING_ID);
+        }
     }
 
     @Override
@@ -111,7 +119,7 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
                 sendBtn.setOnClickListener(v -> {
                     String trim = sendTxt.getText().toString().trim();
                     if (trim.isEmpty()) {
-                        Toast.makeText(getContext(), "发送内容不能为空", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), R.string.not_empty, Toast.LENGTH_SHORT).show();
                         return;
                     }
                     requestNet(content.toString().trim());
@@ -124,7 +132,7 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
 
     private void queryData() {
         MeetingChatPageRequest meetingChatPageRequest = new MeetingChatPageRequest();
-        meetingChatPageRequest.setMeetingId(1);
+        meetingChatPageRequest.setMeetingId(meetingId);
         meetingChatPageRequest.setType(1);
         meetingChatPageRequest.setCurPage(CurPage++);
         meetingChatPageRequest.setPageSize(10);
@@ -137,21 +145,23 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
                 MeetingChatPageResponse response = (MeetingChatPageResponse) res;
                 if (response.getCode() == 200) {
                     MeetingChatPageResponse.DataBean responseData = response.getData();
-                    if (responseData != null && responseData.getElements() != null && responseData.getElements().size() > 0) {
-                        List<MeetingChatPageResponse.DataBean.ElementsBean> elements = responseData.getElements();
-                        Collections.reverse(elements);
-                        if (isRefresh) {
-                            listData.addAll(0,elements);
-                        }else {
-                            listData.addAll(elements);
+                    if (responseData != null) {
+                        if (responseData.getElements() != null && responseData.getElements().size() > 0) {
+                            List<MeetingChatPageResponse.DataBean.ElementsBean> elements = responseData.getElements();
+                            Collections.reverse(elements);
+                            if (isRefresh) {
+                                listData.addAll(0, elements);
+                            } else {
+                                listData.addAll(elements);
+                            }
+                            isRefresh = false;
+                            adapter.notifyDataSetChanged();
                         }
-                        isRefresh = false;
-                        adapter.notifyDataSetChanged();
+                        if (responseData.isLastPage()) {
+                            pullToRefreshLayout.setCanRefresh(false);
+                        }
                     }
                     pullToRefreshLayout.finishRefresh();
-                    if (responseData.isLastPage()) {
-                        pullToRefreshLayout.setCanRefresh(false);
-                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -179,7 +189,7 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
     private void requestNet(String content) {
         SendMsgRequest sendMsgRequest = new SendMsgRequest();
         sendMsgRequest.setContent(content);
-        sendMsgRequest.setMeetingId("1");
+        sendMsgRequest.setMeetingId(String.valueOf(meetingId));
         sendMsgRequest.setType("1");
         item = GlobaVariable.getInstance().item;
         if (item != null) {
@@ -207,20 +217,18 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
                         }
                         String username = (String) SPUtils.get(getContext(), "username", "");
                         elementsBean.setUserName(username);
-                        elementsBean.setMeetingId("1");
+                        elementsBean.setMeetingId(String.valueOf(meetingId));
                         elementsBean.setType("1");
                         listData.add(elementsBean);
                         adapter.notifyItemInserted(listData.size() - 1);
                         recyclerView.scrollToPosition(listData.size() - 1);
                     } else {
-                        showToast("发送失败==" + response.getMessage());
+                        showToast(getString(R.string.send_fail) + response.getMessage());
                     }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-
         });
     }
 

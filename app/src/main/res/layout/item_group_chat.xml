@@ -33,6 +33,21 @@
         app:layout_constraintTop_toTopOf="@+id/igc_avatar_image" />
 
     <TextView
+        android:id="@+id/send_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_888888"
+        android:textSize="@dimen/sp_12"
+        android:text="00:00"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="@dimen/dp_5"
+        app:layout_constraintStart_toEndOf="@+id/igc_position_name"
+        app:layout_constraintTop_toTopOf="@+id/igc_avatar_image"
+        />
+
+
+
+    <TextView
         android:id="@+id/igc_left_content"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

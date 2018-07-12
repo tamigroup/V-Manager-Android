@@ -1,6 +1,7 @@
 package com.tami.vmanager.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -65,10 +66,12 @@ public class ConferenceServiceGroupActivity extends BaseActivity {
         //设置右边功能按钮图片
         setTitleRightBtn(R.mipmap.icon_people);
 
-        //添充数据
+        Bundle bundle = new Bundle();
+        bundle.putInt(Constants.KEY_MEETING_ID, meetingId);
         arrayFragment = new Fragment[4];
         arrayFragment[0] = new ConferenceInformationFragment(meetingId,item);
         arrayFragment[1] = new GroupChatFragment();
+        arrayFragment[1].setArguments(bundle);
         arrayFragment[2] = new FeedbackFragment(meetingId);
         arrayFragment[3] = new NoticeFragment();
 

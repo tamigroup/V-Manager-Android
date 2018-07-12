@@ -33,5 +33,6 @@ public class MsgComingItemDelagate implements ItemViewDelegate<MeetingChatPageRe
         SPUtils.put(holder.itemView.getContext(),"username",list.getUserName());
         holder.setText(R.id.igc_position_name, list.getUserName());
         holder.setText(R.id.igc_left_content, list.getContent());
+        holder.setText(R.id.send_time, list.getSendDate());
     }
 }
