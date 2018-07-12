@@ -19,6 +19,7 @@ import com.tami.vmanager.entity.EvaluatePageRequestBean;
 import com.tami.vmanager.entity.EvaluatePageResponseBean;
 import com.tami.vmanager.entity.IdeasBoxRequestBean;
 import com.tami.vmanager.entity.IdeasBoxResponsetBean;
+import com.tami.vmanager.enums.IdeasBoxType;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
@@ -126,8 +127,8 @@ public class ParticipantsFragment extends ViewPagerBaseFragment {
     @SuppressLint("StringFormatMatches")
     private void getEvaluate() {
         EvaluatePageRequestBean evaluatePageRequestBean = new EvaluatePageRequestBean();
-        evaluatePageRequestBean.setMeetingId(meetingId);
-        evaluatePageRequestBean.setType(3);
+        evaluatePageRequestBean.setMeetingId(String.valueOf(meetingId));
+        evaluatePageRequestBean.setType(IdeasBoxType.PARTICIPANTS.getType());
         evaluatePageRequestBean.setCurPage(CurPag++);
         evaluatePageRequestBean.setPageSize(Constants.PAGE_SIZE);
         networkBroker.ask(evaluatePageRequestBean, (ex1, res) -> {
@@ -140,7 +141,6 @@ public class ParticipantsFragment extends ViewPagerBaseFragment {
             if (response.getCode() == 200) {
                 EvaluatePageResponseBean.DataBean data = response.getData();
                 if (data.getElements() != null && data.getElements().size() > 0) {
-                    int size = data.getElements().size();
                     comment.setText(String.format(getResources().getString(R.string.comment, data.getElements().size())));
                     listData.addAll(data.getElements());
                     commonAdapter.notifyDataSetChanged();
@@ -160,8 +160,8 @@ public class ParticipantsFragment extends ViewPagerBaseFragment {
      */
     private void getAvg() {
         IdeasBoxRequestBean ideasBoxRequestBean = new IdeasBoxRequestBean();
-        ideasBoxRequestBean.setMeetingId(meetingId);
-        ideasBoxRequestBean.setType(3);
+        ideasBoxRequestBean.setMeetingId(String.valueOf(meetingId));
+        ideasBoxRequestBean.setType(IdeasBoxType.PARTICIPANTS.getType());
         networkBroker.ask(ideasBoxRequestBean, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);

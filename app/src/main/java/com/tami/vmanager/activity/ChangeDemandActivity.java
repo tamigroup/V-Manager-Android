@@ -25,6 +25,7 @@ import com.tami.vmanager.entity.ChangeDemandResponseBean;
 import com.tami.vmanager.entity.MobileMessage;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
+import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.Utils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -48,6 +49,7 @@ public class ChangeDemandActivity extends BaseActivity {
     List<ChangeDemandResponseBean.DataBean.ElementsBean> listData;
     private CommonAdapter<ChangeDemandResponseBean.DataBean.ElementsBean> commonAdapter;
     Handler handler = new Handler();
+    private String meetingId;
 
     @Override
     public boolean isTitle() {
@@ -87,6 +89,7 @@ public class ChangeDemandActivity extends BaseActivity {
     public void initData() {
         setTitleName(R.string.change_demand);
         listData = new ArrayList<>();
+        meetingId = getIntent().getStringExtra(Constants.KEY_MEETING_ID);
         initRecyc();
     }
 
@@ -207,7 +210,7 @@ public class ChangeDemandActivity extends BaseActivity {
 
     private void queryData() {
         ChangeDemandRequestBean changeDemandRequestBean = new ChangeDemandRequestBean();
-        changeDemandRequestBean.setMeetingId(6);
+        changeDemandRequestBean.setMeetingId(meetingId);
         changeDemandRequestBean.setCurPage(CurPage++);
         changeDemandRequestBean.setPageSize(10);
         networkBroker.ask(changeDemandRequestBean, (Exception exl, MobileMessage res) -> {

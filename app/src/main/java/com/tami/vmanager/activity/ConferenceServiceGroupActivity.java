@@ -69,7 +69,7 @@ public class ConferenceServiceGroupActivity extends BaseActivity {
         arrayFragment = new Fragment[4];
         arrayFragment[0] = new ConferenceInformationFragment(meetingId,item);
         arrayFragment[1] = new GroupChatFragment();
-        arrayFragment[2] = new FeedbackFragment();
+        arrayFragment[2] = new FeedbackFragment(meetingId);
         arrayFragment[3] = new NoticeFragment();
 
         GuidePageFragmentPagerAdapter guidePageFragmentPagerAdapter = new GuidePageFragmentPagerAdapter(getSupportFragmentManager(), arrayFragment);

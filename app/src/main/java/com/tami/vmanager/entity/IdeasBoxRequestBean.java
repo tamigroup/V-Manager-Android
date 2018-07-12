@@ -15,14 +15,14 @@ public class IdeasBoxRequestBean extends MobileMessage implements Serializable {
      * type : 2          --------  2-举办方  3-参会方   0-取全部
      */
 
-    private int meetingId;
+    private String meetingId;
     private int type;
 
-    public int getMeetingId() {
+    public String getMeetingId() {
         return meetingId;
     }
 
-    public void setMeetingId(int meetingId) {
+    public void setMeetingId(String meetingId) {
         this.meetingId = meetingId;
     }
 

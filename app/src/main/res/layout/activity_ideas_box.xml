@@ -20,11 +20,13 @@
         app:tabTextColor="@color/color_303030">
 
         <android.support.design.widget.TabItem
+            android:id="@+id/host_tab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/host" />
 
         <android.support.design.widget.TabItem
+            android:id="@+id/participants_tab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/participants" />

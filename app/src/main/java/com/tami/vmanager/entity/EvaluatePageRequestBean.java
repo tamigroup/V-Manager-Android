@@ -17,16 +17,16 @@ public class EvaluatePageRequestBean extends MobileMessage implements Serializab
      * pageSize : 10
      */
 
-    private int meetingId;
+    private String meetingId;
     private int type;
     private int curPage;
     private int pageSize;
 
-    public int getMeetingId() {
+    public String getMeetingId() {
         return meetingId;
     }
 
-    public void setMeetingId(int meetingId) {
+    public void setMeetingId(String meetingId) {
         this.meetingId = meetingId;
     }
 

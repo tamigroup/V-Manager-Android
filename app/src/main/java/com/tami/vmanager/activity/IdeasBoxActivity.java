@@ -74,6 +74,7 @@ public class IdeasBoxActivity extends BaseActivity {
     @Override
     public void requestNetwork() {
 
+
     }
 
     @Override

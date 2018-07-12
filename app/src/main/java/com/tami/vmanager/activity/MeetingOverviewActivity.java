@@ -205,12 +205,16 @@ public class MeetingOverviewActivity extends BaseActivity {
                 alreadyPaidItem();
                 break;
             case R.id.meeting_overview_complaints_box:
-                //意见箱
-                startActivity(new Intent(getApplicationContext(), IdeasBoxActivity.class));
+                //意见箱 满意度
+                Intent intent = new Intent(getApplicationContext(), IdeasBoxActivity.class);
+                intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
+                startActivity(intent);
                 break;
             case R.id.meeting_overview_change_demand:
                 //需求变化
-                startActivity(new Intent(getApplicationContext(), ChangeDemandActivity.class));
+                Intent intent1 = new Intent(getApplicationContext(), ChangeDemandActivity.class);
+                intent1.putExtra(Constants.KEY_MEETING_ID, meetingId);
+                startActivity(intent1);
                 break;
             case R.id.meeting_overview_v_emind:
                 //小V提醒
