@@ -2,12 +2,13 @@ package com.tami.vmanager.activity;
 
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
-import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.squareup.picasso.Picasso;
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
@@ -18,6 +19,7 @@ import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,7 +92,7 @@ public class GroupMembersActivty extends BaseActivity {
             protected void convert(ViewHolder holder, MeetingUserGroupPageResponse.Array.Item item, int position) {
                 holder.setText(R.id.item_name, item.realName);
                 if (!TextUtils.isEmpty(item.iconUrl)) {
-                    AppCompatImageView imageView = holder.getView(R.id.item_header_image);
+                    ImageView imageView = holder.getView(R.id.item_header_image);
                     Picasso.get().load(item.iconUrl).into(imageView);
                 }
             }

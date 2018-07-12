@@ -12,6 +12,7 @@ import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdRequest;
 import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdResponse;
 import com.tami.vmanager.entity.GetMeetingResponse;
 import com.tami.vmanager.http.NetworkBroker;
+import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.TimeUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -82,12 +83,19 @@ public class ConferenceInformationFragment extends ViewPagerBaseFragment {
         company_name.setText(item.meetingName);
         meeting_status.setText(item.meetingStatus);
         host_name.setText(String.format(getResources().getString(R.string.host_name), item.sponsorName));
-        meeting_address.setText(String.format(getResources().getString(R.string.meeting_address), item.meetingAddress));
+        meeting_address.setText(item.meetingAddress);
         meeting_time.setText(item.autoDayTime);
         sale_name.setText(String.format(getResources().getString(R.string.salename), item.saleUserName));
         meeting_reserve_number.setText(String.format(getResources().getString(R.string.predetermined_number), String.valueOf(item.estimateNum)));
         meeting_bottom_number.setText(String.format(getResources().getString(R.string.bottom_number), String.valueOf(item.minNum)));
-        meeting_actual_number.setText(String.format(getResources().getString(R.string.actual_number), String.valueOf(item.actualNum)));
+
+        if (GlobaVariable.getInstance().item.getFromPlat() == 1) {
+            meeting_actual_number.setText(String.format(getResources().getString(R.string.actual_number), String.valueOf(item.actualNum)));
+        } else {
+            meeting_actual_number.setText(String.format(getResources().getString(R.string.actual_number), "--"));
+        }
+
+
         listData = new ArrayList<>();
         initRecyc();
     }
@@ -134,7 +142,7 @@ public class ConferenceInformationFragment extends ViewPagerBaseFragment {
     public void requestNetwork() {
         networkBroker = new NetworkBroker(getActivity());
         GetMeetingItemsByMeetingIdRequest getMeetingItemsByMeetingIdRequest = new GetMeetingItemsByMeetingIdRequest();
-//        getMeetingItemsByMeetingIdRequest.setMeetingId(meetingId);
+        //        getMeetingItemsByMeetingIdRequest.setMeetingId(meetingId);
         getMeetingItemsByMeetingIdRequest.setMeetingId(1);
         networkBroker.ask(getMeetingItemsByMeetingIdRequest, (ex1, res) -> {
             if (null != ex1) {

@@ -1,5 +1,6 @@
 package com.tami.vmanager.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,6 +31,7 @@ import java.util.List;
 
 public class FeedbackFragment extends ViewPagerBaseFragment {
 
+    private int meetingId;
     private RecyclerView recyclerView;
     private PullToRefreshLayout pullToRefreshLayout;
     private NetworkBroker networkBroker;
@@ -37,6 +39,15 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
     private int CurPage = 1;
     List<ChangeDemandResponseBean.DataBean.ElementsBean> listData;
     private CommonAdapter<ChangeDemandResponseBean.DataBean.ElementsBean> commonAdapter;
+
+    public FeedbackFragment() {
+    }
+
+
+    @SuppressLint("ValidFragment")
+    public FeedbackFragment(int meetingId) {
+        this.meetingId = meetingId;
+    }
 
     @Override
     public int getContentViewId() {
@@ -108,7 +119,7 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
 
     private void queryData() {
         ChangeDemandRequestBean changeDemandRequestBean = new ChangeDemandRequestBean();
-        changeDemandRequestBean.setMeetingId(6);
+        changeDemandRequestBean.setMeetingId(String.valueOf(meetingId));
         changeDemandRequestBean.setCurPage(CurPage++);
         changeDemandRequestBean.setPageSize(10);
         networkBroker.ask(changeDemandRequestBean, (Exception exl, MobileMessage res) -> {

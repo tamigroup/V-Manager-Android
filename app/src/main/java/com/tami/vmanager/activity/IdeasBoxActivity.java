@@ -9,11 +9,17 @@ import android.support.v4.view.ViewPager;
 import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.GuidePageFragmentPagerAdapter;
 import com.tami.vmanager.base.BaseActivity;
+import com.tami.vmanager.entity.EvaluatePageRequestBean;
+import com.tami.vmanager.entity.EvaluatePageResponseBean;
+import com.tami.vmanager.enums.IdeasBoxType;
 import com.tami.vmanager.fragment.HostFragment;
+import com.tami.vmanager.http.NetworkBroker;
+import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Constants;
+import com.tami.vmanager.utils.Logger;
 
 /**
- * 意见箱
+ * 意见箱 满意度
  * Created by why on 2018/6/27.
  */
 public class IdeasBoxActivity extends BaseActivity {
@@ -24,6 +30,8 @@ public class IdeasBoxActivity extends BaseActivity {
     private Fragment[] arrayFragment;
     private TabLayout.TabLayoutOnPageChangeListener tabLayoutOnPageChangeListener;
     private TabLayout.ViewPagerOnTabSelectedListener viewPagerOnTabSelectedListener;
+    private NetworkBroker networkBroker;
+    private int fromPlat;
 
     @Override
     public boolean isTitle() {
@@ -55,8 +63,11 @@ public class IdeasBoxActivity extends BaseActivity {
 
         setTitleName(R.string.complaints_box);
 
+        fromPlat = GlobaVariable.getInstance().item.getFromPlat();//判断V智慧
+
         Bundle bundle = new Bundle();
         bundle.putInt(Constants.KEY_MEETING_ID, meetingId);
+        bundle.putInt(Constants.IS_VZHIHUI,fromPlat);
         arrayFragment = new Fragment[2];
         arrayFragment[0] = new HostFragment();
         arrayFragment[0].setArguments(bundle);
@@ -73,7 +84,67 @@ public class IdeasBoxActivity extends BaseActivity {
 
     @Override
     public void requestNetwork() {
+        networkBroker = new NetworkBroker(this);
+        networkBroker.setCancelTag(getTAG());
+        if (fromPlat == 1) {
+            getHostEvaluate();
+            getParticipants();
+        } else {
+            tabLayout.getTabAt(0).setText(String.format(getResources().getString(R.string.host), 0 + ""));
+            tabLayout.getTabAt(1).setText(String.format(getResources().getString(R.string.participants), 0 + ""));
+        }
+    }
 
+    /**
+     * 获取参会方评论
+     */
+    private void getParticipants() {
+        EvaluatePageRequestBean evaluatePageRequestBean = new EvaluatePageRequestBean();
+        evaluatePageRequestBean.setMeetingId(String.valueOf(meetingId));
+        evaluatePageRequestBean.setType(IdeasBoxType.PARTICIPANTS.getType());
+        evaluatePageRequestBean.setCurPage(1);
+        evaluatePageRequestBean.setPageSize(Constants.PAGE_SIZE);
+        networkBroker.ask(evaluatePageRequestBean, (ex1, res) -> {
+            if (null != ex1) {
+                Logger.d(ex1.getMessage() + "-" + ex1);
+                return;
+            }
+            EvaluatePageResponseBean response = (EvaluatePageResponseBean) res;
+            if (response.getCode() == 200) {
+                EvaluatePageResponseBean.DataBean data = response.getData();
+                if (data != null) {
+                    int totalElements = data.getTotalElements();
+                    tabLayout.getTabAt(1).setText(String.format(getResources().getString(R.string.participants), totalElements + ""));
+                }
+
+
+            }
+        });
+    }
+
+    /**
+     * 获取主办方评论
+     */
+    private void getHostEvaluate() {
+        EvaluatePageRequestBean evaluatePageRequestBean = new EvaluatePageRequestBean();
+        evaluatePageRequestBean.setMeetingId(String.valueOf(meetingId));
+        evaluatePageRequestBean.setType(IdeasBoxType.HOST.getType());
+        evaluatePageRequestBean.setCurPage(1);
+        evaluatePageRequestBean.setPageSize(Constants.PAGE_SIZE);
+        networkBroker.ask(evaluatePageRequestBean, (ex1, res) -> {
+            if (null != ex1) {
+                Logger.d(ex1.getMessage() + "-" + ex1);
+                return;
+            }
+            EvaluatePageResponseBean response = (EvaluatePageResponseBean) res;
+            if (response.getCode() == 200) {
+                EvaluatePageResponseBean.DataBean data = response.getData();
+                if (data != null) {
+                    int totalElements = data.getTotalElements();
+                    tabLayout.getTabAt(0).setText(String.format(getResources().getString(R.string.host), totalElements + ""));
+                }
+            }
+        });
     }
 
     @Override

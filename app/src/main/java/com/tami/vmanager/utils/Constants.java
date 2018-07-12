@@ -84,6 +84,9 @@ public class Constants {
     public static final String TOTAL = "total";
     //会议信息
     public static final String MEETING_INFO = "meetingInfo";
+
+    //判断V智慧
+    public static final String IS_VZHIHUI = "V_zhihui";
     //创建会议
     public static final int CREATE_MEETING = 0x15;
     //会议名称

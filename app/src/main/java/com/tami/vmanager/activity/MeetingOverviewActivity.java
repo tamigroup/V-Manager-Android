@@ -11,7 +11,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.TimeLineAdapter;
@@ -24,6 +23,7 @@ import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdResponse;
 import com.tami.vmanager.entity.GetMeetingRequest;
 import com.tami.vmanager.entity.GetMeetingResponse;
 import com.tami.vmanager.http.NetworkBroker;
+import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.Utils;
@@ -205,12 +205,16 @@ public class MeetingOverviewActivity extends BaseActivity {
                 alreadyPaidItem();
                 break;
             case R.id.meeting_overview_complaints_box:
-                //意见箱
-                startActivity(new Intent(getApplicationContext(), IdeasBoxActivity.class));
+                //意见箱 满意度
+                Intent intent = new Intent(getApplicationContext(), IdeasBoxActivity.class);
+                intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
+                startActivity(intent);
                 break;
             case R.id.meeting_overview_change_demand:
                 //需求变化
-                startActivity(new Intent(getApplicationContext(), ChangeDemandActivity.class));
+                Intent intent1 = new Intent(getApplicationContext(), ChangeDemandActivity.class);
+                intent1.putExtra(Constants.KEY_MEETING_ID, meetingId);
+                startActivity(intent1);
                 break;
             case R.id.meeting_overview_v_emind:
                 //小V提醒
@@ -259,7 +263,13 @@ public class MeetingOverviewActivity extends BaseActivity {
 
             initUITxt(predeterminedNumber, String.valueOf(item.estimateNum), R.string.predetermined_number, android.R.color.white);
             initUITxt(bottomNumber, String.valueOf(item.minNum), R.string.bottom_number, android.R.color.white);
-            initUITxt(actualNumber, String.valueOf(item.actualNum), R.string.actual_number, R.color.color_FF5657);
+
+            if (GlobaVariable.getInstance().item.getFromPlat() == 1){
+                initUITxt(actualNumber, String.valueOf(item.actualNum), R.string.actual_number, R.color.color_FF5657);
+            }else {
+                initUITxt(actualNumber, "--", R.string.actual_number, R.color.color_FF5657);
+            }
+
 
             alreadyPaidItem.setProgress(90);
         }

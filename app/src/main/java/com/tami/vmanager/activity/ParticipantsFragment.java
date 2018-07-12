@@ -2,10 +2,13 @@ package com.tami.vmanager.activity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.Group;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,6 +22,7 @@ import com.tami.vmanager.entity.EvaluatePageRequestBean;
 import com.tami.vmanager.entity.EvaluatePageResponseBean;
 import com.tami.vmanager.entity.IdeasBoxRequestBean;
 import com.tami.vmanager.entity.IdeasBoxResponsetBean;
+import com.tami.vmanager.enums.IdeasBoxType;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
@@ -47,6 +51,9 @@ public class ParticipantsFragment extends ViewPagerBaseFragment {
     private TextView comment;
 
     private int meetingId;//会议ID
+    private ConstraintLayout no_v_cl;
+    private Group v_group;
+    private int vzhihui;
 
     @Override
     public int getContentViewId() {
@@ -61,6 +68,9 @@ public class ParticipantsFragment extends ViewPagerBaseFragment {
         environmental = findViewById(R.id.environmental);
         recyclerview = findViewById(R.id.recyc);
         pulltorefreshlayout = findViewById(R.id.pull);
+
+        no_v_cl = findViewById(R.id.no_v_cl);
+        v_group = findViewById(R.id.v_group);
     }
 
     @Override
@@ -82,7 +92,17 @@ public class ParticipantsFragment extends ViewPagerBaseFragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
             meetingId = bundle.getInt(Constants.KEY_MEETING_ID);
+            vzhihui = bundle.getInt(Constants.IS_VZHIHUI);
         }
+
+        if (vzhihui == 1) {
+            no_v_cl.setVisibility(View.GONE);
+            v_group.setVisibility(View.VISIBLE);
+        } else {
+            no_v_cl.setVisibility(View.VISIBLE);
+            v_group.setVisibility(View.GONE);
+        }
+
         initRecyc();
     }
 
@@ -126,8 +146,8 @@ public class ParticipantsFragment extends ViewPagerBaseFragment {
     @SuppressLint("StringFormatMatches")
     private void getEvaluate() {
         EvaluatePageRequestBean evaluatePageRequestBean = new EvaluatePageRequestBean();
-        evaluatePageRequestBean.setMeetingId(meetingId);
-        evaluatePageRequestBean.setType(3);
+        evaluatePageRequestBean.setMeetingId(String.valueOf(meetingId));
+        evaluatePageRequestBean.setType(IdeasBoxType.PARTICIPANTS.getType());
         evaluatePageRequestBean.setCurPage(CurPag++);
         evaluatePageRequestBean.setPageSize(Constants.PAGE_SIZE);
         networkBroker.ask(evaluatePageRequestBean, (ex1, res) -> {
@@ -139,9 +159,8 @@ public class ParticipantsFragment extends ViewPagerBaseFragment {
             EvaluatePageResponseBean response = (EvaluatePageResponseBean) res;
             if (response.getCode() == 200) {
                 EvaluatePageResponseBean.DataBean data = response.getData();
+                comment.setText(getResources().getString(R.string.comment, data.getTotalElements()));
                 if (data.getElements() != null && data.getElements().size() > 0) {
-                    int size = data.getElements().size();
-                    comment.setText(String.format(getResources().getString(R.string.comment, data.getElements().size())));
                     listData.addAll(data.getElements());
                     commonAdapter.notifyDataSetChanged();
                 }
@@ -149,7 +168,7 @@ public class ParticipantsFragment extends ViewPagerBaseFragment {
                 if (data.isLastPage()) {
                     pulltorefreshlayout.setCanLoadMore(false);
                 }
-            }else{
+            } else {
                 pulltorefreshlayout.finishLoadMore();
             }
         });
@@ -160,8 +179,8 @@ public class ParticipantsFragment extends ViewPagerBaseFragment {
      */
     private void getAvg() {
         IdeasBoxRequestBean ideasBoxRequestBean = new IdeasBoxRequestBean();
-        ideasBoxRequestBean.setMeetingId(meetingId);
-        ideasBoxRequestBean.setType(3);
+        ideasBoxRequestBean.setMeetingId(String.valueOf(meetingId));
+        ideasBoxRequestBean.setType(IdeasBoxType.PARTICIPANTS.getType());
         networkBroker.ask(ideasBoxRequestBean, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);
@@ -172,10 +191,37 @@ public class ParticipantsFragment extends ViewPagerBaseFragment {
                 IdeasBoxResponsetBean.DataBean data = response.getData();
                 if (data != null) {
                     ratingBar.setRating(data.getAvg());
-                    ratingBar.setRating(2);
+                    switch (data.getAvg()) {
+                        case 0:
+                        case 1:
+                            setEvaluate(R.string.very_bad);
+                            break;
+                        case 2:
+                            setEvaluate(R.string.bad);
+                            break;
+                        case 3:
+                            setEvaluate(R.string.general);
+                            break;
+                        case 4:
+                            setEvaluate(R.string.good);
+                            break;
+                        case 5:
+                            setEvaluate(R.string.very_good);
+                            break;
+                    }
                 }
             }
         });
+    }
+
+    /**
+     * 评价服务与环境
+     *
+     * @param evaluate 评价
+     */
+    private void setEvaluate(int evaluate) {
+        environmental.setText(getResources().getString(R.string.environment, getResources().getString(evaluate)));
+        service.setText(getResources().getString(R.string.service, getResources().getString(evaluate)));
     }
 
     @Override

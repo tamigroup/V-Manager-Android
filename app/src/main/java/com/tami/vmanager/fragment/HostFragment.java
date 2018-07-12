@@ -2,10 +2,12 @@ package com.tami.vmanager.fragment;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.Group;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,12 +15,12 @@ import com.jwenfeng.library.pulltorefresh.BaseRefreshListener;
 import com.jwenfeng.library.pulltorefresh.PullToRefreshLayout;
 import com.squareup.picasso.Picasso;
 import com.tami.vmanager.R;
-import com.tami.vmanager.adapter.RecycleViewDivider;
 import com.tami.vmanager.base.ViewPagerBaseFragment;
 import com.tami.vmanager.entity.EvaluatePageRequestBean;
 import com.tami.vmanager.entity.EvaluatePageResponseBean;
 import com.tami.vmanager.entity.IdeasBoxRequestBean;
 import com.tami.vmanager.entity.IdeasBoxResponsetBean;
+import com.tami.vmanager.enums.IdeasBoxType;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
@@ -47,6 +49,9 @@ public class HostFragment extends ViewPagerBaseFragment {
     private TextView comment;
 
     private int meetingId;//会议ID
+    private ConstraintLayout no_v_cl;
+    private int vzhihui;
+    private Group v_group;
 
     @Override
     public int getContentViewId() {
@@ -61,13 +66,16 @@ public class HostFragment extends ViewPagerBaseFragment {
         environmental = findViewById(R.id.environmental);
         recyclerview = findViewById(R.id.recyc);
         pulltorefreshlayout = findViewById(R.id.pull);
+
     }
 
     @Override
     public void initListener() {
+        pulltorefreshlayout.setCanRefresh(false);
         pulltorefreshlayout.setRefreshListener(new BaseRefreshListener() {
             @Override
             public void refresh() {
+
             }
 
             @Override
@@ -79,20 +87,11 @@ public class HostFragment extends ViewPagerBaseFragment {
 
     @Override
     public void initData() {
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            meetingId = bundle.getInt(Constants.KEY_MEETING_ID);
-        }
-
         initRecyc();
     }
 
     private void initRecyc() {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerview.setLayoutManager(layoutManager);
-        recyclerview.addItemDecoration(new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL,
-                1, ContextCompat.getColor(getActivity(), R.color.percentage_10)));
+        recyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
         listData = new ArrayList<>();
         commonAdapter = new CommonAdapter<EvaluatePageResponseBean.DataBean.ElementsBean>(getContext(), R.layout.item_fragment_host, listData) {
 
@@ -108,14 +107,31 @@ public class HostFragment extends ViewPagerBaseFragment {
                 holder.setText(R.id.item_content, elementsBean.getContent());
             }
         };
+        commonAdapter.notifyDataSetChanged();
         recyclerview.setAdapter(commonAdapter);
-        pulltorefreshlayout.setCanRefresh(false);
     }
 
     @Override
     public void requestNetwork() {
+        no_v_cl = findViewById(R.id.no_v_cl);
+        v_group = findViewById(R.id.v_group);
+
         networkBroker = new NetworkBroker(getContext());
         networkBroker.setCancelTag(getTAG());
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            meetingId = bundle.getInt(Constants.KEY_MEETING_ID);
+            vzhihui = bundle.getInt(Constants.IS_VZHIHUI);
+        }
+
+        if (vzhihui == 1) {
+            no_v_cl.setVisibility(View.GONE);
+            v_group.setVisibility(View.VISIBLE);
+        } else {
+            no_v_cl.setVisibility(View.VISIBLE);
+            v_group.setVisibility(View.GONE);
+        }
+
         getAvg();
         getEvaluate();
     }
@@ -126,8 +142,8 @@ public class HostFragment extends ViewPagerBaseFragment {
     @SuppressLint("StringFormatMatches")
     private void getEvaluate() {
         EvaluatePageRequestBean evaluatePageRequestBean = new EvaluatePageRequestBean();
-        evaluatePageRequestBean.setMeetingId(meetingId);
-        evaluatePageRequestBean.setType(2);
+        evaluatePageRequestBean.setMeetingId(String.valueOf(meetingId));
+        evaluatePageRequestBean.setType(IdeasBoxType.HOST.getType());
         evaluatePageRequestBean.setCurPage(CurPag++);
         evaluatePageRequestBean.setPageSize(Constants.PAGE_SIZE);
         networkBroker.ask(evaluatePageRequestBean, (ex1, res) -> {
@@ -140,8 +156,7 @@ public class HostFragment extends ViewPagerBaseFragment {
             if (response.getCode() == 200) {
                 EvaluatePageResponseBean.DataBean data = response.getData();
                 if (data.getElements() != null && data.getElements().size() > 0) {
-                    int size = data.getElements().size();
-                    comment.setText(String.format(getResources().getString(R.string.comment, data.getElements().size())));
+                    comment.setText(getResources().getString(R.string.comment, data.getTotalElements()));
                     listData.addAll(data.getElements());
                     commonAdapter.notifyDataSetChanged();
                 }
@@ -149,7 +164,7 @@ public class HostFragment extends ViewPagerBaseFragment {
                 if (data.isLastPage()) {
                     pulltorefreshlayout.setCanLoadMore(false);
                 }
-            }else{
+            } else {
                 pulltorefreshlayout.finishLoadMore();
             }
         });
@@ -160,8 +175,8 @@ public class HostFragment extends ViewPagerBaseFragment {
      */
     private void getAvg() {
         IdeasBoxRequestBean ideasBoxRequestBean = new IdeasBoxRequestBean();
-        ideasBoxRequestBean.setMeetingId(meetingId);
-        ideasBoxRequestBean.setType(2);
+        ideasBoxRequestBean.setMeetingId(String.valueOf(meetingId));
+        ideasBoxRequestBean.setType(IdeasBoxType.HOST.getType());
         networkBroker.ask(ideasBoxRequestBean, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);
@@ -172,9 +187,37 @@ public class HostFragment extends ViewPagerBaseFragment {
                 IdeasBoxResponsetBean.DataBean data = response.getData();
                 if (data != null) {
                     ratingBar.setRating(data.getAvg());
+                    switch (data.getAvg()) {
+                        case 0:
+                        case 1:
+                            setEvaluate(R.string.very_bad);
+                            break;
+                        case 2:
+                            setEvaluate(R.string.bad);
+                            break;
+                        case 3:
+                            setEvaluate(R.string.general);
+                            break;
+                        case 4:
+                            setEvaluate(R.string.good);
+                            break;
+                        case 5:
+                            setEvaluate(R.string.very_good);
+                            break;
+                    }
                 }
             }
         });
+    }
+
+    /**
+     * 评价服务与环境
+     *
+     * @param evaluate 评价
+     */
+    private void setEvaluate(int evaluate) {
+        environmental.setText(getResources().getString(R.string.environment, getResources().getString(evaluate)));
+        service.setText(getResources().getString(R.string.service, getResources().getString(evaluate)));
     }
 
     @Override

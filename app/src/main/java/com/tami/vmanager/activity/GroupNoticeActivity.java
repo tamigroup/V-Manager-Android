@@ -1,15 +1,12 @@
 package com.tami.vmanager.activity;
 
 import android.content.Intent;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.TextView;
 
 import com.jwenfeng.library.pulltorefresh.PullToRefreshLayout;
 import com.tami.vmanager.R;
-import com.tami.vmanager.adapter.RecycleViewDivider;
 import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.entity.NoticeRequestBean;
@@ -18,7 +15,6 @@ import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
-import com.tami.vmanager.utils.ScreenUtil;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -77,7 +73,6 @@ public class GroupNoticeActivity extends BaseActivity {
 
     @Override
     public void requestNetwork() {
-        CurPage = 1;
         getNotice();
     }
 
@@ -104,10 +99,7 @@ public class GroupNoticeActivity extends BaseActivity {
     }
 
     private void initRecyclerView() {
-        //创建一个线性的布局管理器并设置
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         listData = new ArrayList<>();
         commonAdapter = new CommonAdapter<NoticeResponseBean.DataBean.ElementsBean>(this, R.layout.item_group_notice, listData) {
             @Override
@@ -125,7 +117,7 @@ public class GroupNoticeActivity extends BaseActivity {
         NoticeRequestBean noticeRequestBean = new NoticeRequestBean();
         LoginResponse.Item item = GlobaVariable.getInstance().item;
         if (item != null) {
-            noticeRequestBean.setSystemId(Integer.valueOf(item.getSystemId()));
+            noticeRequestBean.setSystemId(item.getSystemId());
         }
         noticeRequestBean.setMeetingId(meetingId);
         noticeRequestBean.setGroupType(1);
@@ -133,12 +125,12 @@ public class GroupNoticeActivity extends BaseActivity {
         noticeRequestBean.setCurPage(CurPage++);
         noticeRequestBean.setPageSize(10);
 
-//        noticeRequestBean.setSystemId(4);
-//        noticeRequestBean.setMeetingId(1);
-//        noticeRequestBean.setGroupType(1);
-//        noticeRequestBean.setNoticeType(0);
-//        noticeRequestBean.setCurPage(CurPage++);
-//        noticeRequestBean.setPageSize(10);
+        //        noticeRequestBean.setSystemId(4);
+        //        noticeRequestBean.setMeetingId(1);
+        //        noticeRequestBean.setGroupType(1);
+        //        noticeRequestBean.setNoticeType(0);
+        //        noticeRequestBean.setCurPage(CurPage++);
+        //        noticeRequestBean.setPageSize(10);
         networkBroker.ask(noticeRequestBean, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);
@@ -154,10 +146,9 @@ public class GroupNoticeActivity extends BaseActivity {
                             listData.addAll(data);
                             commonAdapter.notifyDataSetChanged();
                         }
-
-                    }
-                    if (dataBean.isLastPage()) {
-                        pullToRefreshLayout.setCanLoadMore(false);
+                        if (dataBean.isLastPage()) {
+                            pullToRefreshLayout.setCanLoadMore(false);
+                        }
                     }
                 }
                 pullToRefreshLayout.finishLoadMore();
