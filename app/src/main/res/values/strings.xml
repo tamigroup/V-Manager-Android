@@ -159,7 +159,7 @@
     <string name="bottom_number">%s\n保底人数</string>
     <string name="actual_number">%s\n实到人数</string>
     <string name="create_process">创建流程</string>
-    <string name="change_demand">需求变化</string>
+    <string name="change_demand">活动变化</string>
 
     <!--    会议服务内容流程    -->
     <string name="conference_service_content_flow">会议服务内容流程</string>
@@ -296,7 +296,7 @@
     <string name="delete_meeting">删除会议%s！</string>
     <string name="replay_content">回复：“%s”</string>
     <string name="has_replay">已回复</string>
-    <string name="no_replay">未回复</string>
+    <string name="no_replay">回复</string>
     <string name="hint_replay">回复: %s</string>
     <string name="total">总计</string>
     <string name="complete">已完成</string>
@@ -313,4 +313,6 @@
 
     <string name="save_flow">保存流程%s！</string>
     <string name="do_you_save_current_process">是否保存当前流程？</string>
+    <string name="no_Vzhihui">亲，您不是V智慧会员，无法查看，请下载注册V智慧~</string>
+    <string name="y_has_replay">您已回复</string>
 </resources>

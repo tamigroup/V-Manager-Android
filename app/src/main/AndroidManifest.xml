@@ -165,7 +165,7 @@
         <activity
             android:name=".activity.IdeasBoxActivity"
             android:screenOrientation="portrait"></activity>
-        <!--    需求变化    -->
+        <!--    需求变化 活动变化   -->
         <activity
             android:name=".activity.ChangeDemandActivity"
             android:screenOrientation="portrait"

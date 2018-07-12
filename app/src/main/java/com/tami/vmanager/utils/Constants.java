@@ -84,4 +84,7 @@ public class Constants {
     public static final String TOTAL = "total";
     //会议信息
     public static final String MEETING_INFO = "meetingInfo";
+
+    //判断V智慧
+    public static final String IS_VZHIHUI = "V_zhihui";
 }

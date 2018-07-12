@@ -85,6 +85,7 @@
         app:layout_constraintTop_toBottomOf="@+id/cl_evaluate" />
 
     <LinearLayout
+        android:id="@+id/ll"
         android:layout_width="@dimen/dp_0"
         android:layout_height="@dimen/dp_0"
         android:orientation="vertical"
@@ -106,5 +107,31 @@
 
         </com.jwenfeng.library.pulltorefresh.PullToRefreshLayout>
     </LinearLayout>
+
+    <android.support.constraint.Group
+        android:id="@+id/v_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="cl_evaluate,comment,ll"/>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/no_v_cl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_15"
+            android:text="@string/no_Vzhihui"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    </android.support.constraint.ConstraintLayout>
+
 
 </android.support.constraint.ConstraintLayout>

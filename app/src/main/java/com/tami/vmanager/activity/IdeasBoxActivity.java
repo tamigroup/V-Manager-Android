@@ -2,7 +2,6 @@ package com.tami.vmanager.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TabItem;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -15,11 +14,12 @@ import com.tami.vmanager.entity.EvaluatePageResponseBean;
 import com.tami.vmanager.enums.IdeasBoxType;
 import com.tami.vmanager.fragment.HostFragment;
 import com.tami.vmanager.http.NetworkBroker;
+import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 
 /**
- * 意见箱
+ * 意见箱 满意度
  * Created by why on 2018/6/27.
  */
 public class IdeasBoxActivity extends BaseActivity {
@@ -31,8 +31,7 @@ public class IdeasBoxActivity extends BaseActivity {
     private TabLayout.TabLayoutOnPageChangeListener tabLayoutOnPageChangeListener;
     private TabLayout.ViewPagerOnTabSelectedListener viewPagerOnTabSelectedListener;
     private NetworkBroker networkBroker;
-    private TabItem host_tab;
-    private TabItem participants_tab;
+    private int fromPlat;
 
     @Override
     public boolean isTitle() {
@@ -48,8 +47,6 @@ public class IdeasBoxActivity extends BaseActivity {
     public void initView() {
         tabLayout = findViewById(R.id.csg_tab_layout);
         viewPager = findViewById(R.id.csg_view_pager);
-        host_tab = findViewById(R.id.host_tab);
-        participants_tab = findViewById(R.id.participants_tab);
     }
 
     @Override
@@ -66,8 +63,11 @@ public class IdeasBoxActivity extends BaseActivity {
 
         setTitleName(R.string.complaints_box);
 
+        fromPlat = GlobaVariable.getInstance().item.getFromPlat();//判断V智慧
+
         Bundle bundle = new Bundle();
         bundle.putInt(Constants.KEY_MEETING_ID, meetingId);
+        bundle.putInt(Constants.IS_VZHIHUI,fromPlat);
         arrayFragment = new Fragment[2];
         arrayFragment[0] = new HostFragment();
         arrayFragment[0].setArguments(bundle);
@@ -86,8 +86,13 @@ public class IdeasBoxActivity extends BaseActivity {
     public void requestNetwork() {
         networkBroker = new NetworkBroker(this);
         networkBroker.setCancelTag(getTAG());
-        getHostEvaluate();
-        getParticipants();
+        if (fromPlat == 1) {
+            getHostEvaluate();
+            getParticipants();
+        } else {
+            tabLayout.getTabAt(0).setText(String.format(getResources().getString(R.string.host), 0 + ""));
+            tabLayout.getTabAt(1).setText(String.format(getResources().getString(R.string.participants), 0 + ""));
+        }
     }
 
     /**
@@ -134,10 +139,11 @@ public class IdeasBoxActivity extends BaseActivity {
             EvaluatePageResponseBean response = (EvaluatePageResponseBean) res;
             if (response.getCode() == 200) {
                 EvaluatePageResponseBean.DataBean data = response.getData();
-                if (data != null){
+                if (data != null) {
                     int totalElements = data.getTotalElements();
                     tabLayout.getTabAt(0).setText(String.format(getResources().getString(R.string.host), totalElements + ""));
-                }}
+                }
+            }
         });
     }
 

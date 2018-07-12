@@ -2,10 +2,13 @@ package com.tami.vmanager.activity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.Group;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -48,6 +51,9 @@ public class ParticipantsFragment extends ViewPagerBaseFragment {
     private TextView comment;
 
     private int meetingId;//会议ID
+    private ConstraintLayout no_v_cl;
+    private Group v_group;
+    private int vzhihui;
 
     @Override
     public int getContentViewId() {
@@ -62,6 +68,9 @@ public class ParticipantsFragment extends ViewPagerBaseFragment {
         environmental = findViewById(R.id.environmental);
         recyclerview = findViewById(R.id.recyc);
         pulltorefreshlayout = findViewById(R.id.pull);
+
+        no_v_cl = findViewById(R.id.no_v_cl);
+        v_group = findViewById(R.id.v_group);
     }
 
     @Override
@@ -83,7 +92,17 @@ public class ParticipantsFragment extends ViewPagerBaseFragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
             meetingId = bundle.getInt(Constants.KEY_MEETING_ID);
+            vzhihui = bundle.getInt(Constants.IS_VZHIHUI);
         }
+
+        if (vzhihui == 1) {
+            no_v_cl.setVisibility(View.GONE);
+            v_group.setVisibility(View.VISIBLE);
+        } else {
+            no_v_cl.setVisibility(View.VISIBLE);
+            v_group.setVisibility(View.GONE);
+        }
+
         initRecyc();
     }
 
@@ -149,7 +168,7 @@ public class ParticipantsFragment extends ViewPagerBaseFragment {
                 if (data.isLastPage()) {
                     pulltorefreshlayout.setCanLoadMore(false);
                 }
-            }else{
+            } else {
                 pulltorefreshlayout.finishLoadMore();
             }
         });
@@ -197,6 +216,7 @@ public class ParticipantsFragment extends ViewPagerBaseFragment {
 
     /**
      * 评价服务与环境
+     *
      * @param evaluate 评价
      */
     private void setEvaluate(int evaluate) {

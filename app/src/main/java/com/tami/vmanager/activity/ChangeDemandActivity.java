@@ -1,6 +1,5 @@
 package com.tami.vmanager.activity;
 
-import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -48,8 +47,7 @@ public class ChangeDemandActivity extends BaseActivity {
     private int CurPage = 1;
     List<ChangeDemandResponseBean.DataBean.ElementsBean> listData;
     private CommonAdapter<ChangeDemandResponseBean.DataBean.ElementsBean> commonAdapter;
-    Handler handler = new Handler();
-    private String meetingId;
+    private int meetingId;
 
     @Override
     public boolean isTitle() {
@@ -74,13 +72,11 @@ public class ChangeDemandActivity extends BaseActivity {
             @Override
             public void refresh() {
                 queryData();
-                handler.postDelayed(() -> pullToRefreshLayout.finishRefresh(), 2000);
             }
 
             @Override
             public void loadMore() {
                 queryData();
-                handler.postDelayed(() -> pullToRefreshLayout.finishLoadMore(), 2000);
             }
         });
     }
@@ -89,7 +85,7 @@ public class ChangeDemandActivity extends BaseActivity {
     public void initData() {
         setTitleName(R.string.change_demand);
         listData = new ArrayList<>();
-        meetingId = getIntent().getStringExtra(Constants.KEY_MEETING_ID);
+        meetingId = getIntent().getIntExtra(Constants.KEY_MEETING_ID,1);
         initRecyc();
     }
 
@@ -111,24 +107,34 @@ public class ChangeDemandActivity extends BaseActivity {
                 holder.setText(R.id.in_name, item.getRequestUserName());
                 holder.setText(R.id.item_time, item.getRequestTime());
                 if (item.getReplyUserName().trim().isEmpty() && item.getReplyContent().trim().isEmpty()) {
-                    have_reply.setText(getResources().getString(R.string.no_replay));
+                    have_reply.setText(getString(R.string.no_replay));
                     have_reply.setTextColor(getResources().getColor(R.color.color_999999));
                     item_reply_content.setVisibility(View.GONE);
                     item_reply_name.setVisibility(View.GONE);
                 } else {
+                    have_reply.setText(getString(R.string.has_replay));
                     item_reply_content.setVisibility(View.VISIBLE);
                     item_reply_name.setVisibility(View.VISIBLE);
                     holder.setText(R.id.item_reply_name, item.getReplyUserName());
                     holder.setText(R.id.item_reply_content, String.format(getResources().getString(R.string.replay_content), item.getReplyContent()));
                 }
-
             }
         };
         commonAdapter.notifyDataSetChanged();
         recyclerView.setAdapter(commonAdapter);
+        onItemClick();
+    }
+
+
+    private void onItemClick() {
         commonAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                TextView have_reply = holder.itemView.findViewById(R.id.have_reply);
+                if (have_reply.getText().equals(getString(R.string.has_replay))){
+                    showToast(getString(R.string.y_has_replay));
+                    return;
+                }
                 dialog = DialogPlus.newDialog(ChangeDemandActivity.this)
                         .setCancelable(true)
                         .setGravity(Gravity.BOTTOM)
@@ -205,12 +211,13 @@ public class ChangeDemandActivity extends BaseActivity {
 
     @Override
     public void requestNetwork() {
+
         queryData();
     }
 
     private void queryData() {
         ChangeDemandRequestBean changeDemandRequestBean = new ChangeDemandRequestBean();
-        changeDemandRequestBean.setMeetingId(meetingId);
+        changeDemandRequestBean.setMeetingId(String.valueOf(meetingId));
         changeDemandRequestBean.setCurPage(CurPage++);
         changeDemandRequestBean.setPageSize(10);
         networkBroker.ask(changeDemandRequestBean, (Exception exl, MobileMessage res) -> {
@@ -222,14 +229,18 @@ public class ChangeDemandActivity extends BaseActivity {
                 ChangeDemandResponseBean response = (ChangeDemandResponseBean) res;
                 if (response.getCode() == 200) {
                     ChangeDemandResponseBean.DataBean data = response.getData();
-                    if (data != null && data.getElements() != null && data.getElements().size() > 0) {
-                        listData.addAll(data.getElements());
-                        commonAdapter.notifyDataSetChanged();
-                    }
-                    if (data.isLastPage()) {
-                        pullToRefreshLayout.setCanLoadMore(false);
+                    if (data != null) {
+                        if (data.getElements() != null && data.getElements().size() > 0) {
+                            listData.addAll(data.getElements());
+                            commonAdapter.notifyDataSetChanged();
+                        }
+                        if (data.isLastPage()) {
+                            pullToRefreshLayout.setCanLoadMore(false);
+                        }
                     }
                 }
+                pullToRefreshLayout.finishRefresh();
+                pullToRefreshLayout.finishLoadMore();
             } catch (Exception e) {
                 e.printStackTrace();
             }
