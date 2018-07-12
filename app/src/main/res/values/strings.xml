@@ -314,6 +314,8 @@
     <string name="do_you_save_current_process">是否保存当前流程？</string>
     <string name="no_Vzhihui">亲，您不是V智慧会员，无法查看，请下载注册V智慧~</string>
     <string name="y_has_replay">您已回复</string>
+    <string name="not_empty">发送内容不能为空</string>
+    <string name="send_fail">发送失败</string>
     <string name="select_process_node_least">最少选择一个流程节点！</string>
     <string name="please_create_meeting">请先创建会议！</string>
     <string name="meeting_not_exist_please_recreate">会议不存在请重新创建！</string>
