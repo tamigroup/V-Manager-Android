@@ -1,11 +1,10 @@
 package com.tami.vmanager.entity;
 
-import java.io.Serializable;
-
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import java.io.Serializable;
+import java.util.List;
 
 
 /**
@@ -55,7 +54,7 @@ public class LoginResponse extends MobileMessage implements Serializable {
         private	String	depName;	/**/
         private	int	depId;	/*6*/
         private	String	password;	/*3f57efeb8c91c6bae91ccd6e8790f8ad*/
-        private	int	fromPlat;	/*0*/
+        private	int	fromPlat;	/*会议来源 1-V智会 2-手机APP*/
         private	int	id;	/*33*/
         private	String	nickName;	/*李双希*/
         private	String	token;	/*74382bda6c8b48e3b56fbb5f2c91bc0f*/

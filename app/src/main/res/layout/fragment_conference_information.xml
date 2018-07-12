@@ -143,7 +143,7 @@
             android:layout_marginTop="@dimen/dp_30"
             android:gravity="center"
             android:text="@string/actual_number"
-            android:textColor="@color/color_999999"
+            android:textColor="@android:color/holo_red_light"
             android:textSize="@dimen/sp_14"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_weight="1"
