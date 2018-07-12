@@ -371,6 +371,10 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
         Logger.d("onPermissionsDenied:" + requestCode + ":" + perms.size());
     }
 
+    /**
+     * 更新头像
+     * @param imageUrl
+     */
     public void updateUserIcon(String imageUrl) {
         UpdateUserIconRequest updateUserIconRequest = new UpdateUserIconRequest();
         LoginResponse.Item item = GlobaVariable.getInstance().item;
@@ -381,19 +385,19 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
         networkBroker.ask(updateUserIconRequest, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);
-                showToast(getString(R.string.replace_head_image_failure));
+                showToast(getString(R.string.replace_head_image, getString(R.string.failure)));
                 return;
             }
             try {
                 UpdateUserIconResponse response = (UpdateUserIconResponse) res;
                 if (response.getCode() == 200) {
                     GlobaVariable.getInstance().item.setIconUrl(imageUrl);
-                    showToast(getString(R.string.replace_head_image_successfully));
+                    showToast(getString(R.string.replace_head_image, getString(R.string.success)));
                 } else {
-                    showToast(getString(R.string.replace_head_image_failure));
+                    showToast(getString(R.string.replace_head_image, getString(R.string.failure)));
                 }
             } catch (Exception e) {
-                showToast(getString(R.string.replace_head_image_failure));
+                showToast(getString(R.string.replace_head_image, getString(R.string.failure)));
                 e.printStackTrace();
             }
 
@@ -409,7 +413,7 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
         networkBroker.uploadImage(fmm, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);
-                showToast(getString(R.string.replace_head_image_failure));
+                showToast(getString(R.string.replace_head_image, getString(R.string.failure)));
                 return;
             }
             try {
@@ -421,12 +425,12 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
                             Logger.d("上传图片返回地址：" + item.dataList.get(0));
                             updateUserIcon(item.dataList.get(0));
                         } else {
-                            showToast(getString(R.string.replace_head_image_failure));
+                            showToast(getString(R.string.replace_head_image, getString(R.string.failure)));
                         }
                     }
                 }
             } catch (Exception e) {
-                showToast(getString(R.string.replace_head_image_failure));
+                showToast(getString(R.string.replace_head_image, getString(R.string.failure)));
                 e.printStackTrace();
             }
         });

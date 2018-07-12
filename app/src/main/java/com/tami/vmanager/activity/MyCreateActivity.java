@@ -1,5 +1,6 @@
 package com.tami.vmanager.activity;
 
+import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.AppCompatImageView;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.ScreenUtil;
+import com.tami.vmanager.utils.TimeUtils;
 import com.tami.vmanager.view.MeetingStateView;
 import com.tami.vmanager.view.swipemenu.SwipeHorizontalMenuLayout;
 import com.tami.vmanager.view.swipemenu.SwipeMenuLayout;
@@ -82,6 +84,7 @@ public class MyCreateActivity extends BaseActivity {
 
         listData = new ArrayList<>();
 
+        int screenWidth = ScreenUtil.getScreenWidth(getApplicationContext());
         listViewAdapter = new ListViewAdapter<AllMeetingsResponse.Array.Item>(getApplication(), listData, R.layout.item_my_create) {
             @Override
             protected void binView(ViewHolder viewHolder, AllMeetingsResponse.Array.Item item, int position) {
@@ -107,30 +110,70 @@ public class MyCreateActivity extends BaseActivity {
                 MeetingStateView stateView = viewHolder.getItemView(R.id.item_content_state);
                 stateView.setMeetingStateText(item.meetingStatus, 20);
                 //时间
-                viewHolder.setTextView(R.id.item_content_start_time, item.autoDayTime);
-//                holder.setText(R.id.item_content_start_time, TimeUtils.milliseconds2String(elements.getStartTime()));
-//                holder.setText(R.id.item_content_end_time, TimeUtils.milliseconds2String(elements.getEndTime()));
+                viewHolder.setTextView(R.id.item_content_start_time, TimeUtils.milliseconds2String(item.startTime, TimeUtils.DATE_YYYYMMDDHHMM_SLASH));
+                viewHolder.setTextView(R.id.item_content_end_time, TimeUtils.milliseconds2String(item.endTime, TimeUtils.DATE_YYYYMMDDHHMM_SLASH));
                 //V图片
-                AppCompatImageView imageView = viewHolder.getItemView(R.id.item_content_level_icon);
-                imageView.setVisibility(View.VISIBLE);
+                AppCompatImageView vipImageView = viewHolder.getItemView(R.id.item_content_level_icon);
+                vipImageView.setVisibility(item.isImportant == 0 ? View.GONE : View.VISIBLE);
+                vipImageView.setImageResource(getImageResId(item.isImportant));
                 //智图片
                 AppCompatImageView imageView1 = viewHolder.getItemView(R.id.item_content_level_icon1);
                 imageView1.setVisibility(item.fromPlat == 1 ? View.VISIBLE : View.GONE);
+                //房间
                 viewHolder.setTextView(R.id.item_content_room, item.meetingAddress);
+                //待完善
+                TextView perfected = viewHolder.getItemView(R.id.item_content_perfected);
+                perfected.setText(item.perfectStatus);
+                //已取消
+                TextView cancel = viewHolder.getItemView(R.id.item_content_cancel);
+                cancel.setText(item.cancelStatus);
             }
 
+            /**
+             * 获取图片资源ID
+             * @param vipId
+             */
+            private int getImageResId(int vipId) {
+                int id = R.mipmap.meeting_level_vip1;
+                switch (vipId) {
+                    case 1:
+                        id = R.mipmap.meeting_level_vip1;
+                        break;
+                    case 2:
+                        id = R.mipmap.meeting_level_vip2;
+                        break;
+                    case 3:
+                        id = R.mipmap.meeting_level_vip3;
+                        break;
+                    case 4:
+                        id = R.mipmap.meeting_level_vip4;
+                        break;
+                }
+                return id;
+            }
+
+            /**
+             * 测量会议名称的长度
+             * @param nameView
+             * @param content
+             */
             private void setNameTextLayoutParams(TextView nameView, String content) {
                 setLayoutParams(nameView, ConstraintLayout.LayoutParams.WRAP_CONTENT);
                 nameView.setText(content);
                 int spec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
                 nameView.measure(spec, spec);
                 int measuredWidthTicketNum = nameView.getMeasuredWidth();
-                int maxWidth = ScreenUtil.sp2px(getApplicationContext(), 330);
+                int maxWidth = ScreenUtil.dip2px(getApplicationContext(), (screenWidth - 90));
                 if (measuredWidthTicketNum > maxWidth) {
                     setLayoutParams(nameView, maxWidth);
                 }
             }
 
+            /**
+             * 重新赋值长度
+             * @param nameView
+             * @param value
+             */
             private void setLayoutParams(TextView nameView, int value) {
                 ConstraintLayout.LayoutParams layoutParams1 = (ConstraintLayout.LayoutParams) nameView.getLayoutParams();
                 layoutParams1.width = value;
@@ -158,6 +201,15 @@ public class MyCreateActivity extends BaseActivity {
         networkBroker.cancelAllRequests();
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.CREATE_MEETING) {
+            //修改会议返回
+
+        }
+    }
 
     /**
      * 获取我的创建数据
@@ -206,7 +258,9 @@ public class MyCreateActivity extends BaseActivity {
      * @param meetingId
      */
     private void modifyMeeting(int meetingId) {
-
+        Intent intent = new Intent(getApplicationContext(), ModifyMeetingActivity.class);
+        intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
+        startActivityForResult(intent, Constants.CREATE_MEETING);
     }
 
     /**

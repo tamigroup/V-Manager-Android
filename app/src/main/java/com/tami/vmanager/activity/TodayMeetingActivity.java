@@ -79,6 +79,7 @@ public class TodayMeetingActivity extends BaseActivity {
     public void initData() {
         setTitleName(R.string.today_meeting);
 
+        int screenWidth = ScreenUtil.getScreenWidth(getApplicationContext());
         //创建一个线性的布局管理器并设置
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -96,17 +97,23 @@ public class TodayMeetingActivity extends BaseActivity {
                 MeetingStateView stateView = holder.getView(R.id.item_meeting_state);
                 stateView.setMeetingStateText(item.meetingStatus, 20);
                 //时间
-                holder.setText(R.id.item_meeting_start_time, item.autoDayTime);
-//                holder.setText(R.id.item_meeting_start_time, TimeUtils.milliseconds2String(elements.getStartTime()));
-//                holder.setText(R.id.item_meeting_end_time, TimeUtils.milliseconds2String(elements.getEndTime()));
+                holder.setText(R.id.item_meeting_start_time, TimeUtils.milliseconds2String(item.startTime, TimeUtils.DATE_YYYYMMDDHHMM_SLASH));
+                holder.setText(R.id.item_meeting_end_time, TimeUtils.milliseconds2String(item.endTime, TimeUtils.DATE_YYYYMMDDHHMM_SLASH));
                 //V图片
-                AppCompatImageView imageView = holder.getView(R.id.item_meeting_level_icon);
-                imageView.setVisibility(View.VISIBLE);
+                AppCompatImageView vipImageView = holder.getView(R.id.item_meeting_level_icon);
+                vipImageView.setVisibility(item.isImportant == 0 ? View.GONE : View.VISIBLE);
+                vipImageView.setImageResource(getImageResId(item.isImportant));
                 //智图片
                 AppCompatImageView imageView1 = holder.getView(R.id.item_meeting_level_icon1);
                 imageView1.setVisibility(item.fromPlat == 1 ? View.VISIBLE : View.GONE);
+                //房间
                 holder.setText(R.id.item_meeting_room, item.meetingAddress);
-
+                //待完善
+                TextView perfected = holder.getView(R.id.item_meeting_perfected);
+                perfected.setText(item.perfectStatus);
+                //已取消
+                TextView cancel = holder.getView(R.id.item_meeting_cancel);
+                cancel.setText(item.cancelStatus);
                 //ITEM点击
                 ConstraintLayout itemLayout = holder.getView(R.id.item_meeting_layout);
                 itemLayout.setOnClickListener((View v) -> {
@@ -114,18 +121,51 @@ public class TodayMeetingActivity extends BaseActivity {
                 });
             }
 
+            /**
+             * 获取图片资源ID
+             * @param vipId
+             */
+            private int getImageResId(int vipId) {
+                int id = R.mipmap.meeting_level_vip1;
+                switch (vipId) {
+                    case 1:
+                        id = R.mipmap.meeting_level_vip1;
+                        break;
+                    case 2:
+                        id = R.mipmap.meeting_level_vip2;
+                        break;
+                    case 3:
+                        id = R.mipmap.meeting_level_vip3;
+                        break;
+                    case 4:
+                        id = R.mipmap.meeting_level_vip4;
+                        break;
+                }
+                return id;
+            }
+
+            /**
+             * 测量会议名称的长度
+             * @param nameView
+             * @param content
+             */
             private void setNameTextLayoutParams(TextView nameView, String content) {
                 setLayoutParams(nameView, ConstraintLayout.LayoutParams.WRAP_CONTENT);
                 nameView.setText(content);
                 int spec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
                 nameView.measure(spec, spec);
                 int measuredWidthTicketNum = nameView.getMeasuredWidth();
-                int maxWidth = ScreenUtil.sp2px(getApplicationContext(), 330);
+                int maxWidth = ScreenUtil.dip2px(getApplicationContext(), (screenWidth - 90));
                 if (measuredWidthTicketNum > maxWidth) {
                     setLayoutParams(nameView, maxWidth);
                 }
             }
 
+            /**
+             * 重新赋值长度
+             * @param nameView
+             * @param value
+             */
             private void setLayoutParams(TextView nameView, int value) {
                 ConstraintLayout.LayoutParams layoutParams1 = (ConstraintLayout.LayoutParams) nameView.getLayoutParams();
                 layoutParams1.width = value;

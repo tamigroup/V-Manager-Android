@@ -142,50 +142,6 @@
                     app:layout_constraintStart_toEndOf="@+id/acmr_end_time_txt"
                     app:layout_constraintTop_toTopOf="@+id/acmr_end_time_txt" />
 
-                <!--
-                <View
-                    android:id="@+id/acmr_end_time_line"
-                    style="@style/CreateMeetingLine"
-                    app:layout_constraintTop_toBottomOf="@+id/acmr_end_time_txt" />
-
-                <TextView
-                    android:id="@+id/acmr_contract_amount_txt"
-                    style="@style/CreateMeetingNameTxt"
-                    app:layout_constraintTop_toBottomOf="@+id/acmr_end_time_line" />
-
-                <EditText
-                    android:id="@+id/acmr_contract_amount"
-                    style="@style/CreateMeetingInput"
-                    android:hint="@string/please_enter"
-                    android:inputType="text"
-                    app:layout_constraintBottom_toBottomOf="@+id/acmr_contract_amount_txt"
-                    app:layout_constraintStart_toEndOf="@+id/acmr_contract_amount_txt"
-                    app:layout_constraintTop_toTopOf="@+id/acmr_contract_amount_txt" />
-
-                <View
-                    android:id="@+id/acmr_contract_amount_line"
-                    style="@style/CreateMeetingLine"
-                    app:layout_constraintTop_toBottomOf="@+id/acmr_contract_amount_txt" />
-
-                <TextView
-                    android:id="@+id/acmr_received_amount_txt"
-                    style="@style/CreateMeetingNameTxt"
-                    app:layout_constraintTop_toBottomOf="@+id/acmr_contract_amount_line" />
-
-                <EditText
-                    android:id="@+id/acmr_received_amount"
-                    style="@style/CreateMeetingInput"
-                    android:hint="@string/please_enter"
-                    android:inputType="text"
-                    app:layout_constraintBottom_toBottomOf="@+id/acmr_received_amount_txt"
-                    app:layout_constraintStart_toEndOf="@+id/acmr_received_amount_txt"
-                    app:layout_constraintTop_toTopOf="@+id/acmr_received_amount_txt" />
-
-                <View
-                    android:id="@+id/acmr_received_amount_line"
-                    style="@style/CreateMeetingLine"
-                    app:layout_constraintTop_toBottomOf="@+id/acmr_received_amount_txt" />
-                -->
             </android.support.constraint.ConstraintLayout>
 
             <TextView
@@ -387,22 +343,6 @@
                     app:srcCompat="@mipmap/create_meeting_delete" />
 
                 <TextView
-                    android:id="@+id/acmr_eo_add_image_name"
-                    android:layout_width="@dimen/dp_0"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp_10"
-                    android:layout_marginRight="@dimen/dp_10"
-                    android:ellipsize="end"
-                    android:gravity="left|center_vertical"
-                    android:lines="1"
-                    android:textColor="@color/color_303030"
-                    android:textSize="@dimen/sp_12"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toStartOf="@+id/acmr_eo_delete_image"
-                    app:layout_constraintStart_toEndOf="@+id/acmr_eo_add_image"
-                    app:layout_constraintTop_toTopOf="@+id/acmr_eo_add_image" />
-
-                <TextView
                     android:id="@+id/acmr_eo_add_image_size"
                     android:layout_width="@dimen/dp_0"
                     android:layout_height="wrap_content"
@@ -410,9 +350,10 @@
                     android:gravity="left|center_vertical"
                     android:textColor="@color/color_ACACAC"
                     android:textSize="@dimen/sp_10"
-                    app:layout_constraintEnd_toEndOf="@+id/acmr_eo_add_image_name"
-                    app:layout_constraintStart_toStartOf="@+id/acmr_eo_add_image_name"
-                    app:layout_constraintTop_toBottomOf="@+id/acmr_eo_add_image_name" />
+                    app:layout_constraintEnd_toStartOf="@+id/acmr_eo_delete_image"
+                    app:layout_constraintStart_toEndOf="@+id/acmr_eo_add_image"
+                    app:layout_constraintTop_toTopOf="@+id/acmr_eo_add_image"
+                    />
 
                 <android.support.constraint.Group
                     android:id="@+id/acmr_eo_image_group"

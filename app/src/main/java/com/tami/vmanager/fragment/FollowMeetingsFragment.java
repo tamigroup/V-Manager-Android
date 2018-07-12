@@ -76,6 +76,7 @@ public class FollowMeetingsFragment extends ViewPagerBaseFragment {
 
     @Override
     public void initData() {
+        int screenWidth = ScreenUtil.getScreenWidth(getContext());
         //创建一个线性的布局管理器并设置
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -86,28 +87,58 @@ public class FollowMeetingsFragment extends ViewPagerBaseFragment {
         commonAdapter = new CommonAdapter<AllMeetingsResponse.Array.Item>(getActivity(), R.layout.item_today_meeting, listData) {
             @Override
             protected void convert(ViewHolder holder, AllMeetingsResponse.Array.Item item, int position) {
-//名称
+                //名称
                 TextView nameView = holder.getView(R.id.item_meeting_name);
                 setNameTextLayoutParams(nameView, item.meetingName);
                 //会议状态
                 MeetingStateView stateView = holder.getView(R.id.item_meeting_state);
                 stateView.setMeetingStateText(item.meetingStatus, 20);
                 //时间
-                holder.setText(R.id.item_meeting_start_time, item.autoDayTime);
-//                holder.setText(R.id.item_meeting_start_time, TimeUtils.milliseconds2String(elements.getStartTime()));
-//                holder.setText(R.id.item_meeting_end_time, TimeUtils.milliseconds2String(elements.getEndTime()));
+                holder.setText(R.id.item_meeting_start_time, TimeUtils.milliseconds2String(item.startTime, TimeUtils.DATE_YYYYMMDDHHMM_SLASH));
+                holder.setText(R.id.item_meeting_end_time, TimeUtils.milliseconds2String(item.endTime, TimeUtils.DATE_YYYYMMDDHHMM_SLASH));
                 //V图片
-                AppCompatImageView imageView = holder.getView(R.id.item_meeting_level_icon);
-                imageView.setVisibility(View.VISIBLE);
+                AppCompatImageView vipImageView = holder.getView(R.id.item_meeting_level_icon);
+                vipImageView.setVisibility(item.isImportant == 0 ? View.GONE : View.VISIBLE);
+                vipImageView.setImageResource(getImageResId(item.isImportant));
                 //智图片
                 AppCompatImageView imageView1 = holder.getView(R.id.item_meeting_level_icon1);
                 imageView1.setVisibility(item.fromPlat == 1 ? View.VISIBLE : View.GONE);
+                //房间
                 holder.setText(R.id.item_meeting_room, item.meetingAddress);
+                //待完善
+                TextView perfected = holder.getView(R.id.item_meeting_perfected);
+                perfected.setText(item.perfectStatus);
+                //已取消
+                TextView cancel = holder.getView(R.id.item_meeting_cancel);
+                cancel.setText(item.cancelStatus);
                 //ITEM点击
                 ConstraintLayout itemLayout = holder.getView(R.id.item_meeting_layout);
                 itemLayout.setOnClickListener((View v) -> {
                     startActivity(new Intent(getContext(), MeetingOverviewActivity.class));
                 });
+            }
+
+            /**
+             * 获取图片资源ID
+             * @param vipId
+             */
+            private int getImageResId(int vipId) {
+                int id = R.mipmap.meeting_level_vip1;
+                switch (vipId) {
+                    case 1:
+                        id = R.mipmap.meeting_level_vip1;
+                        break;
+                    case 2:
+                        id = R.mipmap.meeting_level_vip2;
+                        break;
+                    case 3:
+                        id = R.mipmap.meeting_level_vip3;
+                        break;
+                    case 4:
+                        id = R.mipmap.meeting_level_vip4;
+                        break;
+                }
+                return id;
             }
 
             /**
@@ -121,7 +152,7 @@ public class FollowMeetingsFragment extends ViewPagerBaseFragment {
                 int spec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
                 nameView.measure(spec, spec);
                 int measuredWidthTicketNum = nameView.getMeasuredWidth();
-                int maxWidth = ScreenUtil.sp2px(getContext(), 330);
+                int maxWidth = ScreenUtil.dip2px(getActivity(), (screenWidth - 90));
                 if (measuredWidthTicketNum > maxWidth) {
                     setLayoutParams(nameView, maxWidth);
                 }

@@ -76,6 +76,7 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
 
     @Override
     public void initData() {
+        int screenWidth = ScreenUtil.getScreenWidth(getContext());
         //创建一个线性的布局管理器并设置
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -86,23 +87,30 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
         commonAdapter = new CommonAdapter<AllMeetingsResponse.Array.Item>(getActivity(), R.layout.item_meeting, listData) {
             @Override
             protected void convert(ViewHolder holder, AllMeetingsResponse.Array.Item item, int position) {
-//名称
+                //名称
                 TextView nameView = holder.getView(R.id.item_meeting_name);
-//                nameView.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(getContext(), R.mipmap.meeting_level_zhi), null);
                 setNameTextLayoutParams(nameView, item.meetingName);
                 //会议状态
                 MeetingStateView stateView = holder.getView(R.id.item_meeting_state);
-                stateView.setMeetingStateText(item.meetingStatus);
+                stateView.setMeetingStateText(item.meetingStatus, 20);
                 //时间
-                holder.setText(R.id.item_meeting_start_time, TimeUtils.milliseconds2String(item.startTime));
-                holder.setText(R.id.item_meeting_end_time, TimeUtils.milliseconds2String(item.endTime));
+                holder.setText(R.id.item_meeting_start_time, TimeUtils.milliseconds2String(item.startTime, TimeUtils.DATE_YYYYMMDDHHMM_SLASH));
+                holder.setText(R.id.item_meeting_end_time, TimeUtils.milliseconds2String(item.endTime, TimeUtils.DATE_YYYYMMDDHHMM_SLASH));
                 //V图片
-                AppCompatImageView imageView = holder.getView(R.id.item_meeting_level_icon);
-                imageView.setVisibility(View.VISIBLE);
+                AppCompatImageView vipImageView = holder.getView(R.id.item_meeting_level_icon);
+                vipImageView.setVisibility(item.isImportant == 0 ? View.GONE : View.VISIBLE);
+                vipImageView.setImageResource(getImageResId(item.isImportant));
                 //智图片
                 AppCompatImageView imageView1 = holder.getView(R.id.item_meeting_level_icon1);
                 imageView1.setVisibility(item.fromPlat == 1 ? View.VISIBLE : View.GONE);
+                //房间
                 holder.setText(R.id.item_meeting_room, item.meetingAddress);
+                //待完善
+                TextView perfected = holder.getView(R.id.item_meeting_perfected);
+                perfected.setText(item.perfectStatus);
+                //已取消
+                TextView cancel = holder.getView(R.id.item_meeting_cancel);
+                cancel.setText(item.cancelStatus);
                 //关注按钮点击
                 final TextView follow = holder.getView(R.id.item_meeting_follow);
                 if (!getString(R.string.finished).equals(item.followStatus)) {
@@ -114,9 +122,6 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
                 } else {
                     follow.setVisibility(View.GONE);
                 }
-                //待付款
-                TextView paymentState = holder.getView(R.id.item_meeting_payment_state);
-                paymentState.setVisibility(item.fromPlat == 1 ? View.VISIBLE : View.GONE);
                 //ITEM点击
                 ConstraintLayout itemLayout = holder.getView(R.id.item_meeting_layout);
                 itemLayout.setOnClickListener((View v) -> {
@@ -124,6 +129,29 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
                     intent.putExtra(Constants.KEY_MEETING_ID, item.meetingId);
                     startActivity(intent);
                 });
+            }
+
+            /**
+             * 获取图片资源ID
+             * @param vipId
+             */
+            private int getImageResId(int vipId) {
+                int id = R.mipmap.meeting_level_vip1;
+                switch (vipId) {
+                    case 1:
+                        id = R.mipmap.meeting_level_vip1;
+                        break;
+                    case 2:
+                        id = R.mipmap.meeting_level_vip2;
+                        break;
+                    case 3:
+                        id = R.mipmap.meeting_level_vip3;
+                        break;
+                    case 4:
+                        id = R.mipmap.meeting_level_vip4;
+                        break;
+                }
+                return id;
             }
 
             /**
@@ -137,7 +165,7 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
                 int spec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
                 nameView.measure(spec, spec);
                 int measuredWidthTicketNum = nameView.getMeasuredWidth();
-                int maxWidth = ScreenUtil.sp2px(getContext(), 270);
+                int maxWidth = ScreenUtil.dip2px(getActivity(), (screenWidth - 160));
                 if (measuredWidthTicketNum > maxWidth) {
                     setLayoutParams(nameView, maxWidth);
                 }
@@ -179,7 +207,7 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
 
     @Override
     public void emptyObject() {
-        if(networkBroker!=null){
+        if (networkBroker != null) {
             networkBroker.cancelAllRequests();
         }
     }
@@ -248,17 +276,17 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
                     if (response.data) {
                         onClickItem.followStatus = (onClickItem.followStatus == 1 ? 0 : 1);
                         followOnClick(follow, onClickItem.followStatus);
-                        if(onClickItem.followStatus == 1){
-                            showToast(getString(R.string.attention_prompt,getString(R.string.success)));
-                        }else{
-                            showToast(getString(R.string.attention_cancel_prompt,getString(R.string.success)));
+                        if (onClickItem.followStatus == 1) {
+                            showToast(getString(R.string.attention_prompt, getString(R.string.success)));
+                        } else {
+                            showToast(getString(R.string.attention_cancel_prompt, getString(R.string.success)));
                         }
                     }
-                }else{
-                    if(onClickItem.followStatus == 0){
-                        showToast(getString(R.string.attention_prompt,getString(R.string.failure)));
-                    }else{
-                        showToast(getString(R.string.attention_cancel_prompt,getString(R.string.failure)));
+                } else {
+                    if (onClickItem.followStatus == 0) {
+                        showToast(getString(R.string.attention_prompt, getString(R.string.failure)));
+                    } else {
+                        showToast(getString(R.string.attention_cancel_prompt, getString(R.string.failure)));
                     }
                 }
             } catch (Exception e) {
@@ -285,4 +313,6 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
             follow.setBackgroundResource(R.drawable.item_meeting_follow_unselected);
         }
     }
+
+
 }

@@ -68,11 +68,10 @@ import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
 /**
- * 首页中的创建会议
- * Created by why on 2018/6/13.
+ * 编辑会议
+ * Created by why on 2018/7/12.
  */
-public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks {
-
+public class ModifyMeetingActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks {
     private Button saveBtn;//保存按钮
     //TOP侧面NAME-主要给TEXT文本框赋值*号
     private TextView nameTxtView;
@@ -80,16 +79,12 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
     private TextView meeetingPlaceTxtView;
     private TextView startTimeTxtView;
     private TextView endTimeTxtView;
-    //    private TextView contractAmountTxtView;
-//    private TextView receivedAmountTxtView;
     //TOP侧面请输入，请选择
     private EditText nameView;
     private EditText sponsorView;
     private TextView meeetingPlaceView;
     private TextView startTimeView;
     private TextView endTimeView;
-    //    private EditText contractAmountView;
-//    private EditText receivedAmountView;
     //参会人
     private TextView numberTxtView;
     private EditText estimatedNumberPeople;
@@ -147,7 +142,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
 
     @Override
     public int getContentViewId() {
-        return R.layout.activity_create_meeting_rewrite;
+        return R.layout.activity_modify_meeting;
     }
 
     @Override
@@ -159,16 +154,12 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
         meeetingPlaceTxtView = findViewById(R.id.acmr_meeting_place_txt);
         startTimeTxtView = findViewById(R.id.acmr_start_time_txt);
         endTimeTxtView = findViewById(R.id.acmr_end_time_txt);
-//        contractAmountTxtView = findViewById(R.id.acmr_contract_amount_txt);
-//        receivedAmountTxtView = findViewById(R.id.acmr_received_amount_txt);
         //TOP侧面请输入，请选择
         nameView = findViewById(R.id.acmr_meeting_name);
         sponsorView = findViewById(R.id.acmr_sponsor);
         meeetingPlaceView = findViewById(R.id.acmr_meeting_place);
         startTimeView = findViewById(R.id.acmr_start_time);
         endTimeView = findViewById(R.id.acmr_end_time);
-//        contractAmountView = findViewById(R.id.acmr_contract_amount);
-//        receivedAmountView = findViewById(R.id.acmr_received_amount);
         //参会人员
         numberTxtView = findViewById(R.id.acmr_number_participants);
         estimatedNumberPeople = findViewById(R.id.acmr_estimated_number_people);
@@ -738,8 +729,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
         //测试
         cmr.setContractMoney(String.valueOf(1000));
         cmr.setPayMoney(String.valueOf(500));
-//        cmr.setContractMoney(contractAmountView.getText().toString());
-//        cmr.setPayMoney(receivedAmountView.getText().toString());
+
         cmr.setEstimateNum(estimatedNumberPeople.getText().toString());
         cmr.setMinNum(bottomNumberPeople.getText().toString());
         cmr.setIsImportant(String.valueOf(meetingLevelIndex));
@@ -819,8 +809,6 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
                 || addressId == -1
                 || recordStartDate == null
                 || recordEndDate == null
-//                || TextUtils.isEmpty(contractAmountView.getText())
-//                || TextUtils.isEmpty(receivedAmountView.getText())
                 || TextUtils.isEmpty(estimatedNumberPeople.getText())
                 || TextUtils.isEmpty(bottomNumberPeople.getText())
                 ) {
@@ -867,5 +855,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
     public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
         Logger.d("onPermissionsDenied:" + requestCode + ":" + perms.size());
     }
+
+
 
 }

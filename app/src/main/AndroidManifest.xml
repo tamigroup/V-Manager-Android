@@ -221,6 +221,12 @@
         <activity
             android:name=".activity.GroupMembersAllActivity"
             android:screenOrientation="portrait"/>
+
+        <!--修改会议-->
+        <activity
+            android:name=".activity.ModifyMeetingActivity"
+            android:screenOrientation="portrait"/>
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.tami.vmanager.fileprovider"

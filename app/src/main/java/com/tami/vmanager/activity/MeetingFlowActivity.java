@@ -22,6 +22,7 @@ import java.util.List;
  * 创建服务流程
  * Created by why on 2018/6/15.
  */
+@Deprecated
 public class MeetingFlowActivity extends BaseActivity {
 
     private RecyclerView recyclerView;

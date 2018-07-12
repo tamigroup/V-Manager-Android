@@ -151,7 +151,7 @@ public class MeetingOverviewActivity extends BaseActivity {
         if (intent != null) {
             meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 0);
         }
-        meetingId = 1;
+        meetingId = 15;
 
 //        pleaseCreateConference.setVisibility(View.GONE);
 //        xufuLayout.setVisibility(View.GONE);
@@ -218,15 +218,15 @@ public class MeetingOverviewActivity extends BaseActivity {
                 break;
             case R.id.meeting_overview_xuanfu_layout:
                 //悬浮布局
-                startActivity(new Intent(getApplicationContext(),CreateServiceFlowActivity.class));
+                editFlow();
                 break;
             case R.id.meeting_overview_suspension_edit:
                 //悬浮布局中按钮
-                startActivity(new Intent(getApplicationContext(),CreateServiceFlowActivity.class));
+                editFlow();
                 break;
             case R.id.meeting_overview_suspension_look:
                 //悬浮布局中按钮
-                startActivity(new Intent(getApplicationContext(),CreateServiceFlowActivity.class));
+                editFlow();
                 break;
             case R.id.meeting_overview_function_btn:
                 //功能按钮
@@ -234,6 +234,15 @@ public class MeetingOverviewActivity extends BaseActivity {
                 break;
 
         }
+    }
+
+    /**
+     * 编辑流程
+     */
+    private void editFlow() {
+        Intent intent = new Intent(getApplicationContext(), CreateServiceFlowActivity.class);
+        intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
+        startActivity(intent);
     }
 
     /**

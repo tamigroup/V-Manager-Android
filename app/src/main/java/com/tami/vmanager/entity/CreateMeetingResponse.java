@@ -5,7 +5,6 @@ import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-
 /**
  * 创建会议.服务端响应
  *
@@ -25,5 +24,10 @@ public class CreateMeetingResponse extends MobileMessage implements Serializable
     }
 
 
-    public boolean data;
+    public Item data;
+
+    @JsonInclude(Include.NON_NULL)
+    public static class Item {
+        public int meetingId;
+    }
 }

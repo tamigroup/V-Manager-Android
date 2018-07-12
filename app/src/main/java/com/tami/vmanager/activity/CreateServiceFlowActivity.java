@@ -25,6 +25,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.view.TimePickerView;
@@ -96,8 +97,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
     //保存弹框
     private ConfirmEnterMeetingDialog cemd;
 
-    private int meetingId = 0;//会议ID
-
+    private int meetingId = -1;//会议ID
 
     @Override
     public boolean isTitle() {
@@ -133,7 +133,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
         cemd.setConfirmEnterMeetingListener(new ConfirmEnterMeetingListener() {
             @Override
             public void leftBtn() {
-                showToast(R.string.cancel);
+                showPopWindow(dateSelected);
             }
 
             @Override
@@ -147,9 +147,12 @@ public class CreateServiceFlowActivity extends BaseActivity {
     public void initData() {
         Intent intent = getIntent();
         if (intent != null) {
-            meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 0);
+            meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, -1);
+            if (meetingId == -1) {
+                showToast(getString(R.string.meeting_not_exist_please_recreate));
+                finish();
+            }
         }
-        meetingId = 1;
 
         setTitleName(R.string.flow_chart);
 
@@ -202,7 +205,9 @@ public class CreateServiceFlowActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.acsf_date_selected:
-                cemd.show();
+                if (meetingDayList != null && meetingDayList.size() > 1) {
+                    cemd.show();
+                }
                 break;
             case R.id.acsf_save_btn:
                 //保存
@@ -711,34 +716,38 @@ public class CreateServiceFlowActivity extends BaseActivity {
     /**
      * 保存流程节点
      */
-    private void createUserMeetingItem(boolean flag) {
+    private void createUserMeetingItem(final boolean flag) {
         SetMeetingItemsRequest smir = new SetMeetingItemsRequest();
         smir.setMeetingId(meetingId);
         if (!TextUtils.isEmpty(dateSelected.getText())) {
             smir.setStartOn(dateSelected.getText().toString());
         }
         smir.setMeetingItemsJson(getMeetingJson());
-        networkBroker.ask(smir, (ex1, res) -> {
-            if (null != ex1) {
-                Logger.d(ex1.getMessage() + "-" + ex1);
-                return;
-            }
-            try {
-                SetMeetingItemsResponse response = (SetMeetingItemsResponse) res;
-                if (response.getCode() == 200) {
-                    if (response.data) {
-                        showToast(getString(R.string.save_flow, getString(R.string.success)));
-                        if (flag) {
-                            showPopWindow(dateSelected);
-                        }
-                    } else {
-                        showToast(getString(R.string.save_flow, getString(R.string.failure)));
-                    }
+        if (!TextUtils.isEmpty(smir.getMeetingItemsJson())) {
+            networkBroker.ask(smir, (ex1, res) -> {
+                if (null != ex1) {
+                    Logger.d(ex1.getMessage() + "-" + ex1);
+                    return;
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+                try {
+                    SetMeetingItemsResponse response = (SetMeetingItemsResponse) res;
+                    if (response.getCode() == 200) {
+                        if (response.data) {
+                            showToast(getString(R.string.save_flow, getString(R.string.success)));
+                            if (flag) {
+                                showPopWindow(dateSelected);
+                            }
+                        } else {
+                            showToast(getString(R.string.save_flow, getString(R.string.failure)));
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        } else {
+            showToast(getString(R.string.select_process_node_least));
+        }
     }
 
     /**
@@ -750,10 +759,12 @@ public class CreateServiceFlowActivity extends BaseActivity {
         List<MeetingItemsJsonEntity> jsonList = new ArrayList<>();
         for (GetMeetingItemsResponse.Array.Item item : topData) {
             if (item.isSelected) {
-                MeetingItemsJsonEntity mie = new MeetingItemsJsonEntity();
-                mie.meetingItemId = item.id;
-                mie.startOn = item.startOn;
-                jsonList.add(mie);
+                if (item.startOn > 0) {
+                    MeetingItemsJsonEntity mie = new MeetingItemsJsonEntity();
+                    mie.meetingItemId = item.id;
+                    mie.startOn = item.startOn;
+                    jsonList.add(mie);
+                }
             }
         }
         String json = null;

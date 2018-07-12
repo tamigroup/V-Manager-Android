@@ -234,8 +234,7 @@
     <string name="save">保存</string>
     <string name="selected_people">已选择：%d人</string>
 
-    <string name="replace_head_image_failure">更换头像失败</string>
-    <string name="replace_head_image_successfully">更换头像成功</string>
+    <string name="replace_head_image">更换头像%s!</string>
     <string name="adding_custom_processes">添加自定义流程</string>
     <string name="please_enter_process_title">请输入流程标题</string>
 
@@ -308,4 +307,9 @@
 
     <string name="save_flow">保存流程%s！</string>
     <string name="do_you_save_current_process">是否保存当前流程？</string>
+    <string name="select_process_node_least">最少选择一个流程节点！</string>
+    <string name="please_create_meeting">请先创建会议！</string>
+    <string name="meeting_not_exist_please_recreate">会议不存在请重新创建！</string>
+    <string name="whether_create_process">是否创建流程？</string>
+    <string name="create_meeting_toast">创建会议%s!</string>
 </resources>

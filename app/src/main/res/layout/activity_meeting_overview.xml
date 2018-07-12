@@ -190,7 +190,7 @@
                     app:srcCompat="@mipmap/right_triangle" />
 
                 <TextView
-                    android:id="@+id/meeting_overview_suspension_edit"
+                    android:id="@+id/meeting_overview_suspension_look"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/dp_20"
@@ -201,14 +201,14 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/meeting_overview_suspension_look"
+                    android:id="@+id/meeting_overview_suspension_edit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/dp_20"
                     android:text="编辑"
                     android:textColor="@color/color_4884D9"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/meeting_overview_suspension_edit"
+                    app:layout_constraintEnd_toStartOf="@+id/meeting_overview_suspension_look"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
