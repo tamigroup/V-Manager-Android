@@ -258,8 +258,7 @@ public class EnterMeetingActivity extends BaseActivity {
      */
     private void getMeetingItemFlow() {
         GetMeetingItemFlowRequest gmifr = new GetMeetingItemFlowRequest();
-//        gmifr.setMeetingId(meetingId);
-        gmifr.setMeetingId(1);
+        gmifr.setMeetingId(meetingId);
         networkBroker.ask(gmifr, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);

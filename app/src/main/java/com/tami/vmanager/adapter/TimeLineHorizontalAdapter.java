@@ -77,6 +77,7 @@ public class TimeLineHorizontalAdapter extends RecyclerView.Adapter<TimeLineHori
         sb.append("\n");
         sb.append(item.meetingItemName);
         holder.stateTxt.setText(sb.toString());
+        holder.daysTxt.setText(TimeUtils.date2String(new Date(item.startOn), TimeUtils.DATE_MMDD_SLASH));
     }
 
     @Override
@@ -89,6 +90,7 @@ public class TimeLineHorizontalAdapter extends RecyclerView.Adapter<TimeLineHori
         View rightView;
         AppCompatImageView middlePic;
         TextView stateTxt;
+        TextView daysTxt;
 
         public TimeLineHorizontaHolder(View itemView) {
             super(itemView);
@@ -96,6 +98,7 @@ public class TimeLineHorizontalAdapter extends RecyclerView.Adapter<TimeLineHori
             rightView = itemView.findViewById(R.id.thl_right_line);
             middlePic = itemView.findViewById(R.id.thl_middle_pic);
             stateTxt = itemView.findViewById(R.id.thl_state);
+            daysTxt = itemView.findViewById(R.id.thl_days);
         }
     }
 }

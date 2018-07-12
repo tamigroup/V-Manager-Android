@@ -48,6 +48,7 @@
         android:layout_marginLeft="@dimen/dp_50"
         android:gravity="center_vertical"
         android:textColor="@color/color_303030"
+        android:text="@string/ready"
         android:textSize="@dimen/sp_18"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
