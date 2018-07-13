@@ -1,7 +1,9 @@
 package com.tami.vmanager.activity;
 
 import android.content.Intent;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 
@@ -40,6 +42,7 @@ public class GroupEditNoticeActivity extends BaseActivity {
     public void initView() {
         title = findViewById(R.id.title_edit);
         content = findViewById(R.id.content_edit);
+
     }
 
     @Override
@@ -58,6 +61,48 @@ public class GroupEditNoticeActivity extends BaseActivity {
 
         networkBroker = new NetworkBroker(this);
         networkBroker.setCancelTag(getTAG());
+
+        title.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence title_content, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable title_content) {
+                if(title_content.toString().trim().length() > 40){
+                    title.setText(title_content.toString().substring(0,40));
+                    title.setSelection(40);
+                    showToast(getString(R.string.input_title_length));
+                }
+            }
+        });
+
+        content.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable content_con) {
+                if(content_con.toString().trim().length() > 300){
+                    content.setText(content_con.toString().substring(0,300));
+                    content.setSelection(300);
+                    showToast(getString(R.string.input_content_length));
+                }
+            }
+        });
     }
 
     @Override
@@ -139,8 +184,12 @@ public class GroupEditNoticeActivity extends BaseActivity {
      * @return
      */
     private boolean isEmpty() {
-        if (TextUtils.isEmpty(title.getText().toString().trim()) || TextUtils.isEmpty(content.getText().toString().trim())) {
-            showToast(getString(R.string.must_add_item_not_empty));
+        if (TextUtils.isEmpty(title.getText().toString().trim())) {
+            showToast(getString(R.string.input_title));
+            return false;
+        }
+        if (TextUtils.isEmpty(content.getText().toString().trim())){
+            showToast(getString(R.string.input_content));
             return false;
         }
         return true;

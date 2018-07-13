@@ -284,6 +284,10 @@
     <string name="required_title">标题（必填）</string>
     <string name="required_content">正文（必填）</string>
     <string name="must_add_item_not_empty">必添项不可为空！</string>
+    <string name="input_title">请输入标题</string>
+    <string name="input_title_length">请输入40字以内</string>
+    <string name="input_content">请输入正文内容</string>
+    <string name="input_content_length">请输入300字以内</string>
 
     <string name="success">成功</string>
     <string name="failure">失败</string>
