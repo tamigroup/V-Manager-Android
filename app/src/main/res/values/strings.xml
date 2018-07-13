@@ -180,7 +180,7 @@
     <!--会议信息-->
     <string name="host_name">主办方: %s</string>
     <string name="meeting_address">鸿山亭: </string>
-    <string name="salename">销售人: %s</string>
+    <string name="salename">销售: %s</string>
     <string name="service_flow">服务流程</string>
     <!--    会议服务群    -->
     <string name="conference_service_group">会议服务群</string>
@@ -330,4 +330,5 @@
     <string name="search">搜索</string>
     <string name="look_at_flow">查看流程单</string>
     <string name="please_create_flow">暂未创建服务流程</string>
+    <string name="phone_permission">拨打电话的权限</string>
 </resources>

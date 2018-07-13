@@ -15,6 +15,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
     <uses-permission
         android:name="android.permission.READ_LOGS"
         tools:ignore="ProtectedPermissions"/>
@@ -84,8 +85,8 @@
         <!--搜索详情页-->
         <activity
             android:name=".activity.SearchDetailActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
         <!--    首页的创建会议    -->
         <activity
             android:name=".activity.CreateMeetingActivity"
@@ -351,6 +352,11 @@
         <meta-data
             android:name="JPUSH_APPKEY"
             android:value="3da91343a0089af98125d6d4"/> <!--  </>值来自开发者平台取得的AppKey-->
+        <!--适配全面屏-->
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.1"/>
+
     </application>
 
 </manifest>

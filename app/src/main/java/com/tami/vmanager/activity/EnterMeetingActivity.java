@@ -1,13 +1,19 @@
 package com.tami.vmanager.activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tami.vmanager.R;
@@ -21,15 +27,20 @@ import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.Utils;
+import com.tami.vmanager.view.MeetingStateView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.AppSettingsDialog;
+import pub.devrel.easypermissions.EasyPermissions;
 
 /**
  * 进入会议
  * Created by why on 2018/6/16.
  */
-public class EnterMeetingActivity extends BaseActivity {
+public class EnterMeetingActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks {
 
     private TextView meetingName;//会议名称
     private TextView meetingTime;//会议时间
@@ -54,6 +65,8 @@ public class EnterMeetingActivity extends BaseActivity {
     private NetworkBroker networkBroker;
     private List<GetMeetingItemFlowResponse.Array.Item> listData;
     private TimeLineHorizontalAdapter adapter;
+    private MeetingStateView meeting_status;
+    private ImageView sale_phone;
 
     @Override
     public boolean isTitle() {
@@ -73,12 +86,14 @@ public class EnterMeetingActivity extends BaseActivity {
         meetingRoom = findViewById(R.id.meeting_overview_meeting_room);
         memhMponsor = findViewById(R.id.memh_sponsor);
         meetingPersonnel = findViewById(R.id.meeting_overview_meeting_personnel);
+        sale_phone = findViewById(R.id.sale_phone);
+
         //人数与EO查看数据
         predeterminedNumber = findViewById(R.id.meeting_overview_predetermined_number);
         bottomNumber = findViewById(R.id.meeting_overview_bottom_number);
         actualNumber = findViewById(R.id.meeting_overview_actual_number);
         lookEO = findViewById(R.id.meeting_overview_look_eo);
-
+        meeting_status = findViewById(R.id.meeting_status);
         recyclerView = findViewById(R.id.enter_meeting_recycler_view);
         //会议服务群
         serviceGroup = findViewById(R.id.enter_meeting_service_group_layout);
@@ -99,6 +114,7 @@ public class EnterMeetingActivity extends BaseActivity {
         sponsorMember.setOnClickListener(this);
         meetingDetails.setOnClickListener(this);
         vipDetails.setOnClickListener(this);
+        sale_phone.setOnClickListener(this);
     }
 
     @Override
@@ -172,7 +188,36 @@ public class EnterMeetingActivity extends BaseActivity {
                 //VIP详情
                 vipDetails();
                 break;
+            case R.id.sale_phone:
+
+                requiresPermission();
+                break;
         }
+    }
+
+    @AfterPermissionGranted(Constants.CALL_PHONE_REQUEST_CODE)
+    private void requiresPermission() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            String[] mPermissionList = new String[]{Manifest.permission.CALL_PHONE};
+            if (EasyPermissions.hasPermissions(EnterMeetingActivity.this, mPermissionList)) {
+                call();
+            } else {
+                EasyPermissions.requestPermissions(this, getString(R.string.phone_permission), Constants.CALL_PHONE_REQUEST_CODE, mPermissionList);
+            }
+        } else {
+            call();
+        }
+    }
+
+    private void call() {
+        Intent intent_phone = new Intent(Intent.ACTION_CALL);
+        Uri data = Uri.parse("tel:" + item.salesUserMobile);
+        intent_phone.setData(data);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            Logger.e("权限拒绝---");
+            return;
+        }
+        startActivity(intent_phone);
     }
 
     /**
@@ -183,15 +228,16 @@ public class EnterMeetingActivity extends BaseActivity {
             meetingName.setText(item.meetingName);
             meetingTime.setText(item.autoDayTime);
             meetingRoom.setText(item.meetingAddress);
-            memhMponsor.setText(item.sponsorName);
-            meetingPersonnel.setText(item.saleUserName);
+            memhMponsor.setText(String.format(getString(R.string.host_name), item.sponsorName));
+            meetingPersonnel.setText(String.format(getString(R.string.salename), item.saleUserName));
+            meeting_status.setMeetingStateText(item.meetingStatus, 20);
 
             initUITxt(predeterminedNumber, String.valueOf(item.estimateNum), R.string.predetermined_number, android.R.color.white);
             initUITxt(bottomNumber, String.valueOf(item.minNum), R.string.bottom_number, android.R.color.white);
 
-            if (GlobaVariable.getInstance().item.getFromPlat() == 1){
+            if (GlobaVariable.getInstance().item.getFromPlat() == 1) {
                 initUITxt(actualNumber, String.valueOf(item.actualNum), R.string.actual_number, R.color.color_FF5657);
-            }else {
+            } else {
                 initUITxt(actualNumber, "--", R.string.actual_number, R.color.color_FF5657);
             }
         }
@@ -277,5 +323,23 @@ public class EnterMeetingActivity extends BaseActivity {
                 e.printStackTrace();
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+        call();
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            new AppSettingsDialog.Builder(this).build().show();
+        }
     }
 }
