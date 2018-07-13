@@ -26,6 +26,7 @@ import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
+import com.tami.vmanager.utils.SPUtils;
 import com.tami.vmanager.utils.Utils;
 import com.tami.vmanager.view.CircleProgressBar;
 
@@ -130,12 +131,21 @@ public class MeetingOverviewActivity extends BaseActivity {
         confirmEnterMeetingDialog.setConfirmEnterMeetingListener(new ConfirmEnterMeetingListener() {
             @Override
             public void leftBtn() {
-
+                SPUtils.put(MeetingOverviewActivity.this,Constants.IS_INVISIBLE,true);
+                Intent intent = new Intent(getApplicationContext(), EnterMeetingActivity.class);
+                intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
+                intent.putExtra(Constants.MEETING_INFO, item);
+                startActivity(intent);
             }
 
             @Override
             public void rightBtn() {
-
+                //进入
+                SPUtils.put(MeetingOverviewActivity.this,Constants.IS_INVISIBLE,false);
+                Intent intent = new Intent(getApplicationContext(), EnterMeetingActivity.class);
+                intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
+                intent.putExtra(Constants.MEETING_INFO, item);
+                startActivity(intent);
             }
         });
     }
@@ -341,7 +351,6 @@ public class MeetingOverviewActivity extends BaseActivity {
      * @param v
      */
     private void functionBtn(View v) {
-//        confirmEnterMeetingDialog.show();
         Button button = (Button) v;
         if (!TextUtils.isEmpty(button.toString())
                 && getString(R.string.create_process).equals(button.getText().toString())) {
@@ -350,11 +359,7 @@ public class MeetingOverviewActivity extends BaseActivity {
             flowIntent.putExtra(Constants.KEY_MEETING_ID, meetingId);
             startActivityForResult(flowIntent, Constants.CREATE_FLOW);
         } else {
-            //进入
-            Intent intent = new Intent(getApplicationContext(), EnterMeetingActivity.class);
-            intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
-            intent.putExtra(Constants.MEETING_INFO, item);
-            startActivity(intent);
+            confirmEnterMeetingDialog.show();
         }
     }
 

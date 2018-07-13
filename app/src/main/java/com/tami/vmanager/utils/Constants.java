@@ -93,4 +93,6 @@ public class Constants {
     public static final String KEY_MEETING_NAME = "meetingName";
     //创建会议
     public static final int CREATE_FLOW = 0x16;
+    //仅查看 确定
+    public static final String IS_INVISIBLE = "is_invisible";
 }

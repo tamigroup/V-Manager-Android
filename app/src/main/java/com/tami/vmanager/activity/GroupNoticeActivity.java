@@ -15,6 +15,7 @@ import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
+import com.tami.vmanager.utils.SPUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -34,6 +35,7 @@ public class GroupNoticeActivity extends BaseActivity {
     private CommonAdapter<NoticeResponseBean.DataBean.ElementsBean> commonAdapter;
     private List<NoticeResponseBean.DataBean.ElementsBean> listData;
     private int CurPage = 1;
+    private boolean is_invisible;
 
     @Override
     public boolean isTitle() {
@@ -60,6 +62,7 @@ public class GroupNoticeActivity extends BaseActivity {
     public void initData() {
         setTitleName(getString(R.string.group_notice));
         setTitleRightBtn(R.mipmap.edit_notice);
+        is_invisible = (boolean) SPUtils.get(getApplicationContext(), Constants.IS_INVISIBLE, false);
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -91,9 +94,13 @@ public class GroupNoticeActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.titleRightBtn:
-                Intent intent = new Intent(getApplicationContext(), GroupEditNoticeActivity.class);
-                intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
-                startActivity(intent);
+                if (is_invisible){
+                    showToast(getString(R.string.view_only));
+                }else {
+                    Intent intent = new Intent(getApplicationContext(), GroupEditNoticeActivity.class);
+                    intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
+                    startActivity(intent);
+                }
                 break;
         }
     }

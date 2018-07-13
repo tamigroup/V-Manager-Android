@@ -25,10 +25,12 @@ import com.tami.vmanager.entity.SearchResponseBean;
 import com.tami.vmanager.enums.SearchType;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
+import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.TimeUtils;
 import com.tami.vmanager.view.MeetingStateView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
@@ -157,10 +159,23 @@ public class SearchDetailActivity extends BaseActivity {
 
                 AppCompatImageView imageView1 = holder.getView(R.id.item_meeting_level_icon1);
                 imageView1.setVisibility(dataBean.getFromPlat() == 1 ? View.VISIBLE : View.GONE);
-
-
             }
         };
+        commonAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                Intent intent = new Intent(SearchDetailActivity.this, MeetingOverviewActivity.class);
+                intent.putExtra(Constants.KEY_MEETING_ID,listData.get(position).getMeetingId());
+                startActivity(intent);
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
+        recyclerView.setAdapter(commonAdapter);
+        pullToRefreshLayout.setCanRefresh(false);
     }
 
     /**
@@ -257,8 +272,5 @@ public class SearchDetailActivity extends BaseActivity {
                 e.printStackTrace();
             }
         });
-
-        recyclerView.setAdapter(commonAdapter);
-        pullToRefreshLayout.setCanRefresh(false);
     }
 }

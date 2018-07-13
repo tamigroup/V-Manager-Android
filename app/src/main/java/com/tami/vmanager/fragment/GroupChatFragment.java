@@ -49,6 +49,7 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
     private boolean isRefresh = false;
     private Bundle bundle;
     private int meetingId;
+    private boolean is_invisible;
 
     @Override
     public int getContentViewId() {
@@ -65,7 +66,7 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
 
         networkBroker = new NetworkBroker(getContext());
         bundle = getArguments();
-        if (bundle != null){
+        if (bundle != null) {
             meetingId = this.bundle.getInt(Constants.KEY_MEETING_ID);
         }
     }
@@ -89,6 +90,7 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
 
     @Override
     public void initData() {
+        is_invisible = (boolean) SPUtils.get(getActivity(), Constants.IS_INVISIBLE, false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         listData = new ArrayList<>();
         adapter = new MultiItemTypeAdapter(getContext(), listData);
@@ -101,33 +103,34 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
     @Override
     public void requestNetwork() {
         queryData();
+        if (is_invisible) {
+            sendTxt.setFocusable(false);
+            sendBtn.setBackgroundColor(getResources().getColor(R.color.color_999999));
+        } else {
+            sendTxt.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+                }
 
-        sendTxt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-            }
+                }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable content) {
-                sendBtn.setOnClickListener(v -> {
-                    String trim = sendTxt.getText().toString().trim();
-                    if (trim.isEmpty()) {
-                        Toast.makeText(getContext(), R.string.not_empty, Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    requestNet(content.toString().trim());
-                });
-            }
-        });
-
-
+                @Override
+                public void afterTextChanged(Editable content) {
+                    sendBtn.setOnClickListener(v -> {
+                        String trim = sendTxt.getText().toString().trim();
+                        if (trim.isEmpty()) {
+                            Toast.makeText(getContext(), R.string.not_empty, Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        requestNet(content.toString().trim());
+                    });
+                }
+            });
+        }
     }
 
     private void queryData() {

@@ -186,7 +186,7 @@
     <string name="conference_service_group">会议服务群</string>
     <string name="tab_conference_information">会议信息</string>
     <string name="tab_group_chat">群消息</string>
-    <string name="tab_feedback">反馈</string>
+    <string name="tab_feedback">活动变化</string>
     <string name="tab_notice">公告</string>
 
     <!--    进入会议    -->

@@ -1,7 +1,6 @@
 package com.tami.vmanager.fragment;
 
 import android.annotation.SuppressLint;
-import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -35,7 +34,6 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
     private RecyclerView recyclerView;
     private PullToRefreshLayout pullToRefreshLayout;
     private NetworkBroker networkBroker;
-    Handler handler = new Handler();
     private int CurPage = 1;
     List<ChangeDemandResponseBean.DataBean.ElementsBean> listData;
     private CommonAdapter<ChangeDemandResponseBean.DataBean.ElementsBean> commonAdapter;
@@ -67,13 +65,11 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
             @Override
             public void refresh() {
                 queryData();
-                handler.postDelayed(() -> pullToRefreshLayout.finishRefresh(), 2000);
             }
 
             @Override
             public void loadMore() {
                 queryData();
-                handler.postDelayed(() -> pullToRefreshLayout.finishLoadMore(), 2000);
             }
         });
     }
@@ -131,14 +127,18 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
                 ChangeDemandResponseBean response = (ChangeDemandResponseBean) res;
                 if (response.getCode() == 200) {
                     ChangeDemandResponseBean.DataBean data = response.getData();
-                    if (data != null && data.getElements() != null && data.getElements().size() > 0) {
-                        listData.addAll(data.getElements());
-                        commonAdapter.notifyDataSetChanged();
-                    }
-                    if (data.isLastPage()) {
-                        pullToRefreshLayout.setCanLoadMore(false);
+                    if (data != null){
+                        if (data.getElements() != null && data.getElements().size() > 0) {
+                            listData.addAll(data.getElements());
+                            commonAdapter.notifyDataSetChanged();
+                        }
+                        if (data.isLastPage()) {
+                            pullToRefreshLayout.setCanLoadMore(false);
+                        }
                     }
                 }
+                pullToRefreshLayout.finishRefresh();
+                pullToRefreshLayout.finishLoadMore();
             } catch (Exception e) {
                 e.printStackTrace();
             }
