@@ -13,7 +13,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.tami.vmanager.R;
-import com.tami.vmanager.activity.CreateMeetingAndServiceActivity;
+import com.tami.vmanager.activity.CreateMeetingRewriteActivity;
 import com.tami.vmanager.activity.FollowMeetingsActivity;
 import com.tami.vmanager.activity.SearchActivity;
 import com.tami.vmanager.activity.TodayMeetingActivity;
@@ -344,7 +344,7 @@ public class HomeFragment extends BaseFragment {
      * 创建会议
      */
     private void createMeeting() {
-        startActivity(new Intent(getActivity(), CreateMeetingAndServiceActivity.class));
+        startActivity(new Intent(getActivity(), CreateMeetingRewriteActivity.class));
     }
 
     /**

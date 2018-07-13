@@ -216,10 +216,10 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
 
             @Override
             public void rightBtn() {
-                Intent intent = new Intent();
-                intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
-                intent.putExtra(Constants.KEY_MEETING_NAME, nameTxtView.getText().toString());
-                setResult(Constants.CREATE_MEETING, intent);
+//                Intent intent = new Intent();
+//                intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
+//                intent.putExtra(Constants.KEY_MEETING_NAME, nameTxtView.getText().toString());
+//                setResult(Constants.CREATE_MEETING, intent);
                 finish();
             }
         });

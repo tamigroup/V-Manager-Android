@@ -14,6 +14,7 @@ import com.tami.vmanager.utils.Constants;
  * 创建会议与服务流程
  * Created by why on 2018/6/25.
  */
+@Deprecated
 public class CreateMeetingAndServiceActivity extends BaseActivity {
 
     private TextView createMeeting;

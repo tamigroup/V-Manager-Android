@@ -190,30 +190,30 @@
                     app:srcCompat="@mipmap/right_triangle" />
 
                 <TextView
-                    android:id="@+id/meeting_overview_suspension_look"
+                    android:id="@+id/meeting_overview_suspension_edit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/dp_20"
-                    android:text="查看"
+                    android:text="@string/editor"
                     android:textColor="@color/color_4884D9"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/meeting_overview_suspension_step"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/meeting_overview_suspension_edit"
+                    android:id="@+id/meeting_overview_suspension_look"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/dp_20"
-                    android:text="编辑"
+                    android:text="@string/look_at_flow"
                     android:textColor="@color/color_4884D9"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/meeting_overview_suspension_look"
+                    app:layout_constraintEnd_toStartOf="@+id/meeting_overview_suspension_edit"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/meeting_overview_suspension_img_flag"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/dp_0"
                     android:layout_height="@dimen/dp_1"
                     android:background="@color/percentage_10"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -229,26 +229,25 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <TextView
-                android:id="@+id/please_create_conference"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginBottom="110dp"
-                android:gravity="center"
-                android:text="请先创建会议活动流程"
-                android:textColor="@color/color_303030"
-                android:textSize="@dimen/sp_16"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/meeting_overview_recycler_view"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_0"
+                android:background="@android:color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/meeting_overview_recycler_view"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@android:color/white"
-                android:visibility="gone"
+            <TextView
+                android:id="@+id/please_create_conference"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_0"
+                android:layout_marginBottom="110dp"
+                android:gravity="center"
+                android:text="@string/please_create_flow"
+                android:textColor="@color/color_303030"
+                android:textSize="@dimen/sp_16"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

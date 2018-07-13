@@ -122,7 +122,6 @@ public class MeetingOverviewActivity extends BaseActivity {
         complaintsBox.setOnClickListener(this);
         changeDemand.setOnClickListener(this);
         vEmind.setOnClickListener(this);
-        xufuLayout.setOnClickListener(this);
         functionBtn.setOnClickListener(this);
         editBtn.setOnClickListener(this);
         lookBtn.setOnClickListener(this);
@@ -152,10 +151,6 @@ public class MeetingOverviewActivity extends BaseActivity {
             meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 0);
         }
         meetingId = 15;
-
-//        pleaseCreateConference.setVisibility(View.GONE);
-//        xufuLayout.setVisibility(View.GONE);
-//        recyclerView.setVisibility(View.GONE);
 
         recyclerView.setVisibility(View.VISIBLE);
 
@@ -220,17 +215,13 @@ public class MeetingOverviewActivity extends BaseActivity {
                 //小V提醒
                 startActivity(new Intent(getApplicationContext(), SmallVRemindingActivity.class));
                 break;
-            case R.id.meeting_overview_xuanfu_layout:
-                //悬浮布局
-                editFlow();
-                break;
             case R.id.meeting_overview_suspension_edit:
                 //悬浮布局中按钮
                 editFlow();
                 break;
             case R.id.meeting_overview_suspension_look:
                 //悬浮布局中按钮
-                editFlow();
+                lookFlow();
                 break;
             case R.id.meeting_overview_function_btn:
                 //功能按钮
@@ -238,6 +229,21 @@ public class MeetingOverviewActivity extends BaseActivity {
                 break;
 
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case Constants.CREATE_FLOW:
+                //创建服务流程返回
+                getMeetingItemsByMeetingId();
+                break;
+        }
+    }
+
+    private void lookFlow() {
+        showToast("查看流程单");
     }
 
     /**
@@ -264,9 +270,9 @@ public class MeetingOverviewActivity extends BaseActivity {
             initUITxt(predeterminedNumber, String.valueOf(item.estimateNum), R.string.predetermined_number, android.R.color.white);
             initUITxt(bottomNumber, String.valueOf(item.minNum), R.string.bottom_number, android.R.color.white);
 
-            if (GlobaVariable.getInstance().item.getFromPlat() == 1){
+            if (GlobaVariable.getInstance().item.getFromPlat() == 1) {
                 initUITxt(actualNumber, String.valueOf(item.actualNum), R.string.actual_number, R.color.color_FF5657);
-            }else {
+            } else {
                 initUITxt(actualNumber, "--", R.string.actual_number, R.color.color_FF5657);
             }
 
@@ -340,7 +346,9 @@ public class MeetingOverviewActivity extends BaseActivity {
         if (!TextUtils.isEmpty(button.toString())
                 && getString(R.string.create_process).equals(button.getText().toString())) {
             //创建
-            startActivity(new Intent(getApplicationContext(), ConferenceServiceContentActivity.class));
+            Intent flowIntent = new Intent(getApplicationContext(), CreateServiceFlowActivity.class);
+            flowIntent.putExtra(Constants.KEY_MEETING_ID, meetingId);
+            startActivityForResult(flowIntent, Constants.CREATE_FLOW);
         } else {
             //进入
             Intent intent = new Intent(getApplicationContext(), EnterMeetingActivity.class);
@@ -394,8 +402,20 @@ public class MeetingOverviewActivity extends BaseActivity {
                         GetMeetingItemsByMeetingIdResponse.Array array = response.data;
                         if (array != null && array.dataList != null && array.dataList.size() > 0) {
                             //对时间轴赋值
+                            if (listData.size() > 0) {
+                                listData.clear();
+                            }
                             listData.addAll(array.dataList);
                             adapter.notifyDataSetChanged();
+                            pleaseCreateConference.setVisibility(View.GONE);
+                            xufuLayout.setVisibility(View.VISIBLE);
+                            recyclerView.setVisibility(View.VISIBLE);
+                            functionBtn.setText(getString(R.string.get_into_meeting));
+                        } else {
+                            xufuLayout.setVisibility(View.GONE);
+                            recyclerView.setVisibility(View.GONE);
+                            pleaseCreateConference.setVisibility(View.VISIBLE);
+                            functionBtn.setText(getString(R.string.create_process));
                         }
                     }
                 }
