@@ -42,6 +42,7 @@ import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.entity.UploadImageRequest;
 import com.tami.vmanager.entity.UploadImageResponse;
 import com.tami.vmanager.entity.UserListOfPositionResponse;
+import com.tami.vmanager.http.HttpKey;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Constants;
@@ -209,18 +210,14 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
         cemd.setConfirmEnterMeetingListener(new ConfirmEnterMeetingListener() {
             @Override
             public void leftBtn() {
-                Intent flowIntent = new Intent(getApplicationContext(), CreateServiceFlowActivity.class);
-                flowIntent.putExtra(Constants.KEY_MEETING_ID, meetingId);
-                startActivityForResult(flowIntent, Constants.CREATE_FLOW);
+                finish();
             }
 
             @Override
             public void rightBtn() {
-//                Intent intent = new Intent();
-//                intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
-//                intent.putExtra(Constants.KEY_MEETING_NAME, nameTxtView.getText().toString());
-//                setResult(Constants.CREATE_MEETING, intent);
-                finish();
+                Intent flowIntent = new Intent(getApplicationContext(), CreateServiceFlowActivity.class);
+                flowIntent.putExtra(Constants.KEY_MEETING_ID, meetingId);
+                startActivityForResult(flowIntent, Constants.CREATE_FLOW);
             }
         });
     }
@@ -388,8 +385,8 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
         super.onClick(v);
         switch (v.getId()) {
             case R.id.acmr_save_btn:
-//                save();
-                uploadImage();
+                save();
+//                uploadImage();
                 break;
             case R.id.acmr_meeting_place:
                 meetingPlace();
@@ -715,7 +712,9 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
         if (!isEmpty()) {
             return;
         }
+        Logger.d("filePath:" + filePath);
         if (!TextUtils.isEmpty(filePath)) {
+            Logger.d("执行图片上传");
             uploadImage();
             return;
         }
@@ -743,6 +742,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
         cmr.setEstimateNum(estimatedNumberPeople.getText().toString());
         cmr.setMinNum(bottomNumberPeople.getText().toString());
         cmr.setIsImportant(String.valueOf(meetingLevelIndex));
+        cmr.setRequestUrl(HttpKey.CREATE_MEETING);
         if (receptionistListData != null && receptionistListData.size() > 1) {
             cmr.setVipReceiveUserId(getStringIds());
         }

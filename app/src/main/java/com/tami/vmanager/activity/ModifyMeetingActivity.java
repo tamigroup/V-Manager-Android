@@ -38,10 +38,13 @@ import com.tami.vmanager.entity.CreateMeetingRequest;
 import com.tami.vmanager.entity.CreateMeetingResponse;
 import com.tami.vmanager.entity.CreateVipGuestRequest;
 import com.tami.vmanager.entity.GetMeetingAddressListResponse;
+import com.tami.vmanager.entity.GetMeetingRequest;
+import com.tami.vmanager.entity.GetMeetingResponse;
 import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.entity.UploadImageRequest;
 import com.tami.vmanager.entity.UploadImageResponse;
 import com.tami.vmanager.entity.UserListOfPositionResponse;
+import com.tami.vmanager.http.HttpKey;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Constants;
@@ -231,7 +234,7 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
 
     @Override
     public void requestNetwork() {
-
+        getMeeting();
     }
 
     @Override
@@ -556,8 +559,6 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
         setTextView(meeetingPlaceTxtView, getString(R.string.jiaxing_3));
         setTextView(startTimeTxtView, getString(R.string.jiaxing_4));
         setTextView(endTimeTxtView, getString(R.string.jiaxing_5));
-//        setTextView(contractAmountTxtView, getString(R.string.jiaxing_6));
-//        setTextView(receivedAmountTxtView, getString(R.string.jiaxing_7));
         setTextView(numberTxtView, getString(R.string.jiaxing_8));
     }
 
@@ -706,7 +707,9 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
         if (!isEmpty()) {
             return;
         }
+        Logger.d("filePath:" + filePath);
         if (!TextUtils.isEmpty(filePath)) {
+            Logger.d("执行图片上传");
             uploadImage();
             return;
         }
@@ -726,10 +729,6 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
         cmr.setMeetingAddressId(String.valueOf(addressId));
         cmr.setStartDate(TimeUtils.date2String(recordStartDate));
         cmr.setEndDate(TimeUtils.date2String(recordEndDate));
-        //测试
-        cmr.setContractMoney(String.valueOf(1000));
-        cmr.setPayMoney(String.valueOf(500));
-
         cmr.setEstimateNum(estimatedNumberPeople.getText().toString());
         cmr.setMinNum(bottomNumberPeople.getText().toString());
         cmr.setIsImportant(String.valueOf(meetingLevelIndex));
@@ -743,6 +742,7 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
         if (vipListData != null && vipListData.size() > 1) {
             cmr.setVipList(getVipList());
         }
+        cmr.setRequestUrl(HttpKey.UPDATE_MEETING);
         networkBroker.ask(cmr, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);
@@ -857,5 +857,29 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
     }
 
 
+    /**
+     * 获取会议信息
+     */
+    private void getMeeting() {
+        GetMeetingRequest gmr = new GetMeetingRequest();
+        gmr.setMeetingId(String.valueOf(meetingId));
+        networkBroker.ask(gmr, (ex1, res) -> {
+            if (null != ex1) {
+                Logger.d(ex1.getMessage() + "-" + ex1);
+                return;
+            }
+            try {
+                GetMeetingResponse response = (GetMeetingResponse) res;
+                if (response.getCode() == 200) {
+                    if (response != null) {
+                        GetMeetingResponse.Item meetingItem = response.data;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        });
+    }
 
 }

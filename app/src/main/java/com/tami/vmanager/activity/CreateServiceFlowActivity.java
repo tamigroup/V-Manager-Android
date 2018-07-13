@@ -736,6 +736,8 @@ public class CreateServiceFlowActivity extends BaseActivity {
                             showToast(getString(R.string.save_flow, getString(R.string.success)));
                             if (flag) {
                                 showPopWindow(dateSelected);
+                            }else{
+                                finish();
                             }
                         } else {
                             showToast(getString(R.string.save_flow, getString(R.string.failure)));

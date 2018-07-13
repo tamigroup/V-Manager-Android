@@ -114,6 +114,8 @@ public class HttpKey {
     public static final String CREATE_USER_MEETING_ITEM = "meeting/createUserMeetingItem";
     // 添加（ 编辑）会议流程节点
     public static final String SET_MEETING_ITEMS = "meeting/setMeetingItems";
+    // 修改会议信息
+    public static final String UPDATE_MEETING = "meeting/updataMeeting";
 
     //---------------------------------------------------------------------------
 

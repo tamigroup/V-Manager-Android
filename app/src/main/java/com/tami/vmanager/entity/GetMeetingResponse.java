@@ -1,55 +1,106 @@
 package com.tami.vmanager.entity;
 
 import java.io.Serializable;
-
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 
 /**
  * 查询会议概览信息.服务端响应
- * 
+ *
  * @author 代码生成器v1.0
- * 
  */
 @JsonInclude(Include.NON_NULL)
-public class GetMeetingResponse extends MobileMessage implements Serializable{
+public class GetMeetingResponse extends MobileMessage implements Serializable {
 
-	/**
-	 * 
-	 */
-	public static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    public static final long serialVersionUID = 1L;
 
-	public Item data;
+    public Item data;
 
-	public GetMeetingResponse() {
-		super();
-	}
+    public GetMeetingResponse() {
+        super();
+    }
 
-	@JsonInclude(Include.NON_NULL)
-	public static class Item implements Serializable{
-		private static final long serialVersionUID = 4172542378039500196L;
-		public	int	saleUserId;	/*1*/
-		public	String	saleUserName;	/*小塔米*/
-		public	String	meetingAddress;	/*醉仙翁*/
-		public	int	actualNum;	/*0*/
-		public	String	eoUrl;	/**/
-		public	String	isPay;	/**/
-		public	String	perfectStatus;	/*待完善*/
-		public	int	estimateNum;	/*100*/
-		public	int	meetingAddressId;	/*3*/
-		public	Long	endTime;	/*1533204602000*/
-		public	int	minNum;	/*95*/
-		public	int	fromPlat;	/*2*/
-		public	int	isImportant;	/*0*/
-		public	int	followStatus;	/*0*/
-		public	Long	startTime;	/*1533118195000*/
-		public	String	meetingName;	/*塔米G01加拿大会议*/
-		public	String	sponsorName;	/**/
-		public	String	meetingStatus;	/*待执行*/
-		public	int	meetingId;	/*4*/
-		public	String	autoDayTime;	/*8月1日18:09~8月2日18:10*/
-		public	int	vzhStatus;	/*0*/
-		public	String	salesUserMobile;	/*13800138000*/
-	}
+    @JsonInclude(Include.NON_NULL)
+    public static class Item implements Serializable {
+        public static final long serialVersionUID = 4172542378039500196L;
+        public String saleUserName;	/*小塔米*/
+        public int saleUserId;	/*1*/
+        public String meetingAddress;	/*满月楼*/
+        public String eoUrl;	/*http://vgj.oss-cn-beijing.aliyuncs.com/app/af20180704180454_87882.png*/
+        public int actualNum;	/*0*/
+        public String isPay;	/*待付款*/
+        public String perfectStatus;	/*待完善*/
+        public int estimateNum;	/*300*/
+        public int meetingAddressId;	/*2*/
+        public int minNum;	/*280*/
+        public Long endTime;	/*1531742400000*/
+        public int fromPlat;	/*2*/
+        public int isImportant;	/*4*/
+        public Long startTime;	/*1531612800000*/
+        public int followStatus;	/*0*/
+        public String meetingName;	/*测试会议rbq20180705*/
+        public String sponsorName;	/*rbqtest主办方*/
+        public String meetingStatus;	/*待执行*/
+        public int meetingId;	/*39*/
+        public String autoDayTime;	/*7月15日08:00~7月16日20:00*/
+        public int vzhStatus;	/*0*/
+        public String salesUserMobile;	/*13800138000*/
+
+        public List<VipGuest> vipGuestList;
+
+        public List<VipReceiveUser> vipReceiveUser;
+
+        public static class VipReceiveUser {
+
+            public String registrationId;	/*1104a89792fa59a83a2*/
+            public int status;	/*0*/
+            public String systemName;	/**/
+            public String iconUrl;	/*https://img2.woyaogexing.com/2018/05/16/84e2ae25d842cfc0!400x400_big.jpg*/
+            public String depName;	/**/
+            public String password;	/*3f57efeb8c91c6bae91ccd6e8790f8ad*/
+            public int depId;	/*5*/
+            public int fromPlat;	/*1*/
+            public int id;	/*1*/
+            public String token;	/**/
+            public String nickName;	/*宁涛*/
+            public int positionId;	/*6*/
+            public int isAdmin;	/*1*/
+            public String realName;	/*小塔米*/
+            public int systemId;	/*4*/
+            public String positionName;	/**/
+            public Long createOn;	/*1526946603000*/
+            public String mobile;	/*13800138000*/
+            public int roleId;	/*2*/
+            public Long updateOn;	/*1530517514000*/
+
+            public List<UserRole> userRoleList;
+
+            public static class UserRole {
+                public int id;	/*1*/
+                public int status;	/*0*/
+                public int userId;	/*1*/
+                public String roleName;	/**/
+                public int systemId;	/*4*/
+                public Long createOn;	/*1526948244000*/
+                public int roleId;	/*3*/
+                public Long updateOn;	/*1530155405000*/
+            }
+        }
+
+        public static class VipGuest {
+            public int id;	/*57*/
+            public int status;	/*0*/
+            public String name;	/*张子栋*/
+            public int meetingId;	/*39*/
+            public int systemId;	/*4*/
+            public String intro;	/*爱笑会议室灵魂人特二*/
+            public Long createOn;	/*1530836595000*/
+            public Long updateOn;	/*1530836595000*/
+        }
+    }
 }

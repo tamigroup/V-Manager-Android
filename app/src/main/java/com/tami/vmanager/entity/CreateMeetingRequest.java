@@ -197,9 +197,15 @@ public class CreateMeetingRequest extends MobileMessage implements Serializable 
         this.vipList = vipList;
     }
 
+    private String requestUrl;
+
+    public void setRequestUrl(String requestUrl) {
+        this.requestUrl = requestUrl;
+    }
+
     @Override
     public String getRequestUrl() {
-        return HttpKey.CREATE_MEETING;
+        return requestUrl;
     }
 
     @Override
