@@ -321,6 +321,9 @@
     <string name="meeting_not_exist_please_recreate">会议不存在请重新创建！</string>
     <string name="whether_create_process">是否创建流程？</string>
     <string name="create_meeting_toast">创建会议%s!</string>
+    <string name="enter_keyword">请输入关键字</string>
+    <string name="empty_search">没有找到“%s”哦~</string>
+    <string name="search">搜索</string>
     <string name="look_at_flow">查看流程单</string>
     <string name="please_create_flow">暂未创建服务流程</string>
 </resources>
