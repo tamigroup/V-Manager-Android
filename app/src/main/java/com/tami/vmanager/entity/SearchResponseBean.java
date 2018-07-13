@@ -90,6 +90,33 @@ public class SearchResponseBean extends MobileMessage implements Serializable {
             private String sponsorName;
             private long startTime;
             private int vzhStatus;
+            private String cancelStatus;
+            private String vipReceiveUser;
+            private String salesUserMobile;
+
+            public String getCancelStatus() {
+                return cancelStatus;
+            }
+
+            public void setCancelStatus(String cancelStatus) {
+                this.cancelStatus = cancelStatus;
+            }
+
+            public String getVipReceiveUser() {
+                return vipReceiveUser;
+            }
+
+            public void setVipReceiveUser(String vipReceiveUser) {
+                this.vipReceiveUser = vipReceiveUser;
+            }
+
+            public String getSalesUserMobile() {
+                return salesUserMobile;
+            }
+
+            public void setSalesUserMobile(String salesUserMobile) {
+                this.salesUserMobile = salesUserMobile;
+            }
 
             public int getActualNum() {
                 return actualNum;

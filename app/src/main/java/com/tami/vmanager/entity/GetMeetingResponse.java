@@ -1,9 +1,10 @@
 package com.tami.vmanager.entity;
 
-import java.io.Serializable;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import java.io.Serializable;
+import java.util.List;
 
 
 /**
@@ -57,7 +58,7 @@ public class GetMeetingResponse extends MobileMessage implements Serializable {
         public List<VipReceiveUser> vipReceiveUser;
 
         @JsonInclude(Include.NON_NULL)
-        public static class VipReceiveUser {
+        public static class VipReceiveUser implements Serializable {
 
             public String registrationId;	/*1104a89792fa59a83a2*/
             public int status;	/*0*/
@@ -96,7 +97,7 @@ public class GetMeetingResponse extends MobileMessage implements Serializable {
         }
 
         @JsonInclude(Include.NON_NULL)
-        public static class VipGuest {
+        public static class VipGuest implements Serializable {
             public int id;	/*57*/
             public int status;	/*0*/
             public String name;	/*张子栋*/

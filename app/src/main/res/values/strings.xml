@@ -180,13 +180,13 @@
     <!--会议信息-->
     <string name="host_name">主办方: %s</string>
     <string name="meeting_address">鸿山亭: </string>
-    <string name="salename">销售人: %s</string>
+    <string name="salename">销售: %s</string>
     <string name="service_flow">服务流程</string>
     <!--    会议服务群    -->
     <string name="conference_service_group">会议服务群</string>
     <string name="tab_conference_information">会议信息</string>
     <string name="tab_group_chat">群消息</string>
-    <string name="tab_feedback">反馈</string>
+    <string name="tab_feedback">活动变化</string>
     <string name="tab_notice">公告</string>
 
     <!--    进入会议    -->
@@ -284,6 +284,10 @@
     <string name="required_title">标题（必填）</string>
     <string name="required_content">正文（必填）</string>
     <string name="must_add_item_not_empty">必添项不可为空！</string>
+    <string name="input_title">请输入标题</string>
+    <string name="input_title_length">请输入40字以内</string>
+    <string name="input_content">请输入正文内容</string>
+    <string name="input_content_length">请输入300字以内</string>
 
     <string name="success">成功</string>
     <string name="failure">失败</string>
@@ -321,8 +325,12 @@
     <string name="meeting_not_exist_please_recreate">会议不存在请重新创建！</string>
     <string name="whether_create_process">是否创建流程？</string>
     <string name="create_meeting_toast">创建会议%s!</string>
+    <string name="enter_keyword">请输入关键字</string>
+    <string name="empty_search">没有找到“%s”哦~</string>
+    <string name="search">搜索</string>
     <string name="look_at_flow">查看流程单</string>
     <string name="please_create_flow">暂未创建服务流程</string>
+    <string name="phone_permission">拨打电话的权限</string>
     <string name="modify_meeting">修改会议%s!</string>
     <string name="name">姓名</string>
     <string name="personage_introduction">人物介绍</string>
