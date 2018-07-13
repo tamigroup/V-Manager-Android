@@ -50,11 +50,13 @@ public class GetMeetingResponse extends MobileMessage implements Serializable {
         public String autoDayTime;	/*7月15日08:00~7月16日20:00*/
         public int vzhStatus;	/*0*/
         public String salesUserMobile;	/*13800138000*/
+        public int isVzh;
 
         public List<VipGuest> vipGuestList;
 
         public List<VipReceiveUser> vipReceiveUser;
 
+        @JsonInclude(Include.NON_NULL)
         public static class VipReceiveUser {
 
             public String registrationId;	/*1104a89792fa59a83a2*/
@@ -80,6 +82,7 @@ public class GetMeetingResponse extends MobileMessage implements Serializable {
 
             public List<UserRole> userRoleList;
 
+            @JsonInclude(Include.NON_NULL)
             public static class UserRole {
                 public int id;	/*1*/
                 public int status;	/*0*/
@@ -92,6 +95,7 @@ public class GetMeetingResponse extends MobileMessage implements Serializable {
             }
         }
 
+        @JsonInclude(Include.NON_NULL)
         public static class VipGuest {
             public int id;	/*57*/
             public int status;	/*0*/

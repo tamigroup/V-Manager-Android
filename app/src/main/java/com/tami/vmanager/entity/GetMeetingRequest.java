@@ -19,22 +19,24 @@ public class GetMeetingRequest extends MobileMessage implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 
-	private String meetingId;
+	private int meetingId;
 
 	public GetMeetingRequest() {
 		super();
-	}	
+	}
+
+	public int getMeetingId() {
+		return meetingId;
+	}
+
+	public void setMeetingId(int meetingId) {
+		this.meetingId = meetingId;
+	}
 
 	/**
 	 * @return 会议ID
 	 */
-	public String getMeetingId() {
-		return meetingId;
-	}
 
-	public void setMeetingId(String meetingId) {
-		this.meetingId = meetingId;
-	}
 
 	@Override
 	public Class getResponseClass() {

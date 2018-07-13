@@ -363,7 +363,7 @@ public class MeetingOverviewActivity extends BaseActivity {
      */
     private void getMeeting() {
         GetMeetingRequest gmr = new GetMeetingRequest();
-        gmr.setMeetingId(String.valueOf(meetingId));
+        gmr.setMeetingId(meetingId);
         networkBroker.ask(gmr, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);

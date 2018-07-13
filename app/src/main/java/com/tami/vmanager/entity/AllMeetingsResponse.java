@@ -34,31 +34,32 @@ public class AllMeetingsResponse extends MobileMessage implements Serializable {
         public static class Item implements Serializable {
 
             public static final long serialVersionUID = 8899967346975287665L;
-            public	int	saleUserId;	/*1*/
-            public	String	saleUserName;	/*小塔米*/
-            public	int	actualNum;	/*0*/
-            public	String	vipReceiveUser;	/**/
-            public	String	perfectStatus;	/*待完善*/
-            public	int	estimateNum;	/*1*/
-            public	int	meetingAddressId;	/*41*/
-            public	Long	endTime;	/*1531365960000*/
-            public	int	isImportant;	/*0*/
-            public	Long	startTime;	/*1531365960000*/
-            public	String	meetingName;	/*T*/
-            public	String	sponsorName;	/**/
-            public	String	meetingStatus;	/*已结束*/
-            public	String	autoDayTime;	/*7月12日11:26~7月12日11:26*/
-            public	String	cancelStatus;	/**/
-            public	String	meetingAddress;	/*餐厅*/
-            public	String	eoUrl;	/*http://f.tamiyun.com/app/af20180712112708_32380.png*/
-            public	String	isPay;	/**/
-            public	int	minNum;	/*1*/
-            public	int	fromPlat;	/*2*/
-            public	int	followStatus;	/*0*/
-            public	int	meetingId;	/*66*/
-            public	String	vipGuestList;	/**/
-            public	String	salesUserMobile;	/*13800138000*/
-            public	int	vzhStatus;	/*1*/
+            public int saleUserId;	/*1*/
+            public String saleUserName;	/*小塔米*/
+            public int actualNum;	/*0*/
+            public String vipReceiveUser;	/**/
+            public String perfectStatus;	/*待完善*/
+            public int estimateNum;	/*1*/
+            public int meetingAddressId;	/*41*/
+            public Long endTime;	/*1531365960000*/
+            public int isImportant;	/*0*/
+            public Long startTime;	/*1531365960000*/
+            public String meetingName;	/*T*/
+            public String sponsorName;	/**/
+            public String meetingStatus;	/*已结束*/
+            public String autoDayTime;	/*7月12日11:26~7月12日11:26*/
+            public String cancelStatus;	/**/
+            public String meetingAddress;	/*餐厅*/
+            public String eoUrl;	/*http://f.tamiyun.com/app/af20180712112708_32380.png*/
+            public String isPay;	/**/
+            public int minNum;	/*1*/
+            public int fromPlat;	/*2*/
+            public int followStatus;	/*0*/
+            public int meetingId;	/*66*/
+            public String vipGuestList;	/**/
+            public String salesUserMobile;	/*13800138000*/
+            public int vzhStatus;	/*1*/
+            public int isVzh;
 
         }
 

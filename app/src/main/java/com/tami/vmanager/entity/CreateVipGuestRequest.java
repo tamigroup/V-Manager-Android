@@ -20,9 +20,9 @@ public class CreateVipGuestRequest extends MobileMessage implements Serializable
 
 
 	private String intro;
-	private String meetingId;
+	private int meetingId;
 	private String name;
-	private String systemId;
+	private int systemId;
 
 	public CreateVipGuestRequest() {
 		super();
@@ -42,11 +42,11 @@ public class CreateVipGuestRequest extends MobileMessage implements Serializable
 	/**
 	 * @return 会议ID
 	 */
-	public String getMeetingId() {
+	public int getMeetingId() {
 		return meetingId;
 	}
 
-	public void setMeetingId(String meetingId) {
+	public void setMeetingId(int meetingId) {
 		this.meetingId = meetingId;
 	}
 
@@ -61,16 +61,19 @@ public class CreateVipGuestRequest extends MobileMessage implements Serializable
 		this.name = name;
 	}
 
-	/**
-	 * @return 酒店ID
-	 */
-	public String getSystemId() {
+	public int getSystemId() {
 		return systemId;
 	}
 
-	public void setSystemId(String systemId) {
+	public void setSystemId(int systemId) {
 		this.systemId = systemId;
 	}
+
+	/**
+	 * @return 酒店ID
+	 */
+
+
 
 	@Override
 	public Class getResponseClass() {

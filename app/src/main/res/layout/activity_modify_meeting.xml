@@ -63,7 +63,7 @@
 
                 <EditText
                     android:id="@+id/acmr_meeting_name"
-                    style="@style/CreateMeetingInput"
+                    style="@style/ModifyMeetingInput"
                     android:hint="@string/please_enter"
                     android:inputType="text"
                     app:layout_constraintBottom_toBottomOf="@+id/acmr_meeting_name_txt"
@@ -81,7 +81,7 @@
 
                 <EditText
                     android:id="@+id/acmr_sponsor"
-                    style="@style/CreateMeetingInput"
+                    style="@style/ModifyMeetingInput"
                     android:hint="@string/please_enter"
                     android:inputType="text"
                     app:layout_constraintBottom_toBottomOf="@+id/acmr_sponsor_txt"
@@ -100,7 +100,7 @@
 
                 <TextView
                     android:id="@+id/acmr_meeting_place"
-                    style="@style/CreateMeetingInput"
+                    style="@style/ModifyMeetingInput"
                     android:hint="@string/please_choose"
                     app:layout_constraintBottom_toBottomOf="@+id/acmr_meeting_place_txt"
                     app:layout_constraintStart_toEndOf="@+id/acmr_meeting_place_txt"
@@ -118,7 +118,7 @@
 
                 <TextView
                     android:id="@+id/acmr_start_time"
-                    style="@style/CreateMeetingInput"
+                    style="@style/ModifyMeetingInput"
                     android:hint="@string/please_choose"
                     app:layout_constraintBottom_toBottomOf="@+id/acmr_start_time_txt"
                     app:layout_constraintStart_toEndOf="@+id/acmr_start_time_txt"
@@ -136,7 +136,7 @@
 
                 <TextView
                     android:id="@+id/acmr_end_time"
-                    style="@style/CreateMeetingInput"
+                    style="@style/ModifyMeetingInput"
                     android:hint="@string/please_choose"
                     app:layout_constraintBottom_toBottomOf="@+id/acmr_end_time_txt"
                     app:layout_constraintStart_toEndOf="@+id/acmr_end_time_txt"
@@ -147,7 +147,6 @@
             <TextView
                 android:id="@+id/acmr_number_participants"
                 style="@style/CreateMeetingItemTitle"
-
                 app:layout_constraintTop_toBottomOf="@+id/acmr_meeting_top_layout" />
 
             <android.support.constraint.ConstraintLayout
@@ -198,7 +197,7 @@
                     android:hint="@string/please_enter"
                     android:inputType="number"
                     android:lines="1"
-                    android:textColor="@color/color_303030"
+                    android:textColor="@color/color_3B89E9"
                     android:textColorHint="@color/color_888888"
                     android:textSize="@dimen/sp_14"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -229,7 +228,7 @@
                     android:hint="@string/please_enter"
                     android:inputType="number"
                     android:lines="1"
-                    android:textColor="@color/color_303030"
+                    android:textColor="@color/color_3B89E9"
                     android:textColorHint="@color/color_888888"
                     android:textSize="@dimen/sp_14"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -250,7 +249,6 @@
                 android:text="@string/conference_level"
                 android:textColor="@color/color_303030"
                 android:textSize="@dimen/sp_16"
-
                 app:layout_constraintEnd_toStartOf="@+id/acmr_meeting_level_chose"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toStartOf="parent"
@@ -264,7 +262,7 @@
                 android:gravity="center_vertical|right"
                 android:hint="@string/please_choose"
                 android:paddingRight="@dimen/dp_16"
-                android:textColor="@color/color_303030"
+                android:textColor="@color/color_3B89E9"
                 android:textColorHint="@color/color_888888"
                 android:textSize="@dimen/sp_16"
                 app:layout_constraintBottom_toBottomOf="@+id/acmr_meeting_level"

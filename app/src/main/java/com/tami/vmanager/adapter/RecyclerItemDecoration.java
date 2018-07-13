@@ -24,10 +24,16 @@ public class RecyclerItemDecoration extends RecyclerView.ItemDecoration {
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         super.getItemOffsets(outRect, view, parent, state);
         outRect.bottom = itemSpace;
+//        if (parent.getChildLayoutPosition(view) % itemNum == 0) {  //parent.getChildLayoutPosition(view) 获取view的下标
+//            outRect.left = 0;
+//        } else {
+//            outRect.left = itemSpace;
+//        }
         if (parent.getChildLayoutPosition(view) % itemNum == 0) {  //parent.getChildLayoutPosition(view) 获取view的下标
             outRect.left = 0;
         } else {
             outRect.left = itemSpace;
+            outRect.right = 0;
         }
 
     }

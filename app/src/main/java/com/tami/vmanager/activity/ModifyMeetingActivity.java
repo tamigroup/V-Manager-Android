@@ -34,13 +34,13 @@ import com.tami.vmanager.adapter.RecyclerItemDecoration;
 import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.dialog.ConfirmEnterMeetingDialog;
 import com.tami.vmanager.dialog.ConfirmEnterMeetingListener;
-import com.tami.vmanager.entity.CreateMeetingRequest;
-import com.tami.vmanager.entity.CreateMeetingResponse;
 import com.tami.vmanager.entity.CreateVipGuestRequest;
 import com.tami.vmanager.entity.GetMeetingAddressListResponse;
 import com.tami.vmanager.entity.GetMeetingRequest;
 import com.tami.vmanager.entity.GetMeetingResponse;
 import com.tami.vmanager.entity.LoginResponse;
+import com.tami.vmanager.entity.ModifyMeetingRequest;
+import com.tami.vmanager.entity.ModifyMeetingResponse;
 import com.tami.vmanager.entity.UploadImageRequest;
 import com.tami.vmanager.entity.UploadImageResponse;
 import com.tami.vmanager.entity.UserListOfPositionResponse;
@@ -94,6 +94,7 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
     private EditText bottomNumberPeople;
     //会议等级
     private TextView meetingLevel;
+    private int meetingLevelIndex = 0;//会议级别
     //接待人
     private RecyclerView receptionistList;
     private List<UserListOfPositionResponse.Item.TitleItem.ContentList> receptionistListData;
@@ -113,7 +114,6 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
 
     private Date recordStartDate;//记录开始时间
     private Date recordEndDate;//记录结束时间
-    private int meetingLevelIndex = 0;//会议级别
 
     private NetworkBroker networkBroker;
     //会议地址ID
@@ -221,7 +221,13 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
 
     @Override
     public void initData() {
-        setTitleName(R.string.create_meeting);
+        setTitleName(R.string.modify_meeting_title);
+
+        Intent intent = getIntent();
+        if (intent != null) {
+            meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, -1);
+        }
+
         networkBroker = new NetworkBroker(this);
         networkBroker.setCancelTag(getTAG());
         //文本加*操作
@@ -382,8 +388,7 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
         super.onClick(v);
         switch (v.getId()) {
             case R.id.acmr_save_btn:
-//                save();
-                uploadImage();
+                save();
                 break;
             case R.id.acmr_meeting_place:
                 meetingPlace();
@@ -577,7 +582,7 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
      */
     private void initReceptionistList() {
         GridLayoutManager layoutManage = new GridLayoutManager(getApplicationContext(), 3);
-        receptionistList.addItemDecoration(new RecyclerItemDecoration(ScreenUtil.dip2px(getApplicationContext(), 20), 3));
+        receptionistList.addItemDecoration(new RecyclerItemDecoration(ScreenUtil.dip2px(getApplicationContext(), 25), 3));
         receptionistList.setLayoutManager(layoutManage);
         receptionistListData = new ArrayList<>();
         UserListOfPositionResponse.Item.TitleItem.ContentList item = new UserListOfPositionResponse.Item.TitleItem.ContentList();
@@ -620,7 +625,7 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
      */
     private void initVipRecyclerView() {
         GridLayoutManager layoutManage = new GridLayoutManager(getApplicationContext(), 3);
-        vipRecyclerView.addItemDecoration(new RecyclerItemDecoration(ScreenUtil.dip2px(getApplicationContext(), 20), 3));
+        vipRecyclerView.addItemDecoration(new RecyclerItemDecoration(ScreenUtil.dip2px(getApplicationContext(), 25), 3));
         vipRecyclerView.setLayoutManager(layoutManage);
         vipListData = new ArrayList<>();
         CreateVipGuestRequest createVipGuestRequest = new CreateVipGuestRequest();
@@ -643,7 +648,9 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
                     group.setVisibility(View.GONE);
                     defaultImage.setVisibility(View.VISIBLE);
                     defaultImage.setOnClickListener((View v) -> {
-                        startActivityForResult(new Intent(getApplicationContext(), VIPPersonageIntroductionActivity.class), Constants.CREATE_MEETING_VIP);
+                        Intent intent = new Intent(getApplicationContext(), VIPPersonageIntroductionActivity.class);
+                        intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
+                        startActivityForResult(intent, Constants.CREATE_MEETING_VIP);
                     });
                     return;
                 }
@@ -713,55 +720,56 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
             uploadImage();
             return;
         }
-        createMeetingRequest(null);
+        modifyMeetingRequest(null);
     }
 
     /**
      * 请求网络
      */
-    private void createMeetingRequest(String eoUrl) {
-        CreateMeetingRequest cmr = new CreateMeetingRequest();
+    private void modifyMeetingRequest(String eoUrl) {
+        ModifyMeetingRequest mmr = new ModifyMeetingRequest();
+        mmr.setMeetingId(meetingId);
         LoginResponse.Item item = GlobaVariable.getInstance().item;
-        cmr.setSystemId(String.valueOf(item.getSystemId()));
-        cmr.setMeetingName(nameView.getText().toString());
-        cmr.setSponsorName(sponsorView.getText().toString());
-        cmr.setCreateMeetingUserId(String.valueOf(item.getId()));
-        cmr.setMeetingAddressId(String.valueOf(addressId));
-        cmr.setStartDate(TimeUtils.date2String(recordStartDate));
-        cmr.setEndDate(TimeUtils.date2String(recordEndDate));
-        cmr.setEstimateNum(estimatedNumberPeople.getText().toString());
-        cmr.setMinNum(bottomNumberPeople.getText().toString());
-        cmr.setIsImportant(String.valueOf(meetingLevelIndex));
+        if (item != null) {
+            mmr.setSystemId(item.getSystemId());
+            mmr.setUserId(item.getId());
+        }
+        mmr.setMeetingName(nameView.getText().toString());
+        mmr.setSponsorName(sponsorView.getText().toString());
+        mmr.setMeetingAddressId(String.valueOf(addressId));
+        mmr.setStartDate(TimeUtils.date2String(recordStartDate));
+        mmr.setEndDate(TimeUtils.date2String(recordEndDate));
+        mmr.setEstimateNum(estimatedNumberPeople.getText().toString());
+        mmr.setMinNum(bottomNumberPeople.getText().toString());
+        mmr.setIsImportant(String.valueOf(meetingLevelIndex));
         if (receptionistListData != null && receptionistListData.size() > 1) {
-            cmr.setVipReceiveUserId(getStringIds());
+            mmr.setVipReceiveUserId(getStringIds());
         }
         if (!TextUtils.isEmpty(eoUrl)) {
-            cmr.setEoUrl(eoUrl);
+            mmr.setEoUrl(eoUrl);
         }
-        cmr.setIsVzh(String.valueOf(switchButton.isChecked() ? 1 : 0));
+        mmr.setIsVzh(switchButton.isChecked() ? 1 : 0);
         if (vipListData != null && vipListData.size() > 1) {
-            cmr.setVipList(getVipList());
+            mmr.setVipList(getVipList());
         }
-        cmr.setRequestUrl(HttpKey.UPDATE_MEETING);
-        networkBroker.ask(cmr, (ex1, res) -> {
+        mmr.setRequestUrl(HttpKey.UPDATE_MEETING);
+        networkBroker.ask(mmr, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);
-                showToast(getString(R.string.create_meeting_toast, getString(R.string.failure)));
+                showToast(getString(R.string.modify_meeting, getString(R.string.failure)));
                 return;
             }
             try {
-                CreateMeetingResponse response = (CreateMeetingResponse) res;
-                if (response.getCode() == 200) {
-                    if (response.data != null) {
-                        meetingId = response.data.meetingId;
-                    }
-                    showToast(getString(R.string.create_meeting_toast, getString(R.string.success)));
-                    cemd.show();
+                ModifyMeetingResponse response = (ModifyMeetingResponse) res;
+                if (response.getCode() == 200 && response.data) {
+                    showToast(getString(R.string.modify_meeting, getString(R.string.success)));
+                    setResult(Constants.CREATE_MEETING);
+                    finish();
                 } else {
-                    showToast(getString(R.string.create_meeting_toast, getString(R.string.failure)));
+                    showToast(getString(R.string.modify_meeting, getString(R.string.failure)));
                 }
             } catch (Exception e) {
-                showToast(getString(R.string.create_meeting_toast, getString(R.string.failure)));
+                showToast(getString(R.string.modify_meeting, getString(R.string.failure)));
                 e.printStackTrace();
             }
         });
@@ -786,14 +794,16 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
      *
      * @return
      */
-    private List<CreateMeetingRequest.Item> getVipList() {
-        List<CreateMeetingRequest.Item> listIemt = new ArrayList<>();
+    private List<ModifyMeetingRequest.Item> getVipList() {
+        List<ModifyMeetingRequest.Item> listIemt = new ArrayList<>();
         for (CreateVipGuestRequest cvgr : vipListData) {
-            CreateMeetingRequest.Item item = new CreateMeetingRequest.Item();
-            item.setSystemId(cvgr.getSystemId());
-            item.getName(cvgr.getName());
-            item.setIntro(cvgr.getIntro());
-            listIemt.add(item);
+            if (cvgr.getSystemId() != 0 && !TextUtils.isEmpty(cvgr.getName())) {
+                ModifyMeetingRequest.Item item = new ModifyMeetingRequest.Item();
+                item.setSystemId(cvgr.getSystemId());
+                item.setName(cvgr.getName());
+                item.setIntro(cvgr.getIntro());
+                listIemt.add(item);
+            }
         }
         return listIemt;
     }
@@ -822,28 +832,32 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
      * 上传图片
      */
     private void uploadImage() {
-        UploadImageRequest fmm = new UploadImageRequest();
-        fmm.filePath = new String[]{filePath};
-        networkBroker.uploadImage(fmm, (ex1, res) -> {
-            if (null != ex1) {
-                Logger.d(ex1.getMessage() + "-" + ex1);
-                return;
-            }
-            try {
-                UploadImageResponse response = (UploadImageResponse) res;
-                if (response.getCode() == 200) {
-                    if (response.data != null) {
-                        UploadImageResponse.Item item = response.data;
-                        if (item.dataList != null && item.dataList.size() > 0) {
-                            Logger.d("上传图片返回地址：" + item.dataList.get(0));
-                            createMeetingRequest(item.dataList.get(0));
+        if (filePath.indexOf("http") == 0) {
+            modifyMeetingRequest(filePath);
+        } else {
+            UploadImageRequest fmm = new UploadImageRequest();
+            fmm.filePath = new String[]{filePath};
+            networkBroker.uploadImage(fmm, (ex1, res) -> {
+                if (null != ex1) {
+                    Logger.d(ex1.getMessage() + "-" + ex1);
+                    return;
+                }
+                try {
+                    UploadImageResponse response = (UploadImageResponse) res;
+                    if (response.getCode() == 200) {
+                        if (response.data != null) {
+                            UploadImageResponse.Item item = response.data;
+                            if (item.dataList != null && item.dataList.size() > 0) {
+                                Logger.d("上传图片返回地址：" + item.dataList.get(0));
+                                modifyMeetingRequest(item.dataList.get(0));
+                            }
                         }
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+            });
+        }
     }
 
     @Override
@@ -862,7 +876,7 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
      */
     private void getMeeting() {
         GetMeetingRequest gmr = new GetMeetingRequest();
-        gmr.setMeetingId(String.valueOf(meetingId));
+        gmr.setMeetingId(meetingId);
         networkBroker.ask(gmr, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);
@@ -873,6 +887,7 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
                 if (response.getCode() == 200) {
                     if (response != null) {
                         GetMeetingResponse.Item meetingItem = response.data;
+                        initDataView(meetingItem);
                     }
                 }
             } catch (Exception e) {
@@ -882,4 +897,78 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
         });
     }
 
+    /**
+     * 网络数据返回添充
+     *
+     * @param meetingItem
+     */
+    private void initDataView(GetMeetingResponse.Item meetingItem) {
+        nameView.setText(meetingItem.meetingName);
+        sponsorView.setText(meetingItem.sponsorName);
+        meeetingPlaceView.setText(meetingItem.meetingAddress);
+        addressId = meetingItem.meetingAddressId;
+        startTimeView.setText(TimeUtils.date2String(recordStartDate = new Date(meetingItem.startTime)));
+        endTimeView.setText(TimeUtils.date2String(recordEndDate = new Date(meetingItem.endTime)));
+        estimatedNumberPeople.setText(String.valueOf(meetingItem.estimateNum));
+        bottomNumberPeople.setText(String.valueOf(meetingItem.minNum));
+        meetingLevel.setText(getMeetingLevel(meetingLevelIndex = meetingItem.isImportant));
+
+        //接待人
+        if (meetingItem.vipReceiveUser != null && meetingItem.vipReceiveUser.size() > 0) {
+            for (GetMeetingResponse.Item.VipReceiveUser vipRU : meetingItem.vipReceiveUser) {
+                UserListOfPositionResponse.Item.TitleItem.ContentList contentList = new UserListOfPositionResponse.Item.TitleItem.ContentList();
+                contentList.id = vipRU.id;
+                contentList.realName = vipRU.realName;
+                contentList.iconUrl = vipRU.iconUrl;
+                receptionistListData.add(0, contentList);
+            }
+            receptionistListAdapter.notifyDataSetChanged();
+        }
+        //Vip介绍
+        if (meetingItem.vipGuestList != null && meetingItem.vipGuestList.size() > 0) {
+            for (GetMeetingResponse.Item.VipGuest vipGuest : meetingItem.vipGuestList) {
+                CreateVipGuestRequest cvgr = new CreateVipGuestRequest();
+                cvgr.setSystemId(vipGuest.systemId);
+                cvgr.setName(vipGuest.name);
+                cvgr.setIntro(vipGuest.intro);
+                vipListData.add(0, cvgr);
+            }
+            vipAdapter.notifyDataSetChanged();
+        }
+        //EO单图片
+        if (!TextUtils.isEmpty(meetingItem.eoUrl)) {
+            filePath = meetingItem.eoUrl;
+            imageGroup.setVisibility(View.VISIBLE);
+            Picasso.get().load(meetingItem.eoUrl).into(addImage);
+//          imageSize.setText();
+        }
+        //V智会
+        switchButton.setChecked(meetingItem.isVzh == 1 ? true : false);
+    }
+
+    /**
+     * 获取会议级别
+     *
+     * @param level
+     * @return
+     */
+    public String getMeetingLevel(int level) {
+        String meetingLevele = null;
+        switch (level) {
+            case 1:
+                meetingLevele = "VIP 1";
+                break;
+            case 2:
+                meetingLevele = "VIP 2";
+                break;
+            case 3:
+                meetingLevele = "VIP 3";
+                break;
+            case 4:
+                meetingLevele = "VIP 4";
+                break;
+        }
+
+        return meetingLevele;
+    }
 }

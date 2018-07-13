@@ -102,7 +102,7 @@ public class FollowMeetingsFragment extends ViewPagerBaseFragment {
                 vipImageView.setImageResource(getImageResId(item.isImportant));
                 //智图片
                 AppCompatImageView imageView1 = holder.getView(R.id.item_meeting_level_icon1);
-                imageView1.setVisibility(item.fromPlat == 1 ? View.VISIBLE : View.GONE);
+                imageView1.setVisibility(item.isVzh == 1 ? View.VISIBLE : View.GONE);
                 //房间
                 holder.setText(R.id.item_meeting_room, item.meetingAddress);
                 //待完善

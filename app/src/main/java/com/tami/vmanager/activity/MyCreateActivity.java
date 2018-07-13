@@ -17,6 +17,7 @@ import com.tami.vmanager.entity.AllMeetingsResponse;
 import com.tami.vmanager.entity.DeleteUserMeetingRequest;
 import com.tami.vmanager.entity.DeleteUserMeetingResponse;
 import com.tami.vmanager.entity.LoginResponse;
+import com.tami.vmanager.entity.ModifyMeetingRequest;
 import com.tami.vmanager.http.HttpKey;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
@@ -45,6 +46,7 @@ public class MyCreateActivity extends BaseActivity {
     private List<AllMeetingsResponse.Array.Item> listData;
     private NetworkBroker networkBroker;
     private int CurPage = 1;
+    private int modifyId = -1;
 
     @Override
     public boolean isTitle() {
@@ -94,6 +96,7 @@ public class MyCreateActivity extends BaseActivity {
                 TextView modifyView = viewHolder.getItemView(R.id.menu_modify);
                 modifyView.setOnClickListener((View v) -> {
                     shmlView.smoothCloseEndMenu();
+                    modifyId = position;
                     modifyMeeting(item.meetingId);
                 });
                 //取消按钮
@@ -118,7 +121,7 @@ public class MyCreateActivity extends BaseActivity {
                 vipImageView.setImageResource(getImageResId(item.isImportant));
                 //智图片
                 AppCompatImageView imageView1 = viewHolder.getItemView(R.id.item_content_level_icon1);
-                imageView1.setVisibility(item.fromPlat == 1 ? View.VISIBLE : View.GONE);
+                imageView1.setVisibility(item.isVzh == 1 ? View.VISIBLE : View.GONE);
                 //房间
                 viewHolder.setTextView(R.id.item_content_room, item.meetingAddress);
                 //待完善
@@ -188,7 +191,6 @@ public class MyCreateActivity extends BaseActivity {
     public void requestNetwork() {
         CurPage = 1;
         getMyCreateList();
-
     }
 
     @Override
@@ -206,8 +208,7 @@ public class MyCreateActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.CREATE_MEETING) {
-            //修改会议返回
-
+            getMyCreateList();
         }
     }
 
@@ -235,6 +236,9 @@ public class MyCreateActivity extends BaseActivity {
                 if (response.getCode() == 200) {
                     AllMeetingsResponse.Array array = response.data;
                     if (array != null && array.elements != null && array.elements.size() > 0) {
+                        if (listData.size() > 0) {
+                            listData.clear();
+                        }
                         listData.addAll(array.elements);
                         listViewAdapter.notifyDataSetChanged();
                     }

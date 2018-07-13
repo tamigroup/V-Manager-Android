@@ -323,4 +323,8 @@
     <string name="create_meeting_toast">创建会议%s!</string>
     <string name="look_at_flow">查看流程单</string>
     <string name="please_create_flow">暂未创建服务流程</string>
+    <string name="modify_meeting">修改会议%s!</string>
+    <string name="name">姓名</string>
+    <string name="personage_introduction">人物介绍</string>
+    <string name="modify_meeting_title">修改会议</string>
 </resources>

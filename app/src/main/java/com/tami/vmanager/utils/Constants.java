@@ -1,5 +1,7 @@
 package com.tami.vmanager.utils;
 
+import com.tami.vmanager.entity.ModifyMeetingRequest;
+
 /**
  * 常量类
  * Created by why on 2018/6/11.

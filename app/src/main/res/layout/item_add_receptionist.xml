@@ -25,6 +25,7 @@
         android:layout_marginLeft="@dimen/dp_20"
         android:gravity="center_vertical|left"
         android:textColor="@color/color_888888"
+        android:visibility="gone"
         android:textSize="@dimen/sp_16"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/iar_select_image"

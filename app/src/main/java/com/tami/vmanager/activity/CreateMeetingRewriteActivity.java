@@ -42,7 +42,6 @@ import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.entity.UploadImageRequest;
 import com.tami.vmanager.entity.UploadImageResponse;
 import com.tami.vmanager.entity.UserListOfPositionResponse;
-import com.tami.vmanager.http.HttpKey;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Constants;
@@ -712,9 +711,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
         if (!isEmpty()) {
             return;
         }
-        Logger.d("filePath:" + filePath);
         if (!TextUtils.isEmpty(filePath)) {
-            Logger.d("执行图片上传");
             uploadImage();
             return;
         }
@@ -727,29 +724,26 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
     private void createMeetingRequest(String eoUrl) {
         CreateMeetingRequest cmr = new CreateMeetingRequest();
         LoginResponse.Item item = GlobaVariable.getInstance().item;
-        cmr.setSystemId(String.valueOf(item.getSystemId()));
+        if(item!=null){
+            cmr.setCreateMeetingUserId(String.valueOf(item.getId()));
+            cmr.setSystemId(item.getSystemId());
+        }
+
         cmr.setMeetingName(nameView.getText().toString());
         cmr.setSponsorName(sponsorView.getText().toString());
-        cmr.setCreateMeetingUserId(String.valueOf(item.getId()));
         cmr.setMeetingAddressId(String.valueOf(addressId));
         cmr.setStartDate(TimeUtils.date2String(recordStartDate));
         cmr.setEndDate(TimeUtils.date2String(recordEndDate));
-        //测试
-        cmr.setContractMoney(String.valueOf(1000));
-        cmr.setPayMoney(String.valueOf(500));
-//        cmr.setContractMoney(contractAmountView.getText().toString());
-//        cmr.setPayMoney(receivedAmountView.getText().toString());
         cmr.setEstimateNum(estimatedNumberPeople.getText().toString());
         cmr.setMinNum(bottomNumberPeople.getText().toString());
         cmr.setIsImportant(String.valueOf(meetingLevelIndex));
-        cmr.setRequestUrl(HttpKey.CREATE_MEETING);
         if (receptionistListData != null && receptionistListData.size() > 1) {
             cmr.setVipReceiveUserId(getStringIds());
         }
         if (!TextUtils.isEmpty(eoUrl)) {
             cmr.setEoUrl(eoUrl);
         }
-        cmr.setIsVzh(String.valueOf(switchButton.isChecked() ? 1 : 0));
+        cmr.setIsVzh(switchButton.isChecked() ? 1 : 0);
         if (vipListData != null && vipListData.size() > 1) {
             cmr.setVipList(getVipList());
         }
@@ -799,11 +793,13 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
     private List<CreateMeetingRequest.Item> getVipList() {
         List<CreateMeetingRequest.Item> listIemt = new ArrayList<>();
         for (CreateVipGuestRequest cvgr : vipListData) {
-            CreateMeetingRequest.Item item = new CreateMeetingRequest.Item();
-            item.setSystemId(cvgr.getSystemId());
-            item.getName(cvgr.getName());
-            item.setIntro(cvgr.getIntro());
-            listIemt.add(item);
+            if (cvgr.getSystemId() != 0 && !TextUtils.isEmpty(cvgr.getName())) {
+                CreateMeetingRequest.Item item = new CreateMeetingRequest.Item();
+                item.setSystemId(cvgr.getSystemId());
+                item.setName(cvgr.getName());
+                item.setIntro(cvgr.getIntro());
+                listIemt.add(item);
+            }
         }
         return listIemt;
     }
@@ -834,28 +830,32 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
      * 上传图片
      */
     private void uploadImage() {
-        UploadImageRequest fmm = new UploadImageRequest();
-        fmm.filePath = new String[]{filePath};
-        networkBroker.uploadImage(fmm, (ex1, res) -> {
-            if (null != ex1) {
-                Logger.d(ex1.getMessage() + "-" + ex1);
-                return;
-            }
-            try {
-                UploadImageResponse response = (UploadImageResponse) res;
-                if (response.getCode() == 200) {
-                    if (response.data != null) {
-                        UploadImageResponse.Item item = response.data;
-                        if (item.dataList != null && item.dataList.size() > 0) {
-                            Logger.d("上传图片返回地址：" + item.dataList.get(0));
-                            createMeetingRequest(item.dataList.get(0));
+        if (filePath.indexOf("http") == 0) {
+            createMeetingRequest(filePath);
+        } else {
+            UploadImageRequest fmm = new UploadImageRequest();
+            fmm.filePath = new String[]{filePath};
+            networkBroker.uploadImage(fmm, (ex1, res) -> {
+                if (null != ex1) {
+                    Logger.d(ex1.getMessage() + "-" + ex1);
+                    return;
+                }
+                try {
+                    UploadImageResponse response = (UploadImageResponse) res;
+                    if (response.getCode() == 200) {
+                        if (response.data != null) {
+                            UploadImageResponse.Item item = response.data;
+                            if (item.dataList != null && item.dataList.size() > 0) {
+                                Logger.d("上传图片返回地址：" + item.dataList.get(0));
+                                createMeetingRequest(item.dataList.get(0));
+                            }
                         }
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+            });
+        }
     }
 
     @Override
