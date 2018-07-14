@@ -1,5 +1,7 @@
 package com.tami.vmanager.activity;
 
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.Group;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -8,12 +10,16 @@ import android.widget.TextView;
 import com.readystatesoftware.chuck.internal.support.DividerItemDecoration;
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
+import com.tami.vmanager.entity.IndexHeaderBean;
 import com.tami.vmanager.entity.IndexNameBean;
 import com.tami.vmanager.entity.PersonnelListRequestBean;
 import com.tami.vmanager.entity.PersonnelListResponseBean;
 import com.tami.vmanager.http.NetworkBroker;
+import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Constants;
+import com.tami.vmanager.view.IndexBar.bean.BaseIndexPinyinBean;
 import com.tami.vmanager.view.IndexBar.suspension.SuspensionDecoration;
+import com.tami.vmanager.view.IndexBar.widget.HeaderRecyclerAndFooterWrapperAdapter;
 import com.tami.vmanager.view.IndexBar.widget.IndexBar;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -40,7 +46,11 @@ public class PersonnelListActivity extends BaseActivity {
     private LinearLayoutManager mManager;
     private IndexBar mIndexBar;
     private static final String INDEX_STRING_TOP = "↑";
-
+    private List<IndexHeaderBean> mHeaderDatas;
+    private List<BaseIndexPinyinBean> mSourceDatas;
+    private HeaderRecyclerAndFooterWrapperAdapter mHeaderAdapter;
+    private ConstraintLayout no_v_cl;
+    private Group personnel_group;
 
     @Override
     public int getContentViewId() {
@@ -55,7 +65,19 @@ public class PersonnelListActivity extends BaseActivity {
         mIndexBar = findViewById(R.id.indexBar);
         indexBarTv = findViewById(R.id.indexBarTv);
 
+        no_v_cl = findViewById(R.id.no_v_cl);
+        personnel_group = findViewById(R.id.personnel_group);
+
         networkBroker = new NetworkBroker(this);
+
+        int fromPlat = GlobaVariable.getInstance().item.getFromPlat();
+        if (fromPlat == 1){
+            no_v_cl.setVisibility(View.GONE);
+            personnel_group.setVisibility(View.VISIBLE);
+        }else {
+            no_v_cl.setVisibility(View.VISIBLE);
+            personnel_group.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -67,7 +89,12 @@ public class PersonnelListActivity extends BaseActivity {
     @Override
     public void initData() {
         setTitleName(getString(R.string.personnel_list));
+        mSourceDatas = new ArrayList<>();
         mDatas = new ArrayList<>();
+        mHeaderDatas = new ArrayList<>();
+        List<String> hotCitys = new ArrayList<>();
+        mHeaderDatas.add(new IndexHeaderBean(hotCitys, getString(R.string.vip_distinguished_guest), INDEX_STRING_TOP));
+        mSourceDatas.addAll(mHeaderDatas);
         meetingId = getIntent().getIntExtra(Constants.KEY_MEETING_ID, 0);
         initRecyc();
     }
@@ -81,8 +108,32 @@ public class PersonnelListActivity extends BaseActivity {
             }
         };
 
+        mHeaderAdapter = new HeaderRecyclerAndFooterWrapperAdapter(commonAdapter) {
+
+            @Override
+            protected void onBindHeaderHolder(com.tami.vmanager.view.IndexBar.widget.ViewHolder holder, int headerPos, int layoutId, Object o) {
+                switch (layoutId) {
+                    case R.layout.item_index_name_header:
+                        final IndexHeaderBean IndexHeaderBean = (IndexHeaderBean) o;
+                        RecyclerView recyclerView = holder.getView(R.id.rvCity);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(PersonnelListActivity.this));
+                        //解决左边距问题，复制布局
+                        recyclerView.setAdapter(new CommonAdapter<String>(PersonnelListActivity.this, R.layout.item_rec_car1, IndexHeaderBean.getCityList()) {
+
+                            @Override
+                            protected void convert(ViewHolder holder, String name, int position) {
+                                holder.setText(R.id.item_tv, name);
+                            }
+                        });
+                        break;
+                    default:
+                        break;
+                }
+            }
+        };
+        mHeaderAdapter.setHeaderView(0, R.layout.item_index_name_header, mHeaderDatas.get(0));
         mRecyclerView.setLayoutManager(mManager = new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(commonAdapter);
+        mRecyclerView.setAdapter(mHeaderAdapter);
         mRecyclerView.addItemDecoration(mDecoration = new SuspensionDecoration(this, mDatas));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(PersonnelListActivity.this, DividerItemDecoration.VERTICAL_LIST));
         mIndexBar.setmPressedShowTextView(indexBarTv)
@@ -96,6 +147,8 @@ public class PersonnelListActivity extends BaseActivity {
     }
 
     private void requestData() {
+//        Map<String,String> vip_name = new HashMap<>();
+        List<String> vip_name = new ArrayList<>();
         PersonnelListRequestBean personnelListRequestBean = new PersonnelListRequestBean();
         //        personnelListRequestBean.setMeetingId(meetingId);
         personnelListRequestBean.setMeetingId(46);
@@ -111,10 +164,24 @@ public class PersonnelListActivity extends BaseActivity {
                     PersonnelListResponseBean.DataBean data = response.getData();
                     if (data != null) {
                         if (data.getDataList() != null && data.getDataList().size() > 0) {
+
+                            for (PersonnelListResponseBean.DataBean.DataListBean list:data.getDataList()) {
+                                if (list.getType() == 1){
+                                    vip_name.add(list.getName());
+                                }
+                            }
                             mDatas.addAll(data.getDataList());
+                            mIndexBar.getDataHelper().sortSourceDatas(mDatas);
                             commonAdapter.notifyDataSetChanged();
-                            mIndexBar.setmSourceDatas(mDatas).invalidate();
-                            mDecoration.setmDatas(mDatas);
+                            mHeaderAdapter.notifyDataSetChanged();
+                            mSourceDatas.addAll(mDatas);
+                            mIndexBar.setmSourceDatas(mSourceDatas).invalidate();
+                            mDecoration.setmDatas(mSourceDatas);
+
+                            IndexHeaderBean headerBean = mHeaderDatas.get(0);
+                            headerBean.setCityList(vip_name);
+                            mHeaderAdapter.notifyItemRangeChanged(0, 3);
+
                         }
                     }
                 }

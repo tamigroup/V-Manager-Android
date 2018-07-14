@@ -337,4 +337,5 @@
     <string name="modify_meeting_title">修改会议</string>
     <string name="replay_success">回复成功</string>
     <string name="replay_fail">回复失败</string>
+    <string name="vip_distinguished_guest">VIP嘉宾</string>
 </resources>
