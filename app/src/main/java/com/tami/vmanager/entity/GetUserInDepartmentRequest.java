@@ -1,5 +1,7 @@
 package com.tami.vmanager.entity;
 
+import com.tami.vmanager.http.HttpKey;
+
 import java.io.Serializable;
 
 
@@ -9,7 +11,7 @@ import java.io.Serializable;
  * @author 代码生成器v1.0
  * 
  */
-public class GetUserInDepartmentRequest implements Serializable{
+public class GetUserInDepartmentRequest extends MobileMessage implements Serializable{
 
 	/**
 	 * 
@@ -17,22 +19,27 @@ public class GetUserInDepartmentRequest implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 
-	private String systemId;
+	private int systemId;
 
 	public GetUserInDepartmentRequest() {
 		super();
-	}	
+	}
 
-	/**
-	 * @return 酒店ID
-	 */
-	public String getSystemId() {
+	public int getSystemId() {
 		return systemId;
 	}
 
-	public void setSystemId(String systemId) {
+	public void setSystemId(int systemId) {
 		this.systemId = systemId;
 	}
 
+	@Override
+	public String getRequestUrl() {
+		return HttpKey.GET_USER_IN_DEPARTMENT;
+	}
 
+	@Override
+	public Class getResponseClass() {
+		return GetUserInDepartmentResponse.class;
+	}
 }

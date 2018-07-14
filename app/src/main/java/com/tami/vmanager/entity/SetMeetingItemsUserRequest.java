@@ -1,50 +1,49 @@
 package com.tami.vmanager.entity;
 
+import com.tami.vmanager.http.HttpKey;
+
 import java.io.Serializable;
 
 
 /**
  * 会议流程节点分配人员.客户端请求
- * 
+ *
  * @author 代码生成器v1.0
- * 
  */
-public class SetMeetingItemsUserRequest implements Serializable{
+public class SetMeetingItemsUserRequest extends MobileMessage implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 8855300368956737262L;
 
+    public SetMeetingItemsUserRequest() {
+        super();
+    }
 
-	private String meetingItemSetId;
-	private String userId;
+    private int meetingItemSetId;
+    private String userJsonStr;
 
-	public SetMeetingItemsUserRequest() {
-		super();
-	}	
+    public int getMeetingItemSetId() {
+        return meetingItemSetId;
+    }
 
-	/**
-	 * @return 会议节点ID
-	 */
-	public String getMeetingItemSetId() {
-		return meetingItemSetId;
-	}
+    public void setMeetingItemSetId(int meetingItemSetId) {
+        this.meetingItemSetId = meetingItemSetId;
+    }
 
-	public void setMeetingItemSetId(String meetingItemSetId) {
-		this.meetingItemSetId = meetingItemSetId;
-	}
+    public String getUserJsonStr() {
+        return userJsonStr;
+    }
 
-	/**
-	 * @return 待分配人员ID
-	 */
-	public String getUserId() {
-		return userId;
-	}
+    public void setUserJsonStr(String userJsonStr) {
+        this.userJsonStr = userJsonStr;
+    }
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
+    @Override
+    public Class getResponseClass() {
+        return SetMeetingItemsUserResponse.class;
+    }
 
-
+    @Override
+    public String getRequestUrl() {
+        return HttpKey.SET_MEETING_ITEM_USER;
+    }
 }

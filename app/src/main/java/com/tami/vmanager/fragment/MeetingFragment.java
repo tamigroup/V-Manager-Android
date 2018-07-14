@@ -25,7 +25,7 @@ public class MeetingFragment extends BaseFragment {
     private int onClickId = R.id.meeting_group_whole;
     private NoScrollViewPager viewPager;//列表数据
     private Fragment[] arrayFragment;
-    private final int[] meetingType = new int[]{Constants.MEETING_TYPE_WHOLE, Constants.MEETING_TYPE_PENDING_PAYMENT, Constants.MEETING_TYPE_PERFECTED, Constants.MEETING_TYPE_DAY, Constants.MEETING_TYPE_MONTH, Constants.MEETING_TYPE_YEAR};
+    private final int[] meetingType = new int[]{Constants.MEETING_TYPE_WHOLE, Constants.MEETING_TYPE_PERFECTED, Constants.MEETING_TYPE_DAY, Constants.MEETING_TYPE_MONTH, Constants.MEETING_TYPE_YEAR};
 
     @Override
     public boolean isTitle() {
@@ -45,40 +45,33 @@ public class MeetingFragment extends BaseFragment {
 
     @Override
     public void initListener() {
-        meetingGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                RadioButton unselectBtn = group.findViewById(onClickId);
-                unselectBtn.setTextColor(ContextCompat.getColor(getActivity(), R.color.press));
-                RadioButton selectBtn = group.findViewById(checkedId);
-                selectBtn.setTextColor(ContextCompat.getColor(getActivity(), R.color.nomal));
-                onClickId = checkedId;
-                switch (checkedId) {
-                    case R.id.meeting_group_whole:
-                        //全部
-                        groupWhole();
-                        break;
-                    case R.id.meeting_group_pending_payment:
-                        //待付款
-                        groupPendingPayment();
-                        break;
-                    case R.id.meeting_group_perfected:
-                        //待完善
-                        groupPerfected();
-                        break;
-                    case R.id.meeting_group_day:
-                        //日
-                        groupDay();
-                        break;
-                    case R.id.meeting_group_month:
-                        //月
-                        groupMonth();
-                        break;
-                    case R.id.meeting_group_year:
-                        //年
-                        groupYear();
-                        break;
-                }
+        meetingGroup.setOnCheckedChangeListener((RadioGroup group, int checkedId) -> {
+            RadioButton unselectBtn = group.findViewById(onClickId);
+            unselectBtn.setTextColor(ContextCompat.getColor(getActivity(), R.color.press));
+            RadioButton selectBtn = group.findViewById(checkedId);
+            selectBtn.setTextColor(ContextCompat.getColor(getActivity(), R.color.nomal));
+            onClickId = checkedId;
+            switch (checkedId) {
+                case R.id.meeting_group_whole:
+                    //全部
+                    groupWhole();
+                    break;
+                case R.id.meeting_group_perfected:
+                    //待完善
+                    groupPerfected();
+                    break;
+                case R.id.meeting_group_day:
+                    //日
+                    groupDay();
+                    break;
+                case R.id.meeting_group_month:
+                    //月
+                    groupMonth();
+                    break;
+                case R.id.meeting_group_year:
+                    //年
+                    groupYear();
+                    break;
             }
         });
 
@@ -97,7 +90,7 @@ public class MeetingFragment extends BaseFragment {
 
         //添充数据
         arrayFragment = new Fragment[meetingType.length];
-        for (int index : meetingType) {
+        for (int index = 0; index < meetingType.length; index++) {
             addFragment(new MeetingListFragment(), index);
         }
         GuidePageFragmentPagerAdapter guidePageFragmentPagerAdapter = new GuidePageFragmentPagerAdapter(getFragmentManager(), arrayFragment);
@@ -127,7 +120,7 @@ public class MeetingFragment extends BaseFragment {
      */
     private void addFragment(Fragment fragment, int index) {
         Bundle bundle = new Bundle();
-        bundle.putInt(Constants.MEETING_TYPE, index);
+        bundle.putInt(Constants.MEETING_TYPE, meetingType[index]);
         fragment.setArguments(bundle);
         arrayFragment[index] = fragment;
     }
@@ -137,13 +130,6 @@ public class MeetingFragment extends BaseFragment {
      */
     private void groupWhole() {
         viewPager.setCurrentItem(Constants.MEETING_TYPE_WHOLE);
-    }
-
-    /**
-     * 待付款
-     */
-    private void groupPendingPayment() {
-        viewPager.setCurrentItem(Constants.MEETING_TYPE_PENDING_PAYMENT);
     }
 
     private void groupPerfected() {

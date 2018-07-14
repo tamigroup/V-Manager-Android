@@ -1,7 +1,6 @@
 package com.tami.vmanager.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,9 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.tami.vmanager.R;
-import com.tami.vmanager.activity.MeetingLinkConfirmedActivity;
 import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdResponse;
-import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.TimeUtils;
 
 import java.util.Date;
@@ -29,6 +26,8 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
     private static final int TOP = 0;
     private static final int FOOT = 1;
     private static final int NORMAL = 2;
+
+    private TimeLineMeetingFlowItem tlmfi;
 
     @Override
     public TimeLineHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -77,16 +76,24 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
             holder.stateBtn.setText(context.getString(R.string.confirmed));
             holder.middlePic.setImageResource(R.mipmap.middle_pic_selected);
             holder.bottomView.setBackgroundResource(R.color.color_34DB8E);
-        } else {
+        } else if (item.selectStatus == 2) {
+            holder.stateBtn.setText(context.getString(R.string.ready));
+            holder.middlePic.setImageResource(R.mipmap.create_meeting_delete);
+            holder.bottomView.setBackgroundResource(R.color.color_EAEAEA);
+        } else if (item.selectStatus == 3) {
             holder.stateBtn.setText(context.getString(R.string.ready));
             holder.middlePic.setImageResource(R.mipmap.middle_pic_unselected);
             holder.bottomView.setBackgroundResource(R.color.color_EAEAEA);
         }
         holder.stateBtn.setOnClickListener((View view) -> {
-            Intent intent = new Intent(context, MeetingLinkConfirmedActivity.class);
-            intent.putExtra(Constants.KEY_MEETING_LINK, item);
-            context.startActivity(intent);
+            if (tlmfi != null) {
+                tlmfi.getMeetingFlowItem(item);
+            }
         });
+    }
+
+    public void setTimeLineMeetingFlowItem(TimeLineMeetingFlowItem timeLineMeetingFlowItem) {
+        this.tlmfi = timeLineMeetingFlowItem;
     }
 
     @Override

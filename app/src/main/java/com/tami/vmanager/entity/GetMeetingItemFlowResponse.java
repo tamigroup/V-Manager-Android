@@ -39,7 +39,7 @@ public class GetMeetingItemFlowResponse extends MobileMessage implements Seriali
             public String meetingItemName;	/*会场就绪*/
 
             public List<UserList> meetingItemSetFlowUserList;
-
+            @JsonInclude(Include.NON_NULL)
             public static class UserList {
                 public String userName;	/*小塔米*/
                 public String mobile;	/*13800138000*/

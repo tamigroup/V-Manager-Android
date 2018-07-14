@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.tami.vmanager.R;
 import com.tami.vmanager.entity.GetMeetingItemFlowResponse;
+import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdResponse;
 import com.tami.vmanager.entity.TimeLine;
 import com.tami.vmanager.utils.TimeUtils;
 
@@ -21,7 +22,7 @@ import java.util.List;
  */
 public class TimeLineHorizontalAdapter extends RecyclerView.Adapter<TimeLineHorizontalAdapter.TimeLineHorizontaHolder> {
 
-    private List<GetMeetingItemFlowResponse.Array.Item> list;
+    private List<GetMeetingItemsByMeetingIdResponse.Array.Item> list;
     private static final int TOP = 0;
     private static final int FOOT = 1;
     private static final int NORMAL = 2;
@@ -41,7 +42,7 @@ public class TimeLineHorizontalAdapter extends RecyclerView.Adapter<TimeLineHori
         return NORMAL;
     }
 
-    public TimeLineHorizontalAdapter(List<GetMeetingItemFlowResponse.Array.Item> list) {
+    public TimeLineHorizontalAdapter(List<GetMeetingItemsByMeetingIdResponse.Array.Item> list) {
         this.list = list;
     }
 
@@ -58,7 +59,7 @@ public class TimeLineHorizontalAdapter extends RecyclerView.Adapter<TimeLineHori
             holder.rightView.setVisibility(View.VISIBLE);
         }
 
-        GetMeetingItemFlowResponse.Array.Item item = list.get(position);
+        GetMeetingItemsByMeetingIdResponse.Array.Item item = list.get(position);
 
         if (position != 0 && list.get(position - 1).selectStatus == 1) {
             holder.leftView.setBackgroundResource(R.color.color_34DB8E);

@@ -19,8 +19,8 @@ import android.widget.TextView;
 import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.TimeLineHorizontalAdapter;
 import com.tami.vmanager.base.BaseActivity;
-import com.tami.vmanager.entity.GetMeetingItemFlowRequest;
-import com.tami.vmanager.entity.GetMeetingItemFlowResponse;
+import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdRequest;
+import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdResponse;
 import com.tami.vmanager.entity.GetMeetingResponse;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
@@ -63,7 +63,7 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
     private int meetingId;//会议ID
     private GetMeetingResponse.Item item;
     private NetworkBroker networkBroker;
-    private List<GetMeetingItemFlowResponse.Array.Item> listData;
+    private List<GetMeetingItemsByMeetingIdResponse.Array.Item> listData;
     private TimeLineHorizontalAdapter adapter;
     private MeetingStateView meeting_status;
     private ImageView sale_phone;
@@ -142,7 +142,7 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
 
     @Override
     public void requestNetwork() {
-        getMeetingItemFlow();
+        getMeetingItemsByMeetingId();
     }
 
     @Override
@@ -299,29 +299,37 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
         startActivity(intent);
     }
 
+
     /**
-     * 获取会议流程单*
+     * 根据会议ID查询会议节点信息
      */
-    private void getMeetingItemFlow() {
-        GetMeetingItemFlowRequest gmifr = new GetMeetingItemFlowRequest();
-        gmifr.setMeetingId(meetingId);
-        networkBroker.ask(gmifr, (ex1, res) -> {
+    private void getMeetingItemsByMeetingId() {
+        GetMeetingItemsByMeetingIdRequest gmibmir = new GetMeetingItemsByMeetingIdRequest();
+        gmibmir.setMeetingId(meetingId);
+        networkBroker.ask(gmibmir, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);
                 return;
             }
             try {
-                GetMeetingItemFlowResponse response = (GetMeetingItemFlowResponse) res;
+                GetMeetingItemsByMeetingIdResponse response = (GetMeetingItemsByMeetingIdResponse) res;
                 if (response.getCode() == 200) {
-                    GetMeetingItemFlowResponse.Array array = response.data;
-                    if (array != null && array.dataList != null && array.dataList.size() > 0) {
-                        listData.addAll(array.dataList);
-                        adapter.notifyDataSetChanged();
+                    if (response != null) {
+                        GetMeetingItemsByMeetingIdResponse.Array array = response.data;
+                        if (array != null && array.dataList != null && array.dataList.size() > 0) {
+                            //对时间轴赋值
+                            if (listData.size() > 0) {
+                                listData.clear();
+                            }
+                            listData.addAll(array.dataList);
+                            adapter.notifyDataSetChanged();
+                        }
                     }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
         });
     }
 

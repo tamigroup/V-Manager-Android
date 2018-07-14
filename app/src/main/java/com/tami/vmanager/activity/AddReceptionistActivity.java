@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.tami.vmanager.R;
+import com.tami.vmanager.adapter.RSectionDecoration;
 import com.tami.vmanager.adapter.SectionDecoration;
 import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.entity.LoginResponse;
@@ -131,7 +132,7 @@ public class AddReceptionistActivity extends BaseActivity {
         };
 
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.addItemDecoration(new SectionDecoration(contentList, this, new SectionDecoration.DecorationCallback() {
+        recyclerView.addItemDecoration(new RSectionDecoration(contentList, this, new RSectionDecoration.DecorationCallback() {
             @Override
             public String getGroupId(int position) {
                 if (titleList.get(position) != null) {

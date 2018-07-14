@@ -90,7 +90,7 @@ public class VIPPersonageIntroductionActivity extends BaseActivity implements Te
 
     @Override
     public void emptyObject() {
-
+        networkBroker.cancelAllRequests();
     }
 
 

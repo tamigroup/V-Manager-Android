@@ -9,10 +9,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.SectionDecoration;
 import com.tami.vmanager.base.BaseActivity;
+import com.tami.vmanager.entity.CreateVipGuestRequest;
+import com.tami.vmanager.entity.CreateVipGuestResponse;
+import com.tami.vmanager.entity.GetUserInDepartmentRequest;
+import com.tami.vmanager.entity.GetUserInDepartmentResponse;
 import com.tami.vmanager.entity.LoginResponse;
+import com.tami.vmanager.entity.SetMeetingItemsUserRequest;
+import com.tami.vmanager.entity.SetMeetingItemsUserResponse;
 import com.tami.vmanager.entity.UserListOfPositionRequest;
 import com.tami.vmanager.entity.UserListOfPositionResponse;
 import com.tami.vmanager.http.NetworkBroker;
@@ -35,12 +42,13 @@ public class AddPersonChargeActivty extends BaseActivity {
     private TextView people;//已选择人数
     private Button confirm;//确定
     private RecyclerView recyclerView;//列表
-    private CommonAdapter<UserListOfPositionResponse.Item.TitleItem.ContentList> commonAdapter;
-    private List<UserListOfPositionResponse.Item.TitleItem.ContentList> contentList = new ArrayList<>();
+    private CommonAdapter<GetUserInDepartmentResponse.Array.Item.User> commonAdapter;
+    private List<GetUserInDepartmentResponse.Array.Item.User> contentList = new ArrayList<>();
     private List<String> titleList = new ArrayList<>();
     private NetworkBroker networkBroker;
     //统计
     private int count;
+    private int meetingItemSetId;
 
     @Override
     public boolean isTitle() {
@@ -66,6 +74,10 @@ public class AddPersonChargeActivty extends BaseActivity {
 
     @Override
     public void initData() {
+        Intent intent = getIntent();
+        if (intent != null) {
+            meetingItemSetId = intent.getIntExtra(Constants.KEY_MEETING_ITEM_SETID, -1);
+        }
         setTitleName(getString(R.string.add_person_charge));
 
         //初始化选择人数
@@ -115,17 +127,17 @@ public class AddPersonChargeActivty extends BaseActivity {
     private void initRecyclerView() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        commonAdapter = new CommonAdapter<UserListOfPositionResponse.Item.TitleItem.ContentList>(getApplicationContext(), R.layout.item_add_person_charge, contentList) {
+        commonAdapter = new CommonAdapter<GetUserInDepartmentResponse.Array.Item.User>(getApplicationContext(), R.layout.item_add_person_charge, contentList) {
             @Override
-            protected void convert(ViewHolder holder, UserListOfPositionResponse.Item.TitleItem.ContentList contentList, int position) {
-                holder.setText(R.id.iapc_position, contentList.realName);
-                holder.setText(R.id.iapc_name, contentList.realName);
+            protected void convert(ViewHolder holder, GetUserInDepartmentResponse.Array.Item.User user, int position) {
+                holder.setText(R.id.iapc_position, user.realName);
+                holder.setText(R.id.iapc_name, user.realName);
                 AppCompatImageView selectImage = holder.getView(R.id.iapc_select_image);
-                selectImage.setImageResource(contentList.isSelected ? R.mipmap.people_checkbox_selected : R.mipmap.people_checkbox_unselected);
+                selectImage.setImageResource(user.isSelected ? R.mipmap.people_checkbox_selected : R.mipmap.people_checkbox_unselected);
                 holder.getView(R.id.iapc_layout).setOnClickListener((View v) -> {
-                    contentList.isSelected = !contentList.isSelected;
-                    selectImage.setImageResource(contentList.isSelected ? R.mipmap.people_checkbox_selected : R.mipmap.people_checkbox_unselected);
-                    setPeople(count = contentList.isSelected ? ++count : --count);
+                    user.isSelected = !user.isSelected;
+                    selectImage.setImageResource(user.isSelected ? R.mipmap.people_checkbox_selected : R.mipmap.people_checkbox_unselected);
+                    setPeople(count = user.isSelected ? ++count : --count);
                 });
             }
         };
@@ -155,35 +167,35 @@ public class AddPersonChargeActivty extends BaseActivity {
      * 获取数据
      */
     private void getListData() {
-        UserListOfPositionRequest userListOfPositionRequest = new UserListOfPositionRequest();
+        GetUserInDepartmentRequest guidr = new GetUserInDepartmentRequest();
         LoginResponse.Item item = GlobaVariable.getInstance().item;
         if (item != null) {
-            userListOfPositionRequest.setSystemId(String.valueOf(item.getSystemId()));
+            guidr.setSystemId(item.getSystemId());
         }
-        networkBroker.ask(userListOfPositionRequest, (ex1, res) -> {
+        networkBroker.ask(guidr, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);
                 return;
             }
             try {
-                UserListOfPositionResponse response = (UserListOfPositionResponse) res;
+                GetUserInDepartmentResponse response = (GetUserInDepartmentResponse) res;
                 if (response.getCode() == 200) {
                     if (response.data != null) {
-                        UserListOfPositionResponse.Item ulprItem = response.data;
-                        if (ulprItem.dataList != null) {
-                            List<UserListOfPositionResponse.Item.TitleItem> dataList = ulprItem.dataList;
-                            if (dataList != null) {
-                                for (UserListOfPositionResponse.Item.TitleItem tieleItem : dataList) {
+                        GetUserInDepartmentResponse.Array guidrItem = response.data;
+                        if (guidrItem.dataList != null) {
+                            List<GetUserInDepartmentResponse.Array.Item> guidrList = guidrItem.dataList;
+                            if (guidrList != null) {
+                                for (GetUserInDepartmentResponse.Array.Item tieleItem : guidrList) {
                                     if (tieleItem.userList != null) {
-                                        List<UserListOfPositionResponse.Item.TitleItem.ContentList> userList = tieleItem.userList;
+                                        List<GetUserInDepartmentResponse.Array.Item.User> userList = tieleItem.userList;
                                         if (userList != null) {
-                                            for (UserListOfPositionResponse.Item.TitleItem.ContentList contentdata : userList) {
-                                                contentList.add(contentdata);
-                                                if (contentdata.isSelected) {
+                                            for (GetUserInDepartmentResponse.Array.Item.User userData : userList) {
+                                                contentList.add(userData);
+                                                if (userData.isSelected) {
                                                     count++;
                                                 }
-                                                if (!TextUtils.isEmpty(tieleItem.departmentName)) {
-                                                    titleList.add(tieleItem.departmentName);
+                                                if (!TextUtils.isEmpty(tieleItem.depName)) {
+                                                    titleList.add(tieleItem.depName);
                                                 } else {
                                                     titleList.add("分组名称为空");
                                                 }
@@ -208,16 +220,47 @@ public class AddPersonChargeActivty extends BaseActivity {
      * 提交
      */
     private void confirm() {
-        ArrayList<UserListOfPositionResponse.Item.TitleItem.ContentList> data = new ArrayList<>();
-        for (UserListOfPositionResponse.Item.TitleItem.ContentList item : contentList) {
+        ArrayList<GetUserInDepartmentResponse.Array.Item.User> data = new ArrayList<>();
+        for (GetUserInDepartmentResponse.Array.Item.User item : contentList) {
             if (item.isSelected) {
                 data.add(item);
             }
         }
-        Intent intent = new Intent();
-        intent.putParcelableArrayListExtra(Constants.RESULT_JIEDAIREN, data);
-        setResult(Constants.ADD_PERSON_CHARGE, intent);
-        finish();
+        setMeetingItemsUser(data);
+    }
+
+    /**
+     * 添加负责人
+     */
+    public void setMeetingItemsUser(ArrayList<GetUserInDepartmentResponse.Array.Item.User> data) {
+        if (data != null && data.size() > 0) {
+            SetMeetingItemsUserRequest siur = new SetMeetingItemsUserRequest();
+            siur.setMeetingItemSetId(meetingItemSetId);
+            siur.setUserJsonStr(new Gson().toJson(data));
+            networkBroker.ask(siur, (ex1, res) -> {
+                if (null != ex1) {
+                    Logger.d(ex1.getMessage() + "-" + ex1);
+                    return;
+                }
+                try {
+                    SetMeetingItemsUserResponse response = (SetMeetingItemsUserResponse) res;
+                    if (response.getCode() == 200 && response.data) {
+                        Intent intent = new Intent();
+                        intent.putExtra(Constants.RESULT_JIEDAIREN, true);
+                        setResult(Constants.ADD_PERSON_CHARGE, intent);
+                        finish();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            });
+        } else {
+            Intent intent = new Intent();
+            intent.putExtra(Constants.RESULT_JIEDAIREN, false);
+            setResult(Constants.ADD_PERSON_CHARGE, intent);
+            finish();
+        }
     }
 
 }

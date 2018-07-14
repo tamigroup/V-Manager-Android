@@ -1,62 +1,52 @@
 package com.tami.vmanager.entity;
 
+import com.tami.vmanager.http.HttpKey;
+
 import java.io.Serializable;
 
 
 /**
  * 验证用户是否已被分配了某节点权限.客户端请求
- * 
+ *
  * @author 代码生成器v1.0
- * 
  */
-public class IsCanOperationRequest implements Serializable{
+public class IsCanOperationRequest extends MobileMessage implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
+    public IsCanOperationRequest() {
+        super();
+    }
 
-	private String meetingId;
-	private String meetingItemId;
-	private String userId;
+    private int userId;
+    private int meetingItemSetId;
 
-	public IsCanOperationRequest() {
-		super();
-	}	
+    public int getUserId() {
+        return userId;
+    }
 
-	/**
-	 * @return 会议ID
-	 */
-	public String getMeetingId() {
-		return meetingId;
-	}
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
-	public void setMeetingId(String meetingId) {
-		this.meetingId = meetingId;
-	}
+    public int getMeetingItemSetId() {
+        return meetingItemSetId;
+    }
 
-	/**
-	 * @return 会议节点ID
-	 */
-	public String getMeetingItemId() {
-		return meetingItemId;
-	}
+    public void setMeetingItemSetId(int meetingItemSetId) {
+        this.meetingItemSetId = meetingItemSetId;
+    }
 
-	public void setMeetingItemId(String meetingItemId) {
-		this.meetingItemId = meetingItemId;
-	}
+    @Override
+    public String getRequestUrl() {
+        return HttpKey.IS_CAN_OPERATION;
+    }
 
-	/**
-	 * @return 人员ID
-	 */
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-
-
+    @Override
+    public Class getResponseClass() {
+        return IsCanOperationResponse.class;
+    }
 }

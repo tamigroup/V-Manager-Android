@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.TimeLineAdapter;
+import com.tami.vmanager.adapter.TimeLineMeetingFlowItem;
 import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.dialog.AlreadyPaidItemDialog;
 import com.tami.vmanager.dialog.ConfirmEnterMeetingDialog;
@@ -28,6 +29,9 @@ import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdRequest;
 import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdResponse;
 import com.tami.vmanager.entity.GetMeetingRequest;
 import com.tami.vmanager.entity.GetMeetingResponse;
+import com.tami.vmanager.entity.IsCanOperationRequest;
+import com.tami.vmanager.entity.IsCanOperationResponse;
+import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Constants;
@@ -50,7 +54,7 @@ import pub.devrel.easypermissions.EasyPermissions;
  * <p>
  * Created by why on 2018/6/14.
  */
-public class MeetingOverviewActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks {
+public class MeetingOverviewActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks, TimeLineMeetingFlowItem {
 
     private TextView meetingName;//会议名称
     private TextView meetingTime;//会议时间
@@ -168,15 +172,22 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
 
     @Override
     public void initData() {
-        setTitleName(R.string.meeting_ganlan);
-
-        initListView();
-
         Intent intent = getIntent();
         if (intent != null) {
             meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 0);
         }
-        meetingId = 15;
+        setTitleName(R.string.meeting_ganlan);
+        initListView();
+
+        LoginResponse.Item userItem = GlobaVariable.getInstance().item;
+        if (userItem != null) {
+            List<LoginResponse.Item.UserRole> userRoleList = userItem.getUserRoleList();
+            if (userRoleList != null && userRoleList.size() > 0) {
+                if (userRoleList.get(0).roleId != 2 && userRoleList.get(0).roleId != 11) {
+                    editBtn.setVisibility(View.GONE);
+                }
+            }
+        }
 
         recyclerView.setVisibility(View.VISIBLE);
 
@@ -287,6 +298,7 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Logger.d("onActivityResult->requestCode:" + requestCode);
         switch (requestCode) {
             case Constants.CREATE_FLOW:
                 //创建服务流程返回
@@ -298,8 +310,14 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
         }
     }
 
+    /**
+     * 查看流程单
+     */
     private void lookFlow() {
-        showToast("查看流程单");
+        Intent intent = new Intent(getApplicationContext(), ConferenceServiceFlowActivity.class);
+        intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
+        intent.putExtra(Constants.KEY_MEETING_NAME, item.meetingName);
+        startActivity(intent);
     }
 
     /**
@@ -308,7 +326,7 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
     private void editFlow() {
         Intent intent = new Intent(getApplicationContext(), CreateServiceFlowActivity.class);
         intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
-        startActivity(intent);
+        startActivityForResult(intent, Constants.CREATE_FLOW);
     }
 
     /**
@@ -379,6 +397,7 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         listData = new ArrayList<>();
         adapter = new TimeLineAdapter(listData, this);
+        adapter.setTimeLineMeetingFlowItem(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
     }
@@ -449,25 +468,23 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
             try {
                 GetMeetingItemsByMeetingIdResponse response = (GetMeetingItemsByMeetingIdResponse) res;
                 if (response.getCode() == 200) {
-                    if (response != null) {
-                        GetMeetingItemsByMeetingIdResponse.Array array = response.data;
-                        if (array != null && array.dataList != null && array.dataList.size() > 0) {
-                            //对时间轴赋值
-                            if (listData.size() > 0) {
-                                listData.clear();
-                            }
-                            listData.addAll(array.dataList);
-                            adapter.notifyDataSetChanged();
-                            pleaseCreateConference.setVisibility(View.GONE);
-                            xufuLayout.setVisibility(View.VISIBLE);
-                            recyclerView.setVisibility(View.VISIBLE);
-                            functionBtn.setText(getString(R.string.get_into_meeting));
-                        } else {
-                            xufuLayout.setVisibility(View.GONE);
-                            recyclerView.setVisibility(View.GONE);
-                            pleaseCreateConference.setVisibility(View.VISIBLE);
-                            functionBtn.setText(getString(R.string.create_process));
+                    GetMeetingItemsByMeetingIdResponse.Array array = response.data;
+                    if (array != null && array.dataList != null && array.dataList.size() > 0) {
+                        //对时间轴赋值
+                        if (listData.size() > 0) {
+                            listData.clear();
                         }
+                        listData.addAll(array.dataList);
+                        adapter.notifyDataSetChanged();
+                        pleaseCreateConference.setVisibility(View.GONE);
+                        xufuLayout.setVisibility(View.VISIBLE);
+                        recyclerView.setVisibility(View.VISIBLE);
+                        functionBtn.setText(getString(R.string.get_into_meeting));
+                    } else {
+                        xufuLayout.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.GONE);
+                        pleaseCreateConference.setVisibility(View.VISIBLE);
+                        functionBtn.setText(getString(R.string.create_process));
                     }
                 }
             } catch (Exception e) {
@@ -493,5 +510,44 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
         if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
             new AppSettingsDialog.Builder(this).build().show();
         }
+    }
+
+    /**
+     * 验证用户是否有权限
+     */
+    public void isCanOperation(GetMeetingItemsByMeetingIdResponse.Array.Item item) {
+        IsCanOperationRequest icor = new IsCanOperationRequest();
+        LoginResponse.Item userItem = GlobaVariable.getInstance().item;
+        if (userItem != null) {
+            icor.setUserId(userItem.getId());
+        }
+        icor.setMeetingItemSetId(item.meetingItemSetId);
+        networkBroker.ask(icor, (ex1, res) -> {
+            if (null != ex1) {
+                Logger.d(ex1.getMessage() + "-" + ex1);
+                return;
+            }
+            try {
+                IsCanOperationResponse response = (IsCanOperationResponse) res;
+                if (response.getCode() == 200 && response.data) {
+                    Intent intent = new Intent(getApplicationContext(), MeetingLinkConfirmedActivity.class);
+                    intent.putExtra(Constants.KEY_MEETING_LINK, item);
+                    startActivity(intent);
+                } else {
+                    showToast(response.getMessage());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        });
+//        Intent intent = new Intent(getApplicationContext(), MeetingLinkConfirmedActivity.class);
+//        intent.putExtra(Constants.KEY_MEETING_LINK, item);
+//        startActivity(intent);
+    }
+
+    @Override
+    public void getMeetingFlowItem(GetMeetingItemsByMeetingIdResponse.Array.Item item) {
+        isCanOperation(item);
     }
 }

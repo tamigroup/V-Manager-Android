@@ -41,9 +41,14 @@ public class GetMeetingItemsByMeetingIdResponse extends MobileMessage implements
             public int parentId;	/*0*/
             public int selectStatus;	/*0*/
             public int meetingItemSetId;	/*49*/
-            public String meetingItemSetFlowUserList;	/**/
             public String meetingItemName;	/*茶歇就绪*/
-
+//            public List<GetMeetingItemFlowResponse.Array.Item.UserList> meetingItemSetFlowUserList;
+//
+//            @JsonInclude(Include.NON_NULL)
+//            public static class UserList {
+//                public String userName;	/*小塔米*/
+//                public String mobile;	/*13800138000*/
+//            }
         }
     }
 }

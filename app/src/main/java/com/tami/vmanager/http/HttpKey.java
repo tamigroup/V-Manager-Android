@@ -116,6 +116,14 @@ public class HttpKey {
     public static final String SET_MEETING_ITEMS = "meeting/setMeetingItems";
     // 修改会议信息
     public static final String UPDATE_MEETING = "meeting/updataMeeting";
+    // 验证用户是否已被分配了某节点权限
+    public static final String IS_CAN_OPERATION = "meeting/isCanOperation";
+    //会议流程节点分配人员
+    public static final String SET_MEETING_ITEM_USER = "meeting/setMeetingItemsUser";
+    //获取会议流程节点已分配人员
+    public static final String GET_SELECT_MEETING_ITEMS_USER = "meeting/getSelectMeetingItemsUser";
+    //获取部门用户组
+    public static final String GET_USER_IN_DEPARTMENT = "user/getUserInDepartment";
 
     //---------------------------------------------------------------------------
 

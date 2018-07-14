@@ -33,11 +33,11 @@ import com.tami.vmanager.utils.Utils;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.List;
 
 /**
  * Created by why on 2018/6/12.
  */
-
 public class HomeFragment extends BaseFragment {
 
     //    private TextView homeSelected;
@@ -138,6 +138,18 @@ public class HomeFragment extends BaseFragment {
         setTitleName(R.string.v_housekeeper);
         //设置右边功能按钮图片
         setTitleRightBtn(R.mipmap.home_search);
+
+        LoginResponse.Item item = GlobaVariable.getInstance().item;
+        if (item != null) {
+            List<LoginResponse.Item.UserRole> roleList = item.getUserRoleList();
+            if (roleList != null && roleList.size() > 0) {
+                if (roleList.get(0).roleId == 2 || roleList.get(0).roleId == 11) {
+                    createMeeting.setVisibility(View.VISIBLE);
+                } else {
+                    createMeeting.setVisibility(View.GONE);
+                }
+            }
+        }
 
         time_radio_group.setOnCheckedChangeListener((group, checkedId) -> {
             today_rb = group.findViewById(R.id.today_rb);

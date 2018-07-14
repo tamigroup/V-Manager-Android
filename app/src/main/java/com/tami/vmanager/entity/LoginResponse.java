@@ -37,7 +37,7 @@ public class LoginResponse extends MobileMessage implements Serializable {
     @JsonInclude(Include.NON_NULL)
     public static class Item {
         @JsonInclude(Include.NON_NULL)
-        public static class ElementUserRoleList {
+        public static class UserRole {
 
             public	int	id;	/*1*/
             public	int	status;	/*0*/
@@ -67,7 +67,7 @@ public class LoginResponse extends MobileMessage implements Serializable {
         private	String	mobile;	/*15901125418*/
         private	int	roleId;	/*0*/
         private	Long	updateOn;	/*1530612754000*/
-        private List<ElementUserRoleList> userRoleList;
+        private List<UserRole> userRoleList;
 
         public String getRegistrationId() {
             return registrationId;
@@ -232,11 +232,11 @@ public class LoginResponse extends MobileMessage implements Serializable {
         /**
          * @return
          */
-        public List<ElementUserRoleList> getUserRoleList() {
+        public List<UserRole> getUserRoleList() {
             return userRoleList;
         }
 
-        public void setUserRoleList(List<ElementUserRoleList> userRoleList) {
+        public void setUserRoleList(List<UserRole> userRoleList) {
             this.userRoleList = userRoleList;
         }
     }

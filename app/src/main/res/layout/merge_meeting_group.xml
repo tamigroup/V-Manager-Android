@@ -25,17 +25,6 @@
             android:textSize="@dimen/dp_14" />
 
         <RadioButton
-            android:id="@+id/meeting_group_pending_payment"
-            android:layout_width="@dimen/dp_69"
-            android:layout_height="@dimen/dp_30"
-            android:background="@drawable/select_radiobutton_mid"
-            android:button="@null"
-            android:gravity="center"
-            android:text="@string/pending_payment"
-            android:textColor="@color/press"
-            android:textSize="@dimen/dp_14" />
-
-        <RadioButton
             android:id="@+id/meeting_group_perfected"
             android:layout_width="@dimen/dp_69"
             android:layout_height="@dimen/dp_30"

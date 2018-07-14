@@ -397,6 +397,7 @@
         android:id="@+id/home_create_meeting"
         android:layout_width="@dimen/dp_55"
         android:layout_height="@dimen/dp_55"
+        android:visibility="gone"
         android:layout_marginBottom="@dimen/dp_16"
         android:layout_marginRight="@dimen/dp_10"
         app:layout_constraintBottom_toBottomOf="parent"

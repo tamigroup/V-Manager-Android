@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,10 +18,16 @@ import android.widget.Toast;
 import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.RecycleViewDivider;
 import com.tami.vmanager.base.BaseActivity;
+import com.tami.vmanager.entity.CreateVipGuestRequest;
+import com.tami.vmanager.entity.CreateVipGuestResponse;
 import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdResponse;
+import com.tami.vmanager.entity.GetSelectMeetingItemsUserRequest;
+import com.tami.vmanager.entity.GetSelectMeetingItemsUserResponse;
+import com.tami.vmanager.entity.LoginResponse;
+import com.tami.vmanager.http.NetworkBroker;
+import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
-import com.tami.vmanager.utils.ScreenUtil;
 import com.tami.vmanager.utils.TimeUtils;
 import com.tami.vmanager.view.SwitchButton;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -55,6 +60,7 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
     public static final int REQUEST_CALL_PHONE = 5;
     public static final String[] PERMISSIONS_CALL_PHONE = {Manifest.permission.CALL_PHONE};
 
+    private NetworkBroker networkBroker;
 
     @Override
     public boolean isTitle() {
@@ -97,6 +103,9 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
             }
         }
 
+        networkBroker = new NetworkBroker(this);
+        networkBroker.setCancelTag(getTAG());
+
         //创建一个线性的布局管理器并设置
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -135,7 +144,7 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
 
     @Override
     public void requestNetwork() {
-
+        getSelectMeetingItemsUser();
     }
 
     @Override
@@ -157,25 +166,19 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
     @Override
     public void emptyObject() {
         switchbtn = null;
+        networkBroker.cancelAllRequests();
     }
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Logger.d("requestCode:" + requestCode);
-        if (data != null) {
-            if (requestCode == Constants.ADD_PERSON_CHARGE) {
-//                if (recyclerView.getMeasuredHeight() > ScreenUtil.dip2px(getApplicationContext(), 320)) {
-//                    ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) recyclerView.getLayoutParams();
-//                    layoutParams.height = ScreenUtil.dip2px(getApplicationContext(), 320);
-//                }
-                listData.add("测试数据");
-                listData.add("测试数据");
-                listData.add("测试数据");
-                listData.add("测试数据");
-                listData.add("测试数据");
-                commonAdapter.notifyDataSetChanged();
+        if (requestCode == Constants.ADD_PERSON_CHARGE) {
+            if (data != null) {
+                boolean flag = data.getBooleanExtra(Constants.RESULT_JIEDAIREN, false);
+                if (flag) {
+                    getSelectMeetingItemsUser();
+                }
             }
         }
     }
@@ -210,5 +213,31 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
         Uri data = Uri.parse("tel:" + phoneNum);
         intent.setData(data);
         startActivity(intent);
+    }
+
+    /**
+     * 获取流程节点已分配人员
+     */
+    private void getSelectMeetingItemsUser() {
+        GetSelectMeetingItemsUserRequest gsmiur = new GetSelectMeetingItemsUserRequest();
+        gsmiur.setMeetingItemSetId(item.meetingItemSetId);
+        networkBroker.ask(gsmiur, (ex1, res) -> {
+            if (null != ex1) {
+                Logger.d(ex1.getMessage() + "-" + ex1);
+                return;
+            }
+            try {
+                GetSelectMeetingItemsUserResponse response = (GetSelectMeetingItemsUserResponse) res;
+                if (response.getCode() == 200) {
+                    if (listData != null) {
+                        listData.clear();
+                    }
+//                    listData.addAll();
+                    commonAdapter.notifyDataSetChanged();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

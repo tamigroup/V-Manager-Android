@@ -291,6 +291,8 @@ public class CreateServiceFlowActivity extends BaseActivity {
                     selectedView.setImageResource(R.mipmap.people_checkbox_selected);
                 } else {
                     //勾选的时间颜色会变
+                    item.startOn = 0;
+                    timeView.setText(null);
                     timeView.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_888888));
                     selectedView.setImageResource(R.mipmap.people_checkbox_unselected);
                 }
@@ -327,6 +329,8 @@ public class CreateServiceFlowActivity extends BaseActivity {
                             return;
                         }
                         selectedView.setImageResource(R.mipmap.people_checkbox_unselected);
+                        item.startOn = 0;
+                        timeView.setText(null);
                         timeView.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_888888));
                         timeView.setEnabled(false);
                     }
@@ -737,6 +741,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
                             if (flag) {
                                 showPopWindow(dateSelected);
                             }else{
+                                setResult(Constants.CREATE_FLOW);
                                 finish();
                             }
                         } else {
