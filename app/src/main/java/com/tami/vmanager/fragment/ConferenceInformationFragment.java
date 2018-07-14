@@ -109,14 +109,17 @@ public class ConferenceInformationFragment extends ViewPagerBaseFragment {
                 TextView item_time = holder.getView(R.id.item_time);
                 TextView item_name = holder.getView(R.id.item_name);
                 TextView item_sure = holder.getView(R.id.item_sure);
+                TextView item_day = holder.getView(R.id.item_day);
                 item_time.setText(TimeUtils.date2String(new Date(item.startOn), TimeUtils.DATE_HHMM_SLASH));
                 item_name.setText(item.meetingItemName);
+                item_day.setText(TimeUtils.date2String(new Date(item.startOn), TimeUtils.DATE_MMDD_SLASH));
                 item_sure.setText(getResources().getString(R.string.no_confirmed));
                 if (item.selectStatus != 0) {
                     set_text(item_time, R.color.color_333333, R.mipmap.time, true);
                     item_sure.setText(getResources().getString(R.string.confirmed));
                     set_text(item_sure, R.color.color_34DB8E, R.mipmap.icon_ok, false);
                     item_name.setTextColor(getResources().getColor(R.color.color_333333));
+                    item_day.setTextColor(getResources().getColor(R.color.color_333333));
                 }
             }
         };
@@ -171,6 +174,6 @@ public class ConferenceInformationFragment extends ViewPagerBaseFragment {
 
     @Override
     public void emptyObject() {
-
+        networkBroker.cancelAllRequests();
     }
 }

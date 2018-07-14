@@ -21,8 +21,6 @@ import com.tami.vmanager.adapter.TimeLineHorizontalAdapter;
 import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.dialog.ConfirmEnterMeetingDialog;
 import com.tami.vmanager.dialog.ConfirmEnterMeetingListener;
-import com.tami.vmanager.entity.GetMeetingItemFlowRequest;
-import com.tami.vmanager.entity.GetMeetingItemFlowResponse;
 import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdRequest;
 import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdResponse;
 import com.tami.vmanager.entity.GetMeetingResponse;
@@ -348,16 +346,14 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
             try {
                 GetMeetingItemsByMeetingIdResponse response = (GetMeetingItemsByMeetingIdResponse) res;
                 if (response.getCode() == 200) {
-                    if (response != null) {
-                        GetMeetingItemsByMeetingIdResponse.Array array = response.data;
-                        if (array != null && array.dataList != null && array.dataList.size() > 0) {
-                            //对时间轴赋值
-                            if (listData.size() > 0) {
-                                listData.clear();
-                            }
-                            listData.addAll(array.dataList);
-                            adapter.notifyDataSetChanged();
+                    GetMeetingItemsByMeetingIdResponse.Array array = response.data;
+                    if (array != null && array.dataList != null && array.dataList.size() > 0) {
+                        //对时间轴赋值
+                        if (listData.size() > 0) {
+                            listData.clear();
                         }
+                        listData.addAll(array.dataList);
+                        adapter.notifyDataSetChanged();
                     }
                 }
             } catch (Exception e) {
