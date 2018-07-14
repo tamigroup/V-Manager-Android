@@ -335,4 +335,6 @@
     <string name="name">姓名</string>
     <string name="personage_introduction">人物介绍</string>
     <string name="modify_meeting_title">修改会议</string>
+    <string name="replay_success">回复成功</string>
+    <string name="replay_fail">回复失败</string>
 </resources>

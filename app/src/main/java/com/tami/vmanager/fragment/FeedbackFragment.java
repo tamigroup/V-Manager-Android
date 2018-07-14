@@ -1,23 +1,35 @@
 package com.tami.vmanager.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jwenfeng.library.pulltorefresh.BaseRefreshListener;
 import com.jwenfeng.library.pulltorefresh.PullToRefreshLayout;
+import com.orhanobut.dialogplus.DialogPlus;
 import com.squareup.picasso.Picasso;
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.ViewPagerBaseFragment;
+import com.tami.vmanager.entity.ChangeDemandReplayRequestBean;
+import com.tami.vmanager.entity.ChangeDemandReplayResponseBean;
 import com.tami.vmanager.entity.ChangeDemandRequestBean;
 import com.tami.vmanager.entity.ChangeDemandResponseBean;
 import com.tami.vmanager.entity.MobileMessage;
 import com.tami.vmanager.http.NetworkBroker;
+import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Logger;
+import com.tami.vmanager.utils.Utils;
 import com.tami.vmanager.view.CircleImageView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
@@ -37,6 +49,7 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
     private int CurPage = 1;
     List<ChangeDemandResponseBean.DataBean.ElementsBean> listData;
     private CommonAdapter<ChangeDemandResponseBean.DataBean.ElementsBean> commonAdapter;
+    private DialogPlus dialog;
 
     public FeedbackFragment() {
     }
@@ -97,6 +110,7 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
                     item_reply_content.setVisibility(View.GONE);
                     item_reply_name.setVisibility(View.GONE);
                 } else {
+                    have_reply.setText(getString(R.string.has_replay));
                     item_reply_content.setVisibility(View.VISIBLE);
                     item_reply_name.setVisibility(View.VISIBLE);
                     holder.setText(R.id.item_reply_name, item.getReplyUserName());
@@ -106,7 +120,92 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
         };
         commonAdapter.notifyDataSetChanged();
         recyclerView.setAdapter(commonAdapter);
+        onItemClick();
     }
+
+    private void onItemClick() {
+        commonAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                TextView have_reply = holder.itemView.findViewById(R.id.have_reply);
+                if (have_reply.getText().equals(getString(R.string.has_replay))){
+                    showToast(getString(R.string.y_has_replay));
+                    return;
+                }
+                dialog = DialogPlus.newDialog(view.getContext())
+                        .setCancelable(true)
+                        .setGravity(Gravity.BOTTOM)
+                        .setContentHolder(new com.orhanobut.dialogplus.ViewHolder(R.layout.dialog_reply))
+                        .create();
+                dialog.show();
+                EditText reply_edit = (EditText) dialog.findViewById(R.id.reply_edit);
+                TextView send = (TextView) dialog.findViewById(R.id.send);
+                Utils.showSoftInput((Activity) view.getContext());
+                reply_edit.setHint(String.format(getResources().getString(R.string.hint_replay), listData.get(position).getRequestUserName()));
+                reply_edit.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable content) {
+                        send.setOnClickListener(v -> {
+                            String trim = reply_edit.getText().toString().trim();
+                            if (trim.isEmpty()) {
+                                Toast.makeText(getContext(), getString(R.string.not_empty), Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            requestNet(content.toString().trim(), listData.get(position).getId(), GlobaVariable.getInstance().item.getId(), holder);
+                            Utils.hideSoftInput((Activity) getContext());
+                            dialog.dismiss();
+                        });
+                    }
+                });
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
+    }
+
+    private void requestNet(String content, int meetingRequirementId, int replyUserId, RecyclerView.ViewHolder holder) {
+        ChangeDemandReplayRequestBean changeDemandReplayRequestBean = new ChangeDemandReplayRequestBean();
+        changeDemandReplayRequestBean.setMeetingRequirementId(meetingRequirementId);
+        changeDemandReplayRequestBean.setReplyContent(content);
+        changeDemandReplayRequestBean.setReplyUserId(replyUserId);
+        networkBroker.ask(changeDemandReplayRequestBean, (exl, res) -> {
+            if (null != exl) {
+                Logger.d(exl.getMessage() + "-" + exl);
+                return;
+            }
+            ChangeDemandReplayResponseBean replayResponse = (ChangeDemandReplayResponseBean) res;
+            if (replayResponse.getCode() == 200) {
+                if (replayResponse.isData()) {
+                    showToast(getString(R.string.replay_success));
+                    TextView have_reply = holder.itemView.findViewById(R.id.have_reply);
+                    have_reply.setText(getResources().getString(R.string.has_replay));
+                    have_reply.setTextColor(getResources().getColor(R.color.color_21AE1D));
+                    TextView item_reply_content = holder.itemView.findViewById(R.id.item_reply_content);
+                    item_reply_content.setVisibility(View.VISIBLE);
+                    item_reply_content.setText(String.format(getResources().getString(R.string.replay_content), content));
+                    TextView item_reply_name = holder.itemView.findViewById(R.id.item_reply_name);
+                    item_reply_name.setVisibility(View.VISIBLE);
+                    item_reply_name.setText(GlobaVariable.getInstance().item.getNickName());
+                } else {
+                    showToast(getString(R.string.replay_fail));
+                }
+            }
+        });
+    }
+
 
     @Override
     public void requestNetwork() {
@@ -115,7 +214,8 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
 
     private void queryData() {
         ChangeDemandRequestBean changeDemandRequestBean = new ChangeDemandRequestBean();
-        changeDemandRequestBean.setMeetingId(String.valueOf(meetingId));
+//        changeDemandRequestBean.setMeetingId(String.valueOf(meetingId));
+        changeDemandRequestBean.setMeetingId(String.valueOf(1));
         changeDemandRequestBean.setCurPage(CurPage++);
         changeDemandRequestBean.setPageSize(10);
         networkBroker.ask(changeDemandRequestBean, (Exception exl, MobileMessage res) -> {
