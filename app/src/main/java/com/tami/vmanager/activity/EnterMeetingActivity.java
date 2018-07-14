@@ -19,6 +19,10 @@ import android.widget.TextView;
 import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.TimeLineHorizontalAdapter;
 import com.tami.vmanager.base.BaseActivity;
+import com.tami.vmanager.dialog.ConfirmEnterMeetingDialog;
+import com.tami.vmanager.dialog.ConfirmEnterMeetingListener;
+import com.tami.vmanager.entity.GetMeetingItemFlowRequest;
+import com.tami.vmanager.entity.GetMeetingItemFlowResponse;
 import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdRequest;
 import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdResponse;
 import com.tami.vmanager.entity.GetMeetingResponse;
@@ -26,6 +30,7 @@ import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
+import com.tami.vmanager.utils.SPUtils;
 import com.tami.vmanager.utils.Utils;
 import com.tami.vmanager.view.MeetingStateView;
 
@@ -67,6 +72,7 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
     private TimeLineHorizontalAdapter adapter;
     private MeetingStateView meeting_status;
     private ImageView sale_phone;
+    private ConfirmEnterMeetingDialog confirmEnterMeetingDialog;//弹框查看会议
 
     @Override
     public boolean isTitle() {
@@ -104,6 +110,9 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
         //VIP详情
         vipDetails = findViewById(R.id.enter_meeting_vip_details);
 
+        confirmEnterMeetingDialog = new ConfirmEnterMeetingDialog(this);
+        confirmEnterMeetingDialog.setLeftStr(getString(R.string.view_only));
+        confirmEnterMeetingDialog.setContentStr(getString(R.string.confirm_enter_the_meeting));
     }
 
     @Override
@@ -138,6 +147,21 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
         recyclerView.setAdapter(adapter);
 
         initUIdata(item);
+
+        confirmEnterMeetingDialog.setConfirmEnterMeetingListener(new ConfirmEnterMeetingListener() {
+            @Override
+            public void leftBtn() {
+                SPUtils.put(EnterMeetingActivity.this, Constants.IS_INVISIBLE, true);
+                serviceGroup();
+            }
+
+            @Override
+            public void rightBtn() {
+                //进入
+                SPUtils.put(EnterMeetingActivity.this, Constants.IS_INVISIBLE, false);
+                serviceGroup();
+            }
+        });
     }
 
     @Override
@@ -156,6 +180,12 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
             recyclerView.removeAllViews();
             recyclerView = null;
         }
+
+        if (confirmEnterMeetingDialog != null && confirmEnterMeetingDialog.isShowing()) {
+            confirmEnterMeetingDialog.dismiss();
+        }
+        confirmEnterMeetingDialog = null;
+
         networkBroker.cancelAllRequests();
     }
 
@@ -169,12 +199,14 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
                 lookEO();
                 break;
             case R.id.meeting_overview_actual_number:
-                //查看人员
-                startActivity(new Intent(getApplicationContext(), PersonnelListActivity.class));
+                //查看人员 实到人数
+                Intent intent_personnel = new Intent(getApplicationContext(), PersonnelListActivity.class);
+                intent_personnel.putExtra(Constants.KEY_MEETING_ID, meetingId);
+                startActivity(intent_personnel);
                 break;
             case R.id.enter_meeting_service_group_layout:
                 //会议服务群
-                serviceGroup();
+                confirmEnterMeetingDialog.show();
                 break;
             case R.id.enter_meeting_sponsor_member_layout:
                 //主办方成员

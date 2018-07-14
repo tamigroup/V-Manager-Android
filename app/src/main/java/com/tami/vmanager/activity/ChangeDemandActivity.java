@@ -161,7 +161,7 @@ public class ChangeDemandActivity extends BaseActivity {
                         send.setOnClickListener(v -> {
                             String trim = reply_edit.getText().toString().trim();
                             if (trim.isEmpty()) {
-                                Toast.makeText(ChangeDemandActivity.this, "发送内容不能为空", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ChangeDemandActivity.this, getString(R.string.not_empty), Toast.LENGTH_SHORT).show();
                                 return;
                             }
                             requestNet(content.toString().trim(), listData.get(position).getId(), GlobaVariable.getInstance().item.getId(), holder);
@@ -192,7 +192,7 @@ public class ChangeDemandActivity extends BaseActivity {
             ChangeDemandReplayResponseBean replayResponse = (ChangeDemandReplayResponseBean) res;
             if (replayResponse.getCode() == 200) {
                 if (replayResponse.isData()) {
-                    showToast("回复成功");
+                    showToast(getString(R.string.replay_success));
                     TextView have_reply = holder.itemView.findViewById(R.id.have_reply);
                     have_reply.setText(getResources().getString(R.string.has_replay));
                     have_reply.setTextColor(getResources().getColor(R.color.color_21AE1D));
@@ -203,7 +203,7 @@ public class ChangeDemandActivity extends BaseActivity {
                     item_reply_name.setVisibility(View.VISIBLE);
                     item_reply_name.setText(GlobaVariable.getInstance().item.getNickName());
                 } else {
-                    showToast("回复失败");
+                    showToast(getString(R.string.replay_fail));
                 }
             }
         });

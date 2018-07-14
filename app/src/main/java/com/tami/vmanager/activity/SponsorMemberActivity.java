@@ -5,10 +5,14 @@ import android.support.v7.widget.RecyclerView;
 
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
+import com.tami.vmanager.entity.SponsorUserListRequestBean;
+import com.tami.vmanager.entity.SponsorUserListResponseBean;
+import com.tami.vmanager.http.NetworkBroker;
+import com.tami.vmanager.utils.Logger;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,7 +22,9 @@ import java.util.List;
 public class SponsorMemberActivity extends BaseActivity {
 
     private RecyclerView recyclerView;
-    private List<String> data = Arrays.asList("汤姆", "汤姆迅", "汤姆", "汤姆迅", "汤姆", "汤姆迅", "tom", "tony", "jack", "mayun", "laoli", "hh");
+    private List<SponsorUserListResponseBean.DataBean.DataListBean> listData;
+    private NetworkBroker networkBroker;
+    private CommonAdapter<SponsorUserListResponseBean.DataBean.DataListBean> commonAdapter;
 
     @Override
     public boolean isTitle() {
@@ -33,6 +39,7 @@ public class SponsorMemberActivity extends BaseActivity {
     @Override
     public void initView() {
         recyclerView = findViewById(R.id.recyc);
+        networkBroker = new NetworkBroker(this);
     }
 
     @Override
@@ -46,13 +53,14 @@ public class SponsorMemberActivity extends BaseActivity {
     }
 
     private void initRecyc() {
+        listData = new ArrayList<>();
         GridLayoutManager layoutManager = new GridLayoutManager(this, 5);
         recyclerView.setLayoutManager(layoutManager);
-        CommonAdapter<String> commonAdapter = new CommonAdapter<String>(this, R.layout.item_activity_sponsor_member, data) {
+        commonAdapter = new CommonAdapter<SponsorUserListResponseBean.DataBean.DataListBean>(this, R.layout.item_activity_sponsor_member, listData) {
 
             @Override
-            protected void convert(ViewHolder holder, String s, int position) {
-                holder.setText(R.id.item_name, s);
+            protected void convert(ViewHolder holder, SponsorUserListResponseBean.DataBean.DataListBean item, int position) {
+                holder.setText(R.id.item_name, item.getUserName());
             }
         };
         commonAdapter.notifyDataSetChanged();
@@ -61,7 +69,30 @@ public class SponsorMemberActivity extends BaseActivity {
 
     @Override
     public void requestNetwork() {
+        SponsorUserListRequestBean sponsorUserListRequestBean = new SponsorUserListRequestBean();
+        sponsorUserListRequestBean.setMeetingId(88);
+        //        sponsorUserListRequestBean.setMeetingId(meetingId);
+        networkBroker.ask(sponsorUserListRequestBean, (exl, res) -> {
+            if (null != exl) {
+                Logger.d(exl.getMessage() + "-" + exl);
+                return;
+            }
 
+            try {
+                SponsorUserListResponseBean response = (SponsorUserListResponseBean) res;
+                if (response.getCode() == 200) {
+                    SponsorUserListResponseBean.DataBean data = response.getData();
+                    if (data != null) {
+                        if (data.getDataList() != null && data.getDataList().size() > 0) {
+                            listData.addAll(data.getDataList());
+                            commonAdapter.notifyDataSetChanged();
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override
@@ -71,6 +102,6 @@ public class SponsorMemberActivity extends BaseActivity {
 
     @Override
     public void emptyObject() {
-
+        networkBroker.cancelAllRequests();
     }
 }

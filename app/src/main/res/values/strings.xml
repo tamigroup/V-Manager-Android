@@ -335,6 +335,9 @@
     <string name="name">姓名</string>
     <string name="personage_introduction">人物介绍</string>
     <string name="modify_meeting_title">修改会议</string>
+    <string name="replay_success">回复成功</string>
+    <string name="replay_fail">回复失败</string>
+    <string name="vip_distinguished_guest">VIP嘉宾</string>
     <string name="conference_service_flow">会议服务流程单</string>
     <string name="time">时间</string>
     <string name="contacts">联系人</string>
