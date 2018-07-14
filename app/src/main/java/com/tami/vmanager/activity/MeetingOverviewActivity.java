@@ -22,8 +22,6 @@ import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.TimeLineAdapter;
 import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.dialog.AlreadyPaidItemDialog;
-import com.tami.vmanager.dialog.ConfirmEnterMeetingDialog;
-import com.tami.vmanager.dialog.ConfirmEnterMeetingListener;
 import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdRequest;
 import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdResponse;
 import com.tami.vmanager.entity.GetMeetingRequest;
@@ -32,7 +30,6 @@ import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
-import com.tami.vmanager.utils.SPUtils;
 import com.tami.vmanager.utils.Utils;
 import com.tami.vmanager.view.CircleProgressBar;
 import com.tami.vmanager.view.MeetingStateView;
@@ -75,8 +72,6 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
 
     private RecyclerView recyclerView;
     private Button functionBtn;//创建流程及进入会意按钮
-
-    private ConfirmEnterMeetingDialog confirmEnterMeetingDialog;//弹框查看会议
 
     private int meetingId;//会议ID
     private GetMeetingResponse.Item item;//会议信息
@@ -125,10 +120,6 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
         functionBtn = findViewById(R.id.meeting_overview_function_btn);
 
         recyclerView = findViewById(R.id.meeting_overview_recycler_view);
-
-        confirmEnterMeetingDialog = new ConfirmEnterMeetingDialog(this);
-        confirmEnterMeetingDialog.setLeftStr(getString(R.string.view_only));
-        confirmEnterMeetingDialog.setContentStr(getString(R.string.confirm_enter_the_meeting));
     }
 
     @Override
@@ -143,27 +134,6 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
         lookBtn.setOnClickListener(this);
         actualNumber.setOnClickListener(this);
         sale_phone.setOnClickListener(this);
-
-        confirmEnterMeetingDialog.setConfirmEnterMeetingListener(new ConfirmEnterMeetingListener() {
-            @Override
-            public void leftBtn() {
-                SPUtils.put(MeetingOverviewActivity.this, Constants.IS_INVISIBLE, true);
-                Intent intent = new Intent(getApplicationContext(), EnterMeetingActivity.class);
-                intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
-                intent.putExtra(Constants.MEETING_INFO, item);
-                startActivity(intent);
-            }
-
-            @Override
-            public void rightBtn() {
-                //进入
-                SPUtils.put(MeetingOverviewActivity.this, Constants.IS_INVISIBLE, false);
-                Intent intent = new Intent(getApplicationContext(), EnterMeetingActivity.class);
-                intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
-                intent.putExtra(Constants.MEETING_INFO, item);
-                startActivity(intent);
-            }
-        });
     }
 
     @Override
@@ -198,10 +168,6 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
     @Override
     public void emptyObject() {
         alreadyPaidItem = null;
-        if (confirmEnterMeetingDialog != null && confirmEnterMeetingDialog.isShowing()) {
-            confirmEnterMeetingDialog.dismiss();
-        }
-        confirmEnterMeetingDialog = null;
         networkBroker.cancelAllRequests();
     }
 
@@ -407,7 +373,10 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
             flowIntent.putExtra(Constants.KEY_MEETING_ID, meetingId);
             startActivityForResult(flowIntent, Constants.CREATE_FLOW);
         } else {
-            confirmEnterMeetingDialog.show();
+            Intent intent = new Intent(getApplicationContext(), EnterMeetingActivity.class);
+            intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
+            intent.putExtra(Constants.MEETING_INFO, item);
+            startActivity(intent);
         }
     }
 

@@ -25,7 +25,9 @@ import com.tami.vmanager.entity.ChangeDemandResponseBean;
 import com.tami.vmanager.entity.MobileMessage;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
+import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
+import com.tami.vmanager.utils.SPUtils;
 import com.tami.vmanager.utils.Utils;
 import com.tami.vmanager.view.CircleImageView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -127,6 +129,11 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
         commonAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                boolean is_invisible = (boolean) SPUtils.get(view.getContext(), Constants.IS_INVISIBLE, false);
+                if (is_invisible){
+                    showToast(getString(R.string.view_only));
+                    return;
+                }
                 TextView have_reply = holder.itemView.findViewById(R.id.have_reply);
                 if (have_reply.getText().equals(getString(R.string.has_replay))){
                     showToast(getString(R.string.y_has_replay));
