@@ -74,6 +74,7 @@ public class ConferenceServiceGroupActivity extends BaseActivity {
         arrayFragment[1].setArguments(bundle);
         arrayFragment[2] = new FeedbackFragment(meetingId);
         arrayFragment[3] = new NoticeFragment();
+        arrayFragment[3].setArguments(bundle);
 
         GuidePageFragmentPagerAdapter guidePageFragmentPagerAdapter = new GuidePageFragmentPagerAdapter(getSupportFragmentManager(), arrayFragment);
         viewPager.setAdapter(guidePageFragmentPagerAdapter);

@@ -8,25 +8,25 @@ import java.util.List;
  * Created by Tang on 2018/7/14
  */
 public class IndexHeaderBean extends BaseIndexPinyinBean {
-    private List<String> cityList;
+    private List<IndexNameBean> vipNameList;
     //悬停ItemDecoration显示的Tag
     private String suspensionTag;
 
     public IndexHeaderBean() {
     }
 
-    public IndexHeaderBean(List<String> cityList, String suspensionTag, String indexBarTag) {
-        this.cityList = cityList;
+    public IndexHeaderBean(List<IndexNameBean> vipNameList, String suspensionTag, String indexBarTag) {
+        this.vipNameList = vipNameList;
         this.suspensionTag = suspensionTag;
         this.setBaseIndexTag(indexBarTag);
     }
 
-    public List<String> getCityList() {
-        return cityList;
+    public List<IndexNameBean> getCityList() {
+        return vipNameList;
     }
 
-    public IndexHeaderBean setCityList(List<String> cityList) {
-        this.cityList = cityList;
+    public IndexHeaderBean setCityList(List<IndexNameBean> vipNameList) {
+        this.vipNameList = vipNameList;
         return this;
     }
 

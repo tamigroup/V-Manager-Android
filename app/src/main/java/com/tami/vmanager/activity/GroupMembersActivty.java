@@ -39,6 +39,7 @@ public class GroupMembersActivty extends BaseActivity {
     private NetworkBroker networkBroker;
     private int meetingId;
     private int total = 0;//传给查看全部的条数
+    private int CurPage = 1;
 
     @Override
     public boolean isTitle() {
@@ -142,7 +143,7 @@ public class GroupMembersActivty extends BaseActivity {
     private void meetingUserGroupPage() {
         MeetingUserGroupPageRequest mugpr = new MeetingUserGroupPageRequest();
         mugpr.setMeetingId(meetingId);
-        mugpr.setCurPage(1);
+        mugpr.setCurPage(CurPage++);
         mugpr.setPageSize(10);
 //        mugpr.setMeetingId(1);
 //        mugpr.setCurPage(1);

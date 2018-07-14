@@ -385,8 +385,7 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
      */
     private void functionBtn(View v) {
         Button button = (Button) v;
-        if (!TextUtils.isEmpty(button.toString())
-                && getString(R.string.create_process).equals(button.getText().toString())) {
+        if (!TextUtils.isEmpty(button.toString()) && getString(R.string.create_process).equals(button.getText().toString())) {
             //创建
             Intent flowIntent = new Intent(getApplicationContext(), CreateServiceFlowActivity.class);
             flowIntent.putExtra(Constants.KEY_MEETING_ID, meetingId);
@@ -413,10 +412,8 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
             try {
                 GetMeetingResponse response = (GetMeetingResponse) res;
                 if (response.getCode() == 200) {
-                    if (response != null) {
-                        GetMeetingResponse.Item meetingItem = response.data;
-                        initUIdata(meetingItem);
-                    }
+                    GetMeetingResponse.Item meetingItem = response.data;
+                    initUIdata(meetingItem);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

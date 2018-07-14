@@ -74,8 +74,8 @@ public class SponsorMemberActivity extends BaseActivity {
     @Override
     public void requestNetwork() {
         SponsorUserListRequestBean sponsorUserListRequestBean = new SponsorUserListRequestBean();
-        sponsorUserListRequestBean.setMeetingId(88);
-        //        sponsorUserListRequestBean.setMeetingId(meetingId);
+        //        sponsorUserListRequestBean.setMeetingId(88);
+        sponsorUserListRequestBean.setMeetingId(meetingId);
         networkBroker.ask(sponsorUserListRequestBean, (exl, res) -> {
             if (null != exl) {
                 Logger.d(exl.getMessage() + "-" + exl);

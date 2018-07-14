@@ -58,7 +58,7 @@ public class GetMeetingResponse extends MobileMessage implements Serializable {
         public List<VipReceiveUser> vipReceiveUser;
 
         @JsonInclude(Include.NON_NULL)
-        public static class VipReceiveUser implements Serializable {
+        public static class VipReceiveUser implements Serializable{
 
             public String registrationId;	/*1104a89792fa59a83a2*/
             public int status;	/*0*/
@@ -84,7 +84,7 @@ public class GetMeetingResponse extends MobileMessage implements Serializable {
             public List<UserRole> userRoleList;
 
             @JsonInclude(Include.NON_NULL)
-            public static class UserRole {
+            public static class UserRole implements Serializable {
                 public int id;	/*1*/
                 public int status;	/*0*/
                 public int userId;	/*1*/
@@ -97,7 +97,7 @@ public class GetMeetingResponse extends MobileMessage implements Serializable {
         }
 
         @JsonInclude(Include.NON_NULL)
-        public static class VipGuest implements Serializable {
+        public static class VipGuest implements Serializable{
             public int id;	/*57*/
             public int status;	/*0*/
             public String name;	/*张子栋*/

@@ -142,8 +142,8 @@ public class ConferenceInformationFragment extends ViewPagerBaseFragment {
     public void requestNetwork() {
         networkBroker = new NetworkBroker(getActivity());
         GetMeetingItemsByMeetingIdRequest getMeetingItemsByMeetingIdRequest = new GetMeetingItemsByMeetingIdRequest();
-        //        getMeetingItemsByMeetingIdRequest.setMeetingId(meetingId);
-        getMeetingItemsByMeetingIdRequest.setMeetingId(1);
+        getMeetingItemsByMeetingIdRequest.setMeetingId(meetingId);
+        //        getMeetingItemsByMeetingIdRequest.setMeetingId(1);
         networkBroker.ask(getMeetingItemsByMeetingIdRequest, (ex1, res) -> {
             if (null != ex1) {
                 Logger.e(ex1.getMessage() + "-" + ex1);
