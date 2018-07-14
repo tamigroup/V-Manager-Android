@@ -116,6 +116,8 @@ public class HttpKey {
     public static final String SET_MEETING_ITEMS = "meeting/setMeetingItems";
     // 修改会议信息
     public static final String UPDATE_MEETING = "meeting/updataMeeting";
+    // 获取会议签到人员信息接口 人员名单
+    public static final String GET_ACTUALLIST = "meeting/getActualList";
 
     //---------------------------------------------------------------------------
 

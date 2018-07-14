@@ -169,8 +169,10 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
                 lookEO();
                 break;
             case R.id.meeting_overview_actual_number:
-                //查看人员
-                startActivity(new Intent(getApplicationContext(), PersonnelListActivity.class));
+                //查看人员 实到人数
+                Intent intent_personnel = new Intent(getApplicationContext(), PersonnelListActivity.class);
+                intent_personnel.putExtra(Constants.KEY_MEETING_ID, meetingId);
+                startActivity(intent_personnel);
                 break;
             case R.id.enter_meeting_service_group_layout:
                 //会议服务群

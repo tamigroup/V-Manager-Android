@@ -219,7 +219,9 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
                 break;
             case R.id.meeting_overview_actual_number:
                 //实到人数
-                startActivity(new Intent(getApplicationContext(), PersonnelListActivity.class));
+                Intent intent_personnel = new Intent(getApplicationContext(), PersonnelListActivity.class);
+                intent_personnel.putExtra(Constants.KEY_MEETING_ID, meetingId);
+                startActivity(intent_personnel);
                 break;
             case R.id.meeting_overview_already_paid_item:
                 //待付款项

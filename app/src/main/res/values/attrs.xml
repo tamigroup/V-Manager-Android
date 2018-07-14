@@ -59,13 +59,12 @@
         <attr name="sb_enable_effect" format="reference|boolean"/>
     </declare-styleable>
 
+    <attr name="indexBarTextSize" format="dimension" />
 
-    <attr name="indexBarTextSize" format="dimension"/>
     <declare-styleable name="IndexBar">
-        <attr name="indexBarTextSize"/>
-        <attr name="indexBarPressBackground" format="color"/>
+        <attr name="indexBarTextSize" />
+        <attr name="indexBarPressBackground" format="color" />
     </declare-styleable>
-
 
     <!--RatingBar-->
     <declare-styleable name="BaseRatingBar">
