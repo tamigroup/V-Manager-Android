@@ -350,5 +350,6 @@
     <string name="yes">有</string>
     <string name="nothing">无</string>
     <string name="please_confirm_service_process_completed">请确认服务流程已完成</string>
+    <string name="conference_list">会议列表</string>
 
 </resources>

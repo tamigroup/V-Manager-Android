@@ -194,6 +194,7 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
         if (bundle != null) {
             meetingType = bundle.getInt(Constants.MEETING_TYPE);
         }
+        Logger.d("meetingType:"+meetingType);
         networkBroker = new NetworkBroker(getActivity());
         networkBroker.setCancelTag(getTAG());
         CurPage = 1;

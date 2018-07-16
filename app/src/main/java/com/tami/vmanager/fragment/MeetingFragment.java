@@ -13,6 +13,7 @@ import com.tami.vmanager.activity.SearchActivity;
 import com.tami.vmanager.adapter.GuidePageFragmentPagerAdapter;
 import com.tami.vmanager.base.BaseFragment;
 import com.tami.vmanager.utils.Constants;
+import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.view.NoScrollViewPager;
 
 /**
@@ -119,6 +120,8 @@ public class MeetingFragment extends BaseFragment {
      * @param index
      */
     private void addFragment(Fragment fragment, int index) {
+        Logger.d("addFragment ->index:"+index);
+        Logger.d("addFragment ->meetingType:"+meetingType[index]);
         Bundle bundle = new Bundle();
         bundle.putInt(Constants.MEETING_TYPE, meetingType[index]);
         fragment.setArguments(bundle);
@@ -129,32 +132,32 @@ public class MeetingFragment extends BaseFragment {
      * 全部
      */
     private void groupWhole() {
-        viewPager.setCurrentItem(Constants.MEETING_TYPE_WHOLE);
+        viewPager.setCurrentItem(0);
     }
 
     private void groupPerfected() {
-        viewPager.setCurrentItem(Constants.MEETING_TYPE_PERFECTED);
+        viewPager.setCurrentItem(1);
     }
 
     /**
      * 日
      */
     private void groupDay() {
-        viewPager.setCurrentItem(Constants.MEETING_TYPE_DAY);
+        viewPager.setCurrentItem(2);
     }
 
     /**
      * 月
      */
     private void groupMonth() {
-        viewPager.setCurrentItem(Constants.MEETING_TYPE_MONTH);
+        viewPager.setCurrentItem(3);
     }
 
     /**
      * 年
      */
     private void groupYear() {
-        viewPager.setCurrentItem(Constants.MEETING_TYPE_YEAR);
+        viewPager.setCurrentItem(4);
     }
 
     @Override
