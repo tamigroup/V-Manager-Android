@@ -342,6 +342,7 @@
     <string name="time">时间</string>
     <string name="contacts">联系人</string>
     <string name="telephone">电话</string>
+    <string name="login_fail">用户名或密码错误！</string>
 
     <string name="to_be_confirmed">待确认</string>
     <string name="distributive_personnel">分配人员</string>

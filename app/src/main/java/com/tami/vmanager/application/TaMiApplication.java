@@ -22,6 +22,8 @@ import okhttp3.OkHttpClient;
  */
 public class TaMiApplication extends Application {
 
+    public static String registrationID;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -48,6 +50,7 @@ public class TaMiApplication extends Application {
         //初始化推送
         JPushInterface.setDebugMode(BuildConfig.DEBUG); 	// 设置开启日志,发布时请关闭日志
         JPushInterface.init(this);     		// 初始化 JPush
+        registrationID = JPushInterface.getRegistrationID(this);
     }
 
     private void initBugly() {

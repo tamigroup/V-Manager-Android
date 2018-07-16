@@ -7,11 +7,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.tami.vmanager.R;
+import com.tami.vmanager.application.TaMiApplication;
 import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.entity.LoginRequest;
 import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.entity.SendVerifyCodeRequest;
 import com.tami.vmanager.entity.SendVerifyCodeResponse;
+import com.tami.vmanager.entity.SetUserRegistrationIdRequestBean;
+import com.tami.vmanager.entity.SetUserRegistrationIdResponseBean;
 import com.tami.vmanager.http.HttpKey;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
@@ -87,8 +90,8 @@ public class LoginActivity extends BaseActivity {
         networkBroker = new NetworkBroker(this);
         networkBroker.setCancelTag(getTAG());
 
-//        logoin_phone.setText("15901125418");
-//        login_password.setText("111111");
+        //        logoin_phone.setText("15901125418");
+        //        login_password.setText("111111");
         //餐厅总负责
         logoin_phone.setText("13888880001");
         login_password.setText("111111");
@@ -211,14 +214,44 @@ public class LoginActivity extends BaseActivity {
             try {
                 LoginResponse response = (LoginResponse) res;
                 if (response.getCode() == 200) {
-                    GlobaVariable.getInstance().item = response.getData();
-//                    Login_JIM(response.getData().getMobile(), response.getData().getPassword());
-                    startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-
+                    LoginResponse.Item data = response.getData();
+                    GlobaVariable.getInstance().item = data;
+                    //                    Login_JIM(response.getData().getMobile(), response.getData().getPassword());
+                    bindRegistrationId(data.getId(), TaMiApplication.registrationID);
+                } else {
+                    showToast(R.string.login_fail);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        });
+    }
+
+    /**
+     * 绑定用户RegistrationId
+     *
+     * @param id             userId
+     * @param registrationID 极光注册Id
+     */
+    private void bindRegistrationId(int id, String registrationID) {
+        SetUserRegistrationIdRequestBean setUserRegistrationIdRequestBean = new SetUserRegistrationIdRequestBean();
+        setUserRegistrationIdRequestBean.setUserId(id);
+        setUserRegistrationIdRequestBean.setRegistrationId(registrationID);
+        networkBroker.ask(setUserRegistrationIdRequestBean,(exl,res)->{
+            if (null != exl) {
+                Logger.d(exl.getMessage() + "-" + exl);
+                return;
+            }
+            try {
+                SetUserRegistrationIdResponseBean response =  (SetUserRegistrationIdResponseBean)res;
+                if (response.getCode() == 200){
+                    boolean data = response.isData();
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
         });
     }
 
@@ -229,14 +262,14 @@ public class LoginActivity extends BaseActivity {
      * @param password 密码
      */
     private void Login_JIM(String username, String password) {
-        Logger.e("username=" + username + " password=" + password);
+//        Logger.e("username=" + username + " password=" + password);
         JMessageClient.login(username, "111111", new BasicCallback() {
             @Override
             public void gotResult(int responseCode, String LoginDesc) {
                 if (responseCode == 0) {
-//                    Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
+                    //                    Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
                 } else {
-//                    Toast.makeText(getApplicationContext(), "登录失败" + LoginDesc, Toast.LENGTH_SHORT).show();
+                    //                    Toast.makeText(getApplicationContext(), "登录失败" + LoginDesc, Toast.LENGTH_SHORT).show();
                     Logger.e("responseCode=" + responseCode + " LoginDesc=" + LoginDesc);
                 }
             }
