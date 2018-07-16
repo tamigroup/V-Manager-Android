@@ -13,14 +13,24 @@ public class EvaluatePageRequestBean extends MobileMessage implements Serializab
     /**
      * meetingId : 1
      * type : 2
+     * flag: 1 --酒店  2 --会议
      * curPage : 1
      * pageSize : 10
      */
 
     private String meetingId;
     private int type;
+    private int flag;
     private int curPage;
     private int pageSize;
+
+    public int getFlag() {
+        return flag;
+    }
+
+    public void setFlag(int flag) {
+        this.flag = flag;
+    }
 
     public String getMeetingId() {
         return meetingId;

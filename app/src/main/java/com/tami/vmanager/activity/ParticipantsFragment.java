@@ -148,6 +148,7 @@ public class ParticipantsFragment extends ViewPagerBaseFragment {
         EvaluatePageRequestBean evaluatePageRequestBean = new EvaluatePageRequestBean();
         evaluatePageRequestBean.setMeetingId(String.valueOf(meetingId));
         evaluatePageRequestBean.setType(IdeasBoxType.PARTICIPANTS.getType());
+        evaluatePageRequestBean.setFlag(1);
         evaluatePageRequestBean.setCurPage(CurPag++);
         evaluatePageRequestBean.setPageSize(Constants.PAGE_SIZE);
         networkBroker.ask(evaluatePageRequestBean, (ex1, res) -> {
@@ -180,6 +181,7 @@ public class ParticipantsFragment extends ViewPagerBaseFragment {
     private void getAvg() {
         IdeasBoxRequestBean ideasBoxRequestBean = new IdeasBoxRequestBean();
         ideasBoxRequestBean.setMeetingId(String.valueOf(meetingId));
+        ideasBoxRequestBean.setFlag(1);
         ideasBoxRequestBean.setType(IdeasBoxType.PARTICIPANTS.getType());
         networkBroker.ask(ideasBoxRequestBean, (ex1, res) -> {
             if (null != ex1) {

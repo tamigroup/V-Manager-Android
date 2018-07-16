@@ -102,6 +102,7 @@ public class IdeasBoxActivity extends BaseActivity {
         EvaluatePageRequestBean evaluatePageRequestBean = new EvaluatePageRequestBean();
         evaluatePageRequestBean.setMeetingId(String.valueOf(meetingId));
         evaluatePageRequestBean.setType(IdeasBoxType.PARTICIPANTS.getType());
+        evaluatePageRequestBean.setFlag(1);
         evaluatePageRequestBean.setCurPage(1);
         evaluatePageRequestBean.setPageSize(Constants.PAGE_SIZE);
         networkBroker.ask(evaluatePageRequestBean, (ex1, res) -> {
@@ -129,6 +130,7 @@ public class IdeasBoxActivity extends BaseActivity {
         EvaluatePageRequestBean evaluatePageRequestBean = new EvaluatePageRequestBean();
         evaluatePageRequestBean.setMeetingId(String.valueOf(meetingId));
         evaluatePageRequestBean.setType(IdeasBoxType.HOST.getType());
+        evaluatePageRequestBean.setFlag(1);
         evaluatePageRequestBean.setCurPage(1);
         evaluatePageRequestBean.setPageSize(Constants.PAGE_SIZE);
         networkBroker.ask(evaluatePageRequestBean, (ex1, res) -> {
