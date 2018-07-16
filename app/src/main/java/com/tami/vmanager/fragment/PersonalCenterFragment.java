@@ -109,10 +109,10 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
             if (!TextUtils.isEmpty(item.getIconUrl())) {
                 Picasso.get().load(item.getIconUrl()).into(avatar_image);
             }
-//            else{
-//                String imageUrl = "http://img.tukuchina.cn/images/front/v/bd/c8/235563103124.jpg";
-//                Picasso.get().load(imageUrl).into(avatar_image);
-//            }
+            //            else{
+            //                String imageUrl = "http://img.tukuchina.cn/images/front/v/bd/c8/235563103124.jpg";
+            //                Picasso.get().load(imageUrl).into(avatar_image);
+            //            }
         }
     }
 
@@ -177,8 +177,7 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
             if (EasyPermissions.hasPermissions(getContext(), PERMISSIONS_STORAGE)) {
                 initHeadIconFile();
             } else {
-                EasyPermissions.requestPermissions(this, getString(R.string.app_name),
-                        REQUEST_EXTERNAL_STORAGE, PERMISSIONS_STORAGE);
+                EasyPermissions.requestPermissions(this, getString(R.string.app_name), REQUEST_EXTERNAL_STORAGE, PERMISSIONS_STORAGE);
             }
         } else {
             initHeadIconFile();
@@ -373,6 +372,7 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
 
     /**
      * 更新头像
+     *
      * @param imageUrl
      */
     public void updateUserIcon(String imageUrl) {
