@@ -24,6 +24,9 @@ import com.tami.vmanager.adapter.TimeLineMeetingFlowItem;
 import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.entity.CheckAddMeetingItemUserRequest;
 import com.tami.vmanager.entity.CheckAddMeetingItemUserResponse;
+import com.tami.vmanager.dialog.AlreadyPaidItemDialog;
+import com.tami.vmanager.entity.GetActualNumRequestBean;
+import com.tami.vmanager.entity.GetActualNumResponseBean;
 import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdRequest;
 import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdResponse;
 import com.tami.vmanager.entity.GetMeetingRequest;
@@ -81,6 +84,7 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
     private TimeLineAdapter adapter;
     private MeetingStateView meeting_status;
     private ImageView sale_phone;
+    private int actualNum;
 
     @Override
     public boolean isTitle() {
@@ -162,8 +166,37 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
 
     @Override
     public void requestNetwork() {
-        getMeeting();
+        getActualNum();
         getMeetingItemsByMeetingId();
+    }
+
+    /**
+     * 获取实到人数
+     */
+    private void getActualNum() {
+        GetActualNumRequestBean getActualNumRequestBean = new GetActualNumRequestBean();
+        getActualNumRequestBean.setMeetingId(meetingId);
+        //        getActualNumRequestBean.setMeetingId(46);
+        networkBroker.ask(getActualNumRequestBean, (ex1, res) -> {
+            if (null != ex1) {
+                Logger.d(ex1.getMessage() + "-" + ex1);
+                return;
+            }
+            try {
+                GetActualNumResponseBean response = (GetActualNumResponseBean) res;
+                if (response.getCode() == 200) {
+                    GetActualNumResponseBean.DataBean data = response.getData();
+                    if (data != null) {
+                        actualNum = data.getActualNum();
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        });
+
+        getMeeting();
     }
 
     @Override
@@ -302,6 +335,7 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
             initUITxt(predeterminedNumber, String.valueOf(item.estimateNum), R.string.predetermined_number, android.R.color.white);
             initUITxt(bottomNumber, String.valueOf(item.minNum), R.string.bottom_number, android.R.color.white);
 
+            //V智慧判断
             if (item.isVzh == 1) {
                 initUITxt(actualNumber, String.valueOf(item.actualNum), R.string.actual_number, R.color.color_FF5657);
             } else {
@@ -336,14 +370,13 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
     }
 
     /**
-     * 底部功能按钮
+     * 底部功能按钮 进入会议
      *
      * @param v
      */
     private void functionBtn(View v) {
         Button button = (Button) v;
-        if (!TextUtils.isEmpty(button.toString())
-                && getString(R.string.create_process).equals(button.getText().toString())) {
+        if (!TextUtils.isEmpty(button.toString()) && getString(R.string.create_process).equals(button.getText().toString())) {
             //创建
             Intent flowIntent = new Intent(getApplicationContext(), CreateServiceFlowActivity.class);
             flowIntent.putExtra(Constants.KEY_MEETING_ID, meetingId);
@@ -352,6 +385,7 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
             Intent intent = new Intent(getApplicationContext(), EnterMeetingActivity.class);
             intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
             intent.putExtra(Constants.MEETING_INFO, meetingInfo);
+            intent.putExtra(Constants.ACTUAL_NUM, actualNum);
             startActivity(intent);
         }
     }
@@ -370,10 +404,8 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
             try {
                 GetMeetingResponse response = (GetMeetingResponse) res;
                 if (response.getCode() == 200) {
-                    if (response != null) {
-                        GetMeetingResponse.Item meetingItem = response.data;
-                        initUIdata(meetingItem);
-                    }
+                    GetMeetingResponse.Item meetingItem = response.data;
+                    initUIdata(meetingItem);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

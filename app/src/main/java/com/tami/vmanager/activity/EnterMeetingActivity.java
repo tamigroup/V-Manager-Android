@@ -21,8 +21,6 @@ import com.tami.vmanager.adapter.TimeLineHorizontalAdapter;
 import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.dialog.ConfirmEnterMeetingDialog;
 import com.tami.vmanager.dialog.ConfirmEnterMeetingListener;
-import com.tami.vmanager.entity.GetMeetingItemFlowRequest;
-import com.tami.vmanager.entity.GetMeetingItemFlowResponse;
 import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdRequest;
 import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdResponse;
 import com.tami.vmanager.dialog.ConfirmEnterMeetingDialog;
@@ -77,6 +75,7 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
     private MeetingStateView meeting_status;
     private ImageView sale_phone;
     private ConfirmEnterMeetingDialog confirmEnterMeetingDialog;//弹框查看会议
+    private int actualNum;
 
     @Override
     public boolean isTitle() {
@@ -136,6 +135,7 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
         if (intent != null) {
             meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 0);
             meetingInfo = (GetMeetingResponse.Item) intent.getSerializableExtra(Constants.MEETING_INFO);
+            actualNum = intent.getIntExtra(Constants.ACTUAL_NUM, 0);
         }
 
         networkBroker = new NetworkBroker(this);
@@ -271,6 +271,7 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
             initUITxt(predeterminedNumber, String.valueOf(item.estimateNum), R.string.predetermined_number, android.R.color.white);
             initUITxt(bottomNumber, String.valueOf(item.minNum), R.string.bottom_number, android.R.color.white);
 
+            //V智慧判断
             if (item.isVzh == 1) {
                 initUITxt(actualNumber, String.valueOf(item.actualNum), R.string.actual_number, R.color.color_FF5657);
             } else {
@@ -307,6 +308,7 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
     private void serviceGroup() {
         Intent intent = new Intent(getApplicationContext(), ConferenceServiceGroupActivity.class);
         intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
+        intent.putExtra(Constants.ACTUAL_NUM, actualNum);
         intent.putExtra(Constants.MEETING_INFO, meetingInfo);
         startActivity(intent);
     }
@@ -315,7 +317,9 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
      * 主办方成员
      */
     private void sponsorMember() {
-        startActivity(new Intent(getApplicationContext(), SponsorMemberActivity.class));
+        Intent intent_sponsorMember = new Intent(getApplicationContext(), SponsorMemberActivity.class);
+        intent_sponsorMember.putExtra(Constants.KEY_MEETING_ID, meetingId);
+        startActivity(intent_sponsorMember);
     }
 
     /**
@@ -350,16 +354,14 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
             try {
                 GetMeetingItemsByMeetingIdResponse response = (GetMeetingItemsByMeetingIdResponse) res;
                 if (response.getCode() == 200) {
-                    if (response != null) {
-                        GetMeetingItemsByMeetingIdResponse.Array array = response.data;
-                        if (array != null && array.dataList != null && array.dataList.size() > 0) {
-                            //对时间轴赋值
-                            if (listData.size() > 0) {
-                                listData.clear();
-                            }
-                            listData.addAll(array.dataList);
-                            adapter.notifyDataSetChanged();
+                    GetMeetingItemsByMeetingIdResponse.Array array = response.data;
+                    if (array != null && array.dataList != null && array.dataList.size() > 0) {
+                        //对时间轴赋值
+                        if (listData.size() > 0) {
+                            listData.clear();
                         }
+                        listData.addAll(array.dataList);
+                        adapter.notifyDataSetChanged();
                     }
                 }
             } catch (Exception e) {

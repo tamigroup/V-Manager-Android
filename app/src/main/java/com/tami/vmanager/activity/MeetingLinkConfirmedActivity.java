@@ -367,7 +367,6 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
      * 设置单个会议流程节点的状态
      */
     public void setMeetingItemsStatus() {
-        confirmEnterMeetingDialog.show();
         SetMeetingItemsStatusRequest smisr = new SetMeetingItemsStatusRequest();
         LoginResponse.Item userItem = GlobaVariable.getInstance().item;
         if (userItem != null) {
