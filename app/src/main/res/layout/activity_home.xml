@@ -22,17 +22,17 @@
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="首页" />
+            android:text="@string/home" />
 
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="会议" />
+            android:text="@string/meeting" />
 
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="我的" />
+            android:text="@string/my" />
     </android.support.design.widget.TabLayout>
 
     <FrameLayout
