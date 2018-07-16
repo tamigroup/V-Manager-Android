@@ -70,6 +70,7 @@ public class PersonnelListActivity extends BaseActivity {
 
         networkBroker = new NetworkBroker(this);
 
+        //V智慧判断
         int fromPlat = GlobaVariable.getInstance().item.getFromPlat();
         if (fromPlat == 1) {
             no_v_cl.setVisibility(View.GONE);

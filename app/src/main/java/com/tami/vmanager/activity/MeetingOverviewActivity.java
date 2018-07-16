@@ -23,6 +23,8 @@ import com.tami.vmanager.adapter.TimeLineAdapter;
 import com.tami.vmanager.adapter.TimeLineMeetingFlowItem;
 import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.dialog.AlreadyPaidItemDialog;
+import com.tami.vmanager.entity.GetActualNumRequestBean;
+import com.tami.vmanager.entity.GetActualNumResponseBean;
 import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdRequest;
 import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdResponse;
 import com.tami.vmanager.entity.GetMeetingRequest;
@@ -84,6 +86,7 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
     private TimeLineAdapter adapter;
     private MeetingStateView meeting_status;
     private ImageView sale_phone;
+    private int actualNum;
 
     @Override
     public boolean isTitle() {
@@ -167,8 +170,37 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
 
     @Override
     public void requestNetwork() {
-        getMeeting();
+        getActualNum();
         getMeetingItemsByMeetingId();
+    }
+
+    /**
+     * 获取实到人数
+     */
+    private void getActualNum() {
+        GetActualNumRequestBean getActualNumRequestBean = new GetActualNumRequestBean();
+        getActualNumRequestBean.setMeetingId(meetingId);
+        //        getActualNumRequestBean.setMeetingId(46);
+        networkBroker.ask(getActualNumRequestBean, (ex1, res) -> {
+            if (null != ex1) {
+                Logger.d(ex1.getMessage() + "-" + ex1);
+                return;
+            }
+            try {
+                GetActualNumResponseBean response = (GetActualNumResponseBean) res;
+                if (response.getCode() == 200) {
+                    GetActualNumResponseBean.DataBean data = response.getData();
+                    if (data != null) {
+                        actualNum = data.getActualNum();
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        });
+
+        getMeeting();
     }
 
     @Override
@@ -312,13 +344,13 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
             initUITxt(predeterminedNumber, String.valueOf(item.estimateNum), R.string.predetermined_number, android.R.color.white);
             initUITxt(bottomNumber, String.valueOf(item.minNum), R.string.bottom_number, android.R.color.white);
 
+            //V智慧判断
             if (GlobaVariable.getInstance().item.getFromPlat() == 1) {
-                initUITxt(actualNumber, String.valueOf(item.actualNum), R.string.actual_number, R.color.color_FF5657);
+                //                initUITxt(actualNumber, String.valueOf(item.actualNum), R.string.actual_number, R.color.color_FF5657);
+                initUITxt(actualNumber, String.valueOf(actualNum), R.string.actual_number, R.color.color_FF5657);
             } else {
                 initUITxt(actualNumber, "--", R.string.actual_number, R.color.color_FF5657);
             }
-
-
             alreadyPaidItem.setProgress(90);
         }
 
@@ -379,7 +411,7 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
     }
 
     /**
-     * 底部功能按钮
+     * 底部功能按钮 进入会议
      *
      * @param v
      */
@@ -394,6 +426,7 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
             Intent intent = new Intent(getApplicationContext(), EnterMeetingActivity.class);
             intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
             intent.putExtra(Constants.MEETING_INFO, item);
+            intent.putExtra(Constants.ACTUAL_NUM, actualNum);
             startActivity(intent);
         }
     }
@@ -509,9 +542,9 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
             }
 
         });
-//        Intent intent = new Intent(getApplicationContext(), MeetingLinkConfirmedActivity.class);
-//        intent.putExtra(Constants.KEY_MEETING_LINK, item);
-//        startActivity(intent);
+        //        Intent intent = new Intent(getApplicationContext(), MeetingLinkConfirmedActivity.class);
+        //        intent.putExtra(Constants.KEY_MEETING_LINK, item);
+        //        startActivity(intent);
     }
 
     @Override

@@ -28,6 +28,7 @@ import java.util.List;
  */
 public class ConferenceInformationFragment extends ViewPagerBaseFragment {
 
+    private int actualNum;
     private int meetingId;
     private GetMeetingResponse.Item item;
     private TextView company_name;
@@ -48,9 +49,10 @@ public class ConferenceInformationFragment extends ViewPagerBaseFragment {
     }
 
     @SuppressLint("ValidFragment")
-    public ConferenceInformationFragment(int meetingId, GetMeetingResponse.Item item) {
+    public ConferenceInformationFragment(int meetingId, GetMeetingResponse.Item item, int actualNum) {
         this.meetingId = meetingId;
         this.item = item;
+        this.actualNum = actualNum;
     }
 
     @Override
@@ -89,8 +91,10 @@ public class ConferenceInformationFragment extends ViewPagerBaseFragment {
         meeting_reserve_number.setText(String.format(getResources().getString(R.string.predetermined_number), String.valueOf(item.estimateNum)));
         meeting_bottom_number.setText(String.format(getResources().getString(R.string.bottom_number), String.valueOf(item.minNum)));
 
+        //V智慧判断
         if (GlobaVariable.getInstance().item.getFromPlat() == 1) {
-            meeting_actual_number.setText(String.format(getResources().getString(R.string.actual_number), String.valueOf(item.actualNum)));
+//            meeting_actual_number.setText(String.format(getResources().getString(R.string.actual_number), String.valueOf(item.actualNum)));
+            meeting_actual_number.setText(String.format(getResources().getString(R.string.actual_number), String.valueOf(actualNum)));
         } else {
             meeting_actual_number.setText(String.format(getResources().getString(R.string.actual_number), "--"));
         }

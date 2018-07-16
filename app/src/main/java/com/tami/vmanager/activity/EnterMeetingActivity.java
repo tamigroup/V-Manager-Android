@@ -71,6 +71,7 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
     private MeetingStateView meeting_status;
     private ImageView sale_phone;
     private ConfirmEnterMeetingDialog confirmEnterMeetingDialog;//弹框查看会议
+    private int actualNum;
 
     @Override
     public boolean isTitle() {
@@ -130,6 +131,7 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
         if (intent != null) {
             meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 0);
             item = (GetMeetingResponse.Item) intent.getSerializableExtra(Constants.MEETING_INFO);
+            actualNum = intent.getIntExtra(Constants.ACTUAL_NUM, 0);
         }
 
         networkBroker = new NetworkBroker(this);
@@ -265,8 +267,10 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
             initUITxt(predeterminedNumber, String.valueOf(item.estimateNum), R.string.predetermined_number, android.R.color.white);
             initUITxt(bottomNumber, String.valueOf(item.minNum), R.string.bottom_number, android.R.color.white);
 
+            //V智慧判断
             if (GlobaVariable.getInstance().item.getFromPlat() == 1) {
-                initUITxt(actualNumber, String.valueOf(item.actualNum), R.string.actual_number, R.color.color_FF5657);
+//                initUITxt(actualNumber, String.valueOf(item.actualNum), R.string.actual_number, R.color.color_FF5657);
+                initUITxt(actualNumber, String.valueOf(actualNum), R.string.actual_number, R.color.color_FF5657);
             } else {
                 initUITxt(actualNumber, "--", R.string.actual_number, R.color.color_FF5657);
             }
@@ -302,6 +306,7 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
         Intent intent = new Intent(getApplicationContext(), ConferenceServiceGroupActivity.class);
         intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
         intent.putExtra(Constants.MEETING_INFO, item);
+        intent.putExtra(Constants.ACTUAL_NUM, actualNum);
         startActivity(intent);
     }
 
