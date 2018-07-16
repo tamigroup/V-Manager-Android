@@ -2,7 +2,6 @@ package com.tami.vmanager.fragment;
 
 import android.Manifest;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
@@ -42,6 +41,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 /**
  * Created by why on 2018/6/12.
+ * 我的
  */
 
 public class PersonalCenterFragment extends BaseFragment implements EasyPermissions.PermissionCallbacks {
