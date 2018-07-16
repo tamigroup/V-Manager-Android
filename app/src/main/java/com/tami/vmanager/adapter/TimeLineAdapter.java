@@ -77,11 +77,11 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
             holder.middlePic.setImageResource(R.mipmap.middle_pic_selected);
             holder.bottomView.setBackgroundResource(R.color.color_34DB8E);
         } else if (item.selectStatus == 2) {
-            holder.stateBtn.setText(context.getString(R.string.ready));
-            holder.middlePic.setImageResource(R.mipmap.create_meeting_delete);
+            holder.stateBtn.setText(context.getString(R.string.again_identification));
+            holder.middlePic.setImageResource(R.mipmap.middle_pic_problem);
             holder.bottomView.setBackgroundResource(R.color.color_EAEAEA);
-        } else if (item.selectStatus == 3) {
-            holder.stateBtn.setText(context.getString(R.string.ready));
+        } else if (item.selectStatus == 3||item.selectStatus == 0) {
+            holder.stateBtn.setText(context.getString(R.string.to_be_confirmed));
             holder.middlePic.setImageResource(R.mipmap.middle_pic_unselected);
             holder.bottomView.setBackgroundResource(R.color.color_EAEAEA);
         }

@@ -3,6 +3,7 @@ package com.tami.vmanager.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.ColorRes;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -43,10 +44,16 @@ public class ConfirmEnterMeetingDialog extends Dialog implements View.OnClickLis
         if (!TextUtils.isEmpty(leftStr)) {
             leftBtn.setText(leftStr);
         }
+        if (leftColor != 0) {
+            leftBtn.setTextColor(ContextCompat.getColor(context, leftColor));
+        }
         TextView rightBtn = view.findViewById(R.id.sdmo_view_rigth_btn);
         rightBtn.setOnClickListener(this);
         if (!TextUtils.isEmpty(rightStr)) {
             rightBtn.setText(rightStr);
+        }
+        if (rightColor != 0) {
+            leftBtn.setTextColor(ContextCompat.getColor(context, rightColor));
         }
         TextView contentView = view.findViewById(R.id.sdmo_content);
         if (!TextUtils.isEmpty(contentStr)) {
@@ -115,5 +122,16 @@ public class ConfirmEnterMeetingDialog extends Dialog implements View.OnClickLis
 
     public void init(int leftRes, int rightRes, int contentRes) {
         init(context.getString(leftRes), context.getString(rightRes), context.getString(contentRes));
+    }
+
+    private int leftColor;
+    private int rightColor;
+
+    public void setLeftColor(@ColorRes int leftColor) {
+        this.leftColor = leftColor;
+    }
+
+    public void setRightColo(@ColorRes int rightColor) {
+        this.rightColor = rightColor;
     }
 }

@@ -26,13 +26,13 @@
         android:id="@+id/meeting_status"
         android:layout_width="@dimen/dp_45"
         android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_24"
         android:gravity="center"
         android:textColor="@android:color/white"
         android:textSize="@dimen/sp_13"
-        android:layout_marginTop="@dimen/dp_24"
-        android:layout_marginRight="@dimen/dp_20"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/meeting_overview_meeting_time"
@@ -49,9 +49,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_8"
+        android:text="大大"
         android:textColor="@android:color/white"
         android:textSize="@dimen/sp_12"
-        android:text="大大"
         app:layout_constraintStart_toStartOf="@+id/meeting_overview_meeting_time"
         app:layout_constraintTop_toBottomOf="@+id/meeting_overview_meeting_time" />
 
@@ -76,15 +76,17 @@
         app:layout_constraintBottom_toTopOf="@+id/meeting_overview_predetermined_number"
         app:layout_constraintStart_toStartOf="@+id/memh_sponsor"
         app:layout_constraintTop_toBottomOf="@+id/memh_sponsor" />
+
     <ImageView
         android:id="@+id/sale_phone"
         android:layout_width="@dimen/dp_20"
         android:layout_height="@dimen/dp_20"
-        android:src="@mipmap/phone"
-        android:layout_marginTop="@dimen/dp_8"
         android:layout_marginLeft="@dimen/dp_16"
-        app:layout_constraintTop_toBottomOf="@+id/memh_sponsor"
-        app:layout_constraintStart_toEndOf="@+id/meeting_overview_meeting_personnel"/>
+        android:layout_marginTop="@dimen/dp_8"
+        android:src="@mipmap/phone"
+        app:layout_constraintStart_toEndOf="@+id/meeting_overview_meeting_personnel"
+        app:layout_constraintTop_toBottomOf="@+id/memh_sponsor" />
+
     <TextView
         android:id="@+id/meeting_overview_predetermined_number"
         android:layout_width="0dp"

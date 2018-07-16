@@ -1,5 +1,7 @@
 package com.tami.vmanager.entity;
 
+import com.tami.vmanager.http.HttpKey;
+
 import java.io.Serializable;
 
 
@@ -9,42 +11,40 @@ import java.io.Serializable;
  * @author 代码生成器v1.0
  * 
  */
-public class CheckAddMeetingItemUserRequest implements Serializable{
+public class CheckAddMeetingItemUserRequest extends MobileMessage implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-
-	private String meetingItemId;
-	private String userId;
+	private static final long serialVersionUID = 2366029242299662300L;
 
 	public CheckAddMeetingItemUserRequest() {
 		super();
-	}	
-
-	/**
-	 * @return 会议节点ID
-	 */
-	public String getMeetingItemId() {
-		return meetingItemId;
 	}
 
-	public void setMeetingItemId(String meetingItemId) {
-		this.meetingItemId = meetingItemId;
-	}
+	private int userId;
+	private int meetingItemSetId;
 
-	/**
-	 * @return 用户ID
-	 */
-	public String getUserId() {
+	public int getUserId() {
 		return userId;
 	}
 
-	public void setUserId(String userId) {
+	public void setUserId(int userId) {
 		this.userId = userId;
 	}
 
+	public int getMeetingItemSetId() {
+		return meetingItemSetId;
+	}
 
+	public void setMeetingItemSetId(int meetingItemSetId) {
+		this.meetingItemSetId = meetingItemSetId;
+	}
+
+	@Override
+	public Class getResponseClass() {
+		return CheckAddMeetingItemUserResponse.class;
+	}
+
+	@Override
+	public String getRequestUrl() {
+		return HttpKey.CHECK_ADD_MEETING_ITEM_USER;
+	}
 }

@@ -1,50 +1,49 @@
 package com.tami.vmanager.entity;
 
+import com.tami.vmanager.http.HttpKey;
+
 import java.io.Serializable;
 
 
 /**
  * 会议流程节点删除人员操作权限.客户端请求
- * 
+ *
  * @author 代码生成器v1.0
- * 
  */
-public class DeleteMeetingItemsUserRequest implements Serializable{
+public class DeleteMeetingItemsUserRequest extends MobileMessage implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 7070593014424747758L;
 
+    private int userId;
+    private int meetingItemSetId;
 
-	private String meetingItemSetId;
-	private String userId;
+    public DeleteMeetingItemsUserRequest() {
+        super();
+    }
 
-	public DeleteMeetingItemsUserRequest() {
-		super();
-	}	
+    public int getUserId() {
+        return userId;
+    }
 
-	/**
-	 * @return 会议节点ID
-	 */
-	public String getMeetingItemSetId() {
-		return meetingItemSetId;
-	}
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
-	public void setMeetingItemSetId(String meetingItemSetId) {
-		this.meetingItemSetId = meetingItemSetId;
-	}
+    public int getMeetingItemSetId() {
+        return meetingItemSetId;
+    }
 
-	/**
-	 * @return 已分配权限的人员ID
-	 */
-	public String getUserId() {
-		return userId;
-	}
+    public void setMeetingItemSetId(int meetingItemSetId) {
+        this.meetingItemSetId = meetingItemSetId;
+    }
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
+    @Override
+    public String getRequestUrl() {
+        return HttpKey.DELETE_MEETING_ITEMS_USER;
+    }
 
-
+    @Override
+    public Class getResponseClass() {
+        return DeleteMeetingItemsUserResponse.class;
+    }
 }

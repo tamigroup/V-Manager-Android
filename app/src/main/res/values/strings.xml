@@ -175,7 +175,7 @@
     <!--    会议环节待确认    -->
     <string name="meeting_link_confirmed">会议环节待确认</string>
     <string name="confirmation_content">确认内容</string>
-    <string name="add_the_person_in_charge">添加负责人</string>
+    <string name="add_the_person_in_charge">+ 添加负责人</string>
 
     <!--会议信息-->
     <string name="host_name">主办方: %s</string>
@@ -342,5 +342,13 @@
     <string name="time">时间</string>
     <string name="contacts">联系人</string>
     <string name="telephone">电话</string>
+
+    <string name="to_be_confirmed">待确认</string>
+    <string name="distributive_personnel">分配人员</string>
+    <string name="delete_toast">删除%s！</string>
+    <string name="something_the_matter">有问题</string>
+    <string name="yes">有</string>
+    <string name="nothing">无</string>
+    <string name="please_confirm_service_process_completed">请确认服务流程已完成</string>
 
 </resources>

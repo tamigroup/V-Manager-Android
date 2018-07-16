@@ -26,6 +26,6 @@ public class CheckAddMeetingItemUserResponse extends MobileMessage implements Se
 		super();
 	}
 
-	
+	public boolean data;
 
 }

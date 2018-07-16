@@ -117,7 +117,9 @@ public class TodayMeetingActivity extends BaseActivity {
                 //ITEM点击
                 ConstraintLayout itemLayout = holder.getView(R.id.item_meeting_layout);
                 itemLayout.setOnClickListener((View v) -> {
-                    startActivity(new Intent(getApplicationContext(), MeetingOverviewActivity.class));
+                    Intent intent = new Intent(getApplicationContext(), MeetingOverviewActivity.class);
+                    intent.putExtra(Constants.KEY_MEETING_ID, item.meetingId);
+                    startActivity(intent);
                 });
             }
 

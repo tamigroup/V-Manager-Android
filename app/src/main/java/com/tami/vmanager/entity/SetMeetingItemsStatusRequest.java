@@ -1,5 +1,7 @@
 package com.tami.vmanager.entity;
 
+import com.tami.vmanager.http.HttpKey;
+
 import java.io.Serializable;
 
 
@@ -9,66 +11,53 @@ import java.io.Serializable;
  * @author 代码生成器v1.0
  * 
  */
-public class SetMeetingItemsStatusRequest implements Serializable{
+public class SetMeetingItemsStatusRequest extends MobileMessage implements Serializable{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
+	private int meetingItemSetId;
+	private int status;//1代表通过  2代表有问题 3代表正常状态（灰色）
+	private int userId;
 
-	private String mark;
-	private String meetingItemSetId;
-	private String status;
-	private String userId;
 
 	public SetMeetingItemsStatusRequest() {
 		super();
-	}	
-
-	/**
-	 * @return 节点有问题时的备注
-	 */
-	public String getMark() {
-		return mark;
 	}
 
-	public void setMark(String mark) {
-		this.mark = mark;
-	}
-
-	/**
-	 * @return 流程节点ID
-	 */
-	public String getMeetingItemSetId() {
+	public int getMeetingItemSetId() {
 		return meetingItemSetId;
 	}
 
-	public void setMeetingItemSetId(String meetingItemSetId) {
+	public void setMeetingItemSetId(int meetingItemSetId) {
 		this.meetingItemSetId = meetingItemSetId;
 	}
 
-	/**
-	 * @return 设置的状态值  1代表通过  2代表有问题 3代表正常状态（灰色）
-	 */
-	public String getStatus() {
+	public int getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(int status) {
 		this.status = status;
 	}
 
-	/**
-	 * @return 修改节点确认人的用户ID
-	 */
-	public String getUserId() {
+	public int getUserId() {
 		return userId;
 	}
 
-	public void setUserId(String userId) {
+	public void setUserId(int userId) {
 		this.userId = userId;
 	}
 
+	@Override
+	public Class getResponseClass() {
+		return SetMeetingItemsStatusResponse.class;
+	}
 
+	@Override
+	public String getRequestUrl() {
+		return HttpKey.SET_MEETING_ITEMS_STATUS;
+	}
 }

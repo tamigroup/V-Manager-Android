@@ -26,6 +26,6 @@ public class DeleteMeetingItemsUserResponse extends MobileMessage implements Ser
 		super();
 	}
 
-	
+	public boolean data;
 
 }

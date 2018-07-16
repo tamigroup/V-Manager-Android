@@ -8,12 +8,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.tami.vmanager.R;
-import com.tami.vmanager.entity.GetMeetingItemFlowResponse;
 import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdResponse;
-import com.tami.vmanager.entity.TimeLine;
 import com.tami.vmanager.utils.TimeUtils;
 
-import java.sql.Time;
 import java.util.Date;
 import java.util.List;
 
@@ -69,7 +66,10 @@ public class TimeLineHorizontalAdapter extends RecyclerView.Adapter<TimeLineHori
         if (item.selectStatus == 1) {
             holder.middlePic.setImageResource(R.mipmap.middle_pic_selected);
             holder.rightView.setBackgroundResource(R.color.color_34DB8E);
-        } else {
+        } else if (item.selectStatus == 2) {
+            holder.middlePic.setImageResource(R.mipmap.middle_pic_problem);
+            holder.rightView.setBackgroundResource(R.color.color_EAEAEA);
+        } else if (item.selectStatus == 3||item.selectStatus == 0) {
             holder.middlePic.setImageResource(R.mipmap.middle_pic_unselected);
             holder.rightView.setBackgroundResource(R.color.color_EAEAEA);
         }

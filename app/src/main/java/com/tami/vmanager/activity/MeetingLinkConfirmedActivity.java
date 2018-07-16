@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,12 +19,18 @@ import android.widget.Toast;
 import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.RecycleViewDivider;
 import com.tami.vmanager.base.BaseActivity;
-import com.tami.vmanager.entity.CreateVipGuestRequest;
-import com.tami.vmanager.entity.CreateVipGuestResponse;
+import com.tami.vmanager.dialog.ConfirmEnterMeetingDialog;
+import com.tami.vmanager.dialog.ConfirmEnterMeetingListener;
+import com.tami.vmanager.entity.CheckAddMeetingItemUserRequest;
+import com.tami.vmanager.entity.CheckAddMeetingItemUserResponse;
+import com.tami.vmanager.entity.DeleteMeetingItemsUserRequest;
+import com.tami.vmanager.entity.DeleteMeetingItemsUserResponse;
 import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdResponse;
 import com.tami.vmanager.entity.GetSelectMeetingItemsUserRequest;
 import com.tami.vmanager.entity.GetSelectMeetingItemsUserResponse;
 import com.tami.vmanager.entity.LoginResponse;
+import com.tami.vmanager.entity.SetMeetingItemsStatusRequest;
+import com.tami.vmanager.entity.SetMeetingItemsStatusResponse;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Constants;
@@ -49,18 +56,21 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
 
     private TextView content;
     private RecyclerView recyclerView;
+    private ConstraintLayout constraintLayout;
     private TextView addPerson;
     private SwitchButton switchbtn;
     private TextView important;
     private Button confirmBtn;
-    private List<String> listData;
-    private CommonAdapter commonAdapter;
+    private List<GetSelectMeetingItemsUserResponse.Array.Item> listData;
+    private CommonAdapter<GetSelectMeetingItemsUserResponse.Array.Item> commonAdapter;
     private GetMeetingItemsByMeetingIdResponse.Array.Item item;//环节信息
 
     public static final int REQUEST_CALL_PHONE = 5;
     public static final String[] PERMISSIONS_CALL_PHONE = {Manifest.permission.CALL_PHONE};
 
     private NetworkBroker networkBroker;
+
+    private ConfirmEnterMeetingDialog confirmEnterMeetingDialog;//弹框查看会议
 
     @Override
     public boolean isTitle() {
@@ -77,18 +87,38 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
         content = findViewById(R.id.confirmation_content_txt);
         recyclerView = findViewById(R.id.meeting_link_confirmed_listview);
         addPerson = findViewById(R.id.mlc_add_the_person_in_charge);
+        constraintLayout = findViewById(R.id.mlc_have_problem);
         switchbtn = findViewById(R.id.mlc_switchbtn);
         important = findViewById(R.id.mlc_important);
         confirmBtn = findViewById(R.id.mlc_confirm_btn);
+
+        confirmEnterMeetingDialog = new ConfirmEnterMeetingDialog(this);
+        confirmEnterMeetingDialog.setLeftStr(getString(R.string.confirm));
+        confirmEnterMeetingDialog.setLeftColor(R.color.color_FF5657);
+        confirmEnterMeetingDialog.setRightStr(getString(R.string.cancel));
+        confirmEnterMeetingDialog.setContentStr(getString(R.string.please_confirm_service_process_completed));
     }
 
     @Override
     public void initListener() {
         switchbtn.setOnCheckedChangeListener((SwitchButton view, boolean isChecked) -> {
             //TODO do your job
-            Toast.makeText(getApplicationContext(), String.valueOf(isChecked), Toast.LENGTH_SHORT).show();
+            important.setText(isChecked ? getString(R.string.nothing) : getString(R.string.yes));
         });
         addPerson.setOnClickListener(this);
+        confirmBtn.setOnClickListener(this);
+
+        confirmEnterMeetingDialog.setConfirmEnterMeetingListener(new ConfirmEnterMeetingListener() {
+            @Override
+            public void leftBtn() {
+                setMeetingItemsStatus();
+            }
+
+            @Override
+            public void rightBtn() {
+
+            }
+        });
     }
 
     @Override
@@ -103,6 +133,17 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
             }
         }
 
+        //已确认隐藏功能按钮
+        if (item.selectStatus == 1) {
+            constraintLayout.setVisibility(View.GONE);
+            addPerson.setVisibility(View.GONE);
+            confirmBtn.setVisibility(View.GONE);
+        } else if (item.selectStatus == 2) {
+            switchbtn.setChecked(false);
+            important.setText(getString(R.string.yes));
+            confirmBtn.setText(getString(R.string.again_identification));
+        }
+
         networkBroker = new NetworkBroker(this);
         networkBroker.setCancelTag(getTAG());
 
@@ -113,13 +154,17 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
         recyclerView.addItemDecoration(new RecycleViewDivider(getApplicationContext(), LinearLayoutManager.HORIZONTAL,
                 1, ContextCompat.getColor(getApplicationContext(), R.color.percentage_10)));
         listData = new ArrayList<>();
-        commonAdapter = new CommonAdapter<String>(getApplicationContext(), R.layout.item_meeting_link_confirmed, listData) {
+        commonAdapter = new CommonAdapter<GetSelectMeetingItemsUserResponse.Array.Item>(getApplicationContext(), R.layout.item_meeting_link_confirmed, listData) {
             @Override
-            protected void convert(ViewHolder holder, String s, int position) {
-                TextView distribution = holder.getView(R.id.mlc_distribution);
+            protected void convert(ViewHolder holder, GetSelectMeetingItemsUserResponse.Array.Item item, int position) {
+                holder.setText(R.id.mlc_distribution, getString(R.string.distributive_personnel) + " " + (position + 1));
+                holder.setText(R.id.mlc_name, item.realName);
+                holder.setText(R.id.mlc_position, item.positionName);
                 AppCompatImageView phone = holder.getView(R.id.mlc_phone);
-                TextView nameView = holder.getView(R.id.mlc_name);
-                TextView positionView = holder.getView(R.id.mlc_position);
+                AppCompatImageView delete_person = holder.getView(R.id.delete_person_);
+                delete_person.setOnClickListener((View v) -> {
+                    checkAddMeetingItemUser(position);
+                });
                 phone.setOnClickListener(new View.OnClickListener() {
                     @Override
                     @AfterPermissionGranted(REQUEST_CALL_PHONE)
@@ -127,13 +172,13 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
                         if (Build.VERSION.SDK_INT >= 23) {
                             //权限请求与判断
                             if (EasyPermissions.hasPermissions(getApplicationContext(), PERMISSIONS_CALL_PHONE)) {
-                                callPhone("15901125418");
+                                callPhone(item.mobile);
                             } else {
                                 EasyPermissions.requestPermissions(MeetingLinkConfirmedActivity.this, getString(R.string.app_name),
                                         REQUEST_CALL_PHONE, PERMISSIONS_CALL_PHONE);
                             }
                         } else {
-                            callPhone("15901125418");
+                            callPhone(item.mobile);
                         }
                     }
                 });
@@ -157,8 +202,10 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
         super.onClick(v);
         switch (v.getId()) {
             case R.id.mlc_add_the_person_in_charge:
-                Intent intent = new Intent(getApplicationContext(), AddPersonChargeActivty.class);
-                startActivityForResult(intent, Constants.ADD_PERSON_CHARGE);
+                checkAddMeetingItemUser(-1);
+                break;
+            case R.id.mlc_confirm_btn:
+                confirmEnterMeetingDialog.show();
                 break;
         }
     }
@@ -229,12 +276,116 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
             try {
                 GetSelectMeetingItemsUserResponse response = (GetSelectMeetingItemsUserResponse) res;
                 if (response.getCode() == 200) {
-                    if (listData != null) {
-                        listData.clear();
+                    if (response.data != null && response.data.dataList != null && response.data.dataList.size() > 0) {
+                        if (listData != null) {
+                            listData.clear();
+                        }
+                        listData.addAll(response.data.dataList);
+                        commonAdapter.notifyDataSetChanged();
                     }
-//                    listData.addAll();
-                    commonAdapter.notifyDataSetChanged();
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    /**
+     * 验证用户是否有删除权限
+     *
+     * @param index
+     */
+    public void checkAddMeetingItemUser(int index) {
+        CheckAddMeetingItemUserRequest camiur = new CheckAddMeetingItemUserRequest();
+        LoginResponse.Item userItem = GlobaVariable.getInstance().item;
+        if (userItem != null) {
+            camiur.setUserId(userItem.getId());
+        }
+        camiur.setMeetingItemSetId(item.meetingItemSetId);
+        networkBroker.ask(camiur, (ex1, res) -> {
+            if (null != ex1) {
+                Logger.d(ex1.getMessage() + "-" + ex1);
+                return;
+            }
+            try {
+                CheckAddMeetingItemUserResponse response = (CheckAddMeetingItemUserResponse) res;
+                if (response.getCode() == 200 && response.data) {
+                    if (index == -1) {
+                        //添加负责人页面
+                        Intent intent = new Intent(getApplicationContext(), AddPersonChargeActivty.class);
+                        intent.putExtra(Constants.KEY_MEETING_ITEM_SETID, item.meetingItemSetId);
+                        startActivityForResult(intent, Constants.ADD_PERSON_CHARGE);
+                    } else {
+                        //删除负责人功能
+                        deleteMeetingItemsUser(index);
+                    }
+                } else {
+                    showToast(response.getMessage());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        });
+    }
+
+
+    /**
+     * 删除负责人
+     *
+     * @param index
+     */
+    public void deleteMeetingItemsUser(int index) {
+        DeleteMeetingItemsUserRequest dmiur = new DeleteMeetingItemsUserRequest();
+        LoginResponse.Item userItem = GlobaVariable.getInstance().item;
+        if (userItem != null) {
+            dmiur.setUserId(userItem.getId());
+        }
+        dmiur.setMeetingItemSetId(item.meetingItemSetId);
+        networkBroker.ask(dmiur, (ex1, res) -> {
+            if (null != ex1) {
+                Logger.d(ex1.getMessage() + "-" + ex1);
+                return;
+            }
+            try {
+                DeleteMeetingItemsUserResponse response = (DeleteMeetingItemsUserResponse) res;
+                if (response.getCode() == 200 && response.data) {
+                    showToast(getString(R.string.delete_toast, getString(R.string.success)));
+                    listData.remove(index);
+                    commonAdapter.notifyDataSetChanged();
+                } else {
+                    showToast(getString(R.string.delete_toast, getString(R.string.failure)));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+
+    /**
+     * 设置单个会议流程节点的状态
+     */
+    public void setMeetingItemsStatus() {
+        confirmEnterMeetingDialog.show();
+        SetMeetingItemsStatusRequest smisr = new SetMeetingItemsStatusRequest();
+        LoginResponse.Item userItem = GlobaVariable.getInstance().item;
+        if (userItem != null) {
+            smisr.setUserId(userItem.getId());
+        }
+        smisr.setMeetingItemSetId(item.meetingItemSetId);
+        smisr.setStatus(switchbtn.isChecked() ? 2 : 1);
+        networkBroker.ask(smisr, (ex1, res) -> {
+            if (null != ex1) {
+                Logger.d(ex1.getMessage() + "-" + ex1);
+                return;
+            }
+            try {
+                SetMeetingItemsStatusResponse response = (SetMeetingItemsStatusResponse) res;
+                if (response.getCode() == 200) {
+
+                }
+                showToast(response.getMessage());
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -128,6 +128,14 @@ public class HttpKey {
     public static final String GET_SELECT_MEETING_ITEMS_USER = "meeting/getSelectMeetingItemsUser";
     //获取部门用户组
     public static final String GET_USER_IN_DEPARTMENT = "user/getUserInDepartment";
+    //判断用户是否有添加会议节点用户的权限
+    public static final String CHECK_ADD_MEETING_ITEM_USER = "meeting/checkAddMeetingItemUser";
+    //会议流程节点删除人员操作权限
+    public static final String DELETE_MEETING_ITEMS_USER = "meeting/deleteMeetingItemsUser";
+    //会议流程节点删除人员操作权限
+    public static final String SET_MEETING_ITEMS_STATUS = "meeting/setMeetingItemsStatus";
+
+
 
     //---------------------------------------------------------------------------
 

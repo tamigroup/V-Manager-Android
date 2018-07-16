@@ -15,11 +15,7 @@ import java.util.List;
 @JsonInclude(Include.NON_NULL)
 public class GetMeetingResponse extends MobileMessage implements Serializable {
 
-    /**
-     *
-     */
-    public static final long serialVersionUID = 1L;
-
+    private static final long serialVersionUID = 364379347706851348L;
     public Item data;
 
     public GetMeetingResponse() {
@@ -28,7 +24,9 @@ public class GetMeetingResponse extends MobileMessage implements Serializable {
 
     @JsonInclude(Include.NON_NULL)
     public static class Item implements Serializable {
+
         public static final long serialVersionUID = 4172542378039500196L;
+
         public String saleUserName;	/*小塔米*/
         public int saleUserId;	/*1*/
         public String meetingAddress;	/*满月楼*/
@@ -60,6 +58,8 @@ public class GetMeetingResponse extends MobileMessage implements Serializable {
         @JsonInclude(Include.NON_NULL)
         public static class VipReceiveUser implements Serializable {
 
+            private static final long serialVersionUID = -2573324300302154839L;
+
             public String registrationId;	/*1104a89792fa59a83a2*/
             public int status;	/*0*/
             public String systemName;	/**/
@@ -84,7 +84,10 @@ public class GetMeetingResponse extends MobileMessage implements Serializable {
             public List<UserRole> userRoleList;
 
             @JsonInclude(Include.NON_NULL)
-            public static class UserRole {
+            public static class UserRole implements Serializable{
+
+                private static final long serialVersionUID = -8872250276884582827L;
+
                 public int id;	/*1*/
                 public int status;	/*0*/
                 public int userId;	/*1*/
@@ -98,6 +101,9 @@ public class GetMeetingResponse extends MobileMessage implements Serializable {
 
         @JsonInclude(Include.NON_NULL)
         public static class VipGuest implements Serializable {
+
+            private static final long serialVersionUID = -8741839249506663818L;
+
             public int id;	/*57*/
             public int status;	/*0*/
             public String name;	/*张子栋*/

@@ -112,7 +112,9 @@ public class WaitMeetingsFragment extends ViewPagerBaseFragment {
                 //ITEM点击
                 ConstraintLayout itemLayout = holder.getView(R.id.item_meeting_layout);
                 itemLayout.setOnClickListener((View v) -> {
-                    startActivity(new Intent(getContext(), MeetingOverviewActivity.class));
+                    Intent intent = new Intent(getContext(), MeetingOverviewActivity.class);
+                    intent.putExtra(Constants.KEY_MEETING_ID, item.meetingId);
+                    startActivity(intent);
                 });
             }
 

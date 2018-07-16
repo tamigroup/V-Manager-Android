@@ -52,35 +52,16 @@
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 app:layout_scrollFlags="scroll">
 
-                <com.tami.vmanager.view.CircleProgressBar
-                    android:id="@+id/meeting_overview_already_paid_item"
-                    android:layout_width="@dimen/dp_40"
-                    android:layout_height="@dimen/dp_40"
-                    android:layout_marginTop="@dimen/dp_20"
-                    android:background="@mipmap/meeting_overview_fk"
-                    app:backgroundColor="@android:color/transparent"
-                    app:foregroundColor="@android:color/transparent"
-                    app:isSolid="false"
-                    app:layout_constraintEnd_toStartOf="@+id/meeting_overview_complaints_box"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:progress="0"
-                    app:ringWidth="@dimen/dp_0"
-                    app:textColor="@android:color/white"
-                    app:textShown="true"
-                    app:textSize="@dimen/sp_12" />
-
                 <TextView
                     android:id="@+id/meeting_overview_complaints_box"
                     android:layout_width="@dimen/dp_40"
                     android:layout_height="@dimen/dp_40"
+                    android:layout_marginTop="@dimen/dp_20"
                     android:background="@mipmap/meeting_overview_yj"
-                    app:layout_constraintBottom_toBottomOf="@+id/meeting_overview_already_paid_item"
                     app:layout_constraintEnd_toStartOf="@+id/meeting_overview_change_demand"
                     app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintStart_toEndOf="@+id/meeting_overview_already_paid_item"
-                    app:layout_constraintTop_toTopOf="@+id/meeting_overview_already_paid_item" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/meeting_overview_change_demand"
@@ -103,18 +84,6 @@
                     app:layout_constraintHorizontal_weight="1"
                     app:layout_constraintStart_toEndOf="@+id/meeting_overview_change_demand"
                     app:layout_constraintTop_toTopOf="@+id/meeting_overview_change_demand" />
-
-                <TextView
-                    android:id="@+id/meeting_overview_already_paid_item_txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:text="@string/already_paid_item"
-                    android:textColor="@color/color_303030"
-                    android:textSize="@dimen/sp_12"
-                    app:layout_constraintEnd_toEndOf="@+id/meeting_overview_already_paid_item"
-                    app:layout_constraintStart_toStartOf="@+id/meeting_overview_already_paid_item"
-                    app:layout_constraintTop_toBottomOf="@+id/meeting_overview_already_paid_item" />
 
                 <TextView
                     android:id="@+id/meeting_overview_complaints_box_txt"

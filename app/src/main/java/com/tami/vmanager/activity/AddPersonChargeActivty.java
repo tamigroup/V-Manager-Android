@@ -18,6 +18,7 @@ import com.tami.vmanager.entity.CreateVipGuestResponse;
 import com.tami.vmanager.entity.GetUserInDepartmentRequest;
 import com.tami.vmanager.entity.GetUserInDepartmentResponse;
 import com.tami.vmanager.entity.LoginResponse;
+import com.tami.vmanager.entity.SetMeetingItemsUserJson;
 import com.tami.vmanager.entity.SetMeetingItemsUserRequest;
 import com.tami.vmanager.entity.SetMeetingItemsUserResponse;
 import com.tami.vmanager.entity.UserListOfPositionRequest;
@@ -130,7 +131,7 @@ public class AddPersonChargeActivty extends BaseActivity {
         commonAdapter = new CommonAdapter<GetUserInDepartmentResponse.Array.Item.User>(getApplicationContext(), R.layout.item_add_person_charge, contentList) {
             @Override
             protected void convert(ViewHolder holder, GetUserInDepartmentResponse.Array.Item.User user, int position) {
-                holder.setText(R.id.iapc_position, user.realName);
+                holder.setText(R.id.iapc_position, user.depName);
                 holder.setText(R.id.iapc_name, user.realName);
                 AppCompatImageView selectImage = holder.getView(R.id.iapc_select_image);
                 selectImage.setImageResource(user.isSelected ? R.mipmap.people_checkbox_selected : R.mipmap.people_checkbox_unselected);
@@ -220,10 +221,13 @@ public class AddPersonChargeActivty extends BaseActivity {
      * 提交
      */
     private void confirm() {
-        ArrayList<GetUserInDepartmentResponse.Array.Item.User> data = new ArrayList<>();
+        ArrayList<SetMeetingItemsUserJson> data = new ArrayList<>();
         for (GetUserInDepartmentResponse.Array.Item.User item : contentList) {
             if (item.isSelected) {
-                data.add(item);
+                SetMeetingItemsUserJson smiuj = new SetMeetingItemsUserJson();
+                smiuj.setId(item.id);
+                smiuj.setRealName(item.realName);
+                data.add(smiuj);
             }
         }
         setMeetingItemsUser(data);
@@ -232,7 +236,7 @@ public class AddPersonChargeActivty extends BaseActivity {
     /**
      * 添加负责人
      */
-    public void setMeetingItemsUser(ArrayList<GetUserInDepartmentResponse.Array.Item.User> data) {
+    public void setMeetingItemsUser(ArrayList<SetMeetingItemsUserJson> data) {
         if (data != null && data.size() > 0) {
             SetMeetingItemsUserRequest siur = new SetMeetingItemsUserRequest();
             siur.setMeetingItemSetId(meetingItemSetId);

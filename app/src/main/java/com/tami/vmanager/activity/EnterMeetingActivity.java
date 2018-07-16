@@ -25,6 +25,10 @@ import com.tami.vmanager.entity.GetMeetingItemFlowRequest;
 import com.tami.vmanager.entity.GetMeetingItemFlowResponse;
 import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdRequest;
 import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdResponse;
+import com.tami.vmanager.dialog.ConfirmEnterMeetingDialog;
+import com.tami.vmanager.dialog.ConfirmEnterMeetingListener;
+import com.tami.vmanager.entity.GetMeetingItemFlowRequest;
+import com.tami.vmanager.entity.GetMeetingItemFlowResponse;
 import com.tami.vmanager.entity.GetMeetingResponse;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
@@ -66,7 +70,7 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
     private TextView vipDetails;//VIP详情
 
     private int meetingId;//会议ID
-    private GetMeetingResponse.Item item;
+    private GetMeetingResponse.Item meetingInfo;
     private NetworkBroker networkBroker;
     private List<GetMeetingItemsByMeetingIdResponse.Array.Item> listData;
     private TimeLineHorizontalAdapter adapter;
@@ -131,7 +135,7 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
         Intent intent = getIntent();
         if (intent != null) {
             meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 0);
-            item = (GetMeetingResponse.Item) intent.getSerializableExtra(Constants.MEETING_INFO);
+            meetingInfo = (GetMeetingResponse.Item) intent.getSerializableExtra(Constants.MEETING_INFO);
         }
 
         networkBroker = new NetworkBroker(this);
@@ -146,7 +150,7 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
-        initUIdata(item);
+        initUIdata(meetingInfo);
 
         confirmEnterMeetingDialog.setConfirmEnterMeetingListener(new ConfirmEnterMeetingListener() {
             @Override
@@ -243,7 +247,7 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
 
     private void call() {
         Intent intent_phone = new Intent(Intent.ACTION_CALL);
-        Uri data = Uri.parse("tel:" + item.salesUserMobile);
+        Uri data = Uri.parse("tel:" + meetingInfo.salesUserMobile);
         intent_phone.setData(data);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             Logger.e("权限拒绝---");
@@ -267,7 +271,7 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
             initUITxt(predeterminedNumber, String.valueOf(item.estimateNum), R.string.predetermined_number, android.R.color.white);
             initUITxt(bottomNumber, String.valueOf(item.minNum), R.string.bottom_number, android.R.color.white);
 
-            if (GlobaVariable.getInstance().item.getFromPlat() == 1) {
+            if (item.isVzh == 1) {
                 initUITxt(actualNumber, String.valueOf(item.actualNum), R.string.actual_number, R.color.color_FF5657);
             } else {
                 initUITxt(actualNumber, "--", R.string.actual_number, R.color.color_FF5657);
@@ -293,7 +297,7 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
      */
     private void lookEO() {
         Intent intent = new Intent(getApplicationContext(), LookEOActivity.class);
-        intent.putExtra(Constants.KEY_EO_URL, item.eoUrl);
+        intent.putExtra(Constants.KEY_EO_URL, meetingInfo.eoUrl);
         startActivity(intent);
     }
 
@@ -303,7 +307,7 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
     private void serviceGroup() {
         Intent intent = new Intent(getApplicationContext(), ConferenceServiceGroupActivity.class);
         intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
-        intent.putExtra(Constants.MEETING_INFO, item);
+        intent.putExtra(Constants.MEETING_INFO, meetingInfo);
         startActivity(intent);
     }
 
@@ -327,7 +331,7 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
     private void vipDetails() {
         Intent intent = new Intent(getApplicationContext(), VIPDetailsActivity.class);
         intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
-        intent.putExtra(Constants.MEETING_INFO, item);
+        intent.putExtra(Constants.MEETING_INFO, meetingInfo);
         startActivity(intent);
     }
 
@@ -361,7 +365,6 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         });
     }
 

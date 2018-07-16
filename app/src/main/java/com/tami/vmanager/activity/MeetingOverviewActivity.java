@@ -22,20 +22,18 @@ import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.TimeLineAdapter;
 import com.tami.vmanager.adapter.TimeLineMeetingFlowItem;
 import com.tami.vmanager.base.BaseActivity;
-import com.tami.vmanager.dialog.AlreadyPaidItemDialog;
+import com.tami.vmanager.entity.CheckAddMeetingItemUserRequest;
+import com.tami.vmanager.entity.CheckAddMeetingItemUserResponse;
 import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdRequest;
 import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdResponse;
 import com.tami.vmanager.entity.GetMeetingRequest;
 import com.tami.vmanager.entity.GetMeetingResponse;
-import com.tami.vmanager.entity.IsCanOperationRequest;
-import com.tami.vmanager.entity.IsCanOperationResponse;
 import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.Utils;
-import com.tami.vmanager.view.CircleProgressBar;
 import com.tami.vmanager.view.MeetingStateView;
 
 import java.util.ArrayList;
@@ -64,7 +62,6 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
     private TextView actualNumber;//实到人数
     private TextView lookEO;//查看EO单
 
-    private CircleProgressBar alreadyPaidItem;//待付款项
     private TextView complaintsBox;//意见箱
     private TextView changeDemand;//需求变化
     private TextView vEmind;//小V提醒
@@ -78,7 +75,7 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
     private Button functionBtn;//创建流程及进入会意按钮
 
     private int meetingId;//会议ID
-    private GetMeetingResponse.Item item;//会议信息
+    private GetMeetingResponse.Item meetingInfo;//会议信息
     private NetworkBroker networkBroker;
     private List<GetMeetingItemsByMeetingIdResponse.Array.Item> listData;
     private TimeLineAdapter adapter;
@@ -111,7 +108,6 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
         actualNumber = findViewById(R.id.meeting_overview_actual_number);
         lookEO = findViewById(R.id.meeting_overview_look_eo);
         //四个可点击图标
-        alreadyPaidItem = findViewById(R.id.meeting_overview_already_paid_item);
         complaintsBox = findViewById(R.id.meeting_overview_complaints_box);
         changeDemand = findViewById(R.id.meeting_overview_change_demand);
         vEmind = findViewById(R.id.meeting_overview_v_emind);
@@ -129,7 +125,6 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
     @Override
     public void initListener() {
         lookEO.setOnClickListener(this);
-        alreadyPaidItem.setOnClickListener(this);
         complaintsBox.setOnClickListener(this);
         changeDemand.setOnClickListener(this);
         vEmind.setOnClickListener(this);
@@ -178,7 +173,6 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
 
     @Override
     public void emptyObject() {
-        alreadyPaidItem = null;
         networkBroker.cancelAllRequests();
     }
 
@@ -189,8 +183,8 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
             case R.id.meeting_overview_look_eo:
                 //查看EO单
                 Intent lookEOIntent = new Intent(getApplicationContext(), LookEOActivity.class);
-                if (item != null) {
-                    lookEOIntent.putExtra(Constants.KEY_EO_URL, item.eoUrl);
+                if (meetingInfo != null) {
+                    lookEOIntent.putExtra(Constants.KEY_EO_URL, meetingInfo.eoUrl);
                 }
                 startActivity(lookEOIntent);
                 break;
@@ -199,10 +193,6 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
                 Intent intent_personnel = new Intent(getApplicationContext(), PersonnelListActivity.class);
                 intent_personnel.putExtra(Constants.KEY_MEETING_ID, meetingId);
                 startActivity(intent_personnel);
-                break;
-            case R.id.meeting_overview_already_paid_item:
-                //待付款项
-                alreadyPaidItem();
                 break;
             case R.id.meeting_overview_complaints_box:
                 //意见箱 满意度
@@ -254,7 +244,7 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
 
     private void call() {
         Intent intent_phone = new Intent(Intent.ACTION_CALL);
-        Uri data = Uri.parse("tel:" + item.salesUserMobile);
+        Uri data = Uri.parse("tel:" + meetingInfo.salesUserMobile);
         intent_phone.setData(data);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             Logger.e("权限拒绝---");
@@ -284,7 +274,7 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
     private void lookFlow() {
         Intent intent = new Intent(getApplicationContext(), ConferenceServiceFlowActivity.class);
         intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
-        intent.putExtra(Constants.KEY_MEETING_NAME, item.meetingName);
+        intent.putExtra(Constants.KEY_MEETING_NAME, meetingInfo.meetingName);
         startActivity(intent);
     }
 
@@ -302,7 +292,7 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
      */
     private void initUIdata(GetMeetingResponse.Item item) {
         if (item != null) {
-            this.item = item;
+            this.meetingInfo = item;
             meetingName.setText(item.meetingName);
             meetingTime.setText(item.autoDayTime);
             meetingRoom.setText(item.meetingAddress);
@@ -312,37 +302,12 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
             initUITxt(predeterminedNumber, String.valueOf(item.estimateNum), R.string.predetermined_number, android.R.color.white);
             initUITxt(bottomNumber, String.valueOf(item.minNum), R.string.bottom_number, android.R.color.white);
 
-            if (GlobaVariable.getInstance().item.getFromPlat() == 1) {
+            if (item.isVzh == 1) {
                 initUITxt(actualNumber, String.valueOf(item.actualNum), R.string.actual_number, R.color.color_FF5657);
             } else {
                 initUITxt(actualNumber, "--", R.string.actual_number, R.color.color_FF5657);
             }
-
-
-            alreadyPaidItem.setProgress(90);
         }
-
-        //        new AsyncTask<Void, Integer, Void>() {
-        //
-        //            @Override
-        //            protected void onProgressUpdate(Integer... values) {
-        //                super.onProgressUpdate(values);
-        //                alreadyPaidItem.setProgress(values[0]);
-        //            }
-        //
-        //            @Override
-        //            protected Void doInBackground(Void... params) {
-        //                for (int i = 0; i <= 90; i += 10) {
-        //                    try {
-        //                        Thread.sleep(50);
-        //                    } catch (InterruptedException e) {
-        //                        e.printStackTrace();
-        //                    }
-        //                    publishProgress(i);
-        //                }
-        //                return null;
-        //            }
-        //        }.execute();
     }
 
     /**
@@ -371,14 +336,6 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
     }
 
     /**
-     * 待付款项
-     */
-    private void alreadyPaidItem() {
-        AlreadyPaidItemDialog alreadyPaidItemDialog = new AlreadyPaidItemDialog(this, "4000", "1000");
-        alreadyPaidItemDialog.show();
-    }
-
-    /**
      * 底部功能按钮
      *
      * @param v
@@ -394,7 +351,7 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
         } else {
             Intent intent = new Intent(getApplicationContext(), EnterMeetingActivity.class);
             intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
-            intent.putExtra(Constants.MEETING_INFO, item);
+            intent.putExtra(Constants.MEETING_INFO, meetingInfo);
             startActivity(intent);
         }
     }
@@ -487,34 +444,34 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
      * 验证用户是否有权限
      */
     public void isCanOperation(GetMeetingItemsByMeetingIdResponse.Array.Item item) {
-        IsCanOperationRequest icor = new IsCanOperationRequest();
-        LoginResponse.Item userItem = GlobaVariable.getInstance().item;
-        if (userItem != null) {
-            icor.setUserId(userItem.getId());
-        }
-        icor.setMeetingItemSetId(item.meetingItemSetId);
-        networkBroker.ask(icor, (ex1, res) -> {
-            if (null != ex1) {
-                Logger.d(ex1.getMessage() + "-" + ex1);
-                return;
-            }
-            try {
-                IsCanOperationResponse response = (IsCanOperationResponse) res;
-                if (response.getCode() == 200 && response.data) {
-                    Intent intent = new Intent(getApplicationContext(), MeetingLinkConfirmedActivity.class);
-                    intent.putExtra(Constants.KEY_MEETING_LINK, item);
-                    startActivity(intent);
-                } else {
-                    showToast(response.getMessage());
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        });
-//        Intent intent = new Intent(getApplicationContext(), MeetingLinkConfirmedActivity.class);
-//        intent.putExtra(Constants.KEY_MEETING_LINK, item);
-//        startActivity(intent);
+//        CheckAddMeetingItemUserRequest camiur = new CheckAddMeetingItemUserRequest();
+//        LoginResponse.Item userItem = GlobaVariable.getInstance().item;
+//        if (userItem != null) {
+//            camiur.setUserId(userItem.getId());
+//        }
+//        camiur.setMeetingItemSetId(item.meetingItemSetId);
+//        networkBroker.ask(camiur, (ex1, res) -> {
+//            if (null != ex1) {
+//                Logger.d(ex1.getMessage() + "-" + ex1);
+//                return;
+//            }
+//            try {
+//                CheckAddMeetingItemUserResponse response = (CheckAddMeetingItemUserResponse) res;
+//                if (response.getCode() == 200 && response.data) {
+//                    Intent intent = new Intent(getApplicationContext(), MeetingLinkConfirmedActivity.class);
+//                    intent.putExtra(Constants.KEY_MEETING_LINK, item);
+//                    startActivity(intent);
+//                } else {
+//                    showToast(response.getMessage());
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//
+//        });
+        Intent intent = new Intent(getApplicationContext(), MeetingLinkConfirmedActivity.class);
+        intent.putExtra(Constants.KEY_MEETING_LINK, item);
+        startActivity(intent);
     }
 
     @Override
