@@ -110,7 +110,8 @@
                     <ProgressBar
                         android:id="@+id/total_pro"
                         style="@android:style/Widget.ProgressBar.Horizontal"
-                        android:layout_width="230dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="8"
                         android:layout_height="@dimen/dp_10"
                         android:layout_gravity="center"
                         android:layout_marginLeft="@dimen/dp_20"
@@ -120,7 +121,8 @@
 
                     <TextView
                         android:id="@+id/total_num"
-                        android:layout_width="wrap_content"
+                        android:layout_width="@dimen/dp_0"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/dp_30"
                         android:text="50"
@@ -148,7 +150,8 @@
                     <ProgressBar
                         android:id="@+id/complete_pro"
                         style="@android:style/Widget.ProgressBar.Horizontal"
-                        android:layout_width="230dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="8"
                         android:layout_height="@dimen/dp_10"
                         android:layout_gravity="center"
                         android:layout_marginLeft="@dimen/dp_20"
@@ -158,7 +161,8 @@
 
                     <TextView
                         android:id="@+id/complete_num"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/dp_30"
                         android:text="50"
@@ -189,7 +193,8 @@
                     <ProgressBar
                         android:id="@+id/no_complete_pro"
                         style="@android:style/Widget.ProgressBar.Horizontal"
-                        android:layout_width="230dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="8"
                         android:layout_height="@dimen/dp_10"
                         android:layout_gravity="center"
                         android:layout_marginLeft="@dimen/dp_20"
@@ -199,7 +204,8 @@
 
                     <TextView
                         android:id="@+id/no_complete_num"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/dp_30"
                         android:text="50"

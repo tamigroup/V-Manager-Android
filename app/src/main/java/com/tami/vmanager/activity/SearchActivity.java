@@ -559,7 +559,12 @@ public class SearchActivity extends BaseActivity {
     }
 
     private void setHistoryClickColor(){
+        if (searchHistoryBeans == null){
+            return;
+        }
         switch (searchHistoryBeans.size()) {
+            case 0:
+                break;
             case 1:
                 setClickColor(search_history_tv1, R.color.color_E5E5E5, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(0).getSearchHistory());
                 break;

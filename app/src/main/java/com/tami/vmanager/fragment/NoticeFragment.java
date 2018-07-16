@@ -1,5 +1,6 @@
 package com.tami.vmanager.fragment;
 
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
@@ -9,9 +10,12 @@ import com.jwenfeng.library.pulltorefresh.PullToRefreshLayout;
 import com.squareup.picasso.Picasso;
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.ViewPagerBaseFragment;
+import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.entity.NoticeRequestBean;
 import com.tami.vmanager.entity.NoticeResponseBean;
 import com.tami.vmanager.http.NetworkBroker;
+import com.tami.vmanager.manager.GlobaVariable;
+import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -32,6 +36,7 @@ public class NoticeFragment extends ViewPagerBaseFragment {
     private PullToRefreshLayout pullToRefreshLayout;
     private CommonAdapter<NoticeResponseBean.DataBean.ElementsBean> commonAdapter;
     private List<NoticeResponseBean.DataBean.ElementsBean> listData;
+    private int meetingId;
 
     @Override
     public int getContentViewId() {
@@ -61,6 +66,10 @@ public class NoticeFragment extends ViewPagerBaseFragment {
 
     @Override
     public void initData() {
+        Bundle arguments = getArguments();
+        if (arguments!=null){
+            meetingId = (int) arguments.get(Constants.KEY_MEETING_ID);
+        }
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
@@ -78,14 +87,15 @@ public class NoticeFragment extends ViewPagerBaseFragment {
         recyclerView.setAdapter(commonAdapter);
         pullToRefreshLayout.setCanRefresh(false);
     }
-
     @Override
     public void requestNetwork() {
         NoticeRequestBean noticeRequestBean = new NoticeRequestBean();
-        noticeRequestBean.setSystemId(4);
-        noticeRequestBean.setMeetingId(1);
-        noticeRequestBean.setGroupType(1);
-        noticeRequestBean.setNoticeType(0);
+        LoginResponse.Item item = GlobaVariable.getInstance().item;
+        noticeRequestBean.setSystemId(item.getSystemId());
+//        noticeRequestBean.setMeetingId(1);
+        noticeRequestBean.setMeetingId(meetingId);
+        noticeRequestBean.setGroupType(1);//1-V管家 2-V智会 3-VV群
+        noticeRequestBean.setNoticeType(0);// 0-全部  1-系统通知  2-会务广播 3-群内公告
         noticeRequestBean.setCurPage(CurPage++);
         noticeRequestBean.setPageSize(10);
 

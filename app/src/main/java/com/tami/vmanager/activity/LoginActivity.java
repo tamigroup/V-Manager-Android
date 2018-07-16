@@ -5,7 +5,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
@@ -213,7 +212,7 @@ public class LoginActivity extends BaseActivity {
                 LoginResponse response = (LoginResponse) res;
                 if (response.getCode() == 200) {
                     GlobaVariable.getInstance().item = response.getData();
-                    Login_JIM(response.getData().getMobile(), response.getData().getPassword());
+//                    Login_JIM(response.getData().getMobile(), response.getData().getPassword());
                     startActivity(new Intent(getApplicationContext(), HomeActivity.class));
 
                 }
@@ -237,7 +236,7 @@ public class LoginActivity extends BaseActivity {
                 if (responseCode == 0) {
 //                    Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "登录失败" + LoginDesc, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), "登录失败" + LoginDesc, Toast.LENGTH_SHORT).show();
                     Logger.e("responseCode=" + responseCode + " LoginDesc=" + LoginDesc);
                 }
             }

@@ -1,7 +1,5 @@
 package com.tami.vmanager.utils;
 
-import com.tami.vmanager.entity.ModifyMeetingRequest;
-
 /**
  * 常量类
  * Created by why on 2018/6/11.
@@ -89,6 +87,8 @@ public class Constants {
 
     //判断V智慧
     public static final String IS_VZHIHUI = "V_zhihui";
+    //实到人数
+    public static final String ACTUAL_NUM = "actual_num";
     //创建会议
     public static final int CREATE_MEETING = 0x15;
     //会议名称

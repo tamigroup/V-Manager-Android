@@ -70,11 +70,12 @@ public class PersonnelListActivity extends BaseActivity {
 
         networkBroker = new NetworkBroker(this);
 
+        //V智慧判断
         int fromPlat = GlobaVariable.getInstance().item.getFromPlat();
-        if (fromPlat == 1){
+        if (fromPlat == 1) {
             no_v_cl.setVisibility(View.GONE);
             personnel_group.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             no_v_cl.setVisibility(View.VISIBLE);
             personnel_group.setVisibility(View.GONE);
         }
@@ -92,7 +93,7 @@ public class PersonnelListActivity extends BaseActivity {
         mSourceDatas = new ArrayList<>();
         mDatas = new ArrayList<>();
         mHeaderDatas = new ArrayList<>();
-        List<String> hotCitys = new ArrayList<>();
+        List<IndexNameBean> hotCitys = new ArrayList<>();
         mHeaderDatas.add(new IndexHeaderBean(hotCitys, getString(R.string.vip_distinguished_guest), INDEX_STRING_TOP));
         mSourceDatas.addAll(mHeaderDatas);
         meetingId = getIntent().getIntExtra(Constants.KEY_MEETING_ID, 0);
@@ -118,11 +119,10 @@ public class PersonnelListActivity extends BaseActivity {
                         RecyclerView recyclerView = holder.getView(R.id.rvCity);
                         recyclerView.setLayoutManager(new LinearLayoutManager(PersonnelListActivity.this));
                         //解决左边距问题，复制布局
-                        recyclerView.setAdapter(new CommonAdapter<String>(PersonnelListActivity.this, R.layout.item_rec_car1, IndexHeaderBean.getCityList()) {
-
+                        recyclerView.setAdapter(new CommonAdapter<IndexNameBean>(PersonnelListActivity.this, R.layout.item_rec_car1, IndexHeaderBean.getCityList()) {
                             @Override
-                            protected void convert(ViewHolder holder, String name, int position) {
-                                holder.setText(R.id.item_tv, name);
+                            protected void convert(ViewHolder holder, IndexNameBean item, int position) {
+                                holder.setText(R.id.item_tv, item.getName());
                             }
                         });
                         break;
@@ -147,12 +147,11 @@ public class PersonnelListActivity extends BaseActivity {
     }
 
     private void requestData() {
-//        Map<String,String> vip_name = new HashMap<>();
-        List<String> vip_name = new ArrayList<>();
+        List<IndexNameBean> vip_name = new ArrayList<>();
         PersonnelListRequestBean personnelListRequestBean = new PersonnelListRequestBean();
-        //        personnelListRequestBean.setMeetingId(meetingId);
-        personnelListRequestBean.setMeetingId(46);
-        personnelListRequestBean.setType(0);
+        personnelListRequestBean.setMeetingId(meetingId);
+        //        personnelListRequestBean.setMeetingId(46);
+        personnelListRequestBean.setType(0);//type传0-全部   1-普通   2-VIP
         personnelListRequestBean.setName("");
         networkBroker.ask(personnelListRequestBean, (exl, res) -> {
             if (null != exl) {
@@ -164,17 +163,18 @@ public class PersonnelListActivity extends BaseActivity {
                     PersonnelListResponseBean.DataBean data = response.getData();
                     if (data != null) {
                         if (data.getDataList() != null && data.getDataList().size() > 0) {
-
-                            for (PersonnelListResponseBean.DataBean.DataListBean list:data.getDataList()) {
-                                if (list.getType() == 1){
-                                    vip_name.add(list.getName());
+                            for (PersonnelListResponseBean.DataBean.DataListBean list : data.getDataList()) {
+                                if (list.getType() == 1) {
+                                    PersonnelListResponseBean.DataBean.DataListBean dataListBean = new PersonnelListResponseBean.DataBean.DataListBean();
+                                    dataListBean.setName(list.getName());
+                                    vip_name.add(dataListBean);
                                 }
                             }
                             mDatas.addAll(data.getDataList());
-                            mIndexBar.getDataHelper().sortSourceDatas(mDatas);
+                            mIndexBar.getDataHelper().sortSourceDatas(this.mDatas);
                             commonAdapter.notifyDataSetChanged();
                             mHeaderAdapter.notifyDataSetChanged();
-                            mSourceDatas.addAll(mDatas);
+                            mSourceDatas.addAll(this.mDatas);
                             mIndexBar.setmSourceDatas(mSourceDatas).invalidate();
                             mDecoration.setmDatas(mSourceDatas);
 

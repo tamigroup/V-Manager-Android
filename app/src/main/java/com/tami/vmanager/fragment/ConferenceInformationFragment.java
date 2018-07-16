@@ -28,6 +28,7 @@ import java.util.List;
  */
 public class ConferenceInformationFragment extends ViewPagerBaseFragment {
 
+    private int actualNum;
     private int meetingId;
     private GetMeetingResponse.Item item;
     private TextView company_name;
@@ -48,9 +49,10 @@ public class ConferenceInformationFragment extends ViewPagerBaseFragment {
     }
 
     @SuppressLint("ValidFragment")
-    public ConferenceInformationFragment(int meetingId, GetMeetingResponse.Item item) {
+    public ConferenceInformationFragment(int meetingId, GetMeetingResponse.Item item, int actualNum) {
         this.meetingId = meetingId;
         this.item = item;
+        this.actualNum = actualNum;
     }
 
     @Override
@@ -89,8 +91,10 @@ public class ConferenceInformationFragment extends ViewPagerBaseFragment {
         meeting_reserve_number.setText(String.format(getResources().getString(R.string.predetermined_number), String.valueOf(item.estimateNum)));
         meeting_bottom_number.setText(String.format(getResources().getString(R.string.bottom_number), String.valueOf(item.minNum)));
 
+        //V智慧判断
         if (GlobaVariable.getInstance().item.getFromPlat() == 1) {
-            meeting_actual_number.setText(String.format(getResources().getString(R.string.actual_number), String.valueOf(item.actualNum)));
+//            meeting_actual_number.setText(String.format(getResources().getString(R.string.actual_number), String.valueOf(item.actualNum)));
+            meeting_actual_number.setText(String.format(getResources().getString(R.string.actual_number), String.valueOf(actualNum)));
         } else {
             meeting_actual_number.setText(String.format(getResources().getString(R.string.actual_number), "--"));
         }
@@ -109,14 +113,17 @@ public class ConferenceInformationFragment extends ViewPagerBaseFragment {
                 TextView item_time = holder.getView(R.id.item_time);
                 TextView item_name = holder.getView(R.id.item_name);
                 TextView item_sure = holder.getView(R.id.item_sure);
+                TextView item_day = holder.getView(R.id.item_day);
                 item_time.setText(TimeUtils.date2String(new Date(item.startOn), TimeUtils.DATE_HHMM_SLASH));
                 item_name.setText(item.meetingItemName);
+                item_day.setText(TimeUtils.date2String(new Date(item.startOn), TimeUtils.DATE_MMDD_SLASH));
                 item_sure.setText(getResources().getString(R.string.no_confirmed));
                 if (item.selectStatus != 0) {
                     set_text(item_time, R.color.color_333333, R.mipmap.time, true);
                     item_sure.setText(getResources().getString(R.string.confirmed));
                     set_text(item_sure, R.color.color_34DB8E, R.mipmap.icon_ok, false);
                     item_name.setTextColor(getResources().getColor(R.color.color_333333));
+                    item_day.setTextColor(getResources().getColor(R.color.color_333333));
                 }
             }
         };
@@ -142,8 +149,8 @@ public class ConferenceInformationFragment extends ViewPagerBaseFragment {
     public void requestNetwork() {
         networkBroker = new NetworkBroker(getActivity());
         GetMeetingItemsByMeetingIdRequest getMeetingItemsByMeetingIdRequest = new GetMeetingItemsByMeetingIdRequest();
-        //        getMeetingItemsByMeetingIdRequest.setMeetingId(meetingId);
-        getMeetingItemsByMeetingIdRequest.setMeetingId(1);
+        getMeetingItemsByMeetingIdRequest.setMeetingId(meetingId);
+        //        getMeetingItemsByMeetingIdRequest.setMeetingId(1);
         networkBroker.ask(getMeetingItemsByMeetingIdRequest, (ex1, res) -> {
             if (null != ex1) {
                 Logger.e(ex1.getMessage() + "-" + ex1);
@@ -171,6 +178,6 @@ public class ConferenceInformationFragment extends ViewPagerBaseFragment {
 
     @Override
     public void emptyObject() {
-
+        networkBroker.cancelAllRequests();
     }
 }

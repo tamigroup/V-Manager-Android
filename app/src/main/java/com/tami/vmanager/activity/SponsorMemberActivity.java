@@ -8,6 +8,7 @@ import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.entity.SponsorUserListRequestBean;
 import com.tami.vmanager.entity.SponsorUserListResponseBean;
 import com.tami.vmanager.http.NetworkBroker;
+import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -25,6 +26,7 @@ public class SponsorMemberActivity extends BaseActivity {
     private List<SponsorUserListResponseBean.DataBean.DataListBean> listData;
     private NetworkBroker networkBroker;
     private CommonAdapter<SponsorUserListResponseBean.DataBean.DataListBean> commonAdapter;
+    private int meetingId;
 
     @Override
     public boolean isTitle() {
@@ -40,6 +42,8 @@ public class SponsorMemberActivity extends BaseActivity {
     public void initView() {
         recyclerView = findViewById(R.id.recyc);
         networkBroker = new NetworkBroker(this);
+
+        meetingId = getIntent().getIntExtra(Constants.KEY_MEETING_ID, 0);
     }
 
     @Override
@@ -70,8 +74,8 @@ public class SponsorMemberActivity extends BaseActivity {
     @Override
     public void requestNetwork() {
         SponsorUserListRequestBean sponsorUserListRequestBean = new SponsorUserListRequestBean();
-        sponsorUserListRequestBean.setMeetingId(88);
-        //        sponsorUserListRequestBean.setMeetingId(meetingId);
+        //        sponsorUserListRequestBean.setMeetingId(88);
+        sponsorUserListRequestBean.setMeetingId(meetingId);
         networkBroker.ask(sponsorUserListRequestBean, (exl, res) -> {
             if (null != exl) {
                 Logger.d(exl.getMessage() + "-" + exl);
