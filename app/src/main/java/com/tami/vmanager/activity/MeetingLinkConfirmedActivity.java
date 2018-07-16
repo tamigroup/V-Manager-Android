@@ -163,7 +163,7 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
                 AppCompatImageView phone = holder.getView(R.id.mlc_phone);
                 AppCompatImageView delete_person = holder.getView(R.id.delete_person_);
                 delete_person.setOnClickListener((View v) -> {
-                    checkAddMeetingItemUser(position);
+                    checkAddMeetingItemUser(position, item.id);
                 });
                 phone.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -202,7 +202,7 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
         super.onClick(v);
         switch (v.getId()) {
             case R.id.mlc_add_the_person_in_charge:
-                checkAddMeetingItemUser(-1);
+                checkAddMeetingItemUser(-1,0);
                 break;
             case R.id.mlc_confirm_btn:
                 confirmEnterMeetingDialog.show();
@@ -295,7 +295,7 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
      *
      * @param index
      */
-    public void checkAddMeetingItemUser(int index) {
+    public void checkAddMeetingItemUser(int index, int userId) {
         CheckAddMeetingItemUserRequest camiur = new CheckAddMeetingItemUserRequest();
         LoginResponse.Item userItem = GlobaVariable.getInstance().item;
         if (userItem != null) {
@@ -317,7 +317,7 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
                         startActivityForResult(intent, Constants.ADD_PERSON_CHARGE);
                     } else {
                         //删除负责人功能
-                        deleteMeetingItemsUser(index);
+                        deleteMeetingItemsUser(index, userId);
                     }
                 } else {
                     showToast(response.getMessage());
@@ -335,12 +335,9 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
      *
      * @param index
      */
-    public void deleteMeetingItemsUser(int index) {
+    public void deleteMeetingItemsUser(int index, int userId) {
         DeleteMeetingItemsUserRequest dmiur = new DeleteMeetingItemsUserRequest();
-        LoginResponse.Item userItem = GlobaVariable.getInstance().item;
-        if (userItem != null) {
-            dmiur.setUserId(userItem.getId());
-        }
+        dmiur.setUserId(userId);
         dmiur.setMeetingItemSetId(item.meetingItemSetId);
         networkBroker.ask(dmiur, (ex1, res) -> {
             if (null != ex1) {
@@ -373,7 +370,7 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
             smisr.setUserId(userItem.getId());
         }
         smisr.setMeetingItemSetId(item.meetingItemSetId);
-        smisr.setStatus(switchbtn.isChecked() ? 2 : 1);
+        smisr.setStatus(switchbtn.isChecked() ? 1 : 2);
         networkBroker.ask(smisr, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);

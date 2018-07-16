@@ -5,10 +5,16 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+
+import com.qiniu.android.jpush.utils.StringUtils;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by why on 2018/6/11.
@@ -52,6 +58,7 @@ public class Utils {
 
     /**
      * 改变颜色
+     *
      * @param context
      * @param str
      * @param start
@@ -67,17 +74,17 @@ public class Utils {
 
     /**
      * convert px to its equivalent dp
-     *
+     * <p>
      * 将px转换为与之相等的dp
      */
     public static int px2dp(Context context, float pxValue) {
-        final float scale =  context.getResources().getDisplayMetrics().density;
+        final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
     }
 
     /**
      * convert dp to its equivalent px
-     *
+     * <p>
      * 将dp转换为与之相等的px
      */
     public static int dp2px(Context context, float dipValue) {
@@ -87,7 +94,7 @@ public class Utils {
 
     /**
      * convert px to its equivalent sp
-     *
+     * <p>
      * 将px转换为sp
      */
     public static int px2sp(Context context, float pxValue) {
@@ -97,7 +104,7 @@ public class Utils {
 
     /**
      * convert sp to its equivalent px
-     *
+     * <p>
      * 将sp转换为px
      */
     public static int sp2px(Context context, float spValue) {
@@ -107,6 +114,7 @@ public class Utils {
 
     /**
      * 显示软键盘，Dialog使用
+     *
      * @param activity 当前Activity
      */
     public static void showSoftInput(Activity activity) {
@@ -118,6 +126,7 @@ public class Utils {
 
     /**
      * 隐藏软键盘
+     *
      * @param activity 当前Activity
      */
     public static void hideSoftInput(Activity activity) {
@@ -125,6 +134,24 @@ public class Utils {
                 (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(
                 activity.getWindow().getDecorView().getWindowToken(), 0);
+    }
+
+    /**
+     * 手机号验证
+     *
+     * @param phone
+     * @return
+     */
+    public static boolean isPhone(String phone) {
+        String regex = "^((13[0-9])|(14[5,7,9])|(15([0-3]|[5-9]))|(17[0,1,3,5,6,7,8])|(18[0-9])|(19[8|9]))\\d{8}$";
+        if (phone.length() != 11) {
+            return false;
+        } else {
+            Pattern p = Pattern.compile(regex);
+            Matcher m = p.matcher(phone);
+            boolean isMatch = m.matches();
+            return isMatch;
+        }
     }
 
 }

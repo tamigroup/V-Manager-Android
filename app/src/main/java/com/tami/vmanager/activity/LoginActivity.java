@@ -1,6 +1,7 @@
 package com.tami.vmanager.activity;
 
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +20,7 @@ import com.tami.vmanager.http.HttpKey;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Logger;
+import com.tami.vmanager.utils.Utils;
 import com.tami.vmanager.utils.VerificationCode;
 
 import cn.jpush.im.android.api.JMessageClient;
@@ -196,6 +198,10 @@ public class LoginActivity extends BaseActivity {
      * 登陆
      */
     private void loginBtn() {
+        if (!isEmpty()) {
+            showToast(R.string.cell_phone_number_error);
+            return;
+        }
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setMobile(logoin_phone.getText().toString());
         if (getString(R.string.authentication_code_login).equals(authentication_code_login.getText())) {
@@ -227,6 +233,13 @@ public class LoginActivity extends BaseActivity {
         });
     }
 
+    private boolean isEmpty() {
+        if (TextUtils.isEmpty(logoin_phone.getText())) {
+            return false;
+        }
+        return Utils.isPhone(logoin_phone.getText().toString());
+    }
+
     /**
      * 绑定用户RegistrationId
      *
@@ -237,17 +250,17 @@ public class LoginActivity extends BaseActivity {
         SetUserRegistrationIdRequestBean setUserRegistrationIdRequestBean = new SetUserRegistrationIdRequestBean();
         setUserRegistrationIdRequestBean.setUserId(id);
         setUserRegistrationIdRequestBean.setRegistrationId(registrationID);
-        networkBroker.ask(setUserRegistrationIdRequestBean,(exl,res)->{
+        networkBroker.ask(setUserRegistrationIdRequestBean, (exl, res) -> {
             if (null != exl) {
                 Logger.d(exl.getMessage() + "-" + exl);
                 return;
             }
             try {
-                SetUserRegistrationIdResponseBean response =  (SetUserRegistrationIdResponseBean)res;
-                if (response.getCode() == 200){
+                SetUserRegistrationIdResponseBean response = (SetUserRegistrationIdResponseBean) res;
+                if (response.getCode() == 200) {
                     boolean data = response.isData();
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 

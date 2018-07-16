@@ -64,7 +64,7 @@
         android:layout_marginRight="@dimen/dp_20"
         android:hint="@string/please_input_password"
         android:inputType="textPassword"
-        android:maxLength="32"
+        android:maxLength="16"
         android:lines="1"
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/white"
