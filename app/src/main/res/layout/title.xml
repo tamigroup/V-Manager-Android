@@ -13,9 +13,9 @@
 
         <TextView style="@style/TitleNameStyle" />
 
-        <ImageView style="@style/titleLeftBtnStyle" />
+        <android.support.v7.widget.AppCompatImageView style="@style/titleLeftBtnStyle" />
 
-        <ImageView style="@style/titleRightBtnStyle"/>
+        <android.support.v7.widget.AppCompatImageView style="@style/titleRightBtnStyle"/>
 
         <TextView style="@style/titleRightTxtStyle"/>
     </android.support.constraint.ConstraintLayout>

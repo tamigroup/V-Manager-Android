@@ -9,10 +9,10 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatImageView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,8 +31,8 @@ public abstract class BaseActivity extends FragmentActivity implements IBaseActi
 
     private LayoutInflater layoutInflater;
     private TextView titleName;
-    private ImageView titleLeftBtn;
-    private ImageView titleRightBtn;
+    private AppCompatImageView titleLeftBtn;
+    private AppCompatImageView titleRightBtn;
     private TextView titleRightTxt;
     private ProgressDialog progressDialog;
     private boolean firstLoad = true;//只加载一次网络请求

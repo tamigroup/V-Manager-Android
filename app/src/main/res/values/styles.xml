@@ -43,21 +43,21 @@
 
     <style name="titleLeftBtnStyle">
         <item name="android:id">@id/titleLeftBtn</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">@dimen/dp_0</item>
+        <item name="android:layout_width">@dimen/dp_44</item>
         <item name="layout_constraintBottom_toBottomOf">parent</item>
         <item name="layout_constraintLeft_toLeftOf">parent</item>
+        <item name="android:scaleType">center</item>
         <item name="layout_constraintTop_toTopOf">parent</item>
-        <item name="android:paddingLeft">@dimen/dp_16</item>
-        <item name="android:paddingRight">@dimen/dp_16</item>
         <item name="android:src">@mipmap/return_btn</item>
     </style>
 
     <style name="titleRightBtnStyle">
         <item name="android:id">@id/titleRightBtn</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_marginRight">@dimen/dp_16</item>
+        <item name="android:layout_height">@dimen/dp_0</item>
+        <item name="android:layout_width">@dimen/dp_44</item>
+        <item name="android:scaleType">center</item>
+        <item name="android:layout_marginRight">@dimen/dp_10</item>
         <item name="layout_constraintBottom_toBottomOf">parent</item>
         <item name="layout_constraintRight_toRightOf">parent</item>
         <item name="layout_constraintTop_toTopOf">parent</item>

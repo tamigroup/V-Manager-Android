@@ -353,5 +353,6 @@
     <string name="please_confirm_service_process_completed">请确认服务流程已完成</string>
     <string name="conference_list">会议列表</string>
     <string name="phone_no_register">此手机号未注册</string>
+    <string name="no_eo_single">暂无eo单</string>
 
 </resources>

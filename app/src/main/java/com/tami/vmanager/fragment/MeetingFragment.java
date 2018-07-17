@@ -12,6 +12,8 @@ import com.tami.vmanager.R;
 import com.tami.vmanager.activity.SearchActivity;
 import com.tami.vmanager.adapter.GuidePageFragmentPagerAdapter;
 import com.tami.vmanager.base.BaseFragment;
+import com.tami.vmanager.entity.LoginResponse;
+import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.view.NoScrollViewPager;
@@ -85,9 +87,13 @@ public class MeetingFragment extends BaseFragment {
         //隐藏返回按钮
         setTitleLeftBtnVisibility(View.GONE);
         //设置Title名称
-        setTitleName(R.string.v_housekeeper);
+//        setTitleName(R.string.v_housekeeper);
         //设置右边功能按钮图片
         setTitleRightBtn(R.mipmap.home_search);
+        LoginResponse.Item item = GlobaVariable.getInstance().item;
+        if (item != null) {
+            setTitleName(item.getSystemName());
+        }
 
         //添充数据
         arrayFragment = new Fragment[meetingType.length];
@@ -120,8 +126,8 @@ public class MeetingFragment extends BaseFragment {
      * @param index
      */
     private void addFragment(Fragment fragment, int index) {
-        Logger.d("addFragment ->index:"+index);
-        Logger.d("addFragment ->meetingType:"+meetingType[index]);
+        Logger.d("addFragment ->index:" + index);
+        Logger.d("addFragment ->meetingType:" + meetingType[index]);
         Bundle bundle = new Bundle();
         bundle.putInt(Constants.MEETING_TYPE, meetingType[index]);
         fragment.setArguments(bundle);

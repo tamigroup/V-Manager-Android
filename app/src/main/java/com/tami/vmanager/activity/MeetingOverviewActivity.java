@@ -215,11 +215,13 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
         switch (v.getId()) {
             case R.id.meeting_overview_look_eo:
                 //查看EO单
-                Intent lookEOIntent = new Intent(getApplicationContext(), LookEOActivity.class);
                 if (meetingInfo != null) {
+                    Intent lookEOIntent = new Intent(getApplicationContext(), LookEOActivity.class);
                     lookEOIntent.putExtra(Constants.KEY_EO_URL, meetingInfo.eoUrl);
+                    startActivity(lookEOIntent);
+                } else {
+                    showToast(getString(R.string.no_eo_single));
                 }
-                startActivity(lookEOIntent);
                 break;
             case R.id.meeting_overview_actual_number:
                 //实到人数
@@ -340,6 +342,10 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
                 initUITxt(actualNumber, String.valueOf(item.actualNum), R.string.actual_number, R.color.color_FF5657);
             } else {
                 initUITxt(actualNumber, "--", R.string.actual_number, R.color.color_FF5657);
+            }
+            if (!TextUtils.isEmpty(item.eoUrl)) {
+                lookEO.setText(getString(R.string.no_eo_single));
+                lookEO.setEnabled(false);
             }
         }
     }

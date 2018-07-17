@@ -135,12 +135,13 @@ public class HomeFragment extends BaseFragment {
         //隐藏返回按钮
         setTitleLeftBtnVisibility(View.GONE);
         //设置Title名称
-        setTitleName(R.string.v_housekeeper);
+//        setTitleName(R.string.v_housekeeper);
         //设置右边功能按钮图片
         setTitleRightBtn(R.mipmap.home_search);
 
         LoginResponse.Item item = GlobaVariable.getInstance().item;
         if (item != null) {
+            setTitleName(item.getSystemName());
             List<LoginResponse.Item.UserRole> roleList = item.getUserRoleList();
             if (roleList != null && roleList.size() > 0) {
                 if (roleList.get(0).roleId == 2 || roleList.get(0).roleId == 11) {

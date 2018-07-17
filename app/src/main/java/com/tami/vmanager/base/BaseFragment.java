@@ -8,11 +8,11 @@ import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatImageView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,8 +27,8 @@ public abstract class BaseFragment extends Fragment implements IBaseFragment, Vi
 
     public View view;
     private TextView titleName;
-    private ImageView titleLeftBtn;
-    private ImageView titleRightBtn;
+    private AppCompatImageView titleLeftBtn;
+    private AppCompatImageView titleRightBtn;
     private TextView titleRightTxt;
     private ProgressDialog progressDialog;
     private boolean firstLoad = true;//只加载一次网络请求
