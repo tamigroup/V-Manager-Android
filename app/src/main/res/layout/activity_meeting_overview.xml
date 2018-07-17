@@ -18,6 +18,7 @@
         android:layout_height="@dimen/dp_50"
         android:background="@color/color_FF5657"
         android:text="@string/get_into_meeting"
+        android:visibility="gone"
         android:textColor="@android:color/white"
         android:textSize="@dimen/sp_16"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -132,6 +133,7 @@
             <!--悬浮的部分-->
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/meeting_overview_xuanfu_layout"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_45"
                 android:background="@android:color/white">
@@ -164,6 +166,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/dp_20"
                     android:text="@string/editor"
+                    android:visibility="gone"
                     android:textColor="@color/color_4884D9"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/meeting_overview_suspension_step"
@@ -203,6 +206,7 @@
                 android:layout_width="@dimen/dp_0"
                 android:layout_height="@dimen/dp_0"
                 android:background="@android:color/white"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -211,6 +215,7 @@
             <TextView
                 android:id="@+id/please_create_conference"
                 android:layout_width="@dimen/dp_0"
+                android:visibility="gone"
                 android:layout_height="@dimen/dp_0"
                 android:layout_marginBottom="110dp"
                 android:gravity="center"

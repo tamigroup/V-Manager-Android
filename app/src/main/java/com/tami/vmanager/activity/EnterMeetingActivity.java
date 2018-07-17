@@ -12,6 +12,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -276,6 +277,11 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
                 initUITxt(actualNumber, String.valueOf(item.actualNum), R.string.actual_number, R.color.color_FF5657);
             } else {
                 initUITxt(actualNumber, "--", R.string.actual_number, R.color.color_FF5657);
+            }
+
+            if (TextUtils.isEmpty(item.eoUrl)) {
+                lookEO.setText(getString(R.string.no_eo_single));
+                lookEO.setEnabled(false);
             }
         }
     }

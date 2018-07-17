@@ -50,6 +50,7 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
     private TextView full_name;//姓名
     private TextView position;//部门-职务
     private TextView my_creation;//我的创建
+    private View lineView;
     private TextView account_settings;//帐号设置
     private BottomSheetDialog mBottomSheetDialog;
 
@@ -87,6 +88,7 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
         full_name = findViewById(R.id.personal_center_full_name);
         position = findViewById(R.id.personal_center_position);
         my_creation = findViewById(R.id.personal_center_my_creation);
+        lineView = findViewById(R.id.fpc_line);
         account_settings = findViewById(R.id.personal_center_account_settings);
     }
 
@@ -109,10 +111,22 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
             if (!TextUtils.isEmpty(item.getIconUrl())) {
                 Picasso.get().load(item.getIconUrl()).into(avatar_image);
             }
-            //            else{
-            //                String imageUrl = "http://img.tukuchina.cn/images/front/v/bd/c8/235563103124.jpg";
-            //                Picasso.get().load(imageUrl).into(avatar_image);
-            //            }
+            List<LoginResponse.Item.UserRole> roleList = item.getUserRoleList();
+            if (roleList != null && roleList.size() > 0) {
+                boolean visibility = false;
+                for (LoginResponse.Item.UserRole userRole : roleList) {
+                    if (userRole.roleId == 2 || userRole.roleId == 11) {
+                        visibility = true;
+                        break;
+                    } else {
+                        visibility = false;
+                    }
+                }
+                if (visibility) {
+                    my_creation.setVisibility(View.VISIBLE);
+                    lineView.setVisibility(View.VISIBLE);
+                }
+            }
         }
     }
 

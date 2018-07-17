@@ -73,12 +73,15 @@
             android:drawableRight="@mipmap/right_triangle"
             android:gravity="center_vertical"
             android:text="@string/my_creation"
+            android:visibility="gone"
             android:textColor="@color/color_303030"
             android:textSize="@dimen/sp_14" />
 
         <View
+            android:id="@+id/fpc_line"
             android:layout_width="match_parent"
             android:layout_height="1px"
+            android:visibility="gone"
             android:background="@color/color_EAEAEA" />
 
         <TextView

@@ -148,16 +148,6 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
         setTitleName(R.string.meeting_ganlan);
         initListView();
 
-        LoginResponse.Item userItem = GlobaVariable.getInstance().item;
-        if (userItem != null) {
-            List<LoginResponse.Item.UserRole> userRoleList = userItem.getUserRoleList();
-            if (userRoleList != null && userRoleList.size() > 0) {
-                if (userRoleList.get(0).roleId != 2 && userRoleList.get(0).roleId != 11) {
-                    editBtn.setVisibility(View.GONE);
-                }
-            }
-        }
-
         recyclerView.setVisibility(View.VISIBLE);
 
         networkBroker = new NetworkBroker(this);
@@ -343,7 +333,7 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
             } else {
                 initUITxt(actualNumber, "--", R.string.actual_number, R.color.color_FF5657);
             }
-            if (!TextUtils.isEmpty(item.eoUrl)) {
+            if (TextUtils.isEmpty(item.eoUrl)) {
                 lookEO.setText(getString(R.string.no_eo_single));
                 lookEO.setEnabled(false);
             }
@@ -442,15 +432,9 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
                         }
                         listData.addAll(array.dataList);
                         adapter.notifyDataSetChanged();
-                        pleaseCreateConference.setVisibility(View.GONE);
-                        xufuLayout.setVisibility(View.VISIBLE);
-                        recyclerView.setVisibility(View.VISIBLE);
-                        functionBtn.setText(getString(R.string.get_into_meeting));
+                        isCurrentUser(true);
                     } else {
-                        xufuLayout.setVisibility(View.GONE);
-                        recyclerView.setVisibility(View.GONE);
-                        pleaseCreateConference.setVisibility(View.VISIBLE);
-                        functionBtn.setText(getString(R.string.create_process));
+                        isCurrentUser(false);
                     }
                 }
             } catch (Exception e) {
@@ -458,6 +442,48 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
             }
 
         });
+    }
+
+    /**
+     * 判断是否是当前用户
+     */
+    private void isCurrentUser(boolean whetherIsFlow) {
+        //根据是否有流程显示布局
+        if (whetherIsFlow) {
+            pleaseCreateConference.setVisibility(View.GONE);
+            xufuLayout.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.VISIBLE);
+            functionBtn.setText(getString(R.string.get_into_meeting));
+        } else {
+            xufuLayout.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.GONE);
+            pleaseCreateConference.setVisibility(View.VISIBLE);
+            functionBtn.setText(getString(R.string.create_process));
+        }
+        //判断当前用户的权限
+        LoginResponse.Item userItem = GlobaVariable.getInstance().item;
+        if (userItem != null) {
+            List<LoginResponse.Item.UserRole> userRoleList = userItem.getUserRoleList();
+            if (userRoleList != null && userRoleList.size() > 0) {
+                boolean visibility = false;
+                for (LoginResponse.Item.UserRole userRole : userRoleList) {
+                    if (meetingInfo.saleUserId == userRole.userId) {
+                        visibility = true;
+                        break;
+                    }
+                }
+                //当前用户不是创建者
+                if (!visibility) {
+                    //有流程隐藏编辑按钮没有流程隐藏创建流程按钮
+                    if (whetherIsFlow) {
+                        functionBtn.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    editBtn.setVisibility(View.VISIBLE);
+                    functionBtn.setVisibility(View.VISIBLE);
+                }
+            }
+        }
     }
 
     @Override

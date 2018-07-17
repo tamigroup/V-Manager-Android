@@ -2,6 +2,7 @@ package com.tami.vmanager.activity;
 
 import android.content.Intent;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +19,7 @@ import com.tami.vmanager.entity.SetUserRegistrationIdRequestBean;
 import com.tami.vmanager.entity.SetUserRegistrationIdResponseBean;
 import com.tami.vmanager.http.HttpKey;
 import com.tami.vmanager.http.NetworkBroker;
+import com.tami.vmanager.manager.ActivityManager;
 import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.Utils;
@@ -301,5 +303,16 @@ public class LoginActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            ActivityManager.getInstance().finishAllActivity();
+            ActivityManager.getInstance().AppExit(getApplicationContext());
+            return false;
+        } else {
+            return super.onKeyDown(keyCode, event);
+        }
     }
 }

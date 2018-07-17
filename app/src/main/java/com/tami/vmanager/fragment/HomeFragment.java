@@ -144,7 +144,16 @@ public class HomeFragment extends BaseFragment {
             setTitleName(item.getSystemName());
             List<LoginResponse.Item.UserRole> roleList = item.getUserRoleList();
             if (roleList != null && roleList.size() > 0) {
-                if (roleList.get(0).roleId == 2 || roleList.get(0).roleId == 11) {
+                boolean visibility = false;
+                for (LoginResponse.Item.UserRole userRole : roleList) {
+                    if (userRole.roleId == 2 || userRole.roleId == 11) {
+                        visibility = true;
+                        break;
+                    } else {
+                        visibility = false;
+                    }
+                }
+                if (visibility) {
                     createMeeting.setVisibility(View.VISIBLE);
                 } else {
                     createMeeting.setVisibility(View.GONE);
