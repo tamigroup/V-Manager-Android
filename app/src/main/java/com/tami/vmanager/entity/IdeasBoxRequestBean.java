@@ -12,11 +12,21 @@ public class IdeasBoxRequestBean extends MobileMessage implements Serializable {
 
     /**
      * meetingId : 1     -------   会议ID
+     * flag: 1 --酒店 2 -- 会议
      * type : 2          --------  2-举办方  3-参会方   0-取全部
      */
 
     private String meetingId;
     private int type;
+    private int flag;
+
+    public int getFlag() {
+        return flag;
+    }
+
+    public void setFlag(int flag) {
+        this.flag = flag;
+    }
 
     public String getMeetingId() {
         return meetingId;

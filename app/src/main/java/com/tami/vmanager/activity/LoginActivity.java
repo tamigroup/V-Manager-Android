@@ -123,6 +123,19 @@ public class LoginActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.get_verification_code:
+//                new CountDownTimer(60000, 1000) {
+//
+//                    @Override
+//                    public void onTick(long millisUntilFinished) {
+//                        showToast("您的操作过于频繁，请稍后重试");
+//                    }
+//
+//                    @Override
+//                    public void onFinish() {
+//                        Log.e("tag", "结束");
+//                    }
+//                }.start();
+
                 getVerificationCode();
                 break;
             case R.id.login_btn:
@@ -214,6 +227,7 @@ public class LoginActivity extends BaseActivity {
         //        loginRequest.setFlag(String.valueOf(2));
         networkBroker.ask(loginRequest, (ex1, res) -> {
             if (null != ex1) {
+                showToast(R.string.phone_no_register);
                 Logger.d(ex1.getMessage() + "-" + ex1);
                 return;
             }
@@ -275,7 +289,7 @@ public class LoginActivity extends BaseActivity {
      * @param password 密码
      */
     private void Login_JIM(String username, String password) {
-//        Logger.e("username=" + username + " password=" + password);
+        //        Logger.e("username=" + username + " password=" + password);
         JMessageClient.login(username, "111111", new BasicCallback() {
             @Override
             public void gotResult(int responseCode, String LoginDesc) {
