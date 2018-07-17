@@ -510,4 +510,10 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
     public void getMeetingFlowItem(GetMeetingItemsByMeetingIdResponse.Array.Item item) {
         isCanOperation(item);
     }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        getMeetingItemsByMeetingId();
+    }
 }

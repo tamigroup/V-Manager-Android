@@ -667,11 +667,17 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
         Calendar selectedDate = Calendar.getInstance();
         if (date != null) {
             selectedDate.setTime(date);
+        }else{
+            selectedDate.set(Calendar.HOUR_OF_DAY, 00);//时
+            selectedDate.set(Calendar.MINUTE, 00);//分
+            selectedDate.set(Calendar.SECOND, 00);//秒
         }
-        final Calendar startDate = Calendar.getInstance();
-        final Calendar endDate = Calendar.getInstance();
-//        startDate.set(2018, 0, 1);
-        endDate.set(2020, 11, 31);
+        Calendar startDate = Calendar.getInstance();
+        startDate.set(Calendar.HOUR_OF_DAY, 00);//时
+        startDate.set(Calendar.MINUTE, 00);//分
+        startDate.set(Calendar.SECOND, 00);//秒
+        Calendar endDate = Calendar.getInstance();
+        endDate.set(2030, 11, 31, 00, 00, 00);
         TimePickerView pvTime = new TimePickerBuilder(this, (Date selectDate, View v) -> {
             if (dataFlag) {
                 recordStartDate = selectDate;
@@ -724,7 +730,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
     private void createMeetingRequest(String eoUrl) {
         CreateMeetingRequest cmr = new CreateMeetingRequest();
         LoginResponse.Item item = GlobaVariable.getInstance().item;
-        if(item!=null){
+        if (item != null) {
             cmr.setCreateMeetingUserId(String.valueOf(item.getId()));
             cmr.setSystemId(item.getSystemId());
         }
