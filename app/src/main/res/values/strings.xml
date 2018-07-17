@@ -243,7 +243,7 @@
     <string name="adding_custom_processes">添加自定义流程</string>
     <string name="please_enter_process_title">请输入流程标题</string>
 
-    <string name="word_count">%d/15</string>
+    <string name="word_count">%d/25</string>
 
     <string name="please_seting_listener">请设置监听</string>
     <string name="my_create">我的创建</string>
@@ -360,5 +360,7 @@
     <string name="code_fail">输入的验证码错误!</string>
     <string name="no_eo_single">暂无eo单</string>
     <string name="top_display">置顶显示</string>
+
+    <string name="word_count_500">%d/500</string>
 
 </resources>

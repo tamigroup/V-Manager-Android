@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
@@ -27,6 +28,7 @@ public class VIPPersonageIntroductionActivity extends BaseActivity implements Te
 
     private EditText avpi_name;
     private EditText avpi_introduction;
+    private TextView wordCount;
     // 最多可输入文本数
     private final int num = 500;
     // 输入框现有文本
@@ -58,6 +60,7 @@ public class VIPPersonageIntroductionActivity extends BaseActivity implements Te
         avpi_name = findViewById(R.id.avpi_name);
         avpi_introduction = findViewById(R.id.avpi_introduction);
         avpi_submission = findViewById(R.id.avpi_submission);
+        wordCount = findViewById(R.id.avpi_word);
     }
 
     @Override
@@ -76,6 +79,8 @@ public class VIPPersonageIntroductionActivity extends BaseActivity implements Te
         setTitleName(R.string.add_vip_personage_introduction);
         networkBroker = new NetworkBroker(this);
         networkBroker.setCancelTag(getTAG());
+
+        setWords(0);
     }
 
     @Override
@@ -102,6 +107,7 @@ public class VIPPersonageIntroductionActivity extends BaseActivity implements Te
     @Override
     public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
         temp = charSequence;
+        setWords(charSequence.length());
     }
 
     @Override
@@ -177,5 +183,9 @@ public class VIPPersonageIntroductionActivity extends BaseActivity implements Te
         intent.putExtra(Constants.RESULT_VIP, item);
         setResult(Constants.CREATE_MEETING_VIP, intent);
         finish();
+    }
+
+    private void setWords(int number) {
+        wordCount.setText(getString(R.string.word_count_500, number));
     }
 }

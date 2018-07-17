@@ -29,6 +29,7 @@
         android:gravity="center_vertical|right"
         android:hint="@string/please_enter_name"
         android:inputType="text"
+        android:maxLength="50"
         android:paddingRight="@dimen/dp_17"
         android:textColor="@color/color_333333"
         android:textColorHint="@color/color_888888"
@@ -56,19 +57,35 @@
     <EditText
         android:id="@+id/avpi_introduction"
         android:layout_width="@dimen/dp_0"
-        android:layout_height="260dp"
+        android:layout_height="wrap_content"
         android:background="@android:color/white"
         android:gravity="top|left"
         android:hint="@string/please_enter_character_introduction"
-        android:inputType="text"
+        android:inputType="textMultiLine"
+        android:maxHeight="310dp"
+        android:minHeight="@dimen/dp_100"
         android:paddingBottom="@dimen/dp_10"
         android:paddingLeft="@dimen/dp_16"
+        android:paddingRight="@dimen/dp_16"
         android:textColor="@color/color_333333"
         android:textColorHint="@color/color_888888"
         android:textSize="@dimen/sp_16"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/avpi_introduction_hint" />
+
+    <TextView
+        android:id="@+id/avpi_word"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="@dimen/dp_34"
+        android:background="@android:color/white"
+        android:gravity="center_vertical|right"
+        android:paddingRight="@dimen/dp_21"
+        android:textColor="@color/color_888888"
+        android:textSize="@dimen/sp_14"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/avpi_introduction" />
 
     <Button
         android:id="@+id/avpi_submission"

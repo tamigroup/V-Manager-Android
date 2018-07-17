@@ -24,7 +24,7 @@ public class ServiceFlowDialog extends Dialog implements View.OnClickListener, T
     private EditText flowNameView;
     private TextView wordCount;
     // 最多可输入文本数
-    private final int num = 15;
+    private final int num = 25;
     // 输入框现有文本
     private CharSequence temp;
     // 现有文本启始位置

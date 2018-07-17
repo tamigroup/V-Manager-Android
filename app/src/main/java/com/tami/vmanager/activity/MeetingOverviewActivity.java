@@ -466,10 +466,12 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
             List<LoginResponse.Item.UserRole> userRoleList = userItem.getUserRoleList();
             if (userRoleList != null && userRoleList.size() > 0) {
                 boolean visibility = false;
-                for (LoginResponse.Item.UserRole userRole : userRoleList) {
-                    if (meetingInfo.saleUserId == userRole.userId) {
-                        visibility = true;
-                        break;
+                if (meetingInfo != null) {
+                    for (LoginResponse.Item.UserRole userRole : userRoleList) {
+                        if (userRole != null && meetingInfo.saleUserId == userRole.userId) {
+                            visibility = true;
+                            break;
+                        }
                     }
                 }
                 //当前用户不是创建者

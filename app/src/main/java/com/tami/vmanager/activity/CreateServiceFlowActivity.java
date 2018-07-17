@@ -211,6 +211,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
                 break;
             case R.id.acsf_save_btn:
                 //保存
+                saveBtn.setEnabled(false);
                 createUserMeetingItem(false);
                 break;
             case R.id.fcsf_add_process:
@@ -721,6 +722,10 @@ public class CreateServiceFlowActivity extends BaseActivity {
      * 保存流程节点
      */
     private void createUserMeetingItem(final boolean flag) {
+        if (!isEmpty()) {
+            saveBtn.setEnabled(true);
+            return;
+        }
         SetMeetingItemsRequest smir = new SetMeetingItemsRequest();
         smir.setMeetingId(meetingId);
         if (!TextUtils.isEmpty(dateSelected.getText())) {
@@ -731,6 +736,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
             networkBroker.ask(smir, (ex1, res) -> {
                 if (null != ex1) {
                     Logger.d(ex1.getMessage() + "-" + ex1);
+                    saveBtn.setEnabled(true);
                     return;
                 }
                 try {
@@ -740,7 +746,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
                             showToast(getString(R.string.save_flow, getString(R.string.success)));
                             if (flag) {
                                 showPopWindow(dateSelected);
-                            }else{
+                            } else {
                                 setResult(Constants.CREATE_FLOW);
                                 finish();
                             }
@@ -751,6 +757,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                saveBtn.setEnabled(true);
             });
         } else {
             showToast(getString(R.string.select_process_node_least));
@@ -765,13 +772,11 @@ public class CreateServiceFlowActivity extends BaseActivity {
     private String getMeetingJson() {
         List<MeetingItemsJsonEntity> jsonList = new ArrayList<>();
         for (GetMeetingItemsResponse.Array.Item item : topData) {
-            if (item.isSelected) {
-                if (item.startOn > 0) {
-                    MeetingItemsJsonEntity mie = new MeetingItemsJsonEntity();
-                    mie.meetingItemId = item.id;
-                    mie.startOn = item.startOn;
-                    jsonList.add(mie);
-                }
+            if (item.isSelected && item.startOn > 0) {
+                MeetingItemsJsonEntity mie = new MeetingItemsJsonEntity();
+                mie.meetingItemId = item.id;
+                mie.startOn = item.startOn;
+                jsonList.add(mie);
             }
         }
         String json = null;
@@ -779,5 +784,20 @@ public class CreateServiceFlowActivity extends BaseActivity {
             json = new Gson().toJson(jsonList);
         }
         return json;
+    }
+
+    /**
+     * 验证页面数据
+     *
+     * @return
+     */
+    private boolean isEmpty() {
+        for (GetMeetingItemsResponse.Array.Item item : topData) {
+            if (item.isSelected && item.startOn == 0) {
+                showToast(getString(R.string.please_choose_node_time, item.name));
+                return false;
+            }
+        }
+        return true;
     }
 }

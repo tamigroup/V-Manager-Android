@@ -146,11 +146,13 @@ public class HomeFragment extends BaseFragment {
             if (roleList != null && roleList.size() > 0) {
                 boolean visibility = false;
                 for (LoginResponse.Item.UserRole userRole : roleList) {
-                    if (userRole.roleId == 2 || userRole.roleId == 11) {
-                        visibility = true;
-                        break;
-                    } else {
-                        visibility = false;
+                    if (userRole != null) {
+                        if (userRole.roleId == 2 || userRole.roleId == 11) {
+                            visibility = true;
+                            break;
+                        } else {
+                            visibility = false;
+                        }
                     }
                 }
                 if (visibility) {

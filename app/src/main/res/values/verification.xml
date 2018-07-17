@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="cell_phone_number_error">手机号格式错误</string>
+
+    <string name="please_enter_correct_">请输入正确的%s</string>
+    <string name="please_enter_">请输入%s</string>
+    <string name="sponsor_name">主办方名称</string>
+    <string name="please_choose_">请选择%s</string>
+    <string name="yudingrenshu">预定人数</string>
+    <string name="baodingrenshu">保底人数</string>
+
+    <string name="please_choose_node_time">请选择%s时间</string>
 </resources>

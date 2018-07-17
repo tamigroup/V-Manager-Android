@@ -426,6 +426,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
      * 保存按钮
      */
     private void save() {
+        saveBtn.setEnabled(false);
         createMeeting();
     }
 
@@ -667,7 +668,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
         Calendar selectedDate = Calendar.getInstance();
         if (date != null) {
             selectedDate.setTime(date);
-        }else{
+        } else {
             selectedDate.set(Calendar.HOUR_OF_DAY, 00);//时
             selectedDate.set(Calendar.MINUTE, 00);//分
             selectedDate.set(Calendar.SECOND, 00);//秒
@@ -685,7 +686,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
                 recordEndDate = selectDate;
             }
             view.setText(TimeUtils.date2String(selectDate));
-        }).setType(new boolean[]{true, true, true, true, true, true})
+        }).setType(new boolean[]{true, true, true, true, true, false})
                 .setDate(selectedDate)// 如果不设置的话，默认是系统时间*/
                 .setRangDate(startDate, endDate)//起始终止年月日设定
                 .isDialog(true)//是否显示为对话框样式
@@ -715,6 +716,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
      */
     private void createMeeting() {
         if (!isEmpty()) {
+            saveBtn.setEnabled(true);
             return;
         }
         if (!TextUtils.isEmpty(filePath)) {
@@ -742,7 +744,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
         cmr.setEndDate(TimeUtils.date2String(recordEndDate));
         cmr.setEstimateNum(estimatedNumberPeople.getText().toString());
         cmr.setMinNum(bottomNumberPeople.getText().toString());
-        cmr.setIsImportant(String.valueOf(meetingLevelIndex));
+        cmr.setIsImportant(String.valueOf(meetingLevelIndex == 0 ? 10 : meetingLevel));
         if (receptionistListData != null && receptionistListData.size() > 1) {
             cmr.setVipReceiveUserId(getStringIds());
         }
@@ -757,6 +759,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);
                 showToast(getString(R.string.create_meeting_toast, getString(R.string.failure)));
+                saveBtn.setEnabled(true);
                 return;
             }
             try {
@@ -774,6 +777,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
                 showToast(getString(R.string.create_meeting_toast, getString(R.string.failure)));
                 e.printStackTrace();
             }
+            saveBtn.setEnabled(true);
         });
     }
 
@@ -816,18 +820,39 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
      * @return
      */
     private boolean isEmpty() {
-        if (TextUtils.isEmpty(nameView.getText())
-                || TextUtils.isEmpty(sponsorView.getText())
-                || addressId == -1
-                || recordStartDate == null
-                || recordEndDate == null
-//                || TextUtils.isEmpty(contractAmountView.getText())
-//                || TextUtils.isEmpty(receivedAmountView.getText())
-                || TextUtils.isEmpty(estimatedNumberPeople.getText())
-                || TextUtils.isEmpty(bottomNumberPeople.getText())
-                ) {
-            showToast(getString(R.string.must_add_item_not_empty));
+        if (TextUtils.isEmpty(nameView.getText())) {
+            showToast(getString(R.string.please_enter_correct_, getString(R.string.meeting_name)));
             return false;
+        }
+        if (nameView.getText().length() < 5) {
+            showToast(getString(R.string.please_enter_, getString(R.string.meeting_name)));
+            return false;
+        }
+        if (TextUtils.isEmpty(sponsorView.getText())) {
+            showToast(getString(R.string.please_enter_correct_, getString(R.string.sponsor_name)));
+            return false;
+        }
+        if (sponsorView.getText().length() < 5) {
+            showToast(getString(R.string.please_enter_, getString(R.string.sponsor_name)));
+            return false;
+        }
+        if (addressId == -1) {
+            showToast(getString(R.string.please_choose_, getString(R.string.meeting_place)));
+            return false;
+        }
+        if (recordStartDate == null) {
+            showToast(getString(R.string.please_choose_, getString(R.string.start_time)));
+            return false;
+        }
+        if (recordEndDate == null) {
+            showToast(getString(R.string.please_choose_, getString(R.string.end_time)));
+            return false;
+        }
+        if (TextUtils.isEmpty(estimatedNumberPeople.getText())) {
+            showToast(getString(R.string.please_enter_, getString(R.string.yudingrenshu)));
+        }
+        if (TextUtils.isEmpty(bottomNumberPeople.getText())) {
+            showToast(getString(R.string.please_enter_, getString(R.string.baodingrenshu)));
         }
         return true;
     }
@@ -844,20 +869,24 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
             networkBroker.uploadImage(fmm, (ex1, res) -> {
                 if (null != ex1) {
                     Logger.d(ex1.getMessage() + "-" + ex1);
+                    saveBtn.setEnabled(true);
                     return;
                 }
                 try {
                     UploadImageResponse response = (UploadImageResponse) res;
-                    if (response.getCode() == 200) {
-                        if (response.data != null) {
-                            UploadImageResponse.Item item = response.data;
-                            if (item.dataList != null && item.dataList.size() > 0) {
-                                Logger.d("上传图片返回地址：" + item.dataList.get(0));
-                                createMeetingRequest(item.dataList.get(0));
-                            }
+                    if (response.getCode() == 200 && response.data != null) {
+                        UploadImageResponse.Item item = response.data;
+                        if (item.dataList != null && item.dataList.size() > 0) {
+                            Logger.d("上传图片返回地址：" + item.dataList.get(0));
+                            createMeetingRequest(item.dataList.get(0));
+                        }else{
+                            saveBtn.setEnabled(true);
                         }
+                    }else{
+                        saveBtn.setEnabled(true);
                     }
                 } catch (Exception e) {
+                    saveBtn.setEnabled(true);
                     e.printStackTrace();
                 }
             });
