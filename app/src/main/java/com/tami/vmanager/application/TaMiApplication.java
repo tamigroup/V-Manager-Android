@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
+import com.readystatesoftware.chuck.ChuckInterceptor;
 import com.tami.vmanager.BuildConfig;
 import com.tami.vmanager.utils.Constants;
 import com.tencent.bugly.Bugly;
@@ -65,6 +66,7 @@ public class TaMiApplication extends Application {
 
     private void initOkHttp() {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(new ChuckInterceptor(this))
                 .addInterceptor(new LoggerInterceptor(Constants.LOG_TAG, true))
                 .connectTimeout(30000L, TimeUnit.MILLISECONDS)
                 .readTimeout(30000L, TimeUnit.MILLISECONDS)

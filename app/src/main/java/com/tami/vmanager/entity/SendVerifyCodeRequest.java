@@ -1,8 +1,5 @@
 package com.tami.vmanager.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.tami.vmanager.http.HttpKey;
-
 import java.io.Serializable;
 
 
@@ -12,14 +9,9 @@ import java.io.Serializable;
  * @author 代码生成器v1.0
  *
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class SendVerifyCodeRequest extends MobileMessage implements Serializable{
 
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = 1L;
-
 
 	private String mobile;
 

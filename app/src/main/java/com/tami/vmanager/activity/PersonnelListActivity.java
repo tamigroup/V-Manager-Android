@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.readystatesoftware.chuck.internal.support.DividerItemDecoration;
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.entity.IndexHeaderBean;
@@ -135,7 +134,7 @@ public class PersonnelListActivity extends BaseActivity {
         mRecyclerView.setLayoutManager(mManager = new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mHeaderAdapter);
         mRecyclerView.addItemDecoration(mDecoration = new SuspensionDecoration(this, mDatas));
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(PersonnelListActivity.this, DividerItemDecoration.VERTICAL_LIST));
+//        mRecyclerView.addItemDecoration(new DividerItemDecoration(PersonnelListActivity.this, DividerItemDecoration.VERTICAL_LIST));
         mIndexBar.setmPressedShowTextView(indexBarTv)
                 .setNeedRealIndex(false)
                 .setmLayoutManager(mManager);

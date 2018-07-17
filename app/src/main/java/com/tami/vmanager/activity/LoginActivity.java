@@ -1,6 +1,7 @@
 package com.tami.vmanager.activity;
 
 import android.content.Intent;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -125,19 +126,6 @@ public class LoginActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.get_verification_code:
-//                new CountDownTimer(60000, 1000) {
-//
-//                    @Override
-//                    public void onTick(long millisUntilFinished) {
-//                        showToast("您的操作过于频繁，请稍后重试");
-//                    }
-//
-//                    @Override
-//                    public void onFinish() {
-//                        Log.e("tag", "结束");
-//                    }
-//                }.start();
-
                 getVerificationCode();
                 break;
             case R.id.login_btn:
@@ -157,11 +145,12 @@ public class LoginActivity extends BaseActivity {
      */
     private void getVerificationCode() {
         SendVerifyCodeRequest sendVerifyCodeRequest = new SendVerifyCodeRequest();
-        sendVerifyCodeRequest.setMobile(logoin_phone.getText().toString());
+        sendVerifyCodeRequest.setMobile(logoin_phone.getText().toString().trim());
         sendVerifyCodeRequest.setRequestUrl(HttpKey.USER_SEND_VERIFY_CODE_LOGIN);
         networkBroker.ask(sendVerifyCodeRequest, (ex1, res) -> {
             if (null != ex1) {
-                Logger.d(ex1.getMessage() + "-" + ex1);
+                showToast(getString(R.string.get_code_fail));
+                Logger.d(ex1.getMessage() + "----" + ex1);
                 return;
             }
             try {
@@ -170,6 +159,12 @@ public class LoginActivity extends BaseActivity {
                     verificationCode.start();
                     promptFlag = true;
                     verification_code_prompt.setVisibility(View.VISIBLE);
+                } else {
+                    if (response.getMessage().equals(getString(R.string.no_phone_num))) {
+                        showToast(getString(R.string.phone_no_register));
+                    } else {
+                        showToast(getString(R.string.input_code));
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -189,6 +184,9 @@ public class LoginActivity extends BaseActivity {
             login_password_txt.setText(getString(R.string.password_txt));
             login_password.setText(null);
             login_password.setHint(getString(R.string.please_input_password));
+            if (login_password.getInputType() == 145) {
+                login_password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            }
             tv.setText(getString(R.string.authentication_code_login));
         } else {
             if (promptFlag) {
@@ -198,6 +196,9 @@ public class LoginActivity extends BaseActivity {
             login_password_txt.setText(getString(R.string.authentication_code));
             login_password.setText(null);
             login_password.setHint(getString(R.string.input_authentication_code));
+            if (login_password.getInputType() == 129) {
+                login_password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            }
             tv.setText(getString(R.string.accounts_login));
         }
     }
@@ -213,24 +214,41 @@ public class LoginActivity extends BaseActivity {
      * 登陆
      */
     private void loginBtn() {
+        if (logoin_phone.getText().toString().trim().isEmpty()) {
+            showToast(R.string.please_phone_number);
+            return;
+        }
+
         if (!isEmpty()) {
             showToast(R.string.cell_phone_number_error);
             return;
         }
+
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setMobile(logoin_phone.getText().toString());
-        if (getString(R.string.authentication_code_login).equals(authentication_code_login.getText())) {
+        if (getString(R.string.authentication_code_login).contentEquals(authentication_code_login.getText())) {
+            if (login_password.getText().toString().trim().isEmpty()) {
+                showToast(R.string.please_input_password);
+                return;
+            }
             loginRequest.setRequestUrl(HttpKey.USER_LOGIN);
             loginRequest.setPassWord(login_password.getText().toString());
         } else {
+            if (login_password.getText().toString().trim().isEmpty()) {
+                showToast(R.string.please_input_authentication_code);
+                return;
+            }
             loginRequest.setRequestUrl(HttpKey.USER_LOGIN_SMS);
             loginRequest.setSmsCode(login_password.getText().toString());
         }
-        //        loginRequest.setFlag(String.valueOf(2));
         networkBroker.ask(loginRequest, (ex1, res) -> {
             if (null != ex1) {
-                showToast(R.string.phone_no_register);
-                Logger.d(ex1.getMessage() + "-" + ex1);
+                Logger.d(ex1.getMessage() + "----" + ex1);
+                if (getString(R.string.authentication_code_login).contentEquals(authentication_code_login.getText())){
+                    showToast(R.string.login_fail);
+                }else {
+                    showToast(R.string.input_code);
+                }
                 return;
             }
             try {
@@ -241,7 +259,11 @@ public class LoginActivity extends BaseActivity {
                     //                    Login_JIM(response.getData().getMobile(), response.getData().getPassword());
                     bindRegistrationId(data.getId(), TaMiApplication.registrationID);
                 } else {
-                    showToast(R.string.login_fail);
+                    if (response.getMessage().equals(getString(R.string.login_fail))) {
+                        showToast(R.string.login_fail);
+                    } else if (response.getMessage().equals(getString(R.string.no_phone_num))) {
+                        showToast(getString(R.string.phone_no_register));
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
