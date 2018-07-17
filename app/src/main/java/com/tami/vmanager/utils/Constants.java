@@ -101,5 +101,7 @@ public class Constants {
     public static final int CALL_PHONE_REQUEST_CODE = 10010;
     //选中结点ID
     public static final String KEY_MEETING_ITEM_SETID = "meetingItemSetId";
+    //发布公告
+    public static final int GROUP_EDIT_NOTICE = 0x17;
 
 }

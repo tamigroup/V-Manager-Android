@@ -16,6 +16,7 @@ import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
+import com.tami.vmanager.view.SwitchButton;
 
 /**
  * Created by Tang on 2018/7/7
@@ -27,6 +28,7 @@ public class GroupEditNoticeActivity extends BaseActivity {
     private int meetingId;
     private EditText title;
     private EditText content;
+    private SwitchButton switchButton;
 
     @Override
     public boolean isTitle() {
@@ -42,12 +44,14 @@ public class GroupEditNoticeActivity extends BaseActivity {
     public void initView() {
         title = findViewById(R.id.title_edit);
         content = findViewById(R.id.content_edit);
-
+        switchButton = findViewById(R.id.agen_switchButton);
     }
 
     @Override
     public void initListener() {
-
+//        switchButton.setOnCheckedChangeListener((SwitchButton view, boolean isChecked) -> {
+//
+//        });
     }
 
     @Override
@@ -57,6 +61,7 @@ public class GroupEditNoticeActivity extends BaseActivity {
             meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 0);
         }
         setTitleName(R.string.group_edit);
+
         setTitleRightTxt(R.string.group_release);
 
         networkBroker = new NetworkBroker(this);
@@ -75,8 +80,8 @@ public class GroupEditNoticeActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable title_content) {
-                if(title_content.toString().trim().length() > 40){
-                    title.setText(title_content.toString().substring(0,40));
+                if (title_content.toString().trim().length() > 40) {
+                    title.setText(title_content.toString().substring(0, 40));
                     title.setSelection(40);
                     showToast(getString(R.string.input_title_length));
                 }
@@ -96,8 +101,8 @@ public class GroupEditNoticeActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable content_con) {
-                if(content_con.toString().trim().length() > 300){
-                    content.setText(content_con.toString().substring(0,300));
+                if (content_con.toString().trim().length() > 300) {
+                    content.setText(content_con.toString().substring(0, 300));
                     content.setSelection(300);
                     showToast(getString(R.string.input_content_length));
                 }
@@ -146,7 +151,7 @@ public class GroupEditNoticeActivity extends BaseActivity {
             cnr.setContent(content.getText().toString());
             cnr.setGroupType(1);//群组类型  1-V管家 2-V智会 3-VV群
             cnr.setNoticeType(3);//1-系统通知  2-会务广播 3-群内公告
-            cnr.setIsTop(0);// 0 正常    1 置顶
+            cnr.setIsTop(switchButton.isChecked() ? 1 : 0);// 0 正常    1 置顶
 
 //            cnr.setSystemId(4);
 //            cnr.setMeetingId(1);
@@ -166,6 +171,7 @@ public class GroupEditNoticeActivity extends BaseActivity {
                     CreateNoticeResponse response = (CreateNoticeResponse) res;
                     if (response.getCode() == 200 && response.data) {
                         showToast(getString(R.string.announcements, getString(R.string.success)));
+                        setResult(Constants.GROUP_EDIT_NOTICE);
                         finish();
                     } else {
                         showToast(getString(R.string.announcements, getString(R.string.failure)));
@@ -188,7 +194,7 @@ public class GroupEditNoticeActivity extends BaseActivity {
             showToast(getString(R.string.input_title));
             return false;
         }
-        if (TextUtils.isEmpty(content.getText().toString().trim())){
+        if (TextUtils.isEmpty(content.getText().toString().trim())) {
             showToast(getString(R.string.input_content));
             return false;
         }

@@ -3,6 +3,7 @@ package com.tami.vmanager.fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.jwenfeng.library.pulltorefresh.BaseRefreshListener;
@@ -67,7 +68,7 @@ public class NoticeFragment extends ViewPagerBaseFragment {
     @Override
     public void initData() {
         Bundle arguments = getArguments();
-        if (arguments!=null){
+        if (arguments != null) {
             meetingId = (int) arguments.get(Constants.KEY_MEETING_ID);
         }
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -78,7 +79,9 @@ public class NoticeFragment extends ViewPagerBaseFragment {
             @Override
             protected void convert(ViewHolder holder, NoticeResponseBean.DataBean.ElementsBean noticeEntity, int position) {
                 ImageView image = holder.getView(R.id.in_avatar_image);
-                Picasso.get().load(noticeEntity.getIconUrl()).into(image);
+                if (!TextUtils.isEmpty(noticeEntity.getIconUrl())) {
+                    Picasso.get().load(noticeEntity.getIconUrl()).into(image);
+                }
                 holder.setText(R.id.in_name, noticeEntity.getUserName());
                 holder.setText(R.id.item_content_tv, noticeEntity.getTitle());
                 holder.setText(R.id.item_content, noticeEntity.getContent());
@@ -87,6 +90,7 @@ public class NoticeFragment extends ViewPagerBaseFragment {
         recyclerView.setAdapter(commonAdapter);
         pullToRefreshLayout.setCanRefresh(false);
     }
+
     @Override
     public void requestNetwork() {
         NoticeRequestBean noticeRequestBean = new NoticeRequestBean();
@@ -127,7 +131,7 @@ public class NoticeFragment extends ViewPagerBaseFragment {
 
     @Override
     public void emptyObject() {
-        if(networkBroker!=null){
+        if (networkBroker != null) {
             networkBroker.cancelAllRequests();
         }
     }

@@ -61,6 +61,7 @@
         <item name="layout_constraintBottom_toBottomOf">parent</item>
         <item name="layout_constraintRight_toRightOf">parent</item>
         <item name="layout_constraintTop_toTopOf">parent</item>
+        <item name="android:visibility">gone</item>
     </style>
 
     <style name="titleRightTxtStyle">
@@ -70,6 +71,7 @@
         <item name="android:textSize">@dimen/sp_18</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:layout_marginRight">@dimen/dp_10</item>
+        <item name="layout_goneMarginRight">@dimen/dp_10</item>
         <item name="layout_constraintBottom_toBottomOf">parent</item>
         <item name="layout_constraintRight_toLeftOf">@id/titleRightBtn</item>
         <item name="layout_constraintTop_toTopOf">parent</item>

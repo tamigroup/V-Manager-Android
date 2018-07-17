@@ -354,5 +354,6 @@
     <string name="conference_list">会议列表</string>
     <string name="phone_no_register">此手机号未注册</string>
     <string name="no_eo_single">暂无eo单</string>
+    <string name="top_display">置顶显示</string>
 
 </resources>

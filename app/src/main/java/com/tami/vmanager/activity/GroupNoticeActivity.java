@@ -76,6 +76,7 @@ public class GroupNoticeActivity extends BaseActivity {
 
     @Override
     public void requestNetwork() {
+        CurPage = 1;
         getNotice();
     }
 
@@ -94,12 +95,12 @@ public class GroupNoticeActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.titleRightBtn:
-                if (is_invisible){
+                if (is_invisible) {
                     showToast(getString(R.string.view_only));
-                }else {
+                } else {
                     Intent intent = new Intent(getApplicationContext(), GroupEditNoticeActivity.class);
                     intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
-                    startActivity(intent);
+                    startActivityForResult(intent, Constants.GROUP_EDIT_NOTICE);
                 }
                 break;
         }
@@ -150,6 +151,9 @@ public class GroupNoticeActivity extends BaseActivity {
                     if (dataBean != null) {
                         List<NoticeResponseBean.DataBean.ElementsBean> data = dataBean.getElements();
                         if (data != null && data.size() > 0) {
+                            if (listData != null && listData.size() > 0) {
+                                listData.clear();
+                            }
                             listData.addAll(data);
                             commonAdapter.notifyDataSetChanged();
                         }
@@ -163,5 +167,15 @@ public class GroupNoticeActivity extends BaseActivity {
                 e.printStackTrace();
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.GROUP_EDIT_NOTICE) {
+            //发布公告返回
+            CurPage = 1;
+            getNotice();
+        }
     }
 }
