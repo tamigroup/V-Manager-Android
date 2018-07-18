@@ -162,5 +162,8 @@ public class IdeasBoxActivity extends BaseActivity {
         tabLayout = null;
         viewPager = null;
         arrayFragment = null;
+        if (networkBroker != null) {
+            networkBroker.cancelAllRequests();
+        }
     }
 }

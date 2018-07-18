@@ -330,5 +330,8 @@ public class ChangeDemandActivity extends BaseActivity {
         } else {
             super.onBackPressed();
         }
+        if (networkBroker != null) {
+            networkBroker.cancelAllRequests();
+        }
     }
 }
