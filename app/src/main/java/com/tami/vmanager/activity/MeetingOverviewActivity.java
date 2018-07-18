@@ -222,6 +222,7 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
                 //意见箱 满意度
                 Intent intent = new Intent(getApplicationContext(), IdeasBoxActivity.class);
                 intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
+                intent.putExtra(Constants.IS_VZHIHUI,meetingItem.isVzh);
                 startActivity(intent);
                 break;
             case R.id.meeting_overview_change_demand:
