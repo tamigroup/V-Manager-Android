@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.entity.ChangePasswordRequest;
@@ -18,7 +19,7 @@ import com.tami.vmanager.utils.Logger;
  * 更改密码
  * Created by why on 2018/7/5.
  */
-public class ModifyPasswordActivity extends BaseActivity {
+public class ModifyPasswordActivity extends BaseActivity implements View.OnFocusChangeListener {
 
     private EditText oldPassWord;//旧密码
     private EditText newPassWord;//新密码
@@ -47,6 +48,9 @@ public class ModifyPasswordActivity extends BaseActivity {
     @Override
     public void initListener() {
         forgetOldCode.setOnClickListener(this);
+        oldPassWord.setOnFocusChangeListener(this);
+        newPassWord.setOnFocusChangeListener(this);
+        newPassWord1.setOnFocusChangeListener(this);
     }
 
     @Override
@@ -128,17 +132,59 @@ public class ModifyPasswordActivity extends BaseActivity {
      */
     private boolean isEmpty() {
         if (TextUtils.isEmpty(oldPassWord.getText())) {
-            showToast(R.string.please_add_old_password);
+            showToast(R.string.please_enter_the_old_password);
             return false;
         }
         if (TextUtils.isEmpty(newPassWord.getText())) {
-            showToast(R.string.please_add_new_password);
+            showToast(R.string.please_enter_a_new_password);
             return false;
         }
-        if (TextUtils.isEmpty(newPassWord.getText())) {
-            showToast(R.string.please_add_new_password);
+        if (TextUtils.isEmpty(newPassWord1.getText())) {
+            showToast(R.string.please_enter_the_password_again);
+            return false;
+        }
+        if (checkPassWord(oldPassWord.getText().toString())
+                || checkPassWord(newPassWord.getText().toString())
+                || checkPassWord(newPassWord1.getText().toString())) {
+            showToast(R.string.please_enter_the_correct_password);
             return false;
         }
         return true;
+    }
+
+    private boolean checkPassWord(String passwrod) {
+        if (passwrod.length() < 6) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (!hasFocus) {
+            switch (v.getId()) {
+                case R.id.amp_old_password_edit:
+                    if (TextUtils.isEmpty(oldPassWord.getText())) {
+                        showToast(R.string.please_enter_the_old_password);
+                    } else if (oldPassWord.getText().toString().length() < 6) {
+                        showToast(R.string.please_enter_the_correct_password);
+                    }
+                    break;
+                case R.id.amp_new_password_edit:
+                    if (TextUtils.isEmpty(newPassWord.getText())) {
+                        showToast(R.string.please_enter_a_new_password);
+                    } else if (oldPassWord.getText().toString().length() < 6) {
+                        showToast(R.string.please_enter_the_correct_password);
+                    }
+                    break;
+                case R.id.amp_new_password_edit1:
+                    if (TextUtils.isEmpty(newPassWord1.getText())) {
+                        showToast(R.string.please_enter_the_password_again);
+                    } else if (oldPassWord.getText().toString().length() < 6) {
+                        showToast(R.string.please_enter_the_correct_password);
+                    }
+                    break;
+            }
+        }
     }
 }

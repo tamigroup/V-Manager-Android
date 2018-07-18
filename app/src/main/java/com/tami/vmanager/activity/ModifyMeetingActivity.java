@@ -74,7 +74,7 @@ import pub.devrel.easypermissions.EasyPermissions;
  * 编辑会议
  * Created by why on 2018/7/12.
  */
-public class ModifyMeetingActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks {
+public class ModifyMeetingActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks , View.OnFocusChangeListener {
     private Button saveBtn;//保存按钮
     //TOP侧面NAME-主要给TEXT文本框赋值*号
     private TextView nameTxtView;
@@ -195,6 +195,11 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
         meetingLevel.setOnClickListener(this);
         addImage.setOnClickListener(this);
         deleteImage.setOnClickListener(this);
+
+        nameView.setOnFocusChangeListener(this);
+        sponsorView.setOnFocusChangeListener(this);
+        estimatedNumberPeople.setOnFocusChangeListener(this);
+        bottomNumberPeople.setOnFocusChangeListener(this);
 
         switchButton.setOnCheckedChangeListener((SwitchButton view, boolean isChecked) -> {
 
@@ -814,16 +819,39 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
      * @return
      */
     private boolean isEmpty() {
-        if (TextUtils.isEmpty(nameView.getText())
-                || TextUtils.isEmpty(sponsorView.getText())
-                || addressId == -1
-                || recordStartDate == null
-                || recordEndDate == null
-                || TextUtils.isEmpty(estimatedNumberPeople.getText())
-                || TextUtils.isEmpty(bottomNumberPeople.getText())
-                ) {
-            showToast(getString(R.string.must_add_item_not_empty));
+        if (TextUtils.isEmpty(nameView.getText())) {
+            showToast(getString(R.string.please_enter_correct_, getString(R.string.meeting_name)));
             return false;
+        }
+        if (nameView.getText().length() < 5) {
+            showToast(getString(R.string.please_enter_, getString(R.string.meeting_name)));
+            return false;
+        }
+        if (TextUtils.isEmpty(sponsorView.getText())) {
+            showToast(getString(R.string.please_enter_correct_, getString(R.string.sponsor_name)));
+            return false;
+        }
+        if (sponsorView.getText().length() < 5) {
+            showToast(getString(R.string.please_enter_, getString(R.string.sponsor_name)));
+            return false;
+        }
+        if (addressId == -1) {
+            showToast(getString(R.string.please_choose_, getString(R.string.meeting_place)));
+            return false;
+        }
+        if (recordStartDate == null) {
+            showToast(getString(R.string.please_choose_, getString(R.string.start_time)));
+            return false;
+        }
+        if (recordEndDate == null) {
+            showToast(getString(R.string.please_choose_, getString(R.string.end_time)));
+            return false;
+        }
+        if (TextUtils.isEmpty(estimatedNumberPeople.getText())) {
+            showToast(getString(R.string.please_enter_, getString(R.string.yudingrenshu)));
+        }
+        if (TextUtils.isEmpty(bottomNumberPeople.getText())) {
+            showToast(getString(R.string.please_enter_, getString(R.string.baodingrenshu)));
         }
         return true;
     }
@@ -970,5 +998,37 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
         }
 
         return meetingLevele;
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (!hasFocus) {
+            switch (v.getId()) {
+                case R.id.acmr_meeting_name:
+                    if (TextUtils.isEmpty(nameView.getText())) {
+                        showToast(getString(R.string.please_enter_correct_, getString(R.string.meeting_name)));
+                    } else if (nameView.getText().length() < 5) {
+                        showToast(getString(R.string.please_enter_, getString(R.string.meeting_name)));
+                    }
+                    break;
+                case R.id.acmr_sponsor:
+                    if (TextUtils.isEmpty(sponsorView.getText())) {
+                        showToast(getString(R.string.please_enter_correct_, getString(R.string.sponsor_name)));
+                    } else if (sponsorView.getText().length() < 5) {
+                        showToast(getString(R.string.please_enter_, getString(R.string.sponsor_name)));
+                    }
+                    break;
+                case R.id.acmr_estimated_number_people:
+                    if (TextUtils.isEmpty(estimatedNumberPeople.getText())) {
+                        showToast(getString(R.string.please_enter_correct_, getString(R.string.yudingrenshu)));
+                    }
+                    break;
+                case R.id.acmr_bottom_number:
+                    if (TextUtils.isEmpty(bottomNumberPeople.getText())) {
+                        showToast(getString(R.string.please_enter_correct_, getString(R.string.baodingrenshu)));
+                    }
+                    break;
+            }
+        }
     }
 }

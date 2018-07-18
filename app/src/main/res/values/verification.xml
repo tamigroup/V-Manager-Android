@@ -10,4 +10,12 @@
     <string name="baodingrenshu">保底人数</string>
 
     <string name="please_choose_node_time">请选择%s时间</string>
+
+    <string name="please_enter_the_correct_password">请输入正确的密码</string>
+    <string name="please_enter_the_old_password">请输入旧密码</string>
+    <string name="please_enter_a_new_password">请输入新密码</string>
+    <string name="please_enter_the_password_again">请再次输入密码</string>
+
+
+
 </resources>

@@ -242,7 +242,7 @@
 
     <string name="replace_head_image">更换头像%s!</string>
     <string name="adding_custom_processes">添加自定义流程</string>
-    <string name="please_enter_process_title">请输入流程标题</string>
+    <string name="please_enter_process_title">请输入25字以内</string>
 
     <string name="word_count">%d/25</string>
 
