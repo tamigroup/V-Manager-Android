@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.AppCompatImageView;
 import android.view.View;
 
 import com.tami.vmanager.R;
@@ -28,7 +27,6 @@ public class GuidePageActivity extends BaseActivity {
     private ViewPagerIndicator viewPagerIndicator;
     private ViewPagerOnPageChangeListener viewPagerOnPageChangeListener;
     private Fragment[] arrayFragment;
-    private AppCompatImageView appCompatImageView;
 
     @Override
     public int getStartBarColor() {
@@ -49,7 +47,6 @@ public class GuidePageActivity extends BaseActivity {
     public void initView() {
         viewPager = findViewById(R.id.viewpage_id);
         viewPagerIndicator = findViewById(R.id.viewpager_indicator);
-        appCompatImageView = findViewById(R.id.ag_guide_image);
     }
 
     @Override
@@ -121,7 +118,6 @@ public class GuidePageActivity extends BaseActivity {
                 boolean firstLanding = sharePreferenceTools.getBoolean(Constants.FIRST_LANDING);
                 if (!firstLanding) {
                     sharePreferenceTools.putBoolean(Constants.FIRST_LANDING, true);
-                    appCompatImageView.setVisibility(View.GONE);
                 } else {
                     startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                     finish();

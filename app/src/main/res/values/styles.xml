@@ -12,6 +12,7 @@
     <style name="AppTheme.NoBar">
         <item name="windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@drawable/start_page_drawable</item>
     </style>
 
     <style name="TabLayoutTextStyle">

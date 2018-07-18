@@ -42,7 +42,7 @@
             android:background="@drawable/select_radiobutton_mid"
             android:button="@null"
             android:gravity="center"
-            android:text="@string/day"
+            android:text="@string/today"
             android:textColor="@color/press"
             android:textSize="@dimen/dp_14" />
 
@@ -53,7 +53,7 @@
             android:background="@drawable/select_radiobutton_mid"
             android:button="@null"
             android:gravity="center"
-            android:text="@string/month"
+            android:text="@string/this_month"
             android:textColor="@color/press"
             android:textSize="@dimen/dp_14" />
 
@@ -64,7 +64,7 @@
             android:background="@drawable/select_radiobutton_right"
             android:button="@null"
             android:gravity="center"
-            android:text="@string/year"
+            android:text="@string/this_year"
             android:textColor="@color/press"
             android:textSize="@dimen/dp_14" />
     </RadioGroup>

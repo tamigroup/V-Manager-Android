@@ -65,6 +65,7 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
             @Override
             public void refresh() {
                 CurPage = 1;
+                pullToRefreshLayout.setCanLoadMore(true);
                 query(true);
             }
 
@@ -115,15 +116,10 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
                 cancel.setText(item.cancelStatus);
                 //关注按钮点击
                 final TextView follow = holder.getView(R.id.item_meeting_follow);
-                if (!getString(R.string.finished).equals(item.followStatus)) {
-                    follow.setVisibility(View.VISIBLE);
-                    followOnClick(follow, item.followStatus);
-                    follow.setOnClickListener((View v) -> {
-                        followUserMeeting(follow, item);
-                    });
-                } else {
-                    follow.setVisibility(View.GONE);
-                }
+                followOnClick(follow, item.meetingStatus, item.followStatus);
+                follow.setOnClickListener((View v) -> {
+                    followUserMeeting(follow, item);
+                });
                 //ITEM点击
                 ConstraintLayout itemLayout = holder.getView(R.id.item_meeting_layout);
                 itemLayout.setOnClickListener((View v) -> {
@@ -285,7 +281,7 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
                 if (response.getCode() == 200) {
                     if (response.data) {
                         onClickItem.followStatus = (onClickItem.followStatus == 1 ? 0 : 1);
-                        followOnClick(follow, onClickItem.followStatus);
+                        followOnClick(follow, onClickItem.meetingStatus, onClickItem.followStatus);
                         if (onClickItem.followStatus == 1) {
                             showToast(getString(R.string.attention_prompt, getString(R.string.success)));
                         } else {
@@ -312,17 +308,24 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
      * @param follow
      * @param status
      */
-    private void followOnClick(TextView follow, int status) {
-        if (status == 1) {
-            follow.setText(getString(R.string.yi_attention));
-            follow.setTextColor(ContextCompat.getColor(getContext(), R.color.color_FF5657));
-            follow.setBackgroundResource(R.drawable.item_meeting_follow_selected);
-        } else {
+    private void followOnClick(TextView follow, String meetingStatus, int status) {
+        if (getString(R.string.finished).equals(meetingStatus)) {
+            follow.setEnabled(false);
             follow.setText(getString(R.string.attention));
             follow.setTextColor(ContextCompat.getColor(getContext(), R.color.color_333333));
             follow.setBackgroundResource(R.drawable.item_meeting_follow_unselected);
+        } else {
+            follow.setEnabled(true);
+            if (status == 1) {
+                follow.setText(getString(R.string.yi_attention));
+                follow.setTextColor(ContextCompat.getColor(getContext(), R.color.color_FF5657));
+                follow.setBackgroundResource(R.drawable.item_meeting_follow_selected);
+            } else {
+                follow.setText(getString(R.string.attention));
+                follow.setTextColor(ContextCompat.getColor(getContext(), R.color.color_333333));
+                follow.setBackgroundResource(R.drawable.item_meeting_follow_unselected);
+            }
         }
     }
-
 
 }

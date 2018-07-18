@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <!-- 设置整个屏幕背景为白色 -->
+    <item >
+        <color android:color="@android:color/white"/>
+    </item>
+
+    <!-- 底部图表 -->
+    <item android:bottom="@dimen/dp_75">
+        <bitmap
+            android:gravity="bottom|center_horizontal"
+            android:src="@drawable/start_page_icon" />
+    </item>
+
+</layer-list>

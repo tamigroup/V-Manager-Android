@@ -679,18 +679,31 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
             selectedDate.set(Calendar.SECOND, 00);//秒
         }
         Calendar startDate = Calendar.getInstance();
-        startDate.set(Calendar.HOUR_OF_DAY, 00);//时
-        startDate.set(Calendar.MINUTE, 00);//分
-        startDate.set(Calendar.SECOND, 00);//秒
+        if (!dataFlag && recordStartDate != null) {
+            startDate.setTime(recordStartDate);
+        } else {
+            startDate.set(Calendar.HOUR_OF_DAY, 00);//时
+            startDate.set(Calendar.MINUTE, 00);//分
+            startDate.set(Calendar.SECOND, 00);//秒
+        }
         Calendar endDate = Calendar.getInstance();
         endDate.set(2030, 11, 31, 00, 00, 00);
         TimePickerView pvTime = new TimePickerBuilder(this, (Date selectDate, View v) -> {
             if (dataFlag) {
-                recordStartDate = selectDate;
+                if (recordEndDate == null || recordEndDate.getTime() > selectDate.getTime()) {
+                    recordStartDate = selectDate;
+                    view.setText(TimeUtils.date2String(selectDate));
+                } else {
+                    showToast(getString(R.string.The_choice_of_time_is_wrong));
+                }
             } else {
-                recordEndDate = selectDate;
+                if (recordStartDate == null || selectDate.getTime() > recordStartDate.getTime()) {
+                    recordEndDate = selectDate;
+                    view.setText(TimeUtils.date2String(selectDate));
+                } else {
+                    showToast(getString(R.string.The_choice_of_time_is_wrong));
+                }
             }
-            view.setText(TimeUtils.date2String(selectDate));
         }).setType(new boolean[]{true, true, true, true, true, false})
                 .setDate(selectedDate)// 如果不设置的话，默认是系统时间*/
                 .setRangDate(startDate, endDate)//起始终止年月日设定

@@ -66,6 +66,7 @@ public class FollowMeetingsFragment extends ViewPagerBaseFragment {
             @Override
             public void refresh() {
                 CurPage = 1;
+                pullToRefreshLayout.setCanLoadMore(true);
                 query(true);
             }
 
