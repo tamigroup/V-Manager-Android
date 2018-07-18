@@ -131,7 +131,6 @@ public class HostFragment extends ViewPagerBaseFragment {
             no_v_cl.setVisibility(View.VISIBLE);
             v_group.setVisibility(View.GONE);
         }
-
         getAvg();
         getEvaluate();
     }
@@ -160,6 +159,8 @@ public class HostFragment extends ViewPagerBaseFragment {
                     comment.setText(getResources().getString(R.string.comment, data.getTotalElements()));
                     listData.addAll(data.getElements());
                     commonAdapter.notifyDataSetChanged();
+                }else {
+                    comment.setText(getResources().getString(R.string.comment, 0+""));
                 }
                 pulltorefreshlayout.finishLoadMore();
                 if (data.isLastPage()) {
