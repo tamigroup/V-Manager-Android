@@ -363,5 +363,9 @@
     <string name="top_display">置顶显示</string>
 
     <string name="word_count_500">%d/500</string>
+    <string name="fast_replay_1">好的,马上为您处理</string>
+    <string name="fast_replay_2">好的,感谢您</string>
+    <string name="fast_replay_3">谢谢您的评价</string>
+    <string name="fast_replay_4">已处理</string>
 
 </resources>

@@ -1,5 +1,6 @@
 package com.tami.vmanager.activity;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -16,6 +17,7 @@ import com.jwenfeng.library.pulltorefresh.PullToRefreshLayout;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.squareup.picasso.Picasso;
 import com.tami.vmanager.R;
+import com.tami.vmanager.adapter.RecycleViewDivider;
 import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.entity.ChangeDemandReplayRequestBean;
 import com.tami.vmanager.entity.ChangeDemandReplayResponseBean;
@@ -32,6 +34,7 @@ import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -42,12 +45,14 @@ public class ChangeDemandActivity extends BaseActivity {
 
     private RecyclerView recyclerView;
     private DialogPlus dialog;
+    private DialogPlus fastDialog;
     private PullToRefreshLayout pullToRefreshLayout;
     private NetworkBroker networkBroker;
     private int CurPage = 1;
     List<ChangeDemandResponseBean.DataBean.ElementsBean> listData;
     private CommonAdapter<ChangeDemandResponseBean.DataBean.ElementsBean> commonAdapter;
     private int meetingId;
+    private List<String> fastRepayList;
 
     @Override
     public boolean isTitle() {
@@ -64,6 +69,7 @@ public class ChangeDemandActivity extends BaseActivity {
         recyclerView = findViewById(R.id.recyc);
         pullToRefreshLayout = findViewById(R.id.pullRL);
         networkBroker = new NetworkBroker(this);
+        fastRepayList = Arrays.asList(getString(R.string.fast_replay_1), getString(R.string.fast_replay_2), getString(R.string.fast_replay_3), getString(R.string.fast_replay_4));
     }
 
     @Override
@@ -85,7 +91,7 @@ public class ChangeDemandActivity extends BaseActivity {
     public void initData() {
         setTitleName(R.string.change_demand);
         listData = new ArrayList<>();
-        meetingId = getIntent().getIntExtra(Constants.KEY_MEETING_ID,1);
+        meetingId = getIntent().getIntExtra(Constants.KEY_MEETING_ID, 1);
         initRecyc();
     }
 
@@ -95,6 +101,7 @@ public class ChangeDemandActivity extends BaseActivity {
 
             @Override
             protected void convert(ViewHolder holder, ChangeDemandResponseBean.DataBean.ElementsBean item, int position) {
+                holder.setIsRecyclable(false);
                 if (!item.getRequestIconUrl().trim().isEmpty()) {
                     ImageView in_avatar_image = holder.getView(R.id.in_avatar_image);
                     Picasso.get().load(item.getRequestIconUrl()).into(in_avatar_image);
@@ -131,50 +138,94 @@ public class ChangeDemandActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 TextView have_reply = holder.itemView.findViewById(R.id.have_reply);
-                if (have_reply.getText().equals(getString(R.string.has_replay))){
+                if (have_reply.getText().equals(getString(R.string.has_replay))) {
                     showToast(getString(R.string.y_has_replay));
                     return;
                 }
-                dialog = DialogPlus.newDialog(ChangeDemandActivity.this)
-                        .setCancelable(true)
-                        .setGravity(Gravity.BOTTOM)
-                        .setContentHolder(new com.orhanobut.dialogplus.ViewHolder(R.layout.dialog_reply))
-                        .create();
-                dialog.show();
-                EditText reply_edit = (EditText) dialog.findViewById(R.id.reply_edit);
-                TextView send = (TextView) dialog.findViewById(R.id.send);
-                Utils.showSoftInput(ChangeDemandActivity.this);
-                reply_edit.setHint(String.format(getResources().getString(R.string.hint_replay), listData.get(position).getRequestUserName()));
-                reply_edit.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable content) {
-                        send.setOnClickListener(v -> {
-                            String trim = reply_edit.getText().toString().trim();
-                            if (trim.isEmpty()) {
-                                Toast.makeText(ChangeDemandActivity.this, getString(R.string.not_empty), Toast.LENGTH_SHORT).show();
-                                return;
-                            }
-                            requestNet(content.toString().trim(), listData.get(position).getId(), GlobaVariable.getInstance().item.getId(), holder);
-                            Utils.hideSoftInput(ChangeDemandActivity.this);
-                            dialog.dismiss();
-                        });
-                    }
-                });
+                //弹出EditText回复
+                //replay(holder, position);
+                //快速回复
+                fastReplay(holder, position);
             }
 
             @Override
             public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
                 return false;
+            }
+        });
+    }
+
+    /**
+     * 快速回复
+     */
+    private void fastReplay(RecyclerView.ViewHolder holder, int position) {
+        fastDialog = DialogPlus.newDialog(ChangeDemandActivity.this)
+                .setCancelable(true)
+                .setGravity(Gravity.BOTTOM)
+                .setContentHolder(new com.orhanobut.dialogplus.ViewHolder(R.layout.dialog_fast_reply))
+                .create();
+        fastDialog.show();
+        RecyclerView dialog_recyc = (RecyclerView) fastDialog.findViewById(R.id.recyc);
+        dialog_recyc.setLayoutManager(new LinearLayoutManager(ChangeDemandActivity.this));
+        dialog_recyc.addItemDecoration(new RecycleViewDivider(ChangeDemandActivity.this, LinearLayoutManager.HORIZONTAL, 1, ContextCompat.getColor(ChangeDemandActivity.this, R.color.percentage_10)));
+        CommonAdapter<String> dialog_adapter = new CommonAdapter<String>(ChangeDemandActivity.this, R.layout.item_dialog_fast_reply, fastRepayList) {
+            @Override
+            protected void convert(ViewHolder holder, String s, int position) {
+                holder.setText(R.id.fast_replay_tv, s);
+            }
+        };
+        dialog_recyc.setAdapter(dialog_adapter);
+        dialog_adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder fastHolder, int po) {
+                requestNet(fastRepayList.get(po), listData.get(position).getId(), GlobaVariable.getInstance().item.getId(), holder);
+                fastDialog.dismiss();
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
+    }
+
+    /**
+     * 弹出EditText回复
+     */
+    private void replay(RecyclerView.ViewHolder holder, int position) {
+        dialog = DialogPlus.newDialog(ChangeDemandActivity.this)
+                .setCancelable(true)
+                .setGravity(Gravity.BOTTOM)
+                .setContentHolder(new com.orhanobut.dialogplus.ViewHolder(R.layout.dialog_reply))
+                .create();
+        dialog.show();
+        EditText reply_edit = (EditText) dialog.findViewById(R.id.reply_edit);
+        TextView send = (TextView) dialog.findViewById(R.id.send);
+        Utils.showSoftInput(ChangeDemandActivity.this);
+        reply_edit.setHint(String.format(getResources().getString(R.string.hint_replay), listData.get(position).getRequestUserName()));
+        reply_edit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable content) {
+                send.setOnClickListener(v -> {
+                    String trim = reply_edit.getText().toString().trim();
+                    if (trim.isEmpty()) {
+                        Toast.makeText(ChangeDemandActivity.this, getString(R.string.not_empty), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    requestNet(content.toString().trim(), listData.get(position).getId(), GlobaVariable.getInstance().item.getId(), holder);
+                    Utils.hideSoftInput(ChangeDemandActivity.this);
+                    dialog.dismiss();
+                });
             }
         });
     }
