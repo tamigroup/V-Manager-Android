@@ -23,6 +23,7 @@ import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.entity.SetUserNoticeConfigRequest;
 import com.tami.vmanager.entity.SetUserNoticeConfigResponse;
 import com.tami.vmanager.http.NetworkBroker;
+import com.tami.vmanager.manager.ActivityManager;
 import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.view.SwitchButton;
@@ -175,6 +176,7 @@ public class AccountSettingsActivity extends BaseActivity {
                 LoginOutResponse response = (LoginOutResponse) res;
                 if (response.getCode() == 200) {
                     GlobaVariable.getInstance().item = null;
+                    ActivityManager.getInstance().finishAllActivity();
                     startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                 }
             } catch (Exception e) {

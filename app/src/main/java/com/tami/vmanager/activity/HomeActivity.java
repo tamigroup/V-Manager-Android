@@ -7,16 +7,19 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.fragment.HomeFragment;
 import com.tami.vmanager.fragment.MeetingFragment;
 import com.tami.vmanager.fragment.PersonalCenterFragment;
+import com.tami.vmanager.manager.ActivityManager;
 import com.tami.vmanager.utils.Logger;
 
 /**
@@ -180,5 +183,24 @@ public class HomeActivity extends BaseActivity implements TabLayout.OnTabSelecte
 
     }
 
+    private long exitTime = 0;
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            exit();
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    public void exit() {
+        if ((System.currentTimeMillis() - exitTime) > 2000) {
+            showToast(getString(R.string.one_more_exit_program));
+            exitTime = System.currentTimeMillis();
+        } else {
+            ActivityManager.getInstance().finishAllActivity();
+            System.exit(0);
+        }
+    }
 }
