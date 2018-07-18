@@ -222,7 +222,9 @@ public class SearchDetailActivity extends BaseActivity {
 
     @Override
     public void emptyObject() {
-
+        if (networkBroker != null) {
+            networkBroker.cancelAllRequests();
+        }
     }
 
     /**
