@@ -13,6 +13,7 @@ import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.GuidePageFragmentPagerAdapter;
 import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.fragment.GuidePageFragment;
+import com.tami.vmanager.manager.ActivityManager;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.SharePreferenceTools;
 import com.tami.vmanager.view.ViewPagerIndicator;
@@ -107,7 +108,8 @@ public class GuidePageActivity extends BaseActivity {
 
     @Override
     public void emptyObject() {
-
+        ActivityManager.getInstance().removeActivity(this);
+        handler.removeCallbacksAndMessages(null);
     }
 
     private Handler handler = new Handler() {

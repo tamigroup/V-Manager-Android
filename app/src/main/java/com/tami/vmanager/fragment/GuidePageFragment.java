@@ -83,6 +83,7 @@ public class GuidePageFragment extends ViewPagerBaseFragment {
 
     @Override
     public void emptyObject() {
+        imageView.setBackgroundResource(0);
         imageView = null;
     }
 
