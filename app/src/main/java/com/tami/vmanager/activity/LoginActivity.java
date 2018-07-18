@@ -95,11 +95,11 @@ public class LoginActivity extends BaseActivity {
         networkBroker = new NetworkBroker(this);
         networkBroker.setCancelTag(getTAG());
 
-                logoin_phone.setText("15901125418");
-                login_password.setText("111111");
+//                logoin_phone.setText("15901125418");
+//                login_password.setText("111111");
         //餐厅总负责
-//        logoin_phone.setText("13888880001");
-//        login_password.setText("111111");
+        logoin_phone.setText("13888880001");
+        login_password.setText("111111");
     }
 
     @Override

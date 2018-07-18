@@ -51,7 +51,7 @@ public class WaitMeetingsActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        setTitleName(R.string.pending_conference);
+        setTitleName(R.string.activity_prediction);
 
         arrayFragment = new Fragment[WaitType.length];
         for (int index : WaitType) {

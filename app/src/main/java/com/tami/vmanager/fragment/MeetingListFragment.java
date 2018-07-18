@@ -64,6 +64,8 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
         pullToRefreshLayout.setRefreshListener(new BaseRefreshListener() {
             @Override
             public void refresh() {
+                CurPage = 1;
+                query();
             }
 
             @Override
@@ -185,7 +187,7 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
 
 
         recyclerView.setAdapter(commonAdapter);
-        pullToRefreshLayout.setCanRefresh(false);
+//        pullToRefreshLayout.setCanRefresh(false);
     }
 
     @Override
