@@ -12,7 +12,6 @@ import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdRequest;
 import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdResponse;
 import com.tami.vmanager.entity.GetMeetingResponse;
 import com.tami.vmanager.http.NetworkBroker;
-import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.TimeUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -92,7 +91,7 @@ public class ConferenceInformationFragment extends ViewPagerBaseFragment {
         meeting_bottom_number.setText(String.format(getResources().getString(R.string.bottom_number), String.valueOf(item.minNum)));
 
         //V智慧判断
-        if (GlobaVariable.getInstance().item.getFromPlat() == 1) {
+        if (item.isVzh == 1) {
 //            meeting_actual_number.setText(String.format(getResources().getString(R.string.actual_number), String.valueOf(item.actualNum)));
             meeting_actual_number.setText(String.format(getResources().getString(R.string.actual_number), String.valueOf(actualNum)));
         } else {

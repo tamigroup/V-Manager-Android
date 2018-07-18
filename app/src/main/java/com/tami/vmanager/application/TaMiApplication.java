@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 
 import com.readystatesoftware.chuck.ChuckInterceptor;
+import com.squareup.leakcanary.LeakCanary;
 import com.tami.vmanager.BuildConfig;
 import com.tami.vmanager.utils.Constants;
 import com.tencent.bugly.Bugly;
@@ -39,9 +40,12 @@ public class TaMiApplication extends Application {
 
     private void init() {
         initOkHttp();
+
         initBugly();
 
         initJIM();
+
+        initLeakCanary();
     }
 
     private void initJIM() {
@@ -49,8 +53,8 @@ public class TaMiApplication extends Application {
         JMessageClient.setDebugMode(BuildConfig.DEBUG);
         JMessageClient.init(getApplicationContext(), true);
         //初始化推送
-        JPushInterface.setDebugMode(BuildConfig.DEBUG); 	// 设置开启日志,发布时请关闭日志
-        JPushInterface.init(this);     		// 初始化 JPush
+        JPushInterface.setDebugMode(BuildConfig.DEBUG);    // 设置开启日志,发布时请关闭日志
+        JPushInterface.init(this);            // 初始化 JPush
         registrationID = JPushInterface.getRegistrationID(this);
     }
 
@@ -60,7 +64,7 @@ public class TaMiApplication extends Application {
         strategy.setAppVersion("1.0");
         strategy.setAppPackageName("com.tami.vmanager");
         CrashReport.setIsDevelopmentDevice(this, BuildConfig.DEBUG);
-        CrashReport.initCrashReport(getApplicationContext(), "93294bd277", BuildConfig.DEBUG,strategy);
+        CrashReport.initCrashReport(getApplicationContext(), "93294bd277", BuildConfig.DEBUG, strategy);
         Bugly.init(this, "93294bd277", BuildConfig.DEBUG, strategy);
     }
 
@@ -76,4 +80,10 @@ public class TaMiApplication extends Application {
         OkHttpUtils.initClient(okHttpClient);
     }
 
+    private void initLeakCanary() {
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return;
+        }
+        LeakCanary.install(this);
+    }
 }

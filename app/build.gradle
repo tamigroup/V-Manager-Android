@@ -91,10 +91,13 @@ dependencies {
     releaseApi 'com.readystatesoftware.chuck:library-no-op:1.1.0'
     //dialog
     api 'com.orhanobut:dialogplus:1.11@aar'
-    //极光IM
+    //极光IM Push
     api 'cn.jiguang.sdk:jmessage:2.6.0'
     api 'cn.jiguang.sdk:jcore:1.2.0'
     api 'cn.jiguang.sdk:jpush:3.1.1'
+    //leakcanary
+    debugApi 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    releaseApi 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 }
 
 def buildTime() {

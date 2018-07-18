@@ -1,5 +1,6 @@
 package com.tami.vmanager.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
@@ -49,6 +50,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         this.context = context;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(TimeLineHolder holder, final int position) {
         GetMeetingItemsByMeetingIdResponse.Array.Item item = list.get(position);
@@ -65,7 +67,9 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
             holder.bottomView.setVisibility(View.VISIBLE);
             holder.lineView.setVisibility(View.VISIBLE);
         }
-        holder.contentView.setText(TimeUtils.date2String(new Date(item.startOn), TimeUtils.DATE_HHMM_SLASH) + "  " + item.meetingItemName + "  " + TimeUtils.date2String(new Date(item.startOn), TimeUtils.DATE_MMDD_SLASH));
+        if (item.startOn !=null){
+            holder.contentView.setText(TimeUtils.date2String(new Date(item.startOn), TimeUtils.DATE_HHMM_SLASH) + "  " + item.meetingItemName + "  " + TimeUtils.date2String(new Date(item.startOn), TimeUtils.DATE_MMDD_SLASH));
+        }
 
         if (position != 0 && list.get(position - 1).selectStatus == 1) {
             holder.topView.setBackgroundResource(R.color.color_34DB8E);
