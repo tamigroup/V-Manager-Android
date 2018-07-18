@@ -14,7 +14,6 @@ import com.tami.vmanager.entity.EvaluatePageResponseBean;
 import com.tami.vmanager.enums.IdeasBoxType;
 import com.tami.vmanager.fragment.HostFragment;
 import com.tami.vmanager.http.NetworkBroker;
-import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 
@@ -31,7 +30,7 @@ public class IdeasBoxActivity extends BaseActivity {
     private TabLayout.TabLayoutOnPageChangeListener tabLayoutOnPageChangeListener;
     private TabLayout.ViewPagerOnTabSelectedListener viewPagerOnTabSelectedListener;
     private NetworkBroker networkBroker;
-    private int fromPlat;
+    private int isVzh;
 
     @Override
     public boolean isTitle() {
@@ -59,15 +58,16 @@ public class IdeasBoxActivity extends BaseActivity {
         Intent intent = getIntent();
         if (intent != null) {
             meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 0);
+            isVzh = intent.getIntExtra(Constants.IS_VZHIHUI, 0);
         }
 
         setTitleName(R.string.complaints_box);
 
-        fromPlat = GlobaVariable.getInstance().item.getFromPlat();//判断V智慧
+      //V智慧判断
 
         Bundle bundle = new Bundle();
         bundle.putInt(Constants.KEY_MEETING_ID, meetingId);
-        bundle.putInt(Constants.IS_VZHIHUI,fromPlat);
+        bundle.putInt(Constants.IS_VZHIHUI,isVzh);
         arrayFragment = new Fragment[2];
         arrayFragment[0] = new HostFragment();
         arrayFragment[0].setArguments(bundle);
@@ -86,7 +86,7 @@ public class IdeasBoxActivity extends BaseActivity {
     public void requestNetwork() {
         networkBroker = new NetworkBroker(this);
         networkBroker.setCancelTag(getTAG());
-        if (fromPlat == 1) {
+        if (isVzh == 1) {
             getHostEvaluate();
             getParticipants();
         } else {
