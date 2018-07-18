@@ -92,7 +92,7 @@
     <string name="modify_password">修改密码</string>
     <string name="exit_system">退出系统</string>
     <string name="my_creation">我的创建</string>
-    <string name="account_settings">帐号设置</string>
+    <string name="account_settings">设置</string>
 
     <!--    会议列表    -->
     <string name="stay_execute">待执行</string>
