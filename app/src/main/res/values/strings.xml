@@ -63,7 +63,7 @@
     <string name="activity_prediction">活动预计</string>
 
     <!--    搜索    -->
-    <string name="search_make_content">搜索制定内容</string>
+    <string name="search_make_content">搜索指定内容</string>
     <string name="search_history">搜索历史</string>
     <string name="search_content_tv1">会议名称</string>
     <string name="search_content_tv2">V智会</string>
