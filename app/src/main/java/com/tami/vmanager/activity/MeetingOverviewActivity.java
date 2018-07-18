@@ -22,9 +22,6 @@ import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.TimeLineAdapter;
 import com.tami.vmanager.adapter.TimeLineMeetingFlowItem;
 import com.tami.vmanager.base.BaseActivity;
-import com.tami.vmanager.entity.CheckAddMeetingItemUserRequest;
-import com.tami.vmanager.entity.CheckAddMeetingItemUserResponse;
-import com.tami.vmanager.dialog.AlreadyPaidItemDialog;
 import com.tami.vmanager.entity.GetActualNumRequestBean;
 import com.tami.vmanager.entity.GetActualNumResponseBean;
 import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdRequest;
@@ -85,6 +82,7 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
     private MeetingStateView meeting_status;
     private ImageView sale_phone;
     private int actualNum;
+    private GetMeetingResponse.Item meetingItem;
 
     @Override
     public boolean isTitle() {
@@ -217,6 +215,7 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
                 //实到人数
                 Intent intent_personnel = new Intent(getApplicationContext(), PersonnelListActivity.class);
                 intent_personnel.putExtra(Constants.KEY_MEETING_ID, meetingId);
+                intent_personnel.putExtra(Constants.IS_VZHIHUI,meetingItem.isVzh);
                 startActivity(intent_personnel);
                 break;
             case R.id.meeting_overview_complaints_box:
@@ -226,7 +225,7 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
                 startActivity(intent);
                 break;
             case R.id.meeting_overview_change_demand:
-                //需求变化
+                //需求变化 活动变化
                 Intent intent1 = new Intent(getApplicationContext(), ChangeDemandActivity.class);
                 intent1.putExtra(Constants.KEY_MEETING_ID, meetingId);
                 startActivity(intent1);
@@ -400,7 +399,7 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
             try {
                 GetMeetingResponse response = (GetMeetingResponse) res;
                 if (response.getCode() == 200) {
-                    GetMeetingResponse.Item meetingItem = response.data;
+                    meetingItem = response.data;
                     initUIdata(meetingItem);
                 }
             } catch (Exception e) {

@@ -1,5 +1,6 @@
 package com.tami.vmanager.activity;
 
+import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.Group;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,7 +15,6 @@ import com.tami.vmanager.entity.IndexNameBean;
 import com.tami.vmanager.entity.PersonnelListRequestBean;
 import com.tami.vmanager.entity.PersonnelListResponseBean;
 import com.tami.vmanager.http.NetworkBroker;
-import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.view.IndexBar.bean.BaseIndexPinyinBean;
 import com.tami.vmanager.view.IndexBar.suspension.SuspensionDecoration;
@@ -50,6 +50,7 @@ public class PersonnelListActivity extends BaseActivity {
     private HeaderRecyclerAndFooterWrapperAdapter mHeaderAdapter;
     private ConstraintLayout no_v_cl;
     private Group personnel_group;
+    private int isVzh;
 
     @Override
     public int getContentViewId() {
@@ -68,16 +69,6 @@ public class PersonnelListActivity extends BaseActivity {
         personnel_group = findViewById(R.id.personnel_group);
 
         networkBroker = new NetworkBroker(this);
-
-        //V智慧判断
-        int fromPlat = GlobaVariable.getInstance().item.getFromPlat();
-        if (fromPlat == 1) {
-            no_v_cl.setVisibility(View.GONE);
-            personnel_group.setVisibility(View.VISIBLE);
-        } else {
-            no_v_cl.setVisibility(View.VISIBLE);
-            personnel_group.setVisibility(View.GONE);
-        }
     }
 
     @Override
@@ -89,13 +80,29 @@ public class PersonnelListActivity extends BaseActivity {
     @Override
     public void initData() {
         setTitleName(getString(R.string.personnel_list));
+        Intent intent = getIntent();
+        if (null!=intent){
+            meetingId =intent.getIntExtra(Constants.KEY_MEETING_ID, 0);
+            isVzh =intent.getIntExtra(Constants.IS_VZHIHUI,0);
+            //V智慧判断
+            if (isVzh == 1) {
+                no_v_cl.setVisibility(View.GONE);
+                personnel_group.setVisibility(View.VISIBLE);
+            } else {
+                no_v_cl.setVisibility(View.VISIBLE);
+                personnel_group.setVisibility(View.GONE);
+            }
+        }
+
+
+
+
         mSourceDatas = new ArrayList<>();
         mDatas = new ArrayList<>();
         mHeaderDatas = new ArrayList<>();
         List<IndexNameBean> hotCitys = new ArrayList<>();
         mHeaderDatas.add(new IndexHeaderBean(hotCitys, getString(R.string.vip_distinguished_guest), INDEX_STRING_TOP));
         mSourceDatas.addAll(mHeaderDatas);
-        meetingId = getIntent().getIntExtra(Constants.KEY_MEETING_ID, 0);
         initRecyc();
     }
 
