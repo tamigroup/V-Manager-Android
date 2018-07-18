@@ -49,6 +49,7 @@ public class SearchDetailActivity extends BaseActivity {
     private CommonAdapter<SearchResponseBean.DataBean.DataListBean> commonAdapter;
     private static String SEARCH_QUERY = "search_query";
     private static String SEARCH_TYPE = "search_type";
+    private static String SEARCH_CONTENT = "search_content";
     private static Intent intent;
     private ImageView search_back_btn;
     private SearchView searchView;
@@ -79,10 +80,11 @@ public class SearchDetailActivity extends BaseActivity {
     }
 
 
-    public static void Start(Context context, String query, int type) {
+    public static void Start(Context context, String query, int type, boolean isContent) {
         intent = new Intent(context, SearchDetailActivity.class);
         intent.putExtra(SEARCH_QUERY, query);
         intent.putExtra(SEARCH_TYPE, type);
+        intent.putExtra(SEARCH_CONTENT,isContent);
         context.startActivity(intent);
     }
 
@@ -98,7 +100,7 @@ public class SearchDetailActivity extends BaseActivity {
             @Override
             public void loadMore() {
                 isLoadmore = true;
-                RequestServer(query, type);
+                RequestServer(query, type, false);
             }
         });
     }
@@ -118,7 +120,7 @@ public class SearchDetailActivity extends BaseActivity {
                 CurPage = 1;
                 SearchDetailActivity.this.query = query;
                 SearchDetailActivity.this.type = type;
-                RequestServer(query, SearchType.MEETING_NAME.getType());
+                RequestServer(query, SearchType.MEETING_NAME.getType(), false);
                 return false;
             }
 
@@ -206,10 +208,11 @@ public class SearchDetailActivity extends BaseActivity {
     public void requestNetwork() {
         String query = intent.getStringExtra(SEARCH_QUERY);
         int type = intent.getIntExtra(SEARCH_TYPE, SearchType.MEETING_NAME.getType());
+        boolean isContent = intent.getBooleanExtra(SEARCH_CONTENT, false);
         searchView.setQueryHint(getString(R.string.search) + query);
         this.query = query;
         this.type = type;
-        RequestServer(query, type);
+        RequestServer(query, type,isContent);
     }
 
     @Override
@@ -224,11 +227,11 @@ public class SearchDetailActivity extends BaseActivity {
 
     /**
      * 请求服务器
-     *
-     * @param query      搜索的内容
+     *  @param query      搜索的内容
      * @param searchType 请求的方式
+     * @param isContent
      */
-    private void RequestServer(String query, int searchType) {
+    private void RequestServer(String query, int searchType, boolean isContent) {
         SearchRequestBean searchRequestBean = new SearchRequestBean();
         searchRequestBean.setKeyWord(query);
         if (isLoadmore) {
@@ -265,6 +268,9 @@ public class SearchDetailActivity extends BaseActivity {
                         recyclerView.setVisibility(View.GONE);
                         empty_tv.setVisibility(View.VISIBLE);
                         empty_tv.setText(String.format(getString(R.string.empty_search), query));
+                        if (isContent){
+                            empty_tv.setVisibility(View.GONE);
+                        }
                     }
                 }
                 pullToRefreshLayout.finishLoadMore();
