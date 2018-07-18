@@ -229,6 +229,7 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
                 //需求变化 活动变化
                 Intent intent1 = new Intent(getApplicationContext(), ChangeDemandActivity.class);
                 intent1.putExtra(Constants.KEY_MEETING_ID, meetingId);
+                intent1.putExtra(Constants.IS_VZHIHUI,meetingItem.isVzh);
                 startActivity(intent1);
                 break;
             case R.id.meeting_overview_v_emind:

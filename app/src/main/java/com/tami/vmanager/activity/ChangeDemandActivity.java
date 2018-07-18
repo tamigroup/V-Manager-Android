@@ -1,5 +1,6 @@
 package com.tami.vmanager.activity;
 
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -53,6 +54,8 @@ public class ChangeDemandActivity extends BaseActivity {
     private CommonAdapter<ChangeDemandResponseBean.DataBean.ElementsBean> commonAdapter;
     private int meetingId;
     private List<String> fastRepayList;
+    private int isVzh;
+    private TextView no_v;
 
     @Override
     public boolean isTitle() {
@@ -68,6 +71,7 @@ public class ChangeDemandActivity extends BaseActivity {
     public void initView() {
         recyclerView = findViewById(R.id.recyc);
         pullToRefreshLayout = findViewById(R.id.pullRL);
+        no_v = findViewById(R.id.no_v);
         networkBroker = new NetworkBroker(this);
         fastRepayList = Arrays.asList(getString(R.string.fast_replay_1), getString(R.string.fast_replay_2), getString(R.string.fast_replay_3), getString(R.string.fast_replay_4));
     }
@@ -91,7 +95,18 @@ public class ChangeDemandActivity extends BaseActivity {
     public void initData() {
         setTitleName(R.string.change_demand);
         listData = new ArrayList<>();
-        meetingId = getIntent().getIntExtra(Constants.KEY_MEETING_ID, 1);
+        Intent intent = getIntent();
+        if (null!=intent){
+            meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 1);
+            isVzh = intent.getIntExtra(Constants.IS_VZHIHUI, 0);
+        }
+        if (isVzh == 1){
+            recyclerView.setVisibility(View.VISIBLE);
+            no_v.setVisibility(View.GONE);
+        }else {
+            recyclerView.setVisibility(View.GONE);
+            no_v.setVisibility(View.VISIBLE);
+        }
         initRecyc();
     }
 
