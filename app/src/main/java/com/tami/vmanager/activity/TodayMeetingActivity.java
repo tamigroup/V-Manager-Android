@@ -67,12 +67,12 @@ public class TodayMeetingActivity extends BaseActivity {
             @Override
             public void refresh() {
                 CurPage = 1;
-                query();
+                query(true);
             }
 
             @Override
             public void loadMore() {
-                query();
+                query(false);
             }
         });
     }
@@ -185,7 +185,7 @@ public class TodayMeetingActivity extends BaseActivity {
         networkBroker = new NetworkBroker(this);
         networkBroker.setCancelTag(getTAG());
         CurPage = 1;
-        query();
+        query(false);
     }
 
     @Override
@@ -198,7 +198,7 @@ public class TodayMeetingActivity extends BaseActivity {
 
     }
 
-    private void query() {
+    private void query(boolean isRefresh) {
         AllMeetingsRequest allMeetingsRequest = new AllMeetingsRequest();
         LoginResponse.Item item = GlobaVariable.getInstance().item;
         if (item != null) {
@@ -211,6 +211,7 @@ public class TodayMeetingActivity extends BaseActivity {
             if (null != ex1) {
                 ex1.printStackTrace();
                 Logger.d(ex1.getMessage() + "-" + ex1);
+                pullToRefreshLayout.finishRefresh();
                 pullToRefreshLayout.finishLoadMore();
                 return;
             }
@@ -219,17 +220,23 @@ public class TodayMeetingActivity extends BaseActivity {
                 if (response.getCode() == 200) {
                     AllMeetingsResponse.Array array = response.data;
                     if (array != null && array.elements != null && array.elements.size() > 0) {
+                        if (isRefresh && listData.size() > 0) {
+                            listData.clear();
+                        }
                         listData.addAll(array.elements);
                         commonAdapter.notifyDataSetChanged();
                     }
+                    pullToRefreshLayout.finishRefresh();
                     pullToRefreshLayout.finishLoadMore();
                     if (array.lastPage) {
                         pullToRefreshLayout.setCanLoadMore(false);
                     }
                 } else {
+                    pullToRefreshLayout.finishRefresh();
                     pullToRefreshLayout.finishLoadMore();
                 }
             } catch (Exception e) {
+                pullToRefreshLayout.finishRefresh();
                 pullToRefreshLayout.finishLoadMore();
                 e.printStackTrace();
             }
