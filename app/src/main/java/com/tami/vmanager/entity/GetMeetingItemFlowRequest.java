@@ -12,10 +12,8 @@ import java.io.Serializable;
  */
 public class GetMeetingItemFlowRequest extends MobileMessage implements Serializable {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = -1318087724223157406L;
 
     public GetMeetingItemFlowRequest() {
         super();

@@ -15,10 +15,7 @@ import java.io.Serializable;
 @JsonInclude(Include.NON_NULL)
 public class SendMsgResponse extends MobileMessage implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 6926301454994286610L;
 	/**
 	 * data : true
 	 */

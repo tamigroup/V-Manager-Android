@@ -11,12 +11,8 @@ import java.io.Serializable;
  */
 public class CreateEvaluateRequest implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-
+	private static final long serialVersionUID = -8639903290137247660L;
 	private String content;
 	private String iconUrl;
 	private String meetingId;

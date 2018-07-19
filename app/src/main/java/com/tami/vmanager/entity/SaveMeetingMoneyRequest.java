@@ -11,12 +11,8 @@ import java.io.Serializable;
  */
 public class SaveMeetingMoneyRequest implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-
+	private static final long serialVersionUID = -1669163360553448028L;
 	private String contractMoney;
 	private String meetingId;
 	private String payMoney;

@@ -11,12 +11,8 @@ import java.io.Serializable;
  */
 public class FeedBackPageRequest implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-
+	private static final long serialVersionUID = 5601542667089446778L;
 	private String curPage;
 	private String meetingId;
 	private String pageSize;

@@ -21,8 +21,9 @@ public class SystemRoleListResponse extends MobileMessage implements Serializabl
     public List<Item> data;
 
     @JsonInclude(Include.NON_NULL)
-    public static class Item {
+    public static class Item implements Serializable{
 
+        private static final long serialVersionUID = 7467530105971002997L;
         public Integer id;	/*1*/
         public Integer status;	/*0*/
         public String mark;	/*监看本酒店所有会议数据*/

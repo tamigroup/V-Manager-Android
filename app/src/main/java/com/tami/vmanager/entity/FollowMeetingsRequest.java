@@ -11,12 +11,8 @@ import java.io.Serializable;
  */
 public class FollowMeetingsRequest implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-
+	private static final long serialVersionUID = 29485181818602687L;
 	private String curPage;
 	private String endDate;
 	private String pageSize;

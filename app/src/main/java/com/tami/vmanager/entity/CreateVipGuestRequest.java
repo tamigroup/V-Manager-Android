@@ -13,12 +13,7 @@ import java.io.Serializable;
  */
 public class CreateVipGuestRequest extends MobileMessage implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-
+	private static final long serialVersionUID = 4818325907317998311L;
 	private String intro;
 	private int meetingId;
 	private String name;

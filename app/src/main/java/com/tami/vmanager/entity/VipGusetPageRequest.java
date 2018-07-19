@@ -11,12 +11,8 @@ import java.io.Serializable;
  */
 public class VipGusetPageRequest implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-
+	private static final long serialVersionUID = 3852543818074562548L;
 	private String curPage;
 	private String meetingId;
 	private String pageSize;

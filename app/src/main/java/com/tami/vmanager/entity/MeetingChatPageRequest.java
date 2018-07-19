@@ -13,12 +13,8 @@ import java.io.Serializable;
  */
 public class MeetingChatPageRequest extends MobileMessage implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-
+	private static final long serialVersionUID = -7951390542338984244L;
 	private int curPage;
 	private int meetingId;
 	private int pageSize;

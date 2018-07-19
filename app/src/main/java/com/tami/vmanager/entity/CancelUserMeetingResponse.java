@@ -16,12 +16,8 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @Deprecated
 public class CancelUserMeetingResponse extends MobileMessage implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-
+	private static final long serialVersionUID = 458861763224328356L;
 
 	public CancelUserMeetingResponse() {
 		super();

@@ -11,12 +11,8 @@ import java.io.Serializable;
  */
 public class GetMeetingStatisticsRequest implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-
+	private static final long serialVersionUID = 7519114296666110193L;
 	private String meetingId;
 
 	public GetMeetingStatisticsRequest() {

@@ -12,12 +12,8 @@ import java.io.Serializable;
  */
 public class ChangePasswordRequest extends MobileMessage implements Serializable {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
 
-
+    private static final long serialVersionUID = 2737442766726372856L;
     private String newPassWord;
     private String oldPassWord;
     private String userId;

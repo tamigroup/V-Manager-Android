@@ -11,6 +11,7 @@ import java.util.List;
 
 public class ModifyMeetingRequest extends MobileMessage implements Serializable {
 
+    private static final long serialVersionUID = -4045918730421902229L;
     private int meetingId;
     private int userId;
     private int systemId;//酒店ID
@@ -27,7 +28,8 @@ public class ModifyMeetingRequest extends MobileMessage implements Serializable 
     private int isVzh;//是否V智会  0不是  1是
     private List<ModifyMeetingRequest.Item> vipList;//VIP参会人员LIST    [{"name":"王总",“intro”:""},{"name":"李总",“intro”:""}]
 
-    public static class Item {
+    public static class Item implements Serializable{
+        private static final long serialVersionUID = 7754465330298124526L;
         private int systemId;
         private String name;
         private String intro;

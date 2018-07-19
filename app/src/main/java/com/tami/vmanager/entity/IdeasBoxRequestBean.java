@@ -10,6 +10,7 @@ import java.io.Serializable;
  */
 public class IdeasBoxRequestBean extends MobileMessage implements Serializable {
 
+    private static final long serialVersionUID = -382935612233860326L;
     /**
      * meetingId : 1     -------   会议ID
      * flag: 1 --酒店 2 -- 会议

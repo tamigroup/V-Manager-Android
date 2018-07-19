@@ -11,12 +11,8 @@ import java.io.Serializable;
  */
 public class DeleteNoticeRequest implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-
+	private static final long serialVersionUID = -1520710248230968430L;
 	private String meetingId ;
 	private String noticeId;
 	private String systemId;

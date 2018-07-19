@@ -214,6 +214,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
         cemd.setConfirmEnterMeetingListener(new ConfirmEnterMeetingListener() {
             @Override
             public void leftBtn() {
+                setResult(Constants.CREATE_MEETING);
                 finish();
             }
 
@@ -377,6 +378,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
                 break;
             case Constants.CREATE_FLOW:
                 //创建流程返回
+                setResult(Constants.CREATE_MEETING);
                 finish();
                 break;
         }
@@ -390,7 +392,6 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
         switch (v.getId()) {
             case R.id.acmr_save_btn:
                 save();
-//                uploadImage();
                 break;
             case R.id.acmr_meeting_place:
                 meetingPlace();
@@ -691,17 +692,25 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
         TimePickerView pvTime = new TimePickerBuilder(this, (Date selectDate, View v) -> {
             if (dataFlag) {
                 if (recordEndDate == null || recordEndDate.getTime() > selectDate.getTime()) {
+                    if (selectDate.getTime() < new Date().getTime()) {
+                        showToast(getString(R.string.start_time_xiaoyu_current_time));
+                        return;
+                    }
                     recordStartDate = selectDate;
                     view.setText(TimeUtils.date2String(selectDate));
                 } else {
-                    showToast(getString(R.string.The_choice_of_time_is_wrong));
+                    showToast(getString(R.string.start_time_dayu_end_time));
                 }
             } else {
                 if (recordStartDate == null || selectDate.getTime() > recordStartDate.getTime()) {
+                    if (selectDate.getTime() < new Date().getTime()) {
+                        showToast(getString(R.string.end_time_xiaoyu_current_time));
+                        return;
+                    }
                     recordEndDate = selectDate;
                     view.setText(TimeUtils.date2String(selectDate));
                 } else {
-                    showToast(getString(R.string.The_choice_of_time_is_wrong));
+                    showToast(getString(R.string.start_time_dayu_end_time));
                 }
             }
         }).setType(new boolean[]{true, true, true, true, true, false})
@@ -866,6 +875,17 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
             showToast(getString(R.string.please_choose_, getString(R.string.end_time)));
             return false;
         }
+
+        if (recordStartDate.getTime() < new Date().getTime()) {
+            showToast(getString(R.string.start_time_xiaoyu_current_time));
+            return false;
+        }
+
+        if (recordStartDate.getTime() > recordEndDate.getTime()) {
+            showToast(getString(R.string.start_time_dayu_end_time));
+            return false;
+        }
+
         if (TextUtils.isEmpty(estimatedNumberPeople.getText())) {
             showToast(getString(R.string.please_enter_, getString(R.string.yudingrenshu)));
         }

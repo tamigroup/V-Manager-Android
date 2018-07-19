@@ -14,10 +14,8 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonInclude(Include.NON_NULL)
 public class GetBannerDataResponse extends MobileMessage implements Serializable {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = -6468052369729952516L;
 
     public GetBannerDataResponse() {
         super();
@@ -34,8 +32,9 @@ public class GetBannerDataResponse extends MobileMessage implements Serializable
     }
 
     @JsonInclude(Include.NON_NULL)
-    public static class Item {
+    public static class Item implements Serializable{
 
+        private static final long serialVersionUID = -5391939217856652128L;
         private String unPayCount;	/*8500.00*/
         private int allMeetingCount;	/*13*/
         private int overMeetingCount;	/*11*/

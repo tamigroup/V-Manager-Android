@@ -12,12 +12,8 @@ import java.io.Serializable;
  */
 public class UserListOfPositionRequest extends MobileMessage implements Serializable {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
 
-
+    private static final long serialVersionUID = 8996740761811305345L;
     private String systemId;
 
     public UserListOfPositionRequest() {

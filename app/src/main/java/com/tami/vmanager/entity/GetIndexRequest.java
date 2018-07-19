@@ -13,12 +13,8 @@ import java.io.Serializable;
  */
 public class GetIndexRequest extends MobileMessage implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-
+	private static final long serialVersionUID = -8029615021517388326L;
 	private String userId;
 
 	public GetIndexRequest() {

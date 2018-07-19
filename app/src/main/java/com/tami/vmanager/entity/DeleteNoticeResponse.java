@@ -15,12 +15,8 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonInclude(Include.NON_NULL)
 public class DeleteNoticeResponse extends MobileMessage implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-
+	private static final long serialVersionUID = -4732965684703289172L;
 
 	public DeleteNoticeResponse() {
 		super();

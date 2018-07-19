@@ -11,12 +11,8 @@ import java.io.Serializable;
  */
 public class CreateFeedBackRequest implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-
+	private static final long serialVersionUID = -7619216556711109438L;
 	private String content;
 	private String fromType;
 	private String iconUrl;

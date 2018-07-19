@@ -17,19 +17,17 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonInclude(Include.NON_NULL)
 public class FeedBackPageResponse extends MobileMessage implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
+	private static final long serialVersionUID = 2264131257406538388L;
 
 	/**
 	 * @see com.bwapi.TM.message.entity.FeedBackPageResponse#getElements
 	 * 
 	 */
 	@JsonInclude(Include.NON_NULL)
-	public static class ElementElements {
+	public static class ElementElements implements Serializable{
 
+		private static final long serialVersionUID = -7181484961288603559L;
 		private String content;
 		private String createOn;
 		private String id;

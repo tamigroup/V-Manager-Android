@@ -12,12 +12,8 @@ import java.io.Serializable;
  */
 public class UpdateUserIconRequest extends MobileMessage implements Serializable {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
 
-
+    private static final long serialVersionUID = 3961418904085959995L;
     private String iconUrl;
     private String userId;
 

@@ -11,8 +11,8 @@ import java.io.Serializable;
  */
 public class SendVerifyCodeRequest extends MobileMessage implements Serializable{
 
-	private static final long serialVersionUID = 1L;
 
+	private static final long serialVersionUID = 70563677729598075L;
 	private String mobile;
 
 	public SendVerifyCodeRequest() {

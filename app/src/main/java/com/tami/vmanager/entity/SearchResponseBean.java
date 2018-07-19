@@ -13,7 +13,7 @@ import java.util.List;
 @JsonInclude(Include.NON_NULL)
 public class SearchResponseBean extends MobileMessage implements Serializable {
 
-    public static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -597870735803449874L;
     /**
      * data : {"dataList":[{"actualNum":0,"autoDayTime":"6月8日08:40~6月8日18:40","endTime":1528454430000,"eoUrl":"","estimateNum":350,"followStatus":false,"fromPlat":2,"isImportant":1,"isPay":"","meetingAddress":"火星子串吧","meetingAddressId":5,"meetingId":1,"meetingName":"塔米G100峰会","meetingStatus":"已结束","minNum":300,"perfectStatus":"","saleUserId":1,"saleUserName":"小塔米","sponsorName":"","startTime":1528418419000,"vzhStatus":0},{"actualNum":0,"autoDayTime":"6月7日11:14~6月7日22:14","endTime":1528380884000,"eoUrl":"","estimateNum":200,"followStatus":false,"fromPlat":1,"isImportant":1,"isPay":"待付款","meetingAddress":"满月楼","meetingAddressId":2,"meetingId":6,"meetingName":"塔米测试峰会","meetingStatus":"已结束","minNum":150,"perfectStatus":"待完善","saleUserId":2,"saleUserName":"李小二","sponsorName":"","startTime":1528341274000,"vzhStatus":0}]}
      */
@@ -33,7 +33,8 @@ public class SearchResponseBean extends MobileMessage implements Serializable {
     }
 
     @JsonInclude(Include.NON_NULL)
-    public static class DataBean {
+    public static class DataBean implements  Serializable{
+        private static final long serialVersionUID = -7521752968869378299L;
         private List<DataListBean> dataList;
 
         public List<DataListBean> getDataList() {
@@ -44,7 +45,8 @@ public class SearchResponseBean extends MobileMessage implements Serializable {
             this.dataList = dataList;
         }
         @JsonInclude(Include.NON_NULL)
-        public static class DataListBean {
+        public static class DataListBean implements Serializable{
+            private static final long serialVersionUID = -8218481315547689554L;
             /**
              * actualNum : 0
              * autoDayTime : 6月8日08:40~6月8日18:40

@@ -15,10 +15,7 @@ import java.io.Serializable;
 @JsonInclude(Include.NON_NULL)
 public class SendVerifyCodeResponse extends MobileMessage implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 651673847924930179L;
 	/**
 	 * data : true
 	 */

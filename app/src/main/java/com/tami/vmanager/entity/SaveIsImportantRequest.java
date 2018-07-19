@@ -11,12 +11,8 @@ import java.io.Serializable;
  */
 public class SaveIsImportantRequest implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-
+	private static final long serialVersionUID = 4865164312446893052L;
 	private String isImportant;
 	private String meetingId;
 

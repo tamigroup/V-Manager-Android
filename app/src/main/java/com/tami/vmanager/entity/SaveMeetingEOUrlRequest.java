@@ -11,12 +11,8 @@ import java.io.Serializable;
  */
 public class SaveMeetingEOUrlRequest implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-
+	private static final long serialVersionUID = -1079819870464333566L;
 	private String eoUrl;
 	private String meetingId;
 

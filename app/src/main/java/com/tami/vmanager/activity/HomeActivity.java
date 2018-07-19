@@ -153,7 +153,6 @@ public class HomeActivity extends BaseActivity implements TabLayout.OnTabSelecte
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // TODO Auto-generated method stub super存在是处理Fragment
         super.onActivityResult(requestCode, resultCode, data);
-
     }
 
     @Override

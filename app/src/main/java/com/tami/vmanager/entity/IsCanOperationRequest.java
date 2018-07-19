@@ -12,10 +12,8 @@ import java.io.Serializable;
  */
 public class IsCanOperationRequest extends MobileMessage implements Serializable {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = -5882277299487358398L;
 
     public IsCanOperationRequest() {
         super();

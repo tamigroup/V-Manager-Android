@@ -11,12 +11,8 @@ import java.io.Serializable;
  */
 public class GetAppUserRequest implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-
+	private static final long serialVersionUID = -770008187275475274L;
 	private String userId;
 
 	public GetAppUserRequest() {

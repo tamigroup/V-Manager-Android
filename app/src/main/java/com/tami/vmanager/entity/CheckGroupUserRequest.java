@@ -11,12 +11,8 @@ import java.io.Serializable;
  */
 public class CheckGroupUserRequest implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-
+	private static final long serialVersionUID = -3904886690078012439L;
 	private String meetingId;
 	private String userId;
 

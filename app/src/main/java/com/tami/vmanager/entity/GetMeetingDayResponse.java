@@ -16,11 +16,13 @@ public class GetMeetingDayResponse extends MobileMessage implements Serializable
     public Array data;
 
     @JsonInclude(Include.NON_NULL)
-    public static class Array {
+    public static class Array implements Serializable {
+        private static final long serialVersionUID = 781648185695654951L;
         public List<Item> dataList;
 
         @JsonInclude(Include.NON_NULL)
-        public static class Item {
+        public static class Item implements Serializable{
+            private static final long serialVersionUID = 8301386016086254463L;
             public String day;
         }
     }

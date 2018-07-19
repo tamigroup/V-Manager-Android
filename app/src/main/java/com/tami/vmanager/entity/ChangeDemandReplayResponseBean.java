@@ -8,6 +8,7 @@ import java.io.Serializable;
 public class ChangeDemandReplayResponseBean extends MobileMessage implements Serializable {
 
 
+    private static final long serialVersionUID = -5765905493224731915L;
     /**
      * data : true
      */

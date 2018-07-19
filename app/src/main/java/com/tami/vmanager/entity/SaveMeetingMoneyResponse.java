@@ -15,12 +15,8 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonInclude(Include.NON_NULL)
 public class SaveMeetingMoneyResponse extends MobileMessage implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-
+	private static final long serialVersionUID = -7079995850888651392L;
 
 	public SaveMeetingMoneyResponse() {
 		super();

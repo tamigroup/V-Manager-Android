@@ -16,10 +16,8 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonInclude(Include.NON_NULL)
 public class UserListOfPositionResponse extends MobileMessage implements Serializable {
 
-    /**
-     *
-     */
-    public static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 4756775534506725977L;
 
     public UserListOfPositionResponse() {
         super();
@@ -28,13 +26,15 @@ public class UserListOfPositionResponse extends MobileMessage implements Seriali
     public Item data;
 
     @JsonInclude(Include.NON_NULL)
-    public static class Item {
+    public static class Item implements Serializable{
 
+        private static final long serialVersionUID = -3740736655803185647L;
         public List<UserListOfPositionResponse.Item.TitleItem> dataList;
 
         @JsonInclude(Include.NON_NULL)
-        public static class TitleItem {
+        public static class TitleItem implements Serializable{
 
+            private static final long serialVersionUID = -1982568783096227567L;
             public int id;	/*5*/
             public int orderBy;	/*0*/
             public int status;	/*0*/

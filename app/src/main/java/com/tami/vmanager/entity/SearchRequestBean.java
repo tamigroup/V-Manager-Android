@@ -10,8 +10,8 @@ import java.io.Serializable;
  */
 public class SearchRequestBean extends MobileMessage implements Serializable {
 
-    private static final long serialVersionUID = 1L;
 
+    private static final long serialVersionUID = 4465853287643258883L;
     /**
      * keyWord : 塔
      * searchType : 1

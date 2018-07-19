@@ -37,7 +37,9 @@ public class CreateMeetingRequest extends MobileMessage implements Serializable 
     private int isVzh;//是否V智会  0不是  1是
     private List<Item> vipList;//VIP参会人员LIST    [{"name":"王总",“intro”:""},{"name":"李总",“intro”:""}]
 
-    public static class Item {
+    public static class Item implements Serializable{
+        private static final long serialVersionUID = -5398148103473711670L;
+
         private int systemId;
         private String name;
         private String intro;

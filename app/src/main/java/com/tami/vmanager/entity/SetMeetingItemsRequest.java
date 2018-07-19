@@ -12,12 +12,8 @@ import java.io.Serializable;
  */
 public class SetMeetingItemsRequest extends MobileMessage implements Serializable {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
 
-
+    private static final long serialVersionUID = -5534123430265457153L;
     private int meetingId;
     private String meetingItemsJson;
     private String startOn;

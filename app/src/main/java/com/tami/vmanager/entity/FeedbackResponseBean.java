@@ -8,6 +8,5 @@ import java.io.Serializable;
  */
 public class FeedbackResponseBean extends MobileMessage implements Serializable {
 
-
-
+    private static final long serialVersionUID = 8394454044257599959L;
 }

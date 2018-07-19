@@ -1,13 +1,15 @@
 package com.tami.vmanager.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by why on 2018/6/25.
  */
 
-public class UserInfoEntity {
+public class UserInfoEntity implements Serializable{
 
+    private static final long serialVersionUID = 8060679469450141011L;
     public int status;	/*0*/
     public String systemName;	/*测试酒店*/
     public String iconUrl;	/*https://img2.woyaogexing.com/2018/05/16/84e2ae25d842cfc0!400x400_big.jpg*/

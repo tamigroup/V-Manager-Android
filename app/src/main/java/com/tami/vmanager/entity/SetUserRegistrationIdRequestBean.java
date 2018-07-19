@@ -9,6 +9,7 @@ import java.io.Serializable;
  * 绑定用户RegistrationId
  */
 public class SetUserRegistrationIdRequestBean extends MobileMessage implements Serializable{
+    private static final long serialVersionUID = 2486573866671214788L;
     private int userId;
     private String registrationId;
 

@@ -17,19 +17,17 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonInclude(Include.NON_NULL)
 public class GetSaleUserByRoleResponse extends MobileMessage implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
+	private static final long serialVersionUID = -9013029348935281776L;
 
 	/**
 	 * @see com.bwapi.TM.message.entity.GetSaleUserByRoleResponse#getDataList
 	 * 
 	 */
 	@JsonInclude(Include.NON_NULL)
-	public static class ElementDataList {
+	public static class ElementDataList implements Serializable{
 
+		private static final long serialVersionUID = -1233716187824749942L;
 		private String iconUrl;
 		private String nickName;
 		private String positionName;

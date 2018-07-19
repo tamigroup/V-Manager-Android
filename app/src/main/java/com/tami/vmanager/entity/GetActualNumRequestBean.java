@@ -10,6 +10,7 @@ import java.io.Serializable;
  */
 public class GetActualNumRequestBean extends MobileMessage implements Serializable{
 
+    private static final long serialVersionUID = 5179331230409138537L;
     /**
      * meetingId : 46
      */

@@ -2,7 +2,6 @@ package com.tami.vmanager.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -15,10 +14,7 @@ import java.util.List;
 @JsonInclude(Include.NON_NULL)
 public class LoginResponse extends MobileMessage implements Serializable {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 4476120038786998263L;
 
     public LoginResponse() {
         super();
@@ -35,9 +31,12 @@ public class LoginResponse extends MobileMessage implements Serializable {
     }
 
     @JsonInclude(Include.NON_NULL)
-    public static class Item {
+    public static class Item implements Serializable{
+
         @JsonInclude(Include.NON_NULL)
-        public static class UserRole {
+        public static class UserRole implements Serializable{
+
+            private static final long serialVersionUID = -6150113120632786303L;
 
             public	int	id;	/*1*/
             public	int	status;	/*0*/
@@ -67,6 +66,8 @@ public class LoginResponse extends MobileMessage implements Serializable {
         private	String	mobile;	/*15901125418*/
         private	int	roleId;	/*0*/
         private	Long	updateOn;	/*1530612754000*/
+        private	String	deviceToken;	/**/
+
         private List<UserRole> userRoleList;
 
         public String getRegistrationId() {
@@ -227,6 +228,14 @@ public class LoginResponse extends MobileMessage implements Serializable {
 
         public void setUpdateOn(Long updateOn) {
             this.updateOn = updateOn;
+        }
+
+        public String getDeviceToken() {
+            return deviceToken;
+        }
+
+        public void setDeviceToken(String deviceToken) {
+            this.deviceToken = deviceToken;
         }
 
         /**

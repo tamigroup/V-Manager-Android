@@ -28,8 +28,9 @@ public class NoticePageResponse extends MobileMessage implements Serializable{
 	 * 
 	 */
 	@JsonInclude(Include.NON_NULL)
-	public static class ElementElements {
+	public static class ElementElements implements Serializable{
 
+		private static final long serialVersionUID = -3723392357436952404L;
 		private String content;
 		private String createOn;
 		private String iconUrl;

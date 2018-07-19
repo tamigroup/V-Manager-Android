@@ -13,11 +13,8 @@ import java.io.Serializable;
  */
 public class SetMeetingItemsStatusRequest extends MobileMessage implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
+	private static final long serialVersionUID = -2832602479345485644L;
 	private int meetingItemSetId;
 	private int status;//1代表通过  2代表有问题 3代表正常状态（灰色）
 	private int userId;

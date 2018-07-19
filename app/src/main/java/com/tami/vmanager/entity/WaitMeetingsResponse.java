@@ -17,18 +17,17 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonInclude(Include.NON_NULL)
 public class WaitMeetingsResponse extends MobileMessage implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
+	private static final long serialVersionUID = 5801018456994261251L;
 
 	/**
 	 * @see com.bwapi.TM.message.entity.WaitMeetingsResponse#getElements
 	 * 
 	 */
 	@JsonInclude(Include.NON_NULL)
-	public static class ElementElements {
+	public static class ElementElements implements Serializable{
+
+		private static final long serialVersionUID = 1516000514359933798L;
 
 		private String actualNum;
 		private String endTime;

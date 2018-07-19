@@ -15,10 +15,8 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonInclude(Include.NON_NULL)
 public class MeetingUserGroupPageResponse extends MobileMessage implements Serializable {
 
-    /**
-     *
-     */
-    public static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = -4160477732209235068L;
 
     public MeetingUserGroupPageResponse() {
         super();
@@ -27,9 +25,12 @@ public class MeetingUserGroupPageResponse extends MobileMessage implements Seria
     public Array data;
 
     @JsonInclude(Include.NON_NULL)
-    public static class Array {
+    public static class Array implements Serializable{
+        private static final long serialVersionUID = 7611241928435082697L;
+
         @JsonInclude(Include.NON_NULL)
-        public static class Item {
+        public static class Item implements Serializable{
+            private static final long serialVersionUID = -5440542081902951935L;
             public String registrationId;	/*1104a89792fa59a83a2*/
             public int status;	/*0*/
             public String iconUrl;	/*https://img2.woyaogexing.com/2018/05/16/84e2ae25d842cfc0!400x400_big.jpg*/

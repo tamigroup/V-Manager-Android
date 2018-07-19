@@ -16,11 +16,8 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonInclude(Include.NON_NULL)
 public class UpdateUserIconResponse extends MobileMessage implements Serializable {
 
-    /**
-     *
-     */
-    public static final long serialVersionUID = 1L;
 
+    private static final long serialVersionUID = 4702271919249650288L;
 
     public UpdateUserIconResponse() {
         super();
@@ -29,8 +26,9 @@ public class UpdateUserIconResponse extends MobileMessage implements Serializabl
     public Item data;
 
     @JsonInclude(Include.NON_NULL)
-    public static class Item {
+    public static class Item implements Serializable{
 
+        private static final long serialVersionUID = -3062477343077955487L;
         public String registrationId;	/**/
         public int status;	/*0*/
         public String iconUrl;	/*http://f.tamiyun.com/app/af20180712103150_93219.jpg*/

@@ -17,19 +17,17 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonInclude(Include.NON_NULL)
 public class VipGusetPageResponse extends MobileMessage implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
+	private static final long serialVersionUID = 8649101027408769888L;
 
 	/**
 	 * @see com.bwapi.TM.message.entity.VipGusetPageResponse#getElements
 	 * 
 	 */
 	@JsonInclude(Include.NON_NULL)
-	public static class ElementElements {
+	public static class ElementElements implements Serializable{
 
+		private static final long serialVersionUID = -2622700712911195477L;
 		private String createOn;
 		private String id;
 		private String intro;

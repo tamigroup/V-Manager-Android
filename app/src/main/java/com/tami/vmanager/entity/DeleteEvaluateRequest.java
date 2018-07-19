@@ -11,12 +11,8 @@ import java.io.Serializable;
  */
 public class DeleteEvaluateRequest implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-
+	private static final long serialVersionUID = -8160755623631174219L;
 	private String id;
 
 	public DeleteEvaluateRequest() {

@@ -11,12 +11,8 @@ import java.io.Serializable;
  */
 public class SaveGuestNumRequest implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-
+	private static final long serialVersionUID = -6817579803260210272L;
 	private String estimateNum;
 	private String meetingId;
 	private String minNum;

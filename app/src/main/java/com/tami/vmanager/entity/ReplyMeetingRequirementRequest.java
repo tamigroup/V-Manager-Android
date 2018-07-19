@@ -11,12 +11,8 @@ import java.io.Serializable;
  */
 public class ReplyMeetingRequirementRequest implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-
+	private static final long serialVersionUID = 3387046130682072627L;
 	private String meeetingRequirementId;
 	private String replyContent;
 	private String replyUserId;

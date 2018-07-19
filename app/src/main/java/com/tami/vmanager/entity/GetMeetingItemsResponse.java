@@ -19,7 +19,8 @@ import java.util.List;
  */
 @JsonInclude(Include.NON_NULL)
 public class GetMeetingItemsResponse extends MobileMessage implements Serializable {
-    public static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = -6117770465493762199L;
 
     public GetMeetingItemsResponse() {
         super();
@@ -28,12 +29,14 @@ public class GetMeetingItemsResponse extends MobileMessage implements Serializab
     public Array data;
 
     @JsonInclude(Include.NON_NULL)
-    public static class Array {
+    public static class Array implements Serializable{
 
+        private static final long serialVersionUID = 632041108744624928L;
         public List<Item> dataList;
 
         @JsonInclude(Include.NON_NULL)
-        public static class Item implements Comparable<Item> {
+        public static class Item implements Comparable<Item> ,Serializable{
+            private static final long serialVersionUID = 4650519290177901740L;
             public int id;	/*1*/
             public int selStatus;	/*0*/
             public int parentId;	/*0*/
@@ -68,7 +71,8 @@ public class GetMeetingItemsResponse extends MobileMessage implements Serializab
             public Role role;
 
             @JsonInclude(Include.NON_NULL)
-            public static class Role {
+            public static class Role implements Serializable{
+                private static final long serialVersionUID = 5800393170967688385L;
                 public int id;
                 public String name;
             }

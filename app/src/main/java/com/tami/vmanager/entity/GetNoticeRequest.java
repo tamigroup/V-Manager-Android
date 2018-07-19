@@ -11,12 +11,8 @@ import java.io.Serializable;
  */
 public class GetNoticeRequest implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-
+	private static final long serialVersionUID = 7552610195368386574L;
 	private String noticeId;
 
 	public GetNoticeRequest() {

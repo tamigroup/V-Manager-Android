@@ -11,12 +11,8 @@ import java.io.Serializable;
  */
 public class SaveReceiveUserRequest implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-
+	private static final long serialVersionUID = -4909601800479396263L;
 	private String meetingId;
 	private String vipReseiveUserId;
 

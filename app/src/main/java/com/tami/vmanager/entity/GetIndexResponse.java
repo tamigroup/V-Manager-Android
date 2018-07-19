@@ -32,8 +32,9 @@ public class GetIndexResponse extends MobileMessage implements Serializable {
     }
 
     @JsonInclude(Include.NON_NULL)
-    public static class Item {
+    public static class Item implements Serializable{
 
+        private static final long serialVersionUID = -7030205762390034661L;
         private int myFollowMeetingsCount;
         private int todayMeetingsCount;
         private int waitMeetingsCount;

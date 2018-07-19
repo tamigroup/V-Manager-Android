@@ -10,6 +10,7 @@ import java.io.Serializable;
  */
 public class ChangeDemandRequestBean extends MobileMessage implements Serializable {
 
+    private static final long serialVersionUID = -2024853707151616920L;
     /**
      * meetingId : 6
      * curPage : 1

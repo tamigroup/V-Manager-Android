@@ -10,6 +10,7 @@ import java.io.Serializable;
  */
 public class EvaluatePageRequestBean extends MobileMessage implements Serializable {
 
+    private static final long serialVersionUID = -7366074975034094699L;
     /**
      * meetingId : 1
      * type : 2

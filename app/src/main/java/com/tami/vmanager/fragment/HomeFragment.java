@@ -1,13 +1,16 @@
 package com.tami.vmanager.fragment;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.Group;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatImageView;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -28,6 +31,7 @@ import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.enums.TimeType;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
+import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.Utils;
 
@@ -258,7 +262,8 @@ public class HomeFragment extends BaseFragment {
      * 创建会议
      */
     private void createMeeting() {
-        startActivity(new Intent(getActivity(), CreateMeetingRewriteActivity.class));
+        Intent meetingIntent = new Intent(getActivity(), CreateMeetingRewriteActivity.class);
+        startActivityForResult(meetingIntent, Constants.CREATE_MEETING);
     }
 
     /**
@@ -330,4 +335,13 @@ public class HomeFragment extends BaseFragment {
 
         });
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.CREATE_MEETING) {
+            getIndex();
+        }
+    }
+
 }

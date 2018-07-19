@@ -10,6 +10,7 @@ import java.io.Serializable;
  */
 public class FeedbackRequestBean extends MobileMessage implements Serializable{
 
+    private static final long serialVersionUID = -2551536516263713063L;
     /**
      * meetingId : 9
      * toType : 1

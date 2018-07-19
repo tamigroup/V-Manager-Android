@@ -11,12 +11,8 @@ import java.io.Serializable;
  */
 public class IntoGroupUserRequest implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-
+	private static final long serialVersionUID = 7066091265531316236L;
 	private String meetingId;
 	private String userId;
 

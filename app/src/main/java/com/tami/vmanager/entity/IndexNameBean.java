@@ -2,10 +2,13 @@ package com.tami.vmanager.entity;
 
 import com.tami.vmanager.view.IndexBar.bean.BaseIndexPinyinBean;
 
+import java.io.Serializable;
+
 /**
  * Created by Tang on 2018/7/14
  */
-public class IndexNameBean extends BaseIndexPinyinBean {
+public class IndexNameBean extends BaseIndexPinyinBean implements Serializable{
+    private static final long serialVersionUID = 3345060212649818038L;
     private String name;
     private boolean isTop;//是否是最上面的 不需要被转化成拼音的
     private int type;

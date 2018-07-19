@@ -16,12 +16,8 @@ import java.util.List;
 @JsonInclude(Include.NON_NULL)
 public class MeetingChatPageResponse extends MobileMessage implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-
+	private static final long serialVersionUID = -342726385022184390L;
 	/**
 	 * data : {"curPage":1,"elements":[{"content":"哈哈哈哈哈哈333！！！！","createOn":1529457351000,"id":9,"meetingId":1,"sendDate":"09:15","status":0,"type":1,"updateOn":1529457351000,"userIcon":"http://www.tx2010.com/images/pic_list1.jpg","userId":0,"userName":"未知用户-null"},{"content":"哈哈哈哈哈哈22！！！！","createOn":1529457283000,"id":8,"meetingId":1,"sendDate":"09:14","status":0,"type":1,"updateOn":1529457283000,"userIcon":"http://www.tx2010.com/images/pic_list1.jpg","userId":0,"userName":"未知用户-null"},{"content":"哈哈哈哈哈哈22！！！！","createOn":1529457191000,"id":7,"meetingId":1,"sendDate":"09:13","status":0,"type":1,"updateOn":1529457191000,"userIcon":"http://www.tx2010.com/images/pic_list1.jpg","userId":0,"userName":"未知用户-null"},{"content":"哈哈哈哈哈哈！！！！","createOn":1529456955000,"id":6,"meetingId":1,"sendDate":"09:09","status":0,"type":1,"updateOn":1529456955000,"userIcon":"http://www.tx2010.com/images/pic_list1.jpg","userId":0,"userName":"未知用户-null"},{"content":"明天好冷酷","createOn":1528714536000,"id":3,"meetingId":1,"sendDate":"18:55","status":0,"type":1,"updateOn":1528714536000,"userIcon":"http://www.tx2010.com/images/pic_list1.jpg","userId":12,"userName":"未知用户-wangdachui"},{"content":"今天好温暖","createOn":1528714529000,"id":2,"meetingId":1,"sendDate":"18:55","status":0,"type":1,"updateOn":1528714529000,"userIcon":"http://www.tx2010.com/images/pic_list1.jpg","userId":12,"userName":"未知用户-wangdachui"},{"content":"这是啥","createOn":1528714465000,"id":1,"meetingId":1,"sendDate":"18:54","status":0,"type":1,"updateOn":1528714465000,"userIcon":"http://f.tamiyun.com/app/af20180709172918_44812.png","userId":1,"userName":"研发部-小塔米"}],"firstPage":true,"lastPage":true,"lastPageNumber":1,"nextPage":2,"pageSize":10,"previousPage":0,"thisPageFirstElementNumber":1,"thisPageLastElementNumber":7,"totalElements":7}
 	 */
@@ -36,7 +32,8 @@ public class MeetingChatPageResponse extends MobileMessage implements Serializab
 		this.data = data;
 	}
 	@JsonInclude(Include.NON_NULL)
-	public static class DataBean {
+	public static class DataBean implements Serializable{
+		private static final long serialVersionUID = -8291208687300524351L;
 		/**
 		 * curPage : 1
 		 * elements : [{"content":"哈哈哈哈哈哈333！！！！","createOn":1529457351000,"id":9,"meetingId":1,"sendDate":"09:15","status":0,"type":1,"updateOn":1529457351000,"userIcon":"http://www.tx2010.com/images/pic_list1.jpg","userId":0,"userName":"未知用户-null"},{"content":"哈哈哈哈哈哈22！！！！","createOn":1529457283000,"id":8,"meetingId":1,"sendDate":"09:14","status":0,"type":1,"updateOn":1529457283000,"userIcon":"http://www.tx2010.com/images/pic_list1.jpg","userId":0,"userName":"未知用户-null"},{"content":"哈哈哈哈哈哈22！！！！","createOn":1529457191000,"id":7,"meetingId":1,"sendDate":"09:13","status":0,"type":1,"updateOn":1529457191000,"userIcon":"http://www.tx2010.com/images/pic_list1.jpg","userId":0,"userName":"未知用户-null"},{"content":"哈哈哈哈哈哈！！！！","createOn":1529456955000,"id":6,"meetingId":1,"sendDate":"09:09","status":0,"type":1,"updateOn":1529456955000,"userIcon":"http://www.tx2010.com/images/pic_list1.jpg","userId":0,"userName":"未知用户-null"},{"content":"明天好冷酷","createOn":1528714536000,"id":3,"meetingId":1,"sendDate":"18:55","status":0,"type":1,"updateOn":1528714536000,"userIcon":"http://www.tx2010.com/images/pic_list1.jpg","userId":12,"userName":"未知用户-wangdachui"},{"content":"今天好温暖","createOn":1528714529000,"id":2,"meetingId":1,"sendDate":"18:55","status":0,"type":1,"updateOn":1528714529000,"userIcon":"http://www.tx2010.com/images/pic_list1.jpg","userId":12,"userName":"未知用户-wangdachui"},{"content":"这是啥","createOn":1528714465000,"id":1,"meetingId":1,"sendDate":"18:54","status":0,"type":1,"updateOn":1528714465000,"userIcon":"http://f.tamiyun.com/app/af20180709172918_44812.png","userId":1,"userName":"研发部-小塔米"}]
@@ -151,7 +148,8 @@ public class MeetingChatPageResponse extends MobileMessage implements Serializab
 			this.elements = elements;
 		}
 		@JsonInclude(Include.NON_NULL)
-		public static class ElementsBean {
+		public static class ElementsBean implements Serializable{
+			private static final long serialVersionUID = 23255405131548482L;
 			/**
 			 * content : 哈哈哈哈哈哈333！！！！
 			 * createOn : 1529457351000

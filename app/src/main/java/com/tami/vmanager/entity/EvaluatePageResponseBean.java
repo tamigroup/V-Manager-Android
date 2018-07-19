@@ -12,7 +12,7 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class EvaluatePageResponseBean extends MobileMessage implements Serializable{
 
-
+    private static final long serialVersionUID = 2738785611200411111L;
     /**
      * data : {"curPage":1,"elements":[{"content":"酒店的机器 人小V很赞","createOn":1528106660000,"iconUrl":"","id":4,"meetingId":1,"score":4,"status":0,"type":2,"updateOn":1528106660000,"userId":2,"userName":"李小二"},{"content":"不错不错不错","createOn":1528106610000,"iconUrl":"","id":2,"meetingId":1,"score":4,"status":0,"type":2,"updateOn":1528106610000,"userId":2,"userName":"李小二"}],"firstPage":true,"lastPage":true,"lastPageNumber":1,"nextPage":2,"pageSize":10,"previousPage":0,"thisPageFirstElementNumber":1,"thisPageLastElementNumber":2,"totalElements":2}
      */
@@ -27,7 +27,8 @@ public class EvaluatePageResponseBean extends MobileMessage implements Serializa
         this.data = data;
     }
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public static class DataBean {
+    public static class DataBean implements Serializable{
+        private static final long serialVersionUID = -8563466038619136537L;
         /**
          * curPage : 1
          * elements : [{"content":"酒店的机器 人小V很赞","createOn":1528106660000,"iconUrl":"","id":4,"meetingId":1,"score":4,"status":0,"type":2,"updateOn":1528106660000,"userId":2,"userName":"李小二"},{"content":"不错不错不错","createOn":1528106610000,"iconUrl":"","id":2,"meetingId":1,"score":4,"status":0,"type":2,"updateOn":1528106610000,"userId":2,"userName":"李小二"}]
@@ -142,7 +143,8 @@ public class EvaluatePageResponseBean extends MobileMessage implements Serializa
             this.elements = elements;
         }
         @JsonInclude(JsonInclude.Include.NON_NULL)
-        public static class ElementsBean {
+        public static class ElementsBean implements Serializable{
+            private static final long serialVersionUID = -4358625560806911894L;
             /**
              * content : 酒店的机器 人小V很赞
              * createOn : 1528106660000

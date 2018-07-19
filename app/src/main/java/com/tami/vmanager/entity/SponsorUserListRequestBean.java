@@ -9,6 +9,7 @@ import java.io.Serializable;
  */
 public class SponsorUserListRequestBean extends MobileMessage implements Serializable {
 
+    private static final long serialVersionUID = -6472068110943538568L;
     /**
      * meetingId : 88
      */

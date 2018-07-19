@@ -8,6 +8,7 @@ import java.io.Serializable;
  */
 public class SetUserRegistrationIdResponseBean extends MobileMessage implements Serializable {
 
+    private static final long serialVersionUID = 3686690207496724781L;
     /**
      * data : true
      */

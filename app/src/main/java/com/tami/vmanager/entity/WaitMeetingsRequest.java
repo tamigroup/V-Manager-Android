@@ -11,12 +11,8 @@ import java.io.Serializable;
  */
 public class WaitMeetingsRequest implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-
+	private static final long serialVersionUID = -1731707993918303556L;
 	private String curPage;
 	private String endDate;
 	private String pageSize;

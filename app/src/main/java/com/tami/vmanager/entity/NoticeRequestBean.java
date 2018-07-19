@@ -10,6 +10,7 @@ import java.io.Serializable;
  */
 public class NoticeRequestBean extends MobileMessage implements Serializable {
 
+    private static final long serialVersionUID = 6612972205811738052L;
     /**
      * systemId : 4  ----酒店ID
      * meetingId : 1 ----会议ID

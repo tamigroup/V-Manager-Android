@@ -10,11 +10,7 @@ import java.io.Serializable;
  */
 public class AllMeetingsRequest extends MobileMessage implements Serializable {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
-
+    private static final long serialVersionUID = 1426804181132838596L;
 
     private String curPage;
     private String endDate;

@@ -2,12 +2,14 @@ package com.tami.vmanager.entity;
 
 import com.tami.vmanager.view.IndexBar.bean.BaseIndexPinyinBean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Tang on 2018/7/14
  */
-public class IndexHeaderBean extends BaseIndexPinyinBean {
+public class IndexHeaderBean extends BaseIndexPinyinBean implements Serializable{
+    private static final long serialVersionUID = -8221887198888668211L;
     private List<IndexNameBean> vipNameList;
     //悬停ItemDecoration显示的Tag
     private String suspensionTag;

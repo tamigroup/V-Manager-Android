@@ -13,10 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonInclude(Include.NON_NULL)
 public class GetMeetingItemFlowResponse extends MobileMessage implements Serializable {
 
-    /**
-     *
-     */
-    public static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -3053896283452149187L;
 
     public GetMeetingItemFlowResponse() {
         super();
@@ -25,12 +22,14 @@ public class GetMeetingItemFlowResponse extends MobileMessage implements Seriali
     public Array data;
 
     @JsonInclude(Include.NON_NULL)
-    public static class Array {
+    public static class Array implements Serializable{
 
+        private static final long serialVersionUID = 7376367472370338357L;
         public List<Item> dataList;
 
         @JsonInclude(Include.NON_NULL)
-        public static class Item {
+        public static class Item implements Serializable{
+            private static final long serialVersionUID = -45118642126153762L;
             public int meetingItemId;	/*1*/
             public Long startOn;	/*1530547200000*/
             public int parentId;	/*0*/
@@ -40,7 +39,8 @@ public class GetMeetingItemFlowResponse extends MobileMessage implements Seriali
 
             public List<UserList> meetingItemSetFlowUserList;
             @JsonInclude(Include.NON_NULL)
-            public static class UserList {
+            public static class UserList implements Serializable{
+                private static final long serialVersionUID = 2543297290413817025L;
                 public String userName;	/*小塔米*/
                 public String mobile;	/*13800138000*/
             }

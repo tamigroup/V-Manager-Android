@@ -10,6 +10,7 @@ import java.util.List;
 public class PersonnelListResponseBean extends MobileMessage implements Serializable {
 
 
+    private static final long serialVersionUID = -9116049391874640911L;
     /**
      * data : {"dataList":[{"name":"张涛_1","type":0,"meetingId":0},{"name":"张涛_2","type":1,"meetingId":0},{"name":"张涛_3","type":0,"meetingId":0},{"name":"张涛_4","type":1,"meetingId":0},{"name":"张涛_5","type":0,"meetingId":0},{"name":"张涛_6","type":1,"meetingId":0},{"name":"张涛_7","type":0,"meetingId":0},{"name":"张涛_8","type":1,"meetingId":0},{"name":"张涛_9","type":0,"meetingId":0},{"name":"张涛_10","type":1,"meetingId":0}]}
      */
@@ -24,7 +25,8 @@ public class PersonnelListResponseBean extends MobileMessage implements Serializ
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
+        private static final long serialVersionUID = 3268976576829079922L;
         private List<DataListBean> dataList;
 
         public List<DataListBean> getDataList() {
@@ -35,7 +37,8 @@ public class PersonnelListResponseBean extends MobileMessage implements Serializ
             this.dataList = dataList;
         }
 
-        public static class DataListBean extends IndexNameBean{
+        public static class DataListBean extends IndexNameBean implements Serializable{
+            private static final long serialVersionUID = -1690871870596483033L;
             /**
              * name : 张涛_1
              * type : 0

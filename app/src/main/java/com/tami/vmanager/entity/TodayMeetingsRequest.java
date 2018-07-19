@@ -11,12 +11,8 @@ import java.io.Serializable;
  */
 public class TodayMeetingsRequest implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-
+	private static final long serialVersionUID = 5121880073041999778L;
 	private String curPage;
 	private String pageSize;
 	private String userId;

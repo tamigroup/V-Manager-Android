@@ -11,12 +11,8 @@ import java.io.Serializable;
  */
 public class NoticePageRequest implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-
+	private static final long serialVersionUID = 2623200481138124465L;
 	private String curPage;
 	private String groupType;
 	private String meetingId;

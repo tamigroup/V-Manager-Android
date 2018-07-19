@@ -13,12 +13,8 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LoginRequest  extends MobileMessage implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-
+	private static final long serialVersionUID = 7391852628438732189L;
 	private String mobile;
 	private String passWord;
 	private String smsCode;

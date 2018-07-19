@@ -12,11 +12,8 @@ import java.io.Serializable;
  */
 public class CreateNoticeRequest extends MobileMessage implements Serializable {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
 
+    private static final long serialVersionUID = 6180099630573853500L;
 
     public CreateNoticeRequest() {
         super();

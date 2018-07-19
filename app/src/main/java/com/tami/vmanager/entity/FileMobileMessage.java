@@ -2,12 +2,15 @@ package com.tami.vmanager.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.io.Serializable;
+
 /**
  * Created by why on 2018/7/3.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class FileMobileMessage {
+public class FileMobileMessage implements Serializable{
 
+    private static final long serialVersionUID = -3021849933541531601L;
     public String[] filePath;
 
     private int code;

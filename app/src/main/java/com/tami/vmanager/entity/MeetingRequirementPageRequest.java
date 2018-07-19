@@ -11,12 +11,8 @@ import java.io.Serializable;
  */
 public class MeetingRequirementPageRequest implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-
+	private static final long serialVersionUID = 4957310520555284984L;
 	private String curPage;
 	private String meetingId;
 	private String pageSize;

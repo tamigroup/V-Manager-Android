@@ -12,12 +12,8 @@ import java.io.Serializable;
  */
 public class GetBannerDataRequest extends MobileMessage implements Serializable {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
 
-
+    private static final long serialVersionUID = -6486514127119525735L;
     private String type;
     private String userId;
 

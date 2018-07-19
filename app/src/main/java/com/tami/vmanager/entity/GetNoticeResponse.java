@@ -17,19 +17,17 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonInclude(Include.NON_NULL)
 public class GetNoticeResponse extends MobileMessage implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
+	private static final long serialVersionUID = -5289597449513090401L;
 
 	/**
 	 * @see com.bwapi.TM.message.entity.GetNoticeResponse#getElements
 	 * 
 	 */
 	@JsonInclude(Include.NON_NULL)
-	public static class ElementElements {
+	public static class ElementElements implements  Serializable{
 
+		private static final long serialVersionUID = 511030957770378379L;
 		private String content;
 		private String createOn;
 		private String iconUrl;

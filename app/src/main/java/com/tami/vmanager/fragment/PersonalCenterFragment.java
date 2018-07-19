@@ -111,24 +111,24 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
             if (!TextUtils.isEmpty(item.getIconUrl())) {
                 Picasso.get().load(item.getIconUrl()).into(avatar_image);
             }
-            List<LoginResponse.Item.UserRole> roleList = item.getUserRoleList();
-            if (roleList != null && roleList.size() > 0) {
-                boolean visibility = false;
-                for (LoginResponse.Item.UserRole userRole : roleList) {
-                    if (userRole != null) {
-                        if (userRole.roleId == 2 || userRole.roleId == 11) {
-                            visibility = true;
-                            break;
-                        } else {
-                            visibility = false;
-                        }
-                    }
-                }
-                if (visibility) {
-                    my_creation.setVisibility(View.VISIBLE);
-                    lineView.setVisibility(View.VISIBLE);
-                }
-            }
+//            List<LoginResponse.Item.UserRole> roleList = item.getUserRoleList();
+//            if (roleList != null && roleList.size() > 0) {
+//                boolean visibility = false;
+//                for (LoginResponse.Item.UserRole userRole : roleList) {
+//                    if (userRole != null) {
+//                        if (userRole.roleId == 2 || userRole.roleId == 11) {
+//                            visibility = true;
+//                            break;
+//                        } else {
+//                            visibility = false;
+//                        }
+//                    }
+//                }
+//                if (visibility) {
+//                    my_creation.setVisibility(View.VISIBLE);
+//                    lineView.setVisibility(View.VISIBLE);
+//                }
+//            }
         }
     }
 

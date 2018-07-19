@@ -14,6 +14,7 @@ import java.util.List;
 public class NoticeResponseBean extends MobileMessage implements Serializable {
 
 
+    private static final long serialVersionUID = -2205623261780545784L;
     /**
      * data : {"curPage":1,"elements":[{"content":"本群须知20180613","createOn":1528857476000,"groupType":1,"iconUrl":"https://img2.woyaogexing.com/2018/05/16/84e2ae25d842cfc0!400x400_big.jpg","id":7,"isTop":1,"meetingId":1,"noticeType":3,"status":0,"systemId":4,"title":"测试公告20180613","updateOn":1528857476000,"userId":2,"userName":"李小二"},{"content":"此会议将于7月01日14：00准时召开，请做好准备！","createOn":1528697847000,"groupType":1,"iconUrl":"https://img2.woyaogexing.com/2018/05/16/84e2ae25d842cfc0!400x400_big.jpg","id":3,"isTop":1,"meetingId":1,"noticeType":3,"status":0,"systemId":4,"title":"","updateOn":1528697847000,"userId":1,"userName":"小塔米"},{"content":"本群须知","createOn":1528856114000,"groupType":1,"iconUrl":"https://img2.woyaogexing.com/2018/05/16/84e2ae25d842cfc0!400x400_big.jpg","id":6,"isTop":0,"meetingId":1,"noticeType":3,"status":0,"systemId":4,"title":"","updateOn":1528856114000,"userId":1,"userName":"小塔米"},{"content":"此会议将于6月15日10：00准时召开，请做好准备！","createOn":1528698140000,"groupType":1,"iconUrl":"https://img2.woyaogexing.com/2018/05/16/84e2ae25d842cfc0!400x400_big.jpg","id":4,"isTop":0,"meetingId":1,"noticeType":3,"status":0,"systemId":4,"title":"","updateOn":1528698140000,"userId":1,"userName":"小塔米"}],"firstPage":true,"lastPage":true,"lastPageNumber":1,"nextPage":2,"pageSize":10,"previousPage":0,"thisPageFirstElementNumber":1,"thisPageLastElementNumber":4,"totalElements":4}
      */
@@ -29,7 +30,8 @@ public class NoticeResponseBean extends MobileMessage implements Serializable {
     }
 
     @JsonInclude(Include.NON_NULL)
-    public static class DataBean {
+    public static class DataBean implements Serializable{
+        private static final long serialVersionUID = 5455109702966816368L;
         /**
          * curPage : 1
          * elements : [{"content":"本群须知20180613","createOn":1528857476000,"groupType":1,"iconUrl":"https://img2.woyaogexing.com/2018/05/16/84e2ae25d842cfc0!400x400_big.jpg","id":7,"isTop":1,"meetingId":1,"noticeType":3,"status":0,"systemId":4,"title":"测试公告20180613","updateOn":1528857476000,"userId":2,"userName":"李小二"},{"content":"此会议将于7月01日14：00准时召开，请做好准备！","createOn":1528697847000,"groupType":1,"iconUrl":"https://img2.woyaogexing.com/2018/05/16/84e2ae25d842cfc0!400x400_big.jpg","id":3,"isTop":1,"meetingId":1,"noticeType":3,"status":0,"systemId":4,"title":"","updateOn":1528697847000,"userId":1,"userName":"小塔米"},{"content":"本群须知","createOn":1528856114000,"groupType":1,"iconUrl":"https://img2.woyaogexing.com/2018/05/16/84e2ae25d842cfc0!400x400_big.jpg","id":6,"isTop":0,"meetingId":1,"noticeType":3,"status":0,"systemId":4,"title":"","updateOn":1528856114000,"userId":1,"userName":"小塔米"},{"content":"此会议将于6月15日10：00准时召开，请做好准备！","createOn":1528698140000,"groupType":1,"iconUrl":"https://img2.woyaogexing.com/2018/05/16/84e2ae25d842cfc0!400x400_big.jpg","id":4,"isTop":0,"meetingId":1,"noticeType":3,"status":0,"systemId":4,"title":"","updateOn":1528698140000,"userId":1,"userName":"小塔米"}]
@@ -145,7 +147,8 @@ public class NoticeResponseBean extends MobileMessage implements Serializable {
         }
 
         @JsonInclude(Include.NON_NULL)
-        public static class ElementsBean {
+        public static class ElementsBean implements Serializable{
+            private static final long serialVersionUID = -6914692026051094731L;
             /**
              * content : 本群须知20180613
              * createOn : 1528857476000

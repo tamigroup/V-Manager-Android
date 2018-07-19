@@ -20,12 +20,14 @@ public class GetSelectMeetingItemsUserResponse extends MobileMessage implements 
     public Array data;
 
     @JsonInclude(Include.NON_NULL)
-    public static class Array {
+    public static class Array implements Serializable{
 
+        private static final long serialVersionUID = -3904597215046370302L;
         public List<Item> dataList;
 
         @JsonInclude(Include.NON_NULL)
-        public static class Item {
+        public static class Item implements Serializable{
+            private static final long serialVersionUID = -6412385436752613836L;
             public String registrationId;	/*1104a89792fa59a83a2*/
             public int status;	/*0*/
             public String iconUrl;	/*http://f.tamiyun.com/app/af20180714143903_25139.png*/

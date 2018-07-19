@@ -12,12 +12,7 @@ import java.io.Serializable;
 @Deprecated
 public class CancelUserMeetingRequest implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-
+	private static final long serialVersionUID = -7225986451603363097L;
 	private String meetingId;
 	private String userId;
 

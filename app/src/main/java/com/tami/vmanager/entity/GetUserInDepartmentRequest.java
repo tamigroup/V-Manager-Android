@@ -13,12 +13,8 @@ import java.io.Serializable;
  */
 public class GetUserInDepartmentRequest extends MobileMessage implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-
+	private static final long serialVersionUID = 6200187350846603706L;
 	private int systemId;
 
 	public GetUserInDepartmentRequest() {

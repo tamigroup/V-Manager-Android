@@ -15,11 +15,8 @@ import java.io.Serializable;
 @JsonInclude(Include.NON_NULL)
 public class GetUserNoticeConfigResponse extends MobileMessage implements Serializable{
 
-	/**
-	 * 
-	 */
-	public static final long serialVersionUID = 1L;
 
+	private static final long serialVersionUID = 3447455803705302647L;
 
 	public GetUserNoticeConfigResponse() {
 		super();
@@ -27,7 +24,8 @@ public class GetUserNoticeConfigResponse extends MobileMessage implements Serial
 
 	public Item data;
 
-	public static class Item{
+	public static class Item implements Serializable{
+		private static final long serialVersionUID = -5873897664960007477L;
 		public	int	meetingNotice;	/*0 -会务广播*/
 		public	int	id;	/*2*/
 		public	int	groupchatNotice;	/*1 -满意度通知*/

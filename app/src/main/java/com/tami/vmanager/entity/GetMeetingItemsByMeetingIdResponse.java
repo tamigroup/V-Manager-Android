@@ -15,11 +15,8 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonInclude(Include.NON_NULL)
 public class GetMeetingItemsByMeetingIdResponse extends MobileMessage implements Serializable {
 
-    /**
-     *
-     */
-    public static final long serialVersionUID = 1L;
 
+    private static final long serialVersionUID = 6076460614386615562L;
 
     public GetMeetingItemsByMeetingIdResponse() {
         super();
@@ -28,8 +25,9 @@ public class GetMeetingItemsByMeetingIdResponse extends MobileMessage implements
     public Array data;
 
     @JsonInclude(Include.NON_NULL)
-    public static class Array {
+    public static class Array implements Serializable{
 
+        private static final long serialVersionUID = 7966621723684010822L;
         public List<Item> dataList;
 
         @JsonInclude(Include.NON_NULL)

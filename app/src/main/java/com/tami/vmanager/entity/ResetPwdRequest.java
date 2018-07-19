@@ -14,12 +14,8 @@ import java.io.Serializable;
 
 public class ResetPwdRequest extends MobileMessage implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-
+	private static final long serialVersionUID = -4716611109999071707L;
 	private String newPassWord;
 	private String smsCode;
 	private String mobile;

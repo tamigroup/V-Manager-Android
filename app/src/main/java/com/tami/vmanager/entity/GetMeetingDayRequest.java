@@ -8,6 +8,8 @@ import java.io.Serializable;
  */
 public class GetMeetingDayRequest extends MobileMessage implements Serializable {
 
+    private static final long serialVersionUID = -6842748092915069897L;
+
     public GetMeetingDayRequest() {
         super();
     }

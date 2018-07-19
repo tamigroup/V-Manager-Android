@@ -74,7 +74,7 @@ import pub.devrel.easypermissions.EasyPermissions;
  * 编辑会议
  * Created by why on 2018/7/12.
  */
-public class ModifyMeetingActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks , View.OnFocusChangeListener {
+public class ModifyMeetingActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks, View.OnFocusChangeListener {
     private Button saveBtn;//保存按钮
     //TOP侧面NAME-主要给TEXT文本框赋值*号
     private TextView nameTxtView;
@@ -675,18 +675,45 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
         Calendar selectedDate = Calendar.getInstance();
         if (date != null) {
             selectedDate.setTime(date);
+        } else {
+            selectedDate.set(Calendar.HOUR_OF_DAY, 00);//时
+            selectedDate.set(Calendar.MINUTE, 00);//分
+            selectedDate.set(Calendar.SECOND, 00);//秒
         }
-        final Calendar startDate = Calendar.getInstance();
-        final Calendar endDate = Calendar.getInstance();
-//        startDate.set(2018, 0, 1);
-        endDate.set(2020, 11, 31);
+        Calendar startDate = Calendar.getInstance();
+        if (!dataFlag && recordStartDate != null) {
+            startDate.setTime(recordStartDate);
+        } else {
+            startDate.set(Calendar.HOUR_OF_DAY, 00);//时
+            startDate.set(Calendar.MINUTE, 00);//分
+            startDate.set(Calendar.SECOND, 00);//秒
+        }
+        Calendar endDate = Calendar.getInstance();
+        endDate.set(2030, 11, 31, 00, 00, 00);
         TimePickerView pvTime = new TimePickerBuilder(this, (Date selectDate, View v) -> {
             if (dataFlag) {
-                recordStartDate = selectDate;
+                if (recordEndDate == null || recordEndDate.getTime() > selectDate.getTime()) {
+                    if (selectDate.getTime() < new Date().getTime()) {
+                        showToast(getString(R.string.start_time_xiaoyu_current_time));
+                        return;
+                    }
+                    recordStartDate = selectDate;
+                    view.setText(TimeUtils.date2String(selectDate));
+                } else {
+                    showToast(getString(R.string.start_time_dayu_end_time));
+                }
             } else {
-                recordEndDate = selectDate;
+                if (recordStartDate == null || selectDate.getTime() > recordStartDate.getTime()) {
+                    if (selectDate.getTime() < new Date().getTime()) {
+                        showToast(getString(R.string.end_time_xiaoyu_current_time));
+                        return;
+                    }
+                    recordEndDate = selectDate;
+                    view.setText(TimeUtils.date2String(selectDate));
+                } else {
+                    showToast(getString(R.string.start_time_dayu_end_time));
+                }
             }
-            view.setText(TimeUtils.date2String(selectDate));
         }).setType(new boolean[]{true, true, true, true, true, true})
                 .setDate(selectedDate)// 如果不设置的话，默认是系统时间*/
                 .setRangDate(startDate, endDate)//起始终止年月日设定
@@ -847,6 +874,17 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
             showToast(getString(R.string.please_choose_, getString(R.string.end_time)));
             return false;
         }
+
+        if (recordStartDate.getTime() < new Date().getTime()) {
+            showToast(getString(R.string.start_time_xiaoyu_current_time));
+            return false;
+        }
+
+        if (recordStartDate.getTime() > recordEndDate.getTime()) {
+            showToast(getString(R.string.start_time_dayu_end_time));
+            return false;
+        }
+
         if (TextUtils.isEmpty(estimatedNumberPeople.getText())) {
             showToast(getString(R.string.please_enter_, getString(R.string.yudingrenshu)));
         }

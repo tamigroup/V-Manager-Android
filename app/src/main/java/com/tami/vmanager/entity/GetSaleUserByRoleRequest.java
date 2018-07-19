@@ -11,12 +11,8 @@ import java.io.Serializable;
  */
 public class GetSaleUserByRoleRequest implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-
+	private static final long serialVersionUID = 1149691818069338701L;
 	private String systemId;
 
 	public GetSaleUserByRoleRequest() {

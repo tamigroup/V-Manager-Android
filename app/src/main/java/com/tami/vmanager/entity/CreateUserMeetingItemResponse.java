@@ -19,7 +19,10 @@ public class CreateUserMeetingItemResponse extends MobileMessage implements Seri
     public Item data;
 
     @JsonInclude(Include.NON_NULL)
-    public static class Item {
+    public static class Item implements Serializable{
+
+        private static final long serialVersionUID = 917600545878984589L;
+
         public int selStatus;	/*0*/
         public int orderBy;	/*0*/
         public int status;	/*0*/
