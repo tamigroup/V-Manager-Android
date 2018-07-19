@@ -14,11 +14,8 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonInclude(Include.NON_NULL)
 public class GetIndexResponse extends MobileMessage implements Serializable {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
 
+    private static final long serialVersionUID = 6475363159500735904L;
 
     public GetIndexResponse() {
         super();
@@ -34,42 +31,34 @@ public class GetIndexResponse extends MobileMessage implements Serializable {
         this.data = data;
     }
 
-    public class Item {
+    @JsonInclude(Include.NON_NULL)
+    public static class Item {
 
-        private String myFollowMeetingsCount;
-        private String todayMeetingsCount;
-        private String waitMeetingsCount;
+        private int myFollowMeetingsCount;
+        private int todayMeetingsCount;
+        private int waitMeetingsCount;
 
-        /**
-         * @return
-         */
-        public String getMyFollowMeetingsCount() {
+        public int getMyFollowMeetingsCount() {
             return myFollowMeetingsCount;
         }
 
-        public void setMyFollowMeetingsCount(String myFollowMeetingsCount) {
+        public void setMyFollowMeetingsCount(int myFollowMeetingsCount) {
             this.myFollowMeetingsCount = myFollowMeetingsCount;
         }
 
-        /**
-         * @return
-         */
-        public String getTodayMeetingsCount() {
+        public int getTodayMeetingsCount() {
             return todayMeetingsCount;
         }
 
-        public void setTodayMeetingsCount(String todayMeetingsCount) {
+        public void setTodayMeetingsCount(int todayMeetingsCount) {
             this.todayMeetingsCount = todayMeetingsCount;
         }
 
-        /**
-         * @return
-         */
-        public String getWaitMeetingsCount() {
+        public int getWaitMeetingsCount() {
             return waitMeetingsCount;
         }
 
-        public void setWaitMeetingsCount(String waitMeetingsCount) {
+        public void setWaitMeetingsCount(int waitMeetingsCount) {
             this.waitMeetingsCount = waitMeetingsCount;
         }
     }

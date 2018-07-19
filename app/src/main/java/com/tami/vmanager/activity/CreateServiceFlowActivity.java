@@ -188,14 +188,31 @@ public class CreateServiceFlowActivity extends BaseActivity {
             mBottomSheetDialog.dismiss();
         }
         mBottomSheetDialog = null;
-        if (popupWindow != null && popupWindow.isShowing()) {
-            popupWindow.dismiss();
+        if (popupWindow != null) {
+            if(popupWindow.isShowing()){
+                popupWindow.dismiss();
+            }else{
+                popupWindow.setContentView(null);
+            }
         }
         popupWindow = null;
         if (cemd != null && cemd.isShowing()) {
             cemd.dismiss();
         }
         cemd = null;
+        if (topData != null) {
+            topData.clear();
+        }
+        if (bottomData != null) {
+            bottomData.clear();
+        }
+        if (meetingDayList != null) {
+            meetingDayList.clear();
+        }
+        if (roleData != null) {
+            roleData.clear();
+        }
+        dateSelectedImage.setBackgroundResource(0);
         networkBroker.cancelAllRequests();
     }
 
@@ -582,7 +599,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
 
     @SuppressLint("NewApi")
     private void showPopWindow(TextView view) {
-        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        LayoutInflater layoutInflater = LayoutInflater.from(getApplicationContext());
         View view1 = layoutInflater.inflate(R.layout.show_menu_date, null);
         RecyclerView recyclerView = view1.findViewById(R.id.smd_recyclerview);
         meetingDayAdapter = new CommonAdapter<GetMeetingDayResponse.Array.Item>(getApplicationContext(), R.layout.show_menu_date_item, meetingDayList) {

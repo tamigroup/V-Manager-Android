@@ -155,6 +155,7 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
     @Override
     public void requestNetwork() {
         getActualNum();
+        getMeeting();
         getMeetingItemsByMeetingId();
     }
 
@@ -183,8 +184,6 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
             }
 
         });
-
-        getMeeting();
     }
 
     @Override

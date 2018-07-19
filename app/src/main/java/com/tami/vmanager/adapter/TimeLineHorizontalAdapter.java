@@ -74,13 +74,13 @@ public class TimeLineHorizontalAdapter extends RecyclerView.Adapter<TimeLineHori
             holder.rightView.setBackgroundResource(R.color.color_EAEAEA);
         }
         StringBuilder sb = new StringBuilder();
-        if (item.startOn != null){
+        if (item.startOn != null && item.startOn != 0) {
+            holder.daysTxt.setText(TimeUtils.date2String(new Date(item.startOn), TimeUtils.DATE_MMDD_SLASH));
             sb.append(TimeUtils.date2String(new Date(item.startOn), TimeUtils.DATE_HHMM_SLASH));
         }
         sb.append("\n");
         sb.append(item.meetingItemName);
         holder.stateTxt.setText(sb.toString());
-        holder.daysTxt.setText(TimeUtils.date2String(new Date(item.startOn), TimeUtils.DATE_MMDD_SLASH));
     }
 
     @Override

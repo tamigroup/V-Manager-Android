@@ -33,26 +33,39 @@ public class GetBannerDataResponse extends MobileMessage implements Serializable
         this.data = data;
     }
 
-    public class Item {
-        private String allMeetingCount;
-        private String allPayCount;
-        private String overMeetingCount;
-        private String unPayCount;
+    @JsonInclude(Include.NON_NULL)
+    public static class Item {
 
-        /**
-         * @return
-         */
-        public String getAllMeetingCount() {
+        private String unPayCount;	/*8500.00*/
+        private int allMeetingCount;	/*13*/
+        private int overMeetingCount;	/*11*/
+        private String allPayCount;	/*18000.00*/
+        private int waitMeetingCount;	/*2*/
+
+        public String getUnPayCount() {
+            return unPayCount;
+        }
+
+        public void setUnPayCount(String unPayCount) {
+            this.unPayCount = unPayCount;
+        }
+
+        public int getAllMeetingCount() {
             return allMeetingCount;
         }
 
-        public void setAllMeetingCount(String allMeetingCount) {
+        public void setAllMeetingCount(int allMeetingCount) {
             this.allMeetingCount = allMeetingCount;
         }
 
-        /**
-         * @return
-         */
+        public int getOverMeetingCount() {
+            return overMeetingCount;
+        }
+
+        public void setOverMeetingCount(int overMeetingCount) {
+            this.overMeetingCount = overMeetingCount;
+        }
+
         public String getAllPayCount() {
             return allPayCount;
         }
@@ -61,26 +74,12 @@ public class GetBannerDataResponse extends MobileMessage implements Serializable
             this.allPayCount = allPayCount;
         }
 
-        /**
-         * @return
-         */
-        public String getOverMeetingCount() {
-            return overMeetingCount;
+        public int getWaitMeetingCount() {
+            return waitMeetingCount;
         }
 
-        public void setOverMeetingCount(String overMeetingCount) {
-            this.overMeetingCount = overMeetingCount;
-        }
-
-        /**
-         * @return
-         */
-        public String getUnPayCount() {
-            return unPayCount;
-        }
-
-        public void setUnPayCount(String unPayCount) {
-            this.unPayCount = unPayCount;
+        public void setWaitMeetingCount(int waitMeetingCount) {
+            this.waitMeetingCount = waitMeetingCount;
         }
     }
 }

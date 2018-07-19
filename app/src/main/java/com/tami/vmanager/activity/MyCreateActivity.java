@@ -46,7 +46,6 @@ public class MyCreateActivity extends BaseActivity {
     private List<AllMeetingsResponse.Array.Item> listData;
     private NetworkBroker networkBroker;
     private int CurPage = 1;
-    private int modifyId = -1;
 
     @Override
     public boolean isTitle() {
@@ -73,6 +72,7 @@ public class MyCreateActivity extends BaseActivity {
 
             @Override
             public void loadMore() {
+                getMyCreateList(false);
             }
         });
     }
@@ -96,7 +96,6 @@ public class MyCreateActivity extends BaseActivity {
                 TextView modifyView = viewHolder.getItemView(R.id.menu_modify);
                 modifyView.setOnClickListener((View v) -> {
                     shmlView.smoothCloseEndMenu();
-                    modifyId = position;
                     modifyMeeting(item.meetingId);
                 });
                 //取消按钮
@@ -113,8 +112,9 @@ public class MyCreateActivity extends BaseActivity {
                 MeetingStateView stateView = viewHolder.getItemView(R.id.item_content_state);
                 stateView.setMeetingStateText(item.meetingStatus, 20);
                 //时间
-                viewHolder.setTextView(R.id.item_content_start_time, TimeUtils.milliseconds2String(item.startTime, TimeUtils.DATE_YYYYMMDDHHMM_SLASH));
-                viewHolder.setTextView(R.id.item_content_end_time, TimeUtils.milliseconds2String(item.endTime, TimeUtils.DATE_YYYYMMDDHHMM_SLASH));
+                viewHolder.setTextView(R.id.item_content_start_time, item.autoDayTime);
+//                viewHolder.setTextView(R.id.item_content_start_time, TimeUtils.milliseconds2String(item.startTime, TimeUtils.DATE_YYYYMMDDHHMM_SLASH));
+//                viewHolder.setTextView(R.id.item_content_end_time, TimeUtils.milliseconds2String(item.endTime, TimeUtils.DATE_YYYYMMDDHHMM_SLASH));
                 //V图片
                 AppCompatImageView vipImageView = viewHolder.getItemView(R.id.item_content_level_icon);
                 vipImageView.setVisibility(item.isImportant == 0 ? View.GONE : View.VISIBLE);
@@ -190,7 +190,7 @@ public class MyCreateActivity extends BaseActivity {
     @Override
     public void requestNetwork() {
         CurPage = 1;
-        getMyCreateList();
+        getMyCreateList(false);
     }
 
     @Override
@@ -208,14 +208,15 @@ public class MyCreateActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.CREATE_MEETING) {
-            getMyCreateList();
+            CurPage = 1;
+            getMyCreateList(true);
         }
     }
 
     /**
      * 获取我的创建数据
      */
-    private void getMyCreateList() {
+    private void getMyCreateList(boolean isRefresh) {
         AllMeetingsRequest allMeetingsRequest = new AllMeetingsRequest();
         LoginResponse.Item item = GlobaVariable.getInstance().item;
         if (item != null) {
@@ -236,7 +237,7 @@ public class MyCreateActivity extends BaseActivity {
                 if (response.getCode() == 200) {
                     AllMeetingsResponse.Array array = response.data;
                     if (array != null && array.elements != null && array.elements.size() > 0) {
-                        if (listData.size() > 0) {
+                        if (isRefresh && listData.size() > 0) {
                             listData.clear();
                         }
                         listData.addAll(array.elements);
@@ -289,8 +290,10 @@ public class MyCreateActivity extends BaseActivity {
                 DeleteUserMeetingResponse response = (DeleteUserMeetingResponse) res;
                 if (response.getCode() == 200 && response.data) {
                     showToast(getString(R.string.delete_meeting, getString(R.string.success)));
-                    listData.remove(position);
-                    listViewAdapter.notifyDataSetChanged();
+                    CurPage = 1;
+                    getMyCreateList(true);
+//                    listData.remove(position);
+//                    listViewAdapter.notifyDataSetChanged();
                 } else {
                     showToast(getString(R.string.delete_meeting, getString(R.string.failure)));
                 }

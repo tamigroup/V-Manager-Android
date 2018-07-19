@@ -89,6 +89,7 @@ public abstract class BaseActivity extends FragmentActivity implements IBaseActi
     @Override
     protected void onDestroy() {
 //        JMessageClient.unRegisterEventReceiver(this);
+        ActivityManager.getInstance().removeActivity(this);
         removeListener();
         emptyObject();
         layoutInflater = null;

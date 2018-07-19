@@ -113,9 +113,11 @@ public class ConferenceInformationFragment extends ViewPagerBaseFragment {
                 TextView item_name = holder.getView(R.id.item_name);
                 TextView item_sure = holder.getView(R.id.item_sure);
                 TextView item_day = holder.getView(R.id.item_day);
-                item_time.setText(TimeUtils.date2String(new Date(item.startOn), TimeUtils.DATE_HHMM_SLASH));
+                if(item.startOn!=null&&item.startOn!=0){
+                    item_time.setText(TimeUtils.date2String(new Date(item.startOn), TimeUtils.DATE_HHMM_SLASH));
+                    item_day.setText(TimeUtils.date2String(new Date(item.startOn), TimeUtils.DATE_MMDD_SLASH));
+                }
                 item_name.setText(item.meetingItemName);
-                item_day.setText(TimeUtils.date2String(new Date(item.startOn), TimeUtils.DATE_MMDD_SLASH));
                 item_sure.setText(getResources().getString(R.string.no_confirmed));
                 if (item.selectStatus != 0) {
                     set_text(item_time, R.color.color_333333, R.mipmap.time, true);

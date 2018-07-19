@@ -67,9 +67,14 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
             holder.bottomView.setVisibility(View.VISIBLE);
             holder.lineView.setVisibility(View.VISIBLE);
         }
-        if (item.startOn !=null){
-            holder.contentView.setText(TimeUtils.date2String(new Date(item.startOn), TimeUtils.DATE_HHMM_SLASH) + "  " + item.meetingItemName + "  " + TimeUtils.date2String(new Date(item.startOn), TimeUtils.DATE_MMDD_SLASH));
+
+        StringBuilder nianyueri = new StringBuilder();
+        StringBuilder xiaoshi = new StringBuilder();
+        if (item.startOn != null && item.startOn != 0) {
+            xiaoshi.append(TimeUtils.date2String(new Date(item.startOn), TimeUtils.DATE_HHMM_SLASH));
+            nianyueri.append(TimeUtils.date2String(new Date(item.startOn), TimeUtils.DATE_MMDD_SLASH));
         }
+        holder.contentView.setText(xiaoshi.toString() + "  " + item.meetingItemName + "  " + nianyueri.toString());
 
         if (position != 0 && list.get(position - 1).selectStatus == 1) {
             holder.topView.setBackgroundResource(R.color.color_34DB8E);
@@ -84,7 +89,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
             holder.stateBtn.setText(context.getString(R.string.again_identification));
             holder.middlePic.setImageResource(R.mipmap.middle_pic_problem);
             holder.bottomView.setBackgroundResource(R.color.color_EAEAEA);
-        } else if (item.selectStatus == 3||item.selectStatus == 0) {
+        } else if (item.selectStatus == 3 || item.selectStatus == 0) {
             holder.stateBtn.setText(context.getString(R.string.to_be_confirmed));
             holder.middlePic.setImageResource(R.mipmap.middle_pic_unselected);
             holder.bottomView.setBackgroundResource(R.color.color_EAEAEA);
