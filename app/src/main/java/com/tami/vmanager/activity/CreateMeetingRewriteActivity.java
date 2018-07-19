@@ -762,7 +762,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
         cmr.setEndDate(TimeUtils.date2String(recordEndDate));
         cmr.setEstimateNum(estimatedNumberPeople.getText().toString());
         cmr.setMinNum(bottomNumberPeople.getText().toString());
-        cmr.setIsImportant(String.valueOf(meetingLevelIndex == 0 ? 10 : meetingLevel));
+        cmr.setIsImportant(String.valueOf(meetingLevelIndex == 0 ? 10 : meetingLevelIndex));
         if (receptionistListData != null && receptionistListData.size() > 1) {
             cmr.setVipReceiveUserId(getStringIds());
         }
