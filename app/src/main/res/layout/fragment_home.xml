@@ -114,7 +114,7 @@
                         android:layout_gravity="center"
                         android:layout_marginLeft="@dimen/dp_20"
                         android:layout_marginRight="@dimen/dp_15"
-                        android:layout_weight="8"
+                        android:layout_weight="6"
                         android:progress="0"
                         android:progressDrawable="@drawable/total_progressbar_color" />
 
@@ -154,7 +154,7 @@
                         android:layout_gravity="center"
                         android:layout_marginLeft="@dimen/dp_20"
                         android:layout_marginRight="@dimen/dp_15"
-                        android:layout_weight="8"
+                        android:layout_weight="6"
                         android:progress="0"
                         android:progressDrawable="@drawable/complete_progressbar_color" />
 
@@ -197,7 +197,7 @@
                         android:layout_gravity="center"
                         android:layout_marginLeft="@dimen/dp_20"
                         android:layout_marginRight="@dimen/dp_15"
-                        android:layout_weight="8"
+                        android:layout_weight="6"
                         android:progress="0"
                         android:progressDrawable="@drawable/no_complete_progressbar_color" />
 
