@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.tami.vmanager.R;
 import com.tami.vmanager.activity.CreateMeetingRewriteActivity;
 import com.tami.vmanager.activity.FollowMeetingsActivity;
+import com.tami.vmanager.activity.HomeActivity;
 import com.tami.vmanager.activity.SearchActivity;
 import com.tami.vmanager.activity.TodayMeetingActivity;
 import com.tami.vmanager.activity.WaitMeetingsActivity;
@@ -43,7 +44,7 @@ import java.util.List;
 /**
  * Created by why on 2018/6/12.
  */
-public class HomeFragment extends BaseFragment {
+public class HomeFragment extends BaseFragment implements HomeFragmentListener {
 
     private TextView total;//共计场次
     private TextView have_been_held;//已举办场次
@@ -119,6 +120,7 @@ public class HomeFragment extends BaseFragment {
         my_attention_layout.setOnClickListener(this);
         conference_layout.setOnClickListener(this);
         createMeeting.setOnClickListener(this);
+        ((HomeActivity) getActivity()).setHomeFragmentListener(this);
     }
 
     @Override
@@ -190,7 +192,7 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     public void removeListener() {
-
+        ((HomeActivity) getActivity()).removeHomeFragmentListener();
     }
 
     @Override
@@ -344,4 +346,8 @@ public class HomeFragment extends BaseFragment {
         }
     }
 
+    @Override
+    public void tabOnCLick() {
+        getIndex();
+    }
 }

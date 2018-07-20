@@ -1,10 +1,12 @@
 package com.tami.vmanager.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+
 import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.GuidePageFragmentPagerAdapter;
 import com.tami.vmanager.base.BaseActivity;
@@ -94,7 +96,6 @@ public class GuidePageActivity extends BaseActivity {
 
     @Override
     public void removeListener() {
-        handler.removeCallbacksAndMessages(null);
         viewPager.removeOnPageChangeListener(viewPagerOnPageChangeListener);
     }
 
@@ -105,9 +106,11 @@ public class GuidePageActivity extends BaseActivity {
             fragment = null;
         }
         arrayFragment = null;
-        viewPagerIndicator = null;
+        viewPagerOnPageChangeListener.removeViewPagerIndicator();
         viewPagerOnPageChangeListener = null;
+        viewPagerIndicator = null;
         viewPager = null;
+        handler.removeCallbacksAndMessages(null);
     }
 
     private Handler handler = new Handler() {
@@ -117,12 +120,12 @@ public class GuidePageActivity extends BaseActivity {
             if (msg.what == 1) {
                 SharePreferenceTools sharePreferenceTools = new SharePreferenceTools(GuidePageActivity.this);
                 boolean firstLanding = sharePreferenceTools.getBoolean(Constants.FIRST_LANDING);
-//                if (!firstLanding) {
-//                    sharePreferenceTools.putBoolean(Constants.FIRST_LANDING, true);
-//                } else {
-//                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-//                    finish();
-//                }
+                if (!firstLanding) {
+                    sharePreferenceTools.putBoolean(Constants.FIRST_LANDING, true);
+                } else {
+                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                    finish();
+                }
             }
         }
     };
@@ -139,19 +142,27 @@ public class GuidePageActivity extends BaseActivity {
             this.viewPagerIndicator = viewPagerIndicator;
         }
 
+        public void removeViewPagerIndicator() {
+            this.viewPagerIndicator = null;
+        }
+
         @Override
         public void onPageSelected(int position) {
-            viewPagerIndicator.setSelectPosition(position);
+            if (viewPagerIndicator != null) {
+                viewPagerIndicator.setSelectPosition(position);
+            }
         }
 
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            viewPagerIndicator.onPageScrolled(position, positionOffset, positionOffsetPixels);
+            if (viewPagerIndicator != null) {
+                viewPagerIndicator.onPageScrolled(position, positionOffset, positionOffsetPixels);
+            }
         }
 
         @Override
         public void onPageScrollStateChanged(int position) {
-            if (position == 0) {
+            if (position == 0 && viewPagerIndicator != null) {
                 viewPagerIndicator.onPageScrollEnd();
             }
         }

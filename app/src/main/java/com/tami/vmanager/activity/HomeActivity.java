@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.fragment.HomeFragment;
+import com.tami.vmanager.fragment.HomeFragmentListener;
 import com.tami.vmanager.fragment.MeetingFragment;
 import com.tami.vmanager.fragment.PersonalCenterFragment;
 import com.tami.vmanager.manager.ActivityManager;
@@ -87,7 +88,9 @@ public class HomeActivity extends BaseActivity implements TabLayout.OnTabSelecte
 
     @Override
     public void emptyObject() {
-
+        if(homeFragmentListener!=null){
+            homeFragmentListener = null;
+        }
     }
 
     public void onSelected(int selectId) {
@@ -113,6 +116,9 @@ public class HomeActivity extends BaseActivity implements TabLayout.OnTabSelecte
                         fragment = homeFragment;
                     } else {
                         fragment = new HomeFragment();
+                    }
+                    if(homeFragmentListener!=null){
+                        homeFragmentListener.tabOnCLick();
                     }
                     break;
                 case 1:
@@ -201,5 +207,15 @@ public class HomeActivity extends BaseActivity implements TabLayout.OnTabSelecte
             ActivityManager.getInstance().finishAllActivity();
             System.exit(0);
         }
+    }
+
+    private HomeFragmentListener homeFragmentListener;
+
+    public void setHomeFragmentListener(HomeFragmentListener hfl){
+        this.homeFragmentListener= hfl;
+    }
+
+    public void removeHomeFragmentListener(){
+        this.homeFragmentListener = null;
     }
 }
