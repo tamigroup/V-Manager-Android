@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.AppCompatImageView;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.jwenfeng.library.pulltorefresh.BaseRefreshListener;
@@ -17,19 +18,15 @@ import com.tami.vmanager.entity.AllMeetingsResponse;
 import com.tami.vmanager.entity.DeleteUserMeetingRequest;
 import com.tami.vmanager.entity.DeleteUserMeetingResponse;
 import com.tami.vmanager.entity.LoginResponse;
-import com.tami.vmanager.entity.ModifyMeetingRequest;
 import com.tami.vmanager.http.HttpKey;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.ScreenUtil;
-import com.tami.vmanager.utils.TimeUtils;
 import com.tami.vmanager.view.MeetingStateView;
 import com.tami.vmanager.view.swipemenu.SwipeHorizontalMenuLayout;
-import com.tami.vmanager.view.swipemenu.SwipeMenuLayout;
 import com.tami.vmanager.view.swipemenu.SwipeMenuListView;
-import com.tami.vmanager.view.swipemenu.listener.SwipeRightSwitchListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,6 +127,13 @@ public class MyCreateActivity extends BaseActivity {
                 //已取消
                 TextView cancel = viewHolder.getItemView(R.id.item_content_cancel);
                 cancel.setText(item.cancelStatus);
+
+                ConstraintLayout layout = viewHolder.getItemView(R.id.smContentView);
+                layout.setOnClickListener((View v) -> {
+                    Intent intent = new Intent(getApplicationContext(), MeetingOverviewActivity.class);
+                    intent.putExtra(Constants.KEY_MEETING_ID, listData.get(position).meetingId);
+                    startActivity(intent);
+                });
             }
 
             /**

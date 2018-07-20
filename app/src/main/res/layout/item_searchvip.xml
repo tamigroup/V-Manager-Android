@@ -11,7 +11,7 @@
         android:layout_width="@dimen/dp_40"
         android:layout_height="@dimen/dp_40"
         android:layout_marginLeft="@dimen/dp_15"
-        android:src="@mipmap/c"
+        android:src="@mipmap/ic_launcher"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView

@@ -16,9 +16,9 @@ public class Constants {
     public static final String IMAGE_KEY = "image_key";
     public static final String SKIP_BTN = "skip_btn";
     public static final String EXPERIENCE = "experience";
-    public static final String IMAGE_A = "a";
-    public static final String IMAGE_B = "b";
-    public static final String IMAGE_C = "c";
+    public static final String IMAGE_A = "guidepage_01";
+    public static final String IMAGE_B = "guidepage_02";
+    public static final String IMAGE_C = "guidepage_03";
 
     //进入会议页面的TYPE
     public static final String MEETING_TYPE = "meeting_type";
