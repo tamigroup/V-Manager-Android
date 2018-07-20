@@ -12,6 +12,7 @@ import com.tami.vmanager.view.SwitchButton;
  * 会议服务内容流程
  * Created by why on 2018/6/15.
  */
+@Deprecated
 public class ConferenceServiceContentActivity extends BaseActivity {
 
     private TextView cntractAmount;

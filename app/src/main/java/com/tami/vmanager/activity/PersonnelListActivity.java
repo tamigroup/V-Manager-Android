@@ -204,7 +204,22 @@ public class PersonnelListActivity extends BaseActivity {
 
     @Override
     public void emptyObject() {
-
+        if(mDatas!=null){
+            mDatas.clear();
+            mDatas = null;
+        }
+        if(mHeaderDatas!=null){
+            mHeaderDatas.clear();
+            mHeaderDatas = null;
+        }
+        if(mSourceDatas!=null){
+            mSourceDatas.clear();
+            mSourceDatas = null;
+        }
+        if(networkBroker!=null){
+            networkBroker.cancelAllRequests();
+            networkBroker = null;
+        }
     }
 
     @Override

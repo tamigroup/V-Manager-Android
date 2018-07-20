@@ -64,6 +64,7 @@ public class LookEOActivity extends BaseActivity {
 
     @Override
     public void emptyObject() {
-
+        photoView.setBackgroundResource(0);
+        photoView = null;
     }
 }

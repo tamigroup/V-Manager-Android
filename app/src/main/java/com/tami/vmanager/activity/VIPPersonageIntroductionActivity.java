@@ -77,7 +77,7 @@ public class VIPPersonageIntroductionActivity extends BaseActivity implements Te
         }
 
         setTitleName(R.string.add_vip_personage_introduction);
-        networkBroker = new NetworkBroker(this);
+        networkBroker = new NetworkBroker(getApplicationContext());
         networkBroker.setCancelTag(getTAG());
 
         setWords(0);
@@ -95,7 +95,10 @@ public class VIPPersonageIntroductionActivity extends BaseActivity implements Te
 
     @Override
     public void emptyObject() {
-        networkBroker.cancelAllRequests();
+        temp = null;
+        if (networkBroker != null) {
+            networkBroker.cancelAllRequests();
+        }
     }
 
 

@@ -81,13 +81,13 @@ public class FollowMeetingsFragment extends ViewPagerBaseFragment {
     public void initData() {
         int screenWidth = ScreenUtil.getScreenWidth(getContext());
         //创建一个线性的布局管理器并设置
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.addItemDecoration(new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL,
-                1, ContextCompat.getColor(getActivity(), R.color.percentage_10)));
+        recyclerView.addItemDecoration(new RecycleViewDivider(getContext(), LinearLayoutManager.HORIZONTAL,
+                1, ContextCompat.getColor(getContext(), R.color.percentage_10)));
         listData = new ArrayList<>();
-        commonAdapter = new CommonAdapter<AllMeetingsResponse.Array.Item>(getActivity(), R.layout.item_today_meeting, listData) {
+        commonAdapter = new CommonAdapter<AllMeetingsResponse.Array.Item>(getContext(), R.layout.item_today_meeting, listData) {
             @Override
             protected void convert(ViewHolder holder, AllMeetingsResponse.Array.Item item, int position) {
                 //名称
@@ -187,7 +187,7 @@ public class FollowMeetingsFragment extends ViewPagerBaseFragment {
         if (bundle != null) {
             followType = bundle.getInt(Constants.FOLLOW_TYPE);
         }
-        networkBroker = new NetworkBroker(getActivity());
+        networkBroker = new NetworkBroker(getContext());
         networkBroker.setCancelTag(getTAG());
         CurPage = 1;
         query(false);

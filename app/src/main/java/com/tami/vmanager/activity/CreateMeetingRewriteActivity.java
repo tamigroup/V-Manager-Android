@@ -139,6 +139,8 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
     //保存弹框
     private ConfirmEnterMeetingDialog cemd;
     private int meetingId = -1;
+    //时间框
+    private TimePickerView pvTime;
 
     @Override
     public boolean isTitle() {
@@ -230,7 +232,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
     @Override
     public void initData() {
         setTitleName(R.string.create_meeting);
-        networkBroker = new NetworkBroker(this);
+        networkBroker = new NetworkBroker(getApplicationContext());
         networkBroker.setCancelTag(getTAG());
         //文本加*操作
         initTextView();
@@ -257,7 +259,32 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
             mBottomSheetDialog.setContentView(null);
             mBottomSheetDialog = null;
         }
-        networkBroker.cancelAllRequests();
+        if (cemd != null && cemd.isShowing()) {
+            cemd.dismiss();
+        }
+        cemd = null;
+        if (pvTime != null && pvTime.getDialog() != null && pvTime.getDialog().isShowing()) {
+            pvTime.getDialog().dismiss();
+        }
+        pvTime = null;
+        if (receptionistListData != null) {
+            receptionistListData.clear();
+            receptionistListData = null;
+        }
+        if (vipListData != null) {
+            vipListData.clear();
+            vipListData = null;
+        }
+        addImage.setBackgroundResource(0);
+        deleteImage.setBackgroundResource(0);
+        recordStartDate = null;
+        recordEndDate = null;
+        eoFile = null;
+        imageUri = null;
+        if (networkBroker != null) {
+            networkBroker.cancelAllRequests();
+            networkBroker = null;
+        }
     }
 
     @Override
@@ -689,7 +716,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
         }
         Calendar endDate = Calendar.getInstance();
         endDate.set(2030, 11, 31, 00, 00, 00);
-        TimePickerView pvTime = new TimePickerBuilder(this, (Date selectDate, View v) -> {
+        pvTime = new TimePickerBuilder(this, (Date selectDate, View v) -> {
             if (dataFlag) {
                 if (recordEndDate == null || recordEndDate.getTime() > selectDate.getTime()) {
                     if (selectDate.getTime() < new Date().getTime()) {

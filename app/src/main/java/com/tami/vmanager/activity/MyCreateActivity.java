@@ -78,7 +78,7 @@ public class MyCreateActivity extends BaseActivity {
     public void initData() {
         setTitleName(R.string.my_create);
 
-        networkBroker = new NetworkBroker(this);
+        networkBroker = new NetworkBroker(getApplicationContext());
         networkBroker.setCancelTag(getTAG());
 
         listData = new ArrayList<>();
@@ -206,9 +206,12 @@ public class MyCreateActivity extends BaseActivity {
     public void emptyObject() {
         if (listData != null) {
             listData.clear();
+            listData = null;
         }
-        listData = null;
-        networkBroker.cancelAllRequests();
+        if (networkBroker != null) {
+            networkBroker.cancelAllRequests();
+            networkBroker = null;
+        }
     }
 
 

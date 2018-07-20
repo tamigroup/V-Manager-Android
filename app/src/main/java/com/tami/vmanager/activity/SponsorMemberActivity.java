@@ -1,5 +1,6 @@
 package com.tami.vmanager.activity;
 
+import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -41,9 +42,12 @@ public class SponsorMemberActivity extends BaseActivity {
     @Override
     public void initView() {
         recyclerView = findViewById(R.id.recyc);
-        networkBroker = new NetworkBroker(this);
-
-        meetingId = getIntent().getIntExtra(Constants.KEY_MEETING_ID, 0);
+        networkBroker = new NetworkBroker(getApplicationContext());
+        networkBroker.setCancelTag(getTAG());
+        Intent intent = getIntent();
+        if (intent != null) {
+            meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 0);
+        }
     }
 
     @Override
@@ -106,6 +110,9 @@ public class SponsorMemberActivity extends BaseActivity {
 
     @Override
     public void emptyObject() {
-        networkBroker.cancelAllRequests();
+        if (networkBroker != null) {
+            networkBroker.cancelAllRequests();
+            networkBroker = null;
+        }
     }
 }

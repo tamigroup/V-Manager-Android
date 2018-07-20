@@ -130,7 +130,16 @@ public class SearchVipActivity extends BaseActivity {
 
     @Override
     public void emptyObject() {
-
+        if(data!=null){
+            data.clear();
+            data = null;
+        }
+        if(db.isOpen()){
+            db.close();
+            db = null;
+        }
+        searchVipHistoryBean = null;
+        dao = null;
     }
 
     @Override

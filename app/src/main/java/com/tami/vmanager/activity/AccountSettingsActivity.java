@@ -137,7 +137,10 @@ public class AccountSettingsActivity extends BaseActivity {
 
     @Override
     public void emptyObject() {
-        networkBroker.cancelAllRequests();
+        if(networkBroker!=null){
+            networkBroker.cancelAllRequests();
+            networkBroker = null;
+        }
     }
 
     @Override

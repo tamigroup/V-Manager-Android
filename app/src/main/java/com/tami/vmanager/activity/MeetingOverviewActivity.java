@@ -148,7 +148,7 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
 
         recyclerView.setVisibility(View.VISIBLE);
 
-        networkBroker = new NetworkBroker(this);
+        networkBroker = new NetworkBroker(getApplicationContext());
         networkBroker.setCancelTag(getTAG());
     }
 
@@ -193,7 +193,17 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
 
     @Override
     public void emptyObject() {
-        networkBroker.cancelAllRequests();
+        adapter.removeTimeLineMeetingFlowItem();
+        meetingInfo = null;
+        meetingItem = null;
+        if (listData != null) {
+            listData.clear();
+            listData = null;
+        }
+        if (networkBroker != null) {
+            networkBroker.cancelAllRequests();
+            networkBroker = null;
+        }
     }
 
     @Override
@@ -214,21 +224,21 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
                 //实到人数
                 Intent intent_personnel = new Intent(getApplicationContext(), PersonnelListActivity.class);
                 intent_personnel.putExtra(Constants.KEY_MEETING_ID, meetingId);
-                intent_personnel.putExtra(Constants.IS_VZHIHUI,meetingItem.isVzh);
+                intent_personnel.putExtra(Constants.IS_VZHIHUI, meetingItem.isVzh);
                 startActivity(intent_personnel);
                 break;
             case R.id.meeting_overview_complaints_box:
                 //意见箱 满意度
                 Intent intent = new Intent(getApplicationContext(), IdeasBoxActivity.class);
                 intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
-                intent.putExtra(Constants.IS_VZHIHUI,meetingItem.isVzh);
+                intent.putExtra(Constants.IS_VZHIHUI, meetingItem.isVzh);
                 startActivity(intent);
                 break;
             case R.id.meeting_overview_change_demand:
                 //需求变化 活动变化
                 Intent intent1 = new Intent(getApplicationContext(), ChangeDemandActivity.class);
                 intent1.putExtra(Constants.KEY_MEETING_ID, meetingId);
-                intent1.putExtra(Constants.IS_VZHIHUI,meetingItem.isVzh);
+                intent1.putExtra(Constants.IS_VZHIHUI, meetingItem.isVzh);
                 startActivity(intent1);
                 break;
             case R.id.meeting_overview_v_emind:
@@ -359,7 +369,7 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
     private void initListView() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         listData = new ArrayList<>();
-        adapter = new TimeLineAdapter(listData, this);
+        adapter = new TimeLineAdapter(listData, getApplicationContext());
         adapter.setTimeLineMeetingFlowItem(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);

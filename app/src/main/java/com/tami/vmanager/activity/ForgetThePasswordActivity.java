@@ -80,7 +80,7 @@ public class ForgetThePasswordActivity extends BaseActivity {
                 .setEndTxtColor(R.color.color_333333)
                 .build();
 
-        networkBroker = new NetworkBroker(this);
+        networkBroker = new NetworkBroker(getApplicationContext());
         networkBroker.setCancelTag(getTAG());
     }
 
@@ -100,7 +100,9 @@ public class ForgetThePasswordActivity extends BaseActivity {
             verificationCode.stop();
             verificationCode.clear();
         }
-        networkBroker.cancelAllRequests();
+        if (networkBroker != null) {
+            networkBroker.cancelAllRequests();
+        }
     }
 
     @Override

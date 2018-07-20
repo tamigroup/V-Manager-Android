@@ -139,7 +139,7 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
             actualNum = intent.getIntExtra(Constants.ACTUAL_NUM, 0);
         }
 
-        networkBroker = new NetworkBroker(this);
+        networkBroker = new NetworkBroker(getApplicationContext());
         networkBroker.setCancelTag(getTAG());
 
         setTitleName(R.string.get_into_meeting);
@@ -181,17 +181,21 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
 
     @Override
     public void emptyObject() {
-        if (recyclerView != null) {
-            recyclerView.removeAllViews();
-            recyclerView = null;
-        }
-
         if (confirmEnterMeetingDialog != null && confirmEnterMeetingDialog.isShowing()) {
             confirmEnterMeetingDialog.dismiss();
         }
         confirmEnterMeetingDialog = null;
-
-        networkBroker.cancelAllRequests();
+        meetingInfo = null;
+        if (listData != null) {
+            listData.clear();
+            listData = null;
+        }
+        sale_phone.setBackgroundResource(0);
+        sale_phone = null;
+        if (networkBroker != null) {
+            networkBroker.cancelAllRequests();
+            networkBroker = null;
+        }
     }
 
 

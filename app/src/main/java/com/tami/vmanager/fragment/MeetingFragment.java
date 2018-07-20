@@ -116,7 +116,11 @@ public class MeetingFragment extends BaseFragment {
 
     @Override
     public void emptyObject() {
-
+        for (Fragment fragment:arrayFragment){
+            fragment = null;
+        }
+        arrayFragment = null;
+        viewPager = null;
     }
 
     /**

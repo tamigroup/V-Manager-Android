@@ -222,8 +222,19 @@ public class SearchDetailActivity extends BaseActivity {
 
     @Override
     public void emptyObject() {
+        if(listData!=null){
+            listData.clear();
+            listData = null;
+        }
+        if(db.isOpen()){
+            db.close();
+            db = null;
+        }
+        dao = null;
+        searchHistoryBean = null;
         if (networkBroker != null) {
             networkBroker.cancelAllRequests();
+            networkBroker = null;
         }
     }
 

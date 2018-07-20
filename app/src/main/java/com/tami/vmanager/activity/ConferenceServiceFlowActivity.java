@@ -81,7 +81,14 @@ public class ConferenceServiceFlowActivity extends BaseActivity {
 
     @Override
     public void emptyObject() {
-        networkBroker.cancelAllRequests();
+        if (listData != null) {
+            listData.clear();
+            listData = null;
+        }
+        if (networkBroker != null) {
+            networkBroker.cancelAllRequests();
+            networkBroker = null;
+        }
     }
 
     private void initListView() {

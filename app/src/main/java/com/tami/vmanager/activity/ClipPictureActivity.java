@@ -115,7 +115,13 @@ public class ClipPictureActivity extends BaseActivity implements View.OnTouchLis
 
     @Override
     public void emptyObject() {
+        backBtn.setBackgroundResource(0);
+        backBtn = null;
+        saveBtn.setBackgroundResource(0);
+        saveBtn = null;
+        srcPic.setBackgroundResource(0);
         srcPic = null;
+        clipview.removeOnDrawCompleteListener();
         clipview = null;
         start = null;
         mid = null;

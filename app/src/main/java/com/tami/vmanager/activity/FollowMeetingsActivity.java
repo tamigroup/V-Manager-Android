@@ -6,6 +6,7 @@ import android.support.design.widget.TabLayout.TabLayoutOnPageChangeListener;
 import android.support.design.widget.TabLayout.ViewPagerOnTabSelectedListener;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+
 import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.GuidePageFragmentPagerAdapter;
 import com.tami.vmanager.base.BaseActivity;
@@ -88,6 +89,9 @@ public class FollowMeetingsActivity extends BaseActivity {
 
     @Override
     public void emptyObject() {
-
+        for (Fragment fragment : arrayFragment) {
+            fragment = null;
+        }
+        arrayFragment = null;
     }
 }

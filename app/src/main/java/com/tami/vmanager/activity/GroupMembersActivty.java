@@ -112,7 +112,14 @@ public class GroupMembersActivty extends BaseActivity {
 
     @Override
     public void emptyObject() {
-        networkBroker.cancelAllRequests();
+        if(data!=null){
+            data.clear();
+            data = null;
+        }
+        if(networkBroker!= null){
+            networkBroker.cancelAllRequests();
+            networkBroker = null;
+        }
     }
 
     @Override

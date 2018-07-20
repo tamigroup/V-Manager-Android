@@ -320,7 +320,17 @@ public class ChangeDemandActivity extends BaseActivity {
 
     @Override
     public void emptyObject() {
-
+        if(listData!=null){
+            listData.clear();
+            listData = null;
+        }
+        if(fastRepayList!=null){
+            fastRepayList.clear();
+            fastRepayList = null;
+        }
+        if (networkBroker != null) {
+            networkBroker.cancelAllRequests();
+        }
     }
 
     @Override
@@ -329,9 +339,6 @@ public class ChangeDemandActivity extends BaseActivity {
             dialog.dismiss();
         } else {
             super.onBackPressed();
-        }
-        if (networkBroker != null) {
-            networkBroker.cancelAllRequests();
         }
     }
 }

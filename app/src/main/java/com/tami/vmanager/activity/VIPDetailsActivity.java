@@ -53,7 +53,7 @@ public class VIPDetailsActivity extends BaseActivity {
     public void initView() {
         title = findViewById(R.id.avd_title);
         recyclerView = findViewById(R.id.recyc);
-        networkBroker = new NetworkBroker(this);
+        networkBroker = new NetworkBroker(getApplicationContext());
     }
 
     @Override
@@ -151,6 +151,9 @@ public class VIPDetailsActivity extends BaseActivity {
 
     @Override
     public void emptyObject() {
-
+        if (networkBroker != null) {
+            networkBroker.cancelAllRequests();
+            networkBroker = null;
+        }
     }
 }

@@ -156,7 +156,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
 
         setTitleName(R.string.flow_chart);
 
-        networkBroker = new NetworkBroker(this);
+        networkBroker = new NetworkBroker(getApplicationContext());
         networkBroker.setCancelTag(getTAG());
 
         initRecyclerView();
@@ -189,9 +189,9 @@ public class CreateServiceFlowActivity extends BaseActivity {
         }
         mBottomSheetDialog = null;
         if (popupWindow != null) {
-            if(popupWindow.isShowing()){
+            if (popupWindow.isShowing()) {
                 popupWindow.dismiss();
-            }else{
+            } else {
                 popupWindow.setContentView(null);
             }
         }
@@ -213,6 +213,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
             roleData.clear();
         }
         dateSelectedImage.setBackgroundResource(0);
+        dateSelectedImage = null;
         networkBroker.cancelAllRequests();
     }
 

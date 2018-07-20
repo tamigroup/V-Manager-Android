@@ -81,11 +81,11 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
     public void initData() {
         int screenWidth = ScreenUtil.getScreenWidth(getContext());
         //创建一个线性的布局管理器并设置
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.addItemDecoration(new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL,
-                1, ContextCompat.getColor(getActivity(), R.color.percentage_10)));
+        recyclerView.addItemDecoration(new RecycleViewDivider(getContext(), LinearLayoutManager.HORIZONTAL,
+                1, ContextCompat.getColor(getContext(), R.color.percentage_10)));
         listData = new ArrayList<>();
         commonAdapter = new CommonAdapter<AllMeetingsResponse.Array.Item>(getActivity(), R.layout.item_meeting, listData) {
             @Override
@@ -194,7 +194,7 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
             meetingType = bundle.getInt(Constants.MEETING_TYPE);
         }
         Logger.d("meetingType:" + meetingType);
-        networkBroker = new NetworkBroker(getActivity());
+        networkBroker = new NetworkBroker(getContext());
         networkBroker.setCancelTag(getTAG());
         CurPage = 1;
         query(false);

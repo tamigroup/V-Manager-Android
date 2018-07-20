@@ -184,7 +184,7 @@ public class TodayMeetingActivity extends BaseActivity {
 
     @Override
     public void requestNetwork() {
-        networkBroker = new NetworkBroker(this);
+        networkBroker = new NetworkBroker(getApplicationContext());
         networkBroker.setCancelTag(getTAG());
         CurPage = 1;
         query(false);
@@ -199,8 +199,12 @@ public class TodayMeetingActivity extends BaseActivity {
     public void emptyObject() {
         if (listData != null) {
             listData.clear();
+            listData = null;
         }
-        listData = null;
+        if (networkBroker != null) {
+            networkBroker.cancelAllRequests();
+            networkBroker = null;
+        }
     }
 
     private void query(boolean isRefresh) {

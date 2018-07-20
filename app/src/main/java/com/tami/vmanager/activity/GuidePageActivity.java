@@ -1,13 +1,10 @@
 package com.tami.vmanager.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.View;
-
 import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.GuidePageFragmentPagerAdapter;
 import com.tami.vmanager.base.BaseActivity;
@@ -99,14 +96,18 @@ public class GuidePageActivity extends BaseActivity {
     public void removeListener() {
         handler.removeCallbacksAndMessages(null);
         viewPager.removeOnPageChangeListener(viewPagerOnPageChangeListener);
-        arrayFragment = null;
-        viewPager = null;
     }
 
     @Override
     public void emptyObject() {
         ActivityManager.getInstance().removeActivity(this);
-        handler.removeCallbacksAndMessages(null);
+        for (Fragment fragment : arrayFragment) {
+            fragment = null;
+        }
+        arrayFragment = null;
+        viewPagerIndicator = null;
+        viewPagerOnPageChangeListener = null;
+        viewPager = null;
     }
 
     private Handler handler = new Handler() {
@@ -116,12 +117,12 @@ public class GuidePageActivity extends BaseActivity {
             if (msg.what == 1) {
                 SharePreferenceTools sharePreferenceTools = new SharePreferenceTools(GuidePageActivity.this);
                 boolean firstLanding = sharePreferenceTools.getBoolean(Constants.FIRST_LANDING);
-                if (!firstLanding) {
-                    sharePreferenceTools.putBoolean(Constants.FIRST_LANDING, true);
-                } else {
-                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                    finish();
-                }
+//                if (!firstLanding) {
+//                    sharePreferenceTools.putBoolean(Constants.FIRST_LANDING, true);
+//                } else {
+//                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+//                    finish();
+//                }
             }
         }
     };

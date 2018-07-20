@@ -64,50 +64,12 @@ public class GroupEditNoticeActivity extends BaseActivity {
 
         setTitleRightTxt(R.string.group_release);
 
-        networkBroker = new NetworkBroker(this);
+        networkBroker = new NetworkBroker(getApplicationContext());
         networkBroker.setCancelTag(getTAG());
 
-        title.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        title.addTextChangedListener(titleTextWatcher);
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence title_content, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable title_content) {
-                if (title_content.toString().trim().length() > 40) {
-                    title.setText(title_content.toString().substring(0, 40));
-                    title.setSelection(40);
-                    showToast(getString(R.string.input_title_length));
-                }
-            }
-        });
-
-        content.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable content_con) {
-                if (content_con.toString().trim().length() > 300) {
-                    content.setText(content_con.toString().substring(0, 300));
-                    content.setSelection(300);
-                    showToast(getString(R.string.input_content_length));
-                }
-            }
-        });
+        content.addTextChangedListener(contentTextWatcher);
     }
 
     @Override
@@ -117,12 +79,16 @@ public class GroupEditNoticeActivity extends BaseActivity {
 
     @Override
     public void removeListener() {
-
+        title.removeTextChangedListener(titleTextWatcher);
+        content.removeTextChangedListener(contentTextWatcher);
     }
 
     @Override
     public void emptyObject() {
-        networkBroker.cancelAllRequests();
+        if (networkBroker != null) {
+            networkBroker.cancelAllRequests();
+            networkBroker = null;
+        }
     }
 
     @Override
@@ -200,4 +166,47 @@ public class GroupEditNoticeActivity extends BaseActivity {
         }
         return true;
     }
+
+    public TextWatcher titleTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence title_content, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable title_content) {
+            if (title_content.toString().trim().length() > 40) {
+                title.setText(title_content.toString().substring(0, 40));
+                title.setSelection(40);
+                showToast(getString(R.string.input_title_length));
+            }
+        }
+    };
+
+
+    public TextWatcher contentTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable content_con) {
+            if (content_con.toString().trim().length() > 300) {
+                content.setText(content_con.toString().substring(0, 300));
+                content.setSelection(300);
+                showToast(getString(R.string.input_content_length));
+            }
+        }
+    };
 }

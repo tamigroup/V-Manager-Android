@@ -202,7 +202,7 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
         super.onClick(v);
         switch (v.getId()) {
             case R.id.mlc_add_the_person_in_charge:
-                checkAddMeetingItemUser(-1,0);
+                checkAddMeetingItemUser(-1, 0);
                 break;
             case R.id.mlc_confirm_btn:
                 confirmEnterMeetingDialog.show();
@@ -212,8 +212,20 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
 
     @Override
     public void emptyObject() {
+        if (confirmEnterMeetingDialog != null && confirmEnterMeetingDialog.isShowing()) {
+            confirmEnterMeetingDialog.dismiss();
+        }
+        confirmEnterMeetingDialog = null;
         switchbtn = null;
-        networkBroker.cancelAllRequests();
+        if (listData != null) {
+            listData.clear();
+            listData = null;
+        }
+        item = null;
+        if (networkBroker != null) {
+            networkBroker.cancelAllRequests();
+            networkBroker = null;
+        }
     }
 
 

@@ -87,6 +87,9 @@ public class WaitMeetingsActivity extends BaseActivity {
 
     @Override
     public void emptyObject() {
-
+        for (Fragment fragment : arrayFragment) {
+            fragment = null;
+        }
+        arrayFragment = null;
     }
 }

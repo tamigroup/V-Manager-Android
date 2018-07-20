@@ -198,7 +198,6 @@ public class WaitMeetingsFragment extends ViewPagerBaseFragment {
 
     @Override
     public void emptyObject() {
-        Logger.d("emptyObject-------------------------->");
         if (listData != null) {
             listData.clear();
         }
@@ -212,7 +211,6 @@ public class WaitMeetingsFragment extends ViewPagerBaseFragment {
      * 查询列表数据
      */
     private void query(boolean isRefresh) {
-        Logger.d("query-------------------------->");
         AllMeetingsRequest allMeetingsRequest = new AllMeetingsRequest();
         LoginResponse.Item item = GlobaVariable.getInstance().item;
         if (item != null) {

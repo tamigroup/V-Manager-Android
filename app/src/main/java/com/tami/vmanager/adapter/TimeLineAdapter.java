@@ -105,6 +105,10 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         this.tlmfi = timeLineMeetingFlowItem;
     }
 
+    public void removeTimeLineMeetingFlowItem() {
+        this.tlmfi = null;
+    }
+
     @Override
     public int getItemCount() {
         return list.size();

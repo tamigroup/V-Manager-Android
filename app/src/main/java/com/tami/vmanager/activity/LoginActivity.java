@@ -95,8 +95,8 @@ public class LoginActivity extends BaseActivity {
         networkBroker = new NetworkBroker(this);
         networkBroker.setCancelTag(getTAG());
 
-                logoin_phone.setText("15901125418");
-                login_password.setText("111111");
+        logoin_phone.setText("15901125418");
+        login_password.setText("111111");
         //餐厅总负责
 //        logoin_phone.setText("13888880001");
 //        login_password.setText("111111");
@@ -118,7 +118,10 @@ public class LoginActivity extends BaseActivity {
             verificationCode.stop();
             verificationCode.clear();
         }
-        networkBroker.cancelAllRequests();
+        if (networkBroker != null) {
+            networkBroker.cancelAllRequests();
+            networkBroker = null;
+        }
     }
 
     @Override
@@ -244,9 +247,9 @@ public class LoginActivity extends BaseActivity {
         networkBroker.ask(loginRequest, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "----" + ex1);
-                if (getString(R.string.authentication_code_login).contentEquals(authentication_code_login.getText())){
+                if (getString(R.string.authentication_code_login).contentEquals(authentication_code_login.getText())) {
                     showToast(R.string.login_fail);
-                }else {
+                } else {
                     showToast(R.string.input_code);
                 }
                 return;
