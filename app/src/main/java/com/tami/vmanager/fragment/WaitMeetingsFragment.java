@@ -79,13 +79,13 @@ public class WaitMeetingsFragment extends ViewPagerBaseFragment {
     public void initData() {
         int screenWidth = ScreenUtil.getScreenWidth(getContext());
         //创建一个线性的布局管理器并设置
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.addItemDecoration(new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL,
-                1, ContextCompat.getColor(getActivity(), R.color.percentage_10)));
+        recyclerView.addItemDecoration(new RecycleViewDivider(getContext(), LinearLayoutManager.HORIZONTAL,
+                1, ContextCompat.getColor(getContext(), R.color.percentage_10)));
         listData = new ArrayList<>();
-        commonAdapter = new CommonAdapter<AllMeetingsResponse.Array.Item>(getActivity(), R.layout.item_today_meeting, listData) {
+        commonAdapter = new CommonAdapter<AllMeetingsResponse.Array.Item>(getContext(), R.layout.item_today_meeting, listData) {
             @Override
             protected void convert(ViewHolder holder, AllMeetingsResponse.Array.Item item, int position) {
                 //名称
@@ -185,7 +185,7 @@ public class WaitMeetingsFragment extends ViewPagerBaseFragment {
         if (bundle != null) {
             waitType = bundle.getInt(Constants.WAIT_TYPE);
         }
-        networkBroker = new NetworkBroker(getActivity());
+        networkBroker = new NetworkBroker(getContext());
         networkBroker.setCancelTag(getTAG());
         CurPage = 1;
         query(false);
@@ -193,20 +193,26 @@ public class WaitMeetingsFragment extends ViewPagerBaseFragment {
 
     @Override
     public void removeListener() {
-        if(networkBroker!=null){
-            networkBroker.cancelAllRequests();
-        }
+
     }
 
     @Override
     public void emptyObject() {
-
+        Logger.d("emptyObject-------------------------->");
+        if (listData != null) {
+            listData.clear();
+        }
+        listData = null;
+//        if (networkBroker != null) {
+//            networkBroker.cancelAllRequests();
+//        }
     }
 
     /**
      * 查询列表数据
      */
     private void query(boolean isRefresh) {
+        Logger.d("query-------------------------->");
         AllMeetingsRequest allMeetingsRequest = new AllMeetingsRequest();
         LoginResponse.Item item = GlobaVariable.getInstance().item;
         if (item != null) {
@@ -248,7 +254,6 @@ public class WaitMeetingsFragment extends ViewPagerBaseFragment {
                 pullToRefreshLayout.finishLoadMore();
                 e.printStackTrace();
             }
-
         });
     }
 }

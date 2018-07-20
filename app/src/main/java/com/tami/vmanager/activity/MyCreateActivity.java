@@ -84,7 +84,7 @@ public class MyCreateActivity extends BaseActivity {
         listData = new ArrayList<>();
 
         int screenWidth = ScreenUtil.getScreenWidth(getApplicationContext());
-        listViewAdapter = new ListViewAdapter<AllMeetingsResponse.Array.Item>(getApplication(), listData, R.layout.item_my_create) {
+        listViewAdapter = new ListViewAdapter<AllMeetingsResponse.Array.Item>(getApplicationContext(), listData, R.layout.item_my_create) {
             @Override
             protected void binView(ViewHolder viewHolder, AllMeetingsResponse.Array.Item item, int position) {
                 SwipeHorizontalMenuLayout shmlView = viewHolder.getItemView(R.id.imc_shml);
@@ -204,6 +204,10 @@ public class MyCreateActivity extends BaseActivity {
 
     @Override
     public void emptyObject() {
+        if (listData != null) {
+            listData.clear();
+        }
+        listData = null;
         networkBroker.cancelAllRequests();
     }
 

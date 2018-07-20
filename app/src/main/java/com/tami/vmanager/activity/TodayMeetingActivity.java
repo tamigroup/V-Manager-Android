@@ -197,7 +197,10 @@ public class TodayMeetingActivity extends BaseActivity {
 
     @Override
     public void emptyObject() {
-
+        if (listData != null) {
+            listData.clear();
+        }
+        listData = null;
     }
 
     private void query(boolean isRefresh) {

@@ -207,6 +207,10 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
 
     @Override
     public void emptyObject() {
+        if (listData != null) {
+            listData.clear();
+        }
+        listData = null;
 //        if (networkBroker != null) {
 //            networkBroker.cancelAllRequests();
 //        }

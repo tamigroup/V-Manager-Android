@@ -200,9 +200,13 @@ public class FollowMeetingsFragment extends ViewPagerBaseFragment {
 
     @Override
     public void emptyObject() {
-        if(networkBroker!=null){
-            networkBroker.cancelAllRequests();
+        if (listData != null) {
+            listData.clear();
         }
+        listData = null;
+//        if (networkBroker != null) {
+//            networkBroker.cancelAllRequests();
+//        }
     }
 
     /**
