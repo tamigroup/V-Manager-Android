@@ -11,9 +11,13 @@ import com.tami.vmanager.base.ViewPagerBaseFragment;
 import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdRequest;
 import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdResponse;
 import com.tami.vmanager.entity.GetMeetingResponse;
+import com.tami.vmanager.enums.ServiceFlowType;
 import com.tami.vmanager.http.NetworkBroker;
+import com.tami.vmanager.utils.Constants;
+import com.tami.vmanager.utils.JsonUtils;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.TimeUtils;
+import com.tami.vmanager.utils.Utils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -119,12 +123,18 @@ public class ConferenceInformationFragment extends ViewPagerBaseFragment {
                 }
                 item_name.setText(item.meetingItemName);
                 item_sure.setText(getResources().getString(R.string.no_confirmed));
-                if (item.selectStatus != 0) {
+                if (item.selectStatus == ServiceFlowType.CONFIRMED.getType()) {
                     set_text(item_time, R.color.color_333333, R.mipmap.time, true);
                     item_sure.setText(getResources().getString(R.string.confirmed));
                     set_text(item_sure, R.color.color_34DB8E, R.mipmap.icon_ok, false);
                     item_name.setTextColor(getResources().getColor(R.color.color_333333));
                     item_day.setTextColor(getResources().getColor(R.color.color_333333));
+                }else if (item.selectStatus == ServiceFlowType.RECONFIRMED.getType()){
+                    set_text(item_time, R.color.color_ACACAC, R.mipmap.time_gray, true);
+                    item_sure.setText(getResources().getString(R.string.re_confirmed));
+                    set_text(item_sure, R.color.color_ACACAC, R.mipmap.middle_pic_problem, false);
+                    item_name.setTextColor(getResources().getColor(R.color.color_ACACAC));
+                    item_day.setTextColor(getResources().getColor(R.color.color_ACACAC));
                 }
             }
         };
