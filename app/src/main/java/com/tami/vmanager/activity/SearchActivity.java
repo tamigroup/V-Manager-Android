@@ -54,6 +54,7 @@ public class SearchActivity extends BaseActivity {
     private TextView search_make_content;
     private TextView search_history;
     private View line;
+    private boolean is_first;
 
     @Override
     public int getContentViewId() {
@@ -89,10 +90,15 @@ public class SearchActivity extends BaseActivity {
         search_history_tv6 = findViewById(R.id.search_history_tv6);
         search_group = findViewById(R.id.search_group);
 
+        //默认搜索
+        setClickColor(search_content_tv1, R.color.color_344266, R.drawable.shape_cricle_line, R.string.search_content_tv1);
+        is_first = true;
+
         db = AppDatabase.getInstance(getApplicationContext());
         dao = db.searchHistoryDao();
         searchHistoryBean = new SearchHistoryBean();
     }
+
 
     @Override
     public void initListener() {
@@ -111,7 +117,7 @@ public class SearchActivity extends BaseActivity {
     @Override
     public void initData() {
         QueryData();
-        searchView.setQueryHint(getString(R.string.enter_keyword));
+//        searchView.setQueryHint(getString(R.string.enter_keyword));
         searchView.setOnSearchClickListener(v -> search_group.setVisibility(View.GONE));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -132,6 +138,12 @@ public class SearchActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (is_first){
+            searchView.setQueryHint(getString(R.string.search) + getString(R.string.search_content_tv1));
+        }else {
+            searchView.setQueryHint("");
+        }
+        is_first = false;
         search_group.setVisibility(View.VISIBLE);
     }
 
