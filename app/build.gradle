@@ -17,13 +17,13 @@ android {
         }
 
         ndk {
-            abiFilters 'armeabi','armeabi-v7a','arm64-v8a' //'x86','x86_64'
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a' //'x86','x86_64'
         }
 
         manifestPlaceholders = [
-                JPUSH_PKGNAME : applicationId,
+                JPUSH_PKGNAME: applicationId,
                 JPUSH_APPKEY : "3da91343a0089af98125d6d4",
-                JPUSH_CHANNEL : "developer-default",
+                JPUSH_CHANNEL: "developer-default",
         ]
     }
     buildTypes {
@@ -48,6 +48,10 @@ android {
     compileOptions {
         targetCompatibility 1.8
         sourceCompatibility 1.8
+    }
+
+    lintOptions {
+        abortOnError false
     }
 }
 

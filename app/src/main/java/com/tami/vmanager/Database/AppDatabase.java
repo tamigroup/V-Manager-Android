@@ -20,9 +20,10 @@ public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase INSTANCE;
     private static final String DB_NAME = "tami";
     private static final int DB_VERSION = 1;
-    private static String DB_FILE_NAME = DB_NAME + DB_VERSION + ".db";
+    private static String DB_FILE_NAME = DB_NAME +"--"+ DB_VERSION + ".db";
 
     public abstract SearchHistoryDao searchHistoryDao();
+
     public abstract SearchVipHistoryDao searchVipHistoryDao();
 
     public static AppDatabase getInstance(Context context) {
