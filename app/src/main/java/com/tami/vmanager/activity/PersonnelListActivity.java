@@ -51,6 +51,7 @@ public class PersonnelListActivity extends BaseActivity {
     private ConstraintLayout no_v_cl;
     private Group personnel_group;
     private int isVzh;
+    private ConstraintLayout empty_cl;
 
     @Override
     public int getContentViewId() {
@@ -64,6 +65,7 @@ public class PersonnelListActivity extends BaseActivity {
         mRecyclerView = findViewById(R.id.recyc);
         mIndexBar = findViewById(R.id.indexBar);
         indexBarTv = findViewById(R.id.indexBarTv);
+        empty_cl = findViewById(R.id.empty_cl);
 
         no_v_cl = findViewById(R.id.no_v_cl);
         personnel_group = findViewById(R.id.personnel_group);
@@ -81,9 +83,9 @@ public class PersonnelListActivity extends BaseActivity {
     public void initData() {
         setTitleName(getString(R.string.personnel_list));
         Intent intent = getIntent();
-        if (null!=intent){
-            meetingId =intent.getIntExtra(Constants.KEY_MEETING_ID, 0);
-            isVzh =intent.getIntExtra(Constants.IS_VZHIHUI,0);
+        if (null != intent) {
+            meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 0);
+            isVzh = intent.getIntExtra(Constants.IS_VZHIHUI, 0);
             //V智慧判断
             if (isVzh == 1) {
                 no_v_cl.setVisibility(View.GONE);
@@ -93,9 +95,6 @@ public class PersonnelListActivity extends BaseActivity {
                 personnel_group.setVisibility(View.GONE);
             }
         }
-
-
-
 
         mSourceDatas = new ArrayList<>();
         mDatas = new ArrayList<>();
@@ -141,7 +140,7 @@ public class PersonnelListActivity extends BaseActivity {
         mRecyclerView.setLayoutManager(mManager = new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mHeaderAdapter);
         mRecyclerView.addItemDecoration(mDecoration = new SuspensionDecoration(this, mDatas));
-//        mRecyclerView.addItemDecoration(new DividerItemDecoration(PersonnelListActivity.this, DividerItemDecoration.VERTICAL_LIST));
+        //        mRecyclerView.addItemDecoration(new DividerItemDecoration(PersonnelListActivity.this, DividerItemDecoration.VERTICAL_LIST));
         mIndexBar.setmPressedShowTextView(indexBarTv)
                 .setNeedRealIndex(false)
                 .setmLayoutManager(mManager);
@@ -169,6 +168,7 @@ public class PersonnelListActivity extends BaseActivity {
                     PersonnelListResponseBean.DataBean data = response.getData();
                     if (data != null) {
                         if (data.getDataList() != null && data.getDataList().size() > 0) {
+                            empty_cl.setVisibility(View.GONE);
                             for (PersonnelListResponseBean.DataBean.DataListBean list : data.getDataList()) {
                                 if (list.getType() == 1) {
                                     PersonnelListResponseBean.DataBean.DataListBean dataListBean = new PersonnelListResponseBean.DataBean.DataListBean();
@@ -187,7 +187,12 @@ public class PersonnelListActivity extends BaseActivity {
                             IndexHeaderBean headerBean = mHeaderDatas.get(0);
                             headerBean.setCityList(vip_name);
                             mHeaderAdapter.notifyItemRangeChanged(0, 3);
-
+                        } else {
+                            if (isVzh == 1) {
+                                empty_cl.setVisibility(View.VISIBLE);
+                            } else {
+                                empty_cl.setVisibility(View.GONE);
+                            }
                         }
                     }
                 }
@@ -204,19 +209,19 @@ public class PersonnelListActivity extends BaseActivity {
 
     @Override
     public void emptyObject() {
-        if(mDatas!=null){
+        if (mDatas != null) {
             mDatas.clear();
             mDatas = null;
         }
-        if(mHeaderDatas!=null){
+        if (mHeaderDatas != null) {
             mHeaderDatas.clear();
             mHeaderDatas = null;
         }
-        if(mSourceDatas!=null){
+        if (mSourceDatas != null) {
             mSourceDatas.clear();
             mSourceDatas = null;
         }
-        if(networkBroker!=null){
+        if (networkBroker != null) {
             networkBroker.cancelAllRequests();
             networkBroker = null;
         }

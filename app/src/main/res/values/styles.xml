@@ -139,7 +139,7 @@
         <item name="android:background">@drawable/shape_cricle_gray_line</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/sp_14</item>
-        <item name="android:textColor">@color/color_E5E5E5</item>
+        <item name="android:textColor">@color/color_999999</item>
     </style>
 
     <style name="style_pop_animation">
