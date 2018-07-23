@@ -57,6 +57,7 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
     private DialogPlus dialog;
     private DialogPlus fastDialog;
     private List<String> fastRepayList;
+    private TextView empty_tv;
 
     public FeedbackFragment() {
     }
@@ -78,6 +79,7 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
         pullToRefreshLayout = findViewById(R.id.feedback_PullToRefreshLayout);
         networkBroker = new NetworkBroker(getActivity());
         fastRepayList = Arrays.asList(getString(R.string.fast_replay_1), getString(R.string.fast_replay_2), getString(R.string.fast_replay_3), getString(R.string.fast_replay_4));
+        empty_tv = findViewById(R.id.empty_tv);
     }
 
     @Override
@@ -289,6 +291,10 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
                         if (data.getElements() != null && data.getElements().size() > 0) {
                             listData.addAll(data.getElements());
                             commonAdapter.notifyDataSetChanged();
+                        }else {
+                            recyclerView.setVisibility(View.GONE);
+                            empty_tv.setVisibility(View.VISIBLE);
+                            empty_tv.setText(getString(R.string.no_change_in_the_event));
                         }
                         if (data.isLastPage()) {
                             pullToRefreshLayout.setCanLoadMore(false);
