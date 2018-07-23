@@ -188,7 +188,7 @@ public class FollowMeetingsFragment extends ViewPagerBaseFragment {
         if (bundle != null) {
             followType = bundle.getInt(Constants.FOLLOW_TYPE);
         }
-        networkBroker = new NetworkBroker(getContext());
+        networkBroker = new NetworkBroker(getActivity());
         networkBroker.setCancelTag(getTAG());
         CurPage = 1;
         query(false);

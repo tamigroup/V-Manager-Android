@@ -64,7 +64,7 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
         sendTxt = findViewById(R.id.fgc_send_txt);
         sendBtn = findViewById(R.id.fgc_send_btn);
 
-        networkBroker = new NetworkBroker(getContext());
+        networkBroker = new NetworkBroker(getActivity());
         bundle = getArguments();
         if (bundle != null) {
             meetingId = this.bundle.getInt(Constants.KEY_MEETING_ID);

@@ -78,7 +78,7 @@ public class MyCreateActivity extends BaseActivity {
     public void initData() {
         setTitleName(R.string.my_create);
 
-        networkBroker = new NetworkBroker(getApplicationContext());
+        networkBroker = new NetworkBroker(this);
         networkBroker.setCancelTag(getTAG());
 
         listData = new ArrayList<>();

@@ -64,7 +64,7 @@ public class GroupEditNoticeActivity extends BaseActivity {
 
         setTitleRightTxt(R.string.group_release);
 
-        networkBroker = new NetworkBroker(getApplicationContext());
+        networkBroker = new NetworkBroker(this);
         networkBroker.setCancelTag(getTAG());
 
         title.addTextChangedListener(titleTextWatcher);

@@ -76,7 +76,7 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
     public void initView() {
         recyclerView = findViewById(R.id.notice_recycler_view);
         pullToRefreshLayout = findViewById(R.id.feedback_PullToRefreshLayout);
-        networkBroker = new NetworkBroker(getContext());
+        networkBroker = new NetworkBroker(getActivity());
         fastRepayList = Arrays.asList(getString(R.string.fast_replay_1), getString(R.string.fast_replay_2), getString(R.string.fast_replay_3), getString(R.string.fast_replay_4));
     }
 

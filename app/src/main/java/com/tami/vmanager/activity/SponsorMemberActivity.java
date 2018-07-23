@@ -42,7 +42,7 @@ public class SponsorMemberActivity extends BaseActivity {
     @Override
     public void initView() {
         recyclerView = findViewById(R.id.recyc);
-        networkBroker = new NetworkBroker(getApplicationContext());
+        networkBroker = new NetworkBroker(this);
         networkBroker.setCancelTag(getTAG());
         Intent intent = getIntent();
         if (intent != null) {

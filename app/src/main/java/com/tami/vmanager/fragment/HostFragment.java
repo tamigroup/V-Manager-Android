@@ -117,7 +117,7 @@ public class HostFragment extends ViewPagerBaseFragment {
         no_v_cl = findViewById(R.id.no_v_cl);
         v_group = findViewById(R.id.v_group);
 
-        networkBroker = new NetworkBroker(getContext());
+        networkBroker = new NetworkBroker(getActivity());
         networkBroker.setCancelTag(getTAG());
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -160,9 +160,11 @@ public class HostFragment extends ViewPagerBaseFragment {
                     comment.setText(getResources().getString(R.string.comment, data.getTotalElements()));
                     listData.addAll(data.getElements());
                     commonAdapter.notifyDataSetChanged();
-                }else {
-                    comment.setText(getResources().getString(R.string.comment, 0+""));
-                    isEmptyPage();
+                } else {
+                    comment.setText(getResources().getString(R.string.comment, 0 + ""));
+                    if (vzhihui != 1) {
+                        isEmptyPage();
+                    }
                 }
                 pulltorefreshlayout.finishLoadMore();
                 if (data.isLastPage()) {

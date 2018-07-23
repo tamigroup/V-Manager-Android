@@ -156,7 +156,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
 
         setTitleName(R.string.flow_chart);
 
-        networkBroker = new NetworkBroker(getApplicationContext());
+        networkBroker = new NetworkBroker(this);
         networkBroker.setCancelTag(getTAG());
 
         initRecyclerView();

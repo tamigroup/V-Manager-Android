@@ -148,7 +148,7 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
 
         recyclerView.setVisibility(View.VISIBLE);
 
-        networkBroker = new NetworkBroker(getApplicationContext());
+        networkBroker = new NetworkBroker(this);
         networkBroker.setCancelTag(getTAG());
     }
 

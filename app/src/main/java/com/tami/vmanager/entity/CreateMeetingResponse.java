@@ -24,7 +24,10 @@ public class CreateMeetingResponse extends MobileMessage implements Serializable
     public Item data;
 
     @JsonInclude(Include.NON_NULL)
-    public static class Item {
+    public static class Item implements Serializable{
+
+        private static final long serialVersionUID = 3726954755888507726L;
+
         public int meetingId;
     }
 }

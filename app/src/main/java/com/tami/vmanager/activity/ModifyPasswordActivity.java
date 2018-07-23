@@ -58,7 +58,7 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnFocus
         setTitleName(getString(R.string.modify_password));
         setTitleRightTxt(getString(R.string.save));
 
-        networkBroker = new NetworkBroker(getApplicationContext());
+        networkBroker = new NetworkBroker(this);
         networkBroker.setCancelTag(getTAG());
     }
 

@@ -232,7 +232,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
     @Override
     public void initData() {
         setTitleName(R.string.create_meeting);
-        networkBroker = new NetworkBroker(getApplicationContext());
+        networkBroker = new NetworkBroker(this);
         networkBroker.setCancelTag(getTAG());
         //文本加*操作
         initTextView();

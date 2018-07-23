@@ -97,14 +97,14 @@ public class ChangeDemandActivity extends BaseActivity {
         setTitleName(R.string.change_demand);
         listData = new ArrayList<>();
         Intent intent = getIntent();
-        if (null!=intent){
+        if (null != intent) {
             meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 1);
             isVzh = intent.getIntExtra(Constants.IS_VZHIHUI, 0);
         }
-        if (isVzh == 1){
+        if (isVzh == 1) {
             recyclerView.setVisibility(View.VISIBLE);
             no_v.setVisibility(View.GONE);
-        }else {
+        } else {
             recyclerView.setVisibility(View.GONE);
             no_v.setVisibility(View.VISIBLE);
         }
@@ -300,8 +300,10 @@ public class ChangeDemandActivity extends BaseActivity {
                         if (data.getElements() != null && data.getElements().size() > 0) {
                             listData.addAll(data.getElements());
                             commonAdapter.notifyDataSetChanged();
-                        }else{
-                            isEmptyPage();
+                        } else {
+                            if (isVzh != 1) {
+                                isEmptyPage();
+                            }
                         }
                         if (data.isLastPage()) {
                             pullToRefreshLayout.setCanLoadMore(false);
@@ -323,14 +325,14 @@ public class ChangeDemandActivity extends BaseActivity {
 
     @Override
     public void emptyObject() {
-        if(listData!=null){
+        if (listData != null) {
             listData.clear();
             listData = null;
         }
-        if(fastRepayList!=null){
-            fastRepayList.clear();
-            fastRepayList = null;
-        }
+//        if(fastRepayList!=null){
+//            fastRepayList.clear();
+//            fastRepayList = null;
+//        }
         if (networkBroker != null) {
             networkBroker.cancelAllRequests();
         }

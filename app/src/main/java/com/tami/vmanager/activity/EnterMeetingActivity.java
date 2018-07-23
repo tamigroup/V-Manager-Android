@@ -139,7 +139,7 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
             actualNum = intent.getIntExtra(Constants.ACTUAL_NUM, 0);
         }
 
-        networkBroker = new NetworkBroker(getApplicationContext());
+        networkBroker = new NetworkBroker(this);
         networkBroker.setCancelTag(getTAG());
 
         setTitleName(R.string.get_into_meeting);

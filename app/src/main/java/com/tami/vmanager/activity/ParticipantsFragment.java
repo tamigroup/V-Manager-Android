@@ -135,7 +135,7 @@ public class ParticipantsFragment extends ViewPagerBaseFragment {
 
     @Override
     public void requestNetwork() {
-        networkBroker = new NetworkBroker(getContext());
+        networkBroker = new NetworkBroker(getActivity());
         networkBroker.setCancelTag(getTAG());
         getAvg();
         getEvaluate();
@@ -166,7 +166,9 @@ public class ParticipantsFragment extends ViewPagerBaseFragment {
                     listData.addAll(data.getElements());
                     commonAdapter.notifyDataSetChanged();
                 } else {
-                    isEmptyPage();
+                    if (vzhihui != 1) {
+                        isEmptyPage();
+                    }
                 }
                 pulltorefreshlayout.finishLoadMore();
                 if (data.isLastPage()) {
