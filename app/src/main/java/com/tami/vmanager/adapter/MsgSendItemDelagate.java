@@ -1,5 +1,6 @@
 package com.tami.vmanager.adapter;
 
+import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
@@ -27,10 +28,16 @@ public class MsgSendItemDelagate implements ItemViewDelegate<MeetingChatPageResp
 
     @Override
     public void convert(ViewHolder holder, MeetingChatPageResponse.DataBean.ElementsBean list, int position) {
-        ImageView igc_avatar_image = holder.getView(R.id.igc_avatar_image);
-        Picasso.get().load(list.getUserIcon()).into(igc_avatar_image);
-        SPUtils.put(holder.itemView.getContext(),"username",list.getUserName());
-        holder.setText(R.id.igc_position_name, list.getUserName());
-        holder.setText(R.id.igc_left_content, list.getContent());
+        if (list != null) {
+            ImageView igc_avatar_image = holder.getView(R.id.igc_avatar_image);
+            if (!TextUtils.isEmpty(list.getUserIcon())) {
+                Picasso.get().load(list.getUserIcon()).into(igc_avatar_image);
+            }
+            if (!TextUtils.isEmpty(list.getUserName())) {
+                SPUtils.put(holder.itemView.getContext(), "username", list.getUserName());
+            }
+            holder.setText(R.id.igc_position_name, list.getUserName());
+            holder.setText(R.id.igc_left_content, list.getContent());
+        }
     }
 }

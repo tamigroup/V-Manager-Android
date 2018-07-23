@@ -98,7 +98,7 @@
             android:id="@+id/pull"
             app:view_empty="@layout/empty_page"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyc"
@@ -126,8 +126,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_15"
-            android:text="@string/no_Vzhihui"
+            android:text="@string/non_v_conference_unable_to_view_satisfaction"
             android:textSize="@dimen/sp_14"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>

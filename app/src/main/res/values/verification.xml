@@ -25,5 +25,6 @@
     <string name="there_are_no_meeting_activities_for_the_time_being">暂时还没有会议活动</string>
 
     <string name="no_change_in_the_event">暂无活动变化哦</string>
+    <string name="non_v_conference_unable_to_view_satisfaction">非V智会会议，无法查看满意度哦</string>
 
 </resources>

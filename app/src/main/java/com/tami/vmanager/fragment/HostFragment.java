@@ -126,11 +126,11 @@ public class HostFragment extends ViewPagerBaseFragment {
         }
 
         if (vzhihui == 1) {
-            no_v_cl.setVisibility(View.GONE);
-            v_group.setVisibility(View.VISIBLE);
-        } else {
             no_v_cl.setVisibility(View.VISIBLE);
             v_group.setVisibility(View.GONE);
+        } else {
+            no_v_cl.setVisibility(View.GONE);
+            v_group.setVisibility(View.VISIBLE);
         }
         getAvg();
         getEvaluate();
