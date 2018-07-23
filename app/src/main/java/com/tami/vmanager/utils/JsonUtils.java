@@ -28,7 +28,9 @@ public class JsonUtils {
     public static Gson getInstance() {
         if (gson == null) {
             synchronized (JsonUtils.class) {
-                gson = new Gson();
+                if (gson == null) {
+                    gson = new Gson();
+                }
             }
         }
         return gson;
