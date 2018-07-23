@@ -8,6 +8,7 @@
 
     <com.jwenfeng.library.pulltorefresh.PullToRefreshLayout
         android:id="@+id/pullRL"
+        app:view_empty="@layout/empty_page"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

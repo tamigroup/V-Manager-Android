@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.jwenfeng.library.pulltorefresh.BaseRefreshListener;
 import com.jwenfeng.library.pulltorefresh.PullToRefreshLayout;
+import com.jwenfeng.library.pulltorefresh.ViewStatus;
 import com.tami.vmanager.R;
 import com.tami.vmanager.activity.MeetingOverviewActivity;
 import com.tami.vmanager.adapter.RecycleViewDivider;
@@ -237,6 +238,8 @@ public class WaitMeetingsFragment extends ViewPagerBaseFragment {
                         }
                         listData.addAll(array.elements);
                         commonAdapter.notifyDataSetChanged();
+                    }else{
+                        isEmptyPage();
                     }
                     pullToRefreshLayout.finishRefresh();
                     pullToRefreshLayout.finishLoadMore();
@@ -253,5 +256,18 @@ public class WaitMeetingsFragment extends ViewPagerBaseFragment {
                 e.printStackTrace();
             }
         });
+    }
+
+    /**
+     * 是否显示空页面
+     */
+    private void isEmptyPage() {
+        if (CurPage == 2 && listData.size() == 0) {
+            pullToRefreshLayout.showView(ViewStatus.EMPTY_STATUS);
+            TextView emptyTxt = (TextView) pullToRefreshLayout.getView(ViewStatus.EMPTY_STATUS);
+            emptyTxt.setText(getString(R.string.there_are_no_meeting_activities_for_the_time_being));
+        } else {
+            pullToRefreshLayout.showView(ViewStatus.CONTENT_STATUS);
+        }
     }
 }

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.jwenfeng.library.pulltorefresh.PullToRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fml_PullToRefreshLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    app:view_empty="@layout/empty_page">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/fml_RecyclerView"

@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.jwenfeng.library.pulltorefresh.BaseRefreshListener;
 import com.jwenfeng.library.pulltorefresh.PullToRefreshLayout;
+import com.jwenfeng.library.pulltorefresh.ViewStatus;
 import com.squareup.picasso.Picasso;
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.ViewPagerBaseFragment;
@@ -161,6 +162,7 @@ public class HostFragment extends ViewPagerBaseFragment {
                     commonAdapter.notifyDataSetChanged();
                 }else {
                     comment.setText(getResources().getString(R.string.comment, 0+""));
+                    isEmptyPage();
                 }
                 pulltorefreshlayout.finishLoadMore();
                 if (data.isLastPage()) {
@@ -232,6 +234,19 @@ public class HostFragment extends ViewPagerBaseFragment {
     public void emptyObject() {
         if (networkBroker != null) {
             networkBroker.cancelAllRequests();
+        }
+    }
+
+    /**
+     * 是否显示空页面
+     */
+    private void isEmptyPage() {
+        if (CurPag == 2 && listData.size() == 0) {
+            pulltorefreshlayout.showView(ViewStatus.EMPTY_STATUS);
+            TextView emptyTxt = (TextView) pulltorefreshlayout.getView(ViewStatus.EMPTY_STATUS);
+            emptyTxt.setText(getString(R.string.no_feedback));
+        } else {
+            pulltorefreshlayout.showView(ViewStatus.CONTENT_STATUS);
         }
     }
 }

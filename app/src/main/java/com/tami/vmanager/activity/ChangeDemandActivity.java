@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.jwenfeng.library.pulltorefresh.BaseRefreshListener;
 import com.jwenfeng.library.pulltorefresh.PullToRefreshLayout;
+import com.jwenfeng.library.pulltorefresh.ViewStatus;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.squareup.picasso.Picasso;
 import com.tami.vmanager.R;
@@ -299,6 +300,8 @@ public class ChangeDemandActivity extends BaseActivity {
                         if (data.getElements() != null && data.getElements().size() > 0) {
                             listData.addAll(data.getElements());
                             commonAdapter.notifyDataSetChanged();
+                        }else{
+                            isEmptyPage();
                         }
                         if (data.isLastPage()) {
                             pullToRefreshLayout.setCanLoadMore(false);
@@ -339,6 +342,19 @@ public class ChangeDemandActivity extends BaseActivity {
             dialog.dismiss();
         } else {
             super.onBackPressed();
+        }
+    }
+
+    /**
+     * 是否显示空页面
+     */
+    private void isEmptyPage() {
+        if (CurPage == 2 && listData.size() == 0) {
+            pullToRefreshLayout.showView(ViewStatus.EMPTY_STATUS);
+            TextView emptyTxt = (TextView) pullToRefreshLayout.getView(ViewStatus.EMPTY_STATUS);
+            emptyTxt.setText(getString(R.string.no_change_in_the_event));
+        } else {
+            pullToRefreshLayout.showView(ViewStatus.CONTENT_STATUS);
         }
     }
 }

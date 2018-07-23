@@ -20,4 +20,11 @@
     <string name="end_time_xiaoyu_current_time">结束时间不能小于当前时间</string>
     <string name="start_time_dayu_end_time">开始时间不能大于结束时间</string>
 
+    <string name="there_are_no_relevant_meetings_today">今天还没有相关会议哦</string>
+    <string name="you_haven_been_paying_attention_to_any_meeting_yet">您还没有关注任何一场会议，去关注吧</string>
+    <string name="there_are_no_meeting_activities_for_the_time_being">暂时还没有会议活动</string>
+
+    <string name="no_feedback">暂无反馈哦</string>
+    <string name="no_change_in_the_event">暂无活动变化哦</string>
+
 </resources>

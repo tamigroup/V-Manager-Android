@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.jwenfeng.library.pulltorefresh.BaseRefreshListener;
 import com.jwenfeng.library.pulltorefresh.PullToRefreshLayout;
+import com.jwenfeng.library.pulltorefresh.ViewStatus;
 import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.RecycleViewDivider;
 import com.tami.vmanager.base.BaseActivity;
@@ -234,6 +235,8 @@ public class TodayMeetingActivity extends BaseActivity {
                         }
                         listData.addAll(array.elements);
                         commonAdapter.notifyDataSetChanged();
+                    }else{
+                        isEmptyPage();
                     }
                     pullToRefreshLayout.finishRefresh();
                     pullToRefreshLayout.finishLoadMore();
@@ -250,5 +253,18 @@ public class TodayMeetingActivity extends BaseActivity {
                 e.printStackTrace();
             }
         });
+    }
+
+    /**
+     * 是否显示空页面
+     */
+    private void isEmptyPage() {
+        if (CurPage == 2 && listData.size() == 0) {
+            pullToRefreshLayout.showView(ViewStatus.EMPTY_STATUS);
+            TextView emptyTxt = (TextView) pullToRefreshLayout.getView(ViewStatus.EMPTY_STATUS);
+            emptyTxt.setText(getString(R.string.there_are_no_relevant_meetings_today));
+        } else {
+            pullToRefreshLayout.showView(ViewStatus.CONTENT_STATUS);
+        }
     }
 }
