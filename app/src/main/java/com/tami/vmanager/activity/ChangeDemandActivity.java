@@ -278,8 +278,9 @@ public class ChangeDemandActivity extends BaseActivity {
 
     @Override
     public void requestNetwork() {
-
-        queryData();
+        if (isVzh == 1) {
+            queryData();
+        }
     }
 
     private void queryData() {
@@ -301,7 +302,7 @@ public class ChangeDemandActivity extends BaseActivity {
                             listData.addAll(data.getElements());
                             commonAdapter.notifyDataSetChanged();
                         } else {
-                            if (isVzh != 1) {
+                            if (isVzh == 1) {
                                 isEmptyPage();
                             }
                         }

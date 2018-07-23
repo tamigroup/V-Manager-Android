@@ -97,11 +97,11 @@ public class ParticipantsFragment extends ViewPagerBaseFragment {
         }
 
         if (vzhihui == 1) {
-            no_v_cl.setVisibility(View.VISIBLE);
-            v_group.setVisibility(View.GONE);
-        } else {
             no_v_cl.setVisibility(View.GONE);
             v_group.setVisibility(View.VISIBLE);
+        } else {
+            no_v_cl.setVisibility(View.VISIBLE);
+            v_group.setVisibility(View.GONE);
         }
 
         initRecyc();
@@ -137,8 +137,10 @@ public class ParticipantsFragment extends ViewPagerBaseFragment {
     public void requestNetwork() {
         networkBroker = new NetworkBroker(getActivity());
         networkBroker.setCancelTag(getTAG());
-        getAvg();
-        getEvaluate();
+        if (vzhihui == 1) {
+            getAvg();
+            getEvaluate();
+        }
     }
 
     /**
@@ -166,7 +168,7 @@ public class ParticipantsFragment extends ViewPagerBaseFragment {
                     listData.addAll(data.getElements());
                     commonAdapter.notifyDataSetChanged();
                 } else {
-                    if (vzhihui != 1) {
+                    if (vzhihui == 1) {
                         isEmptyPage();
                     }
                 }
