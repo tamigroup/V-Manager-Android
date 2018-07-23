@@ -437,11 +437,6 @@ public class SearchActivity extends BaseActivity {
 
     @Override
     public void emptyObject() {
-        if(db.isOpen()){
-            db.close();
-            db = null;
-        }
-        dao = null;
         searchHistoryBean = null;
         if(searchHistoryBeans!=null){
             searchHistoryBeans.clear();

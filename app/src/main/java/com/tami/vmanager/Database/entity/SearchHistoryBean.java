@@ -5,6 +5,7 @@ import android.arch.persistence.room.PrimaryKey;
 
 /**
  * Created by Tang on 2018/7/3
+ * 会议历史搜索
  */
 @Entity
 public class SearchHistoryBean {
