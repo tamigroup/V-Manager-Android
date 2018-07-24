@@ -351,6 +351,8 @@ public class CreateServiceFlowActivity extends BaseActivity {
                         timeView.setText(null);
                         timeView.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_888888));
                         timeView.setEnabled(false);
+                        Collections.sort(topData);
+                        topAdapter.notifyDataSetChanged();
                     }
                 });
 
@@ -814,7 +816,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
                 saveBtn.setEnabled(true);
             });
         } else {
-            saveBtn.setEnabled(true);
+
             showToast(getString(R.string.select_process_node_least));
         }
     }

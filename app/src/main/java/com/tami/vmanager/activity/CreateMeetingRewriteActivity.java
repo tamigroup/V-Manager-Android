@@ -481,7 +481,11 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
      * 结束时间
      */
     private void endTime() {
-        createTime(endTimeView, false, recordEndDate);
+        if(recordEndDate == null){
+            createTime(endTimeView, false, recordStartDate);
+        }else{
+            createTime(endTimeView, false, recordEndDate);
+        }
     }
 
     /**
@@ -710,14 +714,14 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
             selectedDate.set(Calendar.SECOND, 00);//秒
         }
         Calendar startDate = Calendar.getInstance();
-        if (!dataFlag && recordStartDate != null) {
-            startDate.setTime(recordStartDate);
-        } else {
-            startDate.set(2000, 00, 00, 00, 00, 00);
+        startDate.set(2000, 00, 00, 00, 00, 00);
+//        if (!dataFlag && recordStartDate != null) {
+//            startDate.setTime(recordStartDate);
+//        } else {
 //            startDate.set(Calendar.HOUR_OF_DAY, 00);//时
 //            startDate.set(Calendar.MINUTE, 00);//分
 //            startDate.set(Calendar.SECOND, 00);//秒
-        }
+//        }
         Calendar endDate = Calendar.getInstance();
         endDate.set(2100, 11, 31, 00, 00, 00);
         pvTime = new TimePickerBuilder(this, (Date selectDate, View v) -> {

@@ -478,10 +478,8 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
             Logger.d("检测用户登录信息是否为空！");
             List<LoginResponse.Item.UserRole> userRoleList = userItem.getUserRoleList();
             if (userRoleList != null && userRoleList.size() > 0) {
-                Logger.d("检测用户登录信息的权限是否为空！");
                 boolean visibility = false;
                 if (meetingInfo != null) {
-                    Logger.d("检测会议信息是否为空！");
                     for (LoginResponse.Item.UserRole userRole : userRoleList) {
                         if (userRole != null && meetingInfo.saleUserId == userRole.userId) {
                             visibility = true;
@@ -489,7 +487,6 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
                         }
                     }
                 }
-                Logger.d("检测用户登录信息当前用户不是创建者："+visibility);
                 //当前用户不是创建者
                 if (!visibility) {
                     //有流程隐藏编辑按钮没有流程隐藏创建流程按钮
