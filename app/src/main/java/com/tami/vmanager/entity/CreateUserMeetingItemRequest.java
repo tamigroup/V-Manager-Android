@@ -15,8 +15,18 @@ public class CreateUserMeetingItemRequest extends MobileMessage implements Seria
     }
 
     private int meetingId;
+    private int meetingItemId;
     private String meetingItemName;
     private int roleId;
+
+
+    public int getMeetingItemId() {
+        return meetingItemId;
+    }
+
+    public void setMeetingItemId(int meetingItemId) {
+        this.meetingItemId = meetingItemId;
+    }
 
     public int getMeetingId() {
         return meetingId;

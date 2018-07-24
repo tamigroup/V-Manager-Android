@@ -3,6 +3,7 @@ package com.tami.vmanager.activity;
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.AppCompatImageView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
@@ -108,6 +109,11 @@ public class MyCreateActivity extends BaseActivity {
                 //会议状态
                 MeetingStateView stateView = viewHolder.getItemView(R.id.item_content_state);
                 stateView.setMeetingStateText(item.meetingStatus, 20);
+                if (TextUtils.isEmpty(item.cancelStatus)) {
+                    stateView.setVisibility(View.VISIBLE);
+                } else {
+                    stateView.setVisibility(View.INVISIBLE);
+                }
                 //时间
                 viewHolder.setTextView(R.id.item_content_start_time, item.autoDayTime);
 //                viewHolder.setTextView(R.id.item_content_start_time, TimeUtils.milliseconds2String(item.startTime, TimeUtils.DATE_YYYYMMDDHHMM_SLASH));

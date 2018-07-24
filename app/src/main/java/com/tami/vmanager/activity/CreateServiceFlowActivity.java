@@ -546,21 +546,32 @@ public class CreateServiceFlowActivity extends BaseActivity {
                                     for (SystemRoleListResponse.Item roleItem : roleData) {
                                         if (item.roleId == roleItem.id) {
                                             item.isCustom = true;
-                                            item.isSelected = true;
                                             if (item.role == null) {
                                                 item.role = new GetMeetingItemsResponse.Array.Item.Role();
                                             }
                                             item.role.id = roleItem.id;
                                             item.role.name = roleItem.roleName;
+                                            if (item.startOn == 0) {
+                                                item.isSelected = false;
+                                                bottomData.add(item);
+                                            } else {
+                                                item.isSelected = true;
+                                                topData.add(item);
+                                            }
                                             break;
                                         }
                                     }
+                                } else {
+                                    topData.add(item);
                                 }
-                                topData.add(item);
                             }
-//                            topData.addAll(array.dataList);
                             Collections.sort(topData);
                             topAdapter.notifyDataSetChanged();
+                            if (bottomData != null && bottomData.size() > 0) {
+                                Collections.sort(bottomData);
+                                bottomAdapter.notifyDataSetChanged();
+                                bottomRecyclerView.setVisibility(View.VISIBLE);
+                            }
                         }
                     }
                 }
@@ -718,7 +729,10 @@ public class CreateServiceFlowActivity extends BaseActivity {
     private void createUserMeetingItem(GetMeetingItemsResponse.Array.Item item) {
         CreateUserMeetingItemRequest cumir = new CreateUserMeetingItemRequest();
         cumir.setMeetingId(meetingId);
-        cumir.setMeetingItemName(item.name);
+        cumir.setMeetingItemId(item.id);
+        if (!TextUtils.isEmpty(item.name)) {
+            cumir.setMeetingItemName(item.name);
+        }
         cumir.setRoleId(roleData.get(selectIndex).id);
         networkBroker.ask(cumir, (ex1, res) -> {
             if (null != ex1) {

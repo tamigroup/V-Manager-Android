@@ -6,6 +6,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -100,6 +101,11 @@ public class TodayMeetingActivity extends BaseActivity {
                 //会议状态
                 MeetingStateView stateView = holder.getView(R.id.item_meeting_state);
                 stateView.setMeetingStateText(item.meetingStatus, 20);
+                if (TextUtils.isEmpty(item.cancelStatus)) {
+                    stateView.setVisibility(View.VISIBLE);
+                } else {
+                    stateView.setVisibility(View.INVISIBLE);
+                }
                 //时间
                 holder.setText(R.id.item_meeting_start_time, item.autoDayTime);
 //                holder.setText(R.id.item_meeting_start_time, TimeUtils.milliseconds2String(item.startTime, TimeUtils.DATE_YYYYMMDDHHMM_SLASH));

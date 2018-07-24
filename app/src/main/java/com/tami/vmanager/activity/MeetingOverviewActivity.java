@@ -82,7 +82,6 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
     private MeetingStateView meeting_status;
     private ImageView sale_phone;
     private int actualNum;
-    private GetMeetingResponse.Item meetingItem;
 
     @Override
     public boolean isTitle() {
@@ -154,9 +153,7 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
 
     @Override
     public void requestNetwork() {
-        getActualNum();
         getMeeting();
-        getMeetingItemsByMeetingId();
     }
 
     /**
@@ -177,6 +174,7 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
                     GetActualNumResponseBean.DataBean data = response.getData();
                     if (data != null) {
                         actualNum = data.getActualNum();
+                        initUITxt(actualNumber, String.valueOf(actualNum), R.string.actual_number, R.color.color_FF5657);
                     }
                 }
             } catch (Exception e) {
@@ -195,7 +193,6 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
     public void emptyObject() {
         adapter.removeTimeLineMeetingFlowItem();
         meetingInfo = null;
-        meetingItem = null;
         if (listData != null) {
             listData.clear();
             listData = null;
@@ -224,21 +221,21 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
                 //实到人数
                 Intent intent_personnel = new Intent(getApplicationContext(), PersonnelListActivity.class);
                 intent_personnel.putExtra(Constants.KEY_MEETING_ID, meetingId);
-                intent_personnel.putExtra(Constants.IS_VZHIHUI, meetingItem.isVzh);
+                intent_personnel.putExtra(Constants.IS_VZHIHUI, meetingInfo.isVzh);
                 startActivity(intent_personnel);
                 break;
             case R.id.meeting_overview_complaints_box:
                 //意见箱 满意度
                 Intent intent = new Intent(getApplicationContext(), IdeasBoxActivity.class);
                 intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
-                intent.putExtra(Constants.IS_VZHIHUI, meetingItem.isVzh);
+                intent.putExtra(Constants.IS_VZHIHUI, meetingInfo.isVzh);
                 startActivity(intent);
                 break;
             case R.id.meeting_overview_change_demand:
                 //需求变化 活动变化
                 Intent intent1 = new Intent(getApplicationContext(), ChangeDemandActivity.class);
                 intent1.putExtra(Constants.KEY_MEETING_ID, meetingId);
-                intent1.putExtra(Constants.IS_VZHIHUI, meetingItem.isVzh);
+                intent1.putExtra(Constants.IS_VZHIHUI, meetingInfo.isVzh);
                 startActivity(intent1);
                 break;
             case R.id.meeting_overview_v_emind:
@@ -339,7 +336,8 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
 
             //V智慧判断
             if (item.isVzh == 1) {
-                initUITxt(actualNumber, String.valueOf(item.actualNum), R.string.actual_number, R.color.color_FF5657);
+                getActualNum();
+//                initUITxt(actualNumber, String.valueOf(item.actualNum), R.string.actual_number, R.color.color_FF5657);
             } else {
                 initUITxt(actualNumber, "--", R.string.actual_number, R.color.color_FF5657);
             }
@@ -410,13 +408,12 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
             try {
                 GetMeetingResponse response = (GetMeetingResponse) res;
                 if (response.getCode() == 200) {
-                    meetingItem = response.data;
-                    initUIdata(meetingItem);
+                    initUIdata(response.data);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
+            getMeetingItemsByMeetingId();
         });
     }
 
@@ -473,10 +470,13 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
         //判断当前用户的权限
         LoginResponse.Item userItem = GlobaVariable.getInstance().item;
         if (userItem != null) {
+            Logger.d("检测用户登录信息是否为空！");
             List<LoginResponse.Item.UserRole> userRoleList = userItem.getUserRoleList();
             if (userRoleList != null && userRoleList.size() > 0) {
+                Logger.d("检测用户登录信息的权限是否为空！");
                 boolean visibility = false;
                 if (meetingInfo != null) {
+                    Logger.d("检测会议信息是否为空！");
                     for (LoginResponse.Item.UserRole userRole : userRoleList) {
                         if (userRole != null && meetingInfo.saleUserId == userRole.userId) {
                             visibility = true;
@@ -484,6 +484,7 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
                         }
                     }
                 }
+                Logger.d("检测用户登录信息当前用户不是创建者："+visibility);
                 //当前用户不是创建者
                 if (!visibility) {
                     //有流程隐藏编辑按钮没有流程隐藏创建流程按钮

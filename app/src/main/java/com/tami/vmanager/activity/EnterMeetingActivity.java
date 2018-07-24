@@ -278,7 +278,7 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
 
             //V智慧判断
             if (item.isVzh == 1) {
-                initUITxt(actualNumber, String.valueOf(item.actualNum), R.string.actual_number, R.color.color_FF5657);
+                initUITxt(actualNumber, String.valueOf(actualNum), R.string.actual_number, R.color.color_FF5657);
             } else {
                 initUITxt(actualNumber, "--", R.string.actual_number, R.color.color_FF5657);
             }

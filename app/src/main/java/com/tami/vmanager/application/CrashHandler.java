@@ -9,6 +9,9 @@ import android.text.format.Time;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.Toast;
+
+import com.tami.vmanager.manager.ActivityManager;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
@@ -97,10 +100,11 @@ public class CrashHandler implements UncaughtExceptionHandler {
         } else {
             //Sleep一会后结束程序
             try {
-                Thread.sleep(2000);
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 Log.e(TAG, "Error : ", e);
             }
+            ActivityManager.getInstance().finishAllActivity();
             android.os.Process.killProcess(android.os.Process.myPid());
             System.exit(10);
         }

@@ -6,6 +6,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.SearchView;
@@ -148,9 +149,14 @@ public class SearchDetailActivity extends BaseActivity {
 
                 MeetingStateView stateView = holder.getView(R.id.item_meeting_state);
                 stateView.setMeetingStateText(dataBean.getMeetingStatus(), 20);
-
-                holder.setText(R.id.item_meeting_start_time, TimeUtils.milliseconds2String(dataBean.getStartTime(),TimeUtils.DATE_YYYYMMDDHHMM_SLASH));
-                holder.setText(R.id.item_meeting_end_time, TimeUtils.milliseconds2String(dataBean.getStartTime(),TimeUtils.DATE_YYYYMMDDHHMM_SLASH));
+                if(TextUtils.isEmpty(dataBean.getCancelStatus())){
+                    stateView.setVisibility(View.VISIBLE);
+                }else{
+                    stateView.setVisibility(View.INVISIBLE);
+                }
+                holder.setText(R.id.item_meeting_start_time,dataBean.getAutoDayTime());
+//                holder.setText(R.id.item_meeting_start_time, TimeUtils.milliseconds2String(dataBean.getStartTime(),TimeUtils.DATE_YYYYMMDDHHMM_SLASH));
+//                holder.setText(R.id.item_meeting_end_time, TimeUtils.milliseconds2String(dataBean.getStartTime(),TimeUtils.DATE_YYYYMMDDHHMM_SLASH));
                 holder.setText(R.id.item_meeting_room, dataBean.getMeetingAddress());
                 holder.setText(R.id.item_meeting_perfected, dataBean.getPerfectStatus());
                 holder.setText(R.id.item_meeting_cancel, dataBean.getCancelStatus());
