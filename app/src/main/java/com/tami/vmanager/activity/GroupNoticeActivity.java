@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
 import com.jwenfeng.library.pulltorefresh.PullToRefreshLayout;
 import com.tami.vmanager.R;
@@ -36,6 +37,7 @@ public class GroupNoticeActivity extends BaseActivity {
     private List<NoticeResponseBean.DataBean.ElementsBean> listData;
     private int CurPage = 1;
     private boolean is_invisible;
+    private TextView empty_tv;
 
     @Override
     public boolean isTitle() {
@@ -51,6 +53,7 @@ public class GroupNoticeActivity extends BaseActivity {
     public void initView() {
         pullToRefreshLayout = findViewById(R.id.agn_PullToRefreshLayout);
         recyclerView = findViewById(R.id.agn_recyclerview);
+        empty_tv = findViewById(R.id.empty_tv);
     }
 
     @Override
@@ -76,6 +79,13 @@ public class GroupNoticeActivity extends BaseActivity {
 
     @Override
     public void requestNetwork() {
+        CurPage = 1;
+        getNotice();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         CurPage = 1;
         getNotice();
     }
@@ -158,11 +168,16 @@ public class GroupNoticeActivity extends BaseActivity {
                     if (dataBean != null) {
                         List<NoticeResponseBean.DataBean.ElementsBean> data = dataBean.getElements();
                         if (data != null && data.size() > 0) {
+                            recyclerView.setVisibility(View.VISIBLE);
+                            empty_tv.setVisibility(View.GONE);
                             if (listData != null && listData.size() > 0) {
                                 listData.clear();
                             }
                             listData.addAll(data);
                             commonAdapter.notifyDataSetChanged();
+                        }else {
+                            recyclerView.setVisibility(View.GONE);
+                            empty_tv.setVisibility(View.VISIBLE);
                         }
                         if (dataBean.isLastPage()) {
                             pullToRefreshLayout.setCanLoadMore(false);

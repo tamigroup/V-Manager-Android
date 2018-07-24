@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.jwenfeng.library.pulltorefresh.BaseRefreshListener;
 import com.jwenfeng.library.pulltorefresh.PullToRefreshLayout;
@@ -38,6 +40,7 @@ public class NoticeFragment extends ViewPagerBaseFragment {
     private CommonAdapter<NoticeResponseBean.DataBean.ElementsBean> commonAdapter;
     private List<NoticeResponseBean.DataBean.ElementsBean> listData;
     private int meetingId;
+    private TextView empty_tv;
 
     @Override
     public int getContentViewId() {
@@ -48,6 +51,7 @@ public class NoticeFragment extends ViewPagerBaseFragment {
     public void initView() {
         recyclerView = findViewById(R.id.notice_recycler_view);
         pullToRefreshLayout = findViewById(R.id.feedback_PullToRefreshLayout);
+        empty_tv = findViewById(R.id.empty_tv);
         networkBroker = new NetworkBroker(getActivity());
     }
 
@@ -113,8 +117,14 @@ public class NoticeFragment extends ViewPagerBaseFragment {
                 if (response.getCode() == 200) {
                     List<NoticeResponseBean.DataBean.ElementsBean> data = response.getData().getElements();
                     if (data != null && data.size() > 0) {
+                        recyclerView.setVisibility(View.VISIBLE);
+                        empty_tv.setVisibility(View.GONE);
                         listData.addAll(data);
                         commonAdapter.notifyDataSetChanged();
+                    }else {
+                        recyclerView.setVisibility(View.GONE);
+                        empty_tv.setVisibility(View.VISIBLE);
+                        empty_tv.setText(R.string.empty_notice);
                     }
                     pullToRefreshLayout.finishLoadMore();
                 }
