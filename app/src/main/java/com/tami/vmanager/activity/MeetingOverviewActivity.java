@@ -330,7 +330,12 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
             meetingRoom.setText(item.meetingAddress);
             mmohSponsor.setText(String.format(getString(R.string.host_name), item.sponsorName));
             meetingPersonnel.setText(String.format(getString(R.string.salename), item.saleUserName));
-            meeting_status.setMeetingStateText(item.meetingStatus, 20);
+            if(TextUtils.isEmpty(item.cancelStatus)){
+                meeting_status.setVisibility(View.VISIBLE);
+                meeting_status.setMeetingStateText(item.meetingStatus, 20);
+            }else{
+                meeting_status.setVisibility(View.GONE);
+            }
             initUITxt(predeterminedNumber, String.valueOf(item.estimateNum), R.string.predetermined_number, android.R.color.white);
             initUITxt(bottomNumber, String.valueOf(item.minNum), R.string.bottom_number, android.R.color.white);
 

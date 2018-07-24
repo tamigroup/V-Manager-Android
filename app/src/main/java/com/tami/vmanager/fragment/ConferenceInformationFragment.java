@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.view.View;
 import android.widget.TextView;
 
 import com.tami.vmanager.R;
@@ -86,7 +88,12 @@ public class ConferenceInformationFragment extends ViewPagerBaseFragment {
     @Override
     public void initData() {
         company_name.setText(item.meetingName);
-        meeting_status.setText(item.meetingStatus);
+        if(TextUtils.isEmpty(item.cancelStatus)){
+            meeting_status.setVisibility(View.VISIBLE);
+            meeting_status.setText(item.meetingStatus);
+        }else{
+            meeting_status.setVisibility(View.GONE);
+        }
         host_name.setText(String.format(getResources().getString(R.string.host_name), item.sponsorName));
         meeting_address.setText(item.meetingAddress);
         meeting_time.setText(item.autoDayTime);

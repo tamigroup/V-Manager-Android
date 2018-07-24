@@ -50,7 +50,7 @@ public class GetMeetingResponse extends MobileMessage implements Serializable {
         public int vzhStatus;	/*0*/
         public String salesUserMobile;	/*13800138000*/
         public int isVzh;
-
+        public	String	cancelStatus;	/**/
         public List<VipGuest> vipGuestList;
 
         public List<VipReceiveUser> vipReceiveUser;
