@@ -3,6 +3,8 @@ package com.tami.vmanager.activity;
 import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.TextView;
 
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
@@ -28,6 +30,7 @@ public class SponsorMemberActivity extends BaseActivity {
     private NetworkBroker networkBroker;
     private CommonAdapter<SponsorUserListResponseBean.DataBean.DataListBean> commonAdapter;
     private int meetingId;
+    private TextView empty_tv;
 
     @Override
     public boolean isTitle() {
@@ -42,6 +45,7 @@ public class SponsorMemberActivity extends BaseActivity {
     @Override
     public void initView() {
         recyclerView = findViewById(R.id.recyc);
+        empty_tv = findViewById(R.id.empty_tv);
         networkBroker = new NetworkBroker(this);
         networkBroker.setCancelTag(getTAG());
         Intent intent = getIntent();
@@ -92,8 +96,13 @@ public class SponsorMemberActivity extends BaseActivity {
                     SponsorUserListResponseBean.DataBean data = response.getData();
                     if (data != null) {
                         if (data.getDataList() != null && data.getDataList().size() > 0) {
+                            recyclerView.setVisibility(View.VISIBLE);
+                            empty_tv.setVisibility(View.GONE);
                             listData.addAll(data.getDataList());
                             commonAdapter.notifyDataSetChanged();
+                        }else {
+                            recyclerView.setVisibility(View.GONE);
+                            empty_tv.setVisibility(View.VISIBLE);
                         }
                     }
                 }

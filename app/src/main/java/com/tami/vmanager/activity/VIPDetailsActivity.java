@@ -1,6 +1,7 @@
 package com.tami.vmanager.activity;
 
 import android.content.Intent;
+import android.support.constraint.Group;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -38,6 +39,8 @@ public class VIPDetailsActivity extends BaseActivity {
     private List<VIPDetailsResponseBean.DataBean.ElementsBean> listData;
     private CommonAdapter<VIPDetailsResponseBean.DataBean.ElementsBean> commonAdapter;
     private int meetingId;//会议ID
+    private Group vip_detail_group;
+    private TextView empty_tv;
 
     @Override
     public boolean isTitle() {
@@ -53,6 +56,8 @@ public class VIPDetailsActivity extends BaseActivity {
     public void initView() {
         title = findViewById(R.id.avd_title);
         recyclerView = findViewById(R.id.recyc);
+        vip_detail_group = findViewById(R.id.vip_detail_group);
+        empty_tv = findViewById(R.id.empty_tv);
         networkBroker = new NetworkBroker(this);
     }
 
@@ -130,9 +135,13 @@ public class VIPDetailsActivity extends BaseActivity {
                 if (response.getCode() == 200) {
                     VIPDetailsResponseBean.DataBean data = response.getData();
                     if (data != null && data.getElements() != null && data.getElements().size() > 0) {
-                        List<VIPDetailsResponseBean.DataBean.ElementsBean> elements = data.getElements();
+                        vip_detail_group.setVisibility(View.VISIBLE);
+                        empty_tv.setVisibility(View.GONE);
                         listData.addAll(data.getElements());
                         commonAdapter.notifyDataSetChanged();
+                    }else {
+                        vip_detail_group.setVisibility(View.GONE);
+                        empty_tv.setVisibility(View.VISIBLE);
                     }
                 }
             } catch (Exception e) {
