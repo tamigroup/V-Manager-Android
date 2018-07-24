@@ -2,8 +2,10 @@ package com.tami.vmanager.utils;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,6 +14,7 @@ import com.allenliu.versionchecklib.core.http.HttpRequestMethod;
 import com.allenliu.versionchecklib.v2.AllenVersionChecker;
 import com.allenliu.versionchecklib.v2.builder.DownloadBuilder;
 import com.allenliu.versionchecklib.v2.builder.UIData;
+import com.allenliu.versionchecklib.v2.callback.CustomDownloadingDialogListener;
 import com.allenliu.versionchecklib.v2.callback.CustomVersionDialogListener;
 import com.allenliu.versionchecklib.v2.callback.RequestVersionListener;
 import com.tami.vmanager.R;
@@ -50,8 +53,8 @@ public class CheckUpdate {
                     @Nullable
                     @Override
                     public UIData onRequestVersionSuccess(String result) {
-//                        String json = Utils.getJson(context, "cars.json");
-//                        UpdateBean updateBean = JsonUtils.getInstance().fromJson(json, UpdateBean.class);
+                        // String json = Utils.getJson(context, "cars.json");
+                        // UpdateBean updateBean = JsonUtils.getInstance().fromJson(json, UpdateBean.class);
                         UpdateBean updateBean = JsonUtils.getInstance().fromJson(result, UpdateBean.class);
                         if (updateBean.getCode() == 200) {
                             data = updateBean.getData();
@@ -66,14 +69,13 @@ public class CheckUpdate {
                     }
                 });
         builder.excuteMission(context);
-
     }
 
     /**
      * 自定义dialog布局
      *
-     * @param i       i=1普通更新 i=2强制更新
-     * @param num     num=0 是HomeActivity num=1是设置点击
+     * @param i   i=1普通更新 i=2强制更新
+     * @param num num=0 是HomeActivity num=1是设置点击
      */
     private CustomVersionDialogListener updateDialog(int i, int num) {
         return (context, versionBundle) -> {
@@ -85,9 +87,9 @@ public class CheckUpdate {
             if (i == 2) {
                 dialog.findViewById(R.id.versionchecklib_version_dialog_cancel).setVisibility(View.GONE);
             }
-            if (num==0){
+            if (num == 0) {
                 dialog_commit.setText(R.string.now_update);
-            }else if (num == 1){
+            } else if (num == 1) {
                 dialog_commit.setText(R.string.update_now);
             }
             tv_title.setText(versionBundle.getTitle());
@@ -111,12 +113,13 @@ public class CheckUpdate {
                 }
             } else if (data.getMustUpdate() == UpdateType.update.getType()) {
                 crateUIData();
-                builder.setCustomVersionDialogListener(updateDialog(1,num));
+                builder.setCustomVersionDialogListener(updateDialog(1, num));
             } else if (data.getMustUpdate() == UpdateType.forceUpdate.getType()) {
                 crateUIData();
-                builder.setCustomVersionDialogListener(updateDialog(2,num));
+                builder.setCustomVersionDialogListener(updateDialog(2, num));
                 builder.setForceUpdateListener(() -> ActivityManager.getInstance().finishAllActivity());
             }
+            builder.setCustomDownloadingDialogListener(createDownloadingDialog());
         }
     }
 
@@ -126,5 +129,30 @@ public class CheckUpdate {
                 .setDownloadUrl(data.getUpdateUrl())
                 .setTitle(data.getTitle())
                 .setContent(data.getContent());
+    }
+
+    /**
+     * 自定义下载中对话框，下载中会连续回调此方法 updateUI
+     * 务必用库传回来的context 实例化你的dialog
+     *
+     * @return
+     */
+    private CustomDownloadingDialogListener createDownloadingDialog() {
+        return new CustomDownloadingDialogListener() {
+            @Override
+            public Dialog getCustomDownloadingDialog(Context context, int progress, UIData versionBundle) {
+                Dialog dialog_update_download = new Dialog(context, R.style.BaseDialog);
+                dialog_update_download.setContentView(R.layout.dialog_update_download);
+                return dialog_update_download;
+            }
+
+            @Override
+            public void updateUI(Dialog dialog, int progress, UIData versionBundle) {
+                TextView tvProgress = dialog.findViewById(R.id.tv_progress);
+                ProgressBar progressBar = dialog.findViewById(R.id.pb);
+                progressBar.setProgress(progress);
+                tvProgress.setText(progress + "%");
+            }
+        };
     }
 }
