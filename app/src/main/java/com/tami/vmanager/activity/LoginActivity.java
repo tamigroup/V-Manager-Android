@@ -306,6 +306,7 @@ public class LoginActivity extends BaseActivity {
             }
 
             startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+            this.finish();
         });
     }
 

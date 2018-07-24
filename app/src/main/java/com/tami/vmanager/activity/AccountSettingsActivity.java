@@ -8,11 +8,13 @@ import android.content.pm.ApplicationInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
-import android.support.v4.app.NotificationManagerCompat;
+import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.allenliu.versionchecklib.v2.builder.DownloadBuilder;
+import com.allenliu.versionchecklib.v2.builder.UIData;
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.entity.GetUserNoticeConfigRequest;
@@ -22,10 +24,14 @@ import com.tami.vmanager.entity.LoginOutResponse;
 import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.entity.SetUserNoticeConfigRequest;
 import com.tami.vmanager.entity.SetUserNoticeConfigResponse;
+import com.tami.vmanager.entity.UpdateBean;
+import com.tami.vmanager.http.HttpKey;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.ActivityManager;
 import com.tami.vmanager.manager.GlobaVariable;
+import com.tami.vmanager.utils.CheckUpdate;
 import com.tami.vmanager.utils.Logger;
+import com.tami.vmanager.utils.Utils;
 import com.tami.vmanager.view.SwitchButton;
 
 import java.lang.reflect.Field;
@@ -50,6 +56,12 @@ public class AccountSettingsActivity extends BaseActivity {
     private TextView changePassword;
     private Button exitBtn;
     private NetworkBroker networkBroker;
+    private ConstraintLayout version_update_cl;
+    private TextView version_name;
+    private UIData uiData = null;
+    private UpdateBean.DataBean data;
+    private String requestUrl = NetworkBroker.BASE_URI + HttpKey.UPDATE;
+    private DownloadBuilder builder;
 
     @Override
     public boolean isTitle() {
@@ -74,6 +86,8 @@ public class AccountSettingsActivity extends BaseActivity {
         taskAssignmentState = findViewById(R.id.ass_task_assignment_notice_state);
         changePassword = findViewById(R.id.aas_change_the_password);
         exitBtn = findViewById(R.id.aas_exit_login);
+        version_update_cl = findViewById(R.id.version_update_cl);
+        version_name = findViewById(R.id.version_name);
     }
 
     @Override
@@ -96,29 +110,31 @@ public class AccountSettingsActivity extends BaseActivity {
             }
         });
         changeDemand.setOnCheckedChangeListener((SwitchButton view, boolean isChecked) -> {
-//            changeDemandState.setText(isChecked ? getString(R.string.on) : getString(R.string.off));
+            //            changeDemandState.setText(isChecked ? getString(R.string.on) : getString(R.string.off));
             setUserNoticeConfig();
         });
         groupMessage.setOnCheckedChangeListener((SwitchButton view, boolean isChecked) -> {
-//            groupMessageState.setText(isChecked ? getString(R.string.on) : getString(R.string.off));
+            //            groupMessageState.setText(isChecked ? getString(R.string.on) : getString(R.string.off));
             setUserNoticeConfig();
         });
         satisfaction.setOnCheckedChangeListener((SwitchButton view, boolean isChecked) -> {
-//            satisfactionState.setText(isChecked ? getString(R.string.on) : getString(R.string.off));
+            //            satisfactionState.setText(isChecked ? getString(R.string.on) : getString(R.string.off));
             setUserNoticeConfig();
         });
         taskAssignment.setOnCheckedChangeListener((SwitchButton view, boolean isChecked) -> {
-//            taskAssignmentState.setText(isChecked ? getString(R.string.on) : getString(R.string.off));
+            //            taskAssignmentState.setText(isChecked ? getString(R.string.on) : getString(R.string.off));
             setUserNoticeConfig();
         });
 
         changePassword.setOnClickListener(this);
         exitBtn.setOnClickListener(this);
+        version_update_cl.setOnClickListener(this);
     }
 
     @Override
     public void initData() {
         setTitleName(R.string.account_settings);
+        version_name.setText(String.format(getString(R.string.version_name), Utils.getLocalVersionName(this)));
         networkBroker = new NetworkBroker(this);
         networkBroker.setCancelTag(getTAG());
 
@@ -137,7 +153,7 @@ public class AccountSettingsActivity extends BaseActivity {
 
     @Override
     public void emptyObject() {
-        if(networkBroker!=null){
+        if (networkBroker != null) {
             networkBroker.cancelAllRequests();
             networkBroker = null;
         }
@@ -152,6 +168,9 @@ public class AccountSettingsActivity extends BaseActivity {
                 break;
             case R.id.aas_exit_login:
                 editLogin();
+                break;
+            case R.id.version_update_cl:
+                CheckUpdate.getInstance(this,1);
                 break;
         }
     }
@@ -233,7 +252,7 @@ public class AccountSettingsActivity extends BaseActivity {
         if (item != null) {
             setUserNoticeConfigRequest.setUserId(item.getId());
         }
-//        setUserNoticeConfigRequest.setSystemNotice(0);
+        //        setUserNoticeConfigRequest.setSystemNotice(0);
         setUserNoticeConfigRequest.setHostNotice(changeDemand.isChecked() ? 1 : 0);
         setUserNoticeConfigRequest.setGroupChatNotice(groupMessage.isChecked() ? 1 : 0);
         setUserNoticeConfigRequest.setSatisfactionNotice(satisfaction.isChecked() ? 1 : 0);

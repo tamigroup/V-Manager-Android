@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
@@ -21,6 +20,7 @@ import com.tami.vmanager.fragment.HomeFragmentListener;
 import com.tami.vmanager.fragment.MeetingFragment;
 import com.tami.vmanager.fragment.PersonalCenterFragment;
 import com.tami.vmanager.manager.ActivityManager;
+import com.tami.vmanager.utils.CheckUpdate;
 import com.tami.vmanager.utils.Logger;
 
 /**
@@ -48,6 +48,8 @@ public class HomeActivity extends BaseActivity implements TabLayout.OnTabSelecte
     @Override
     public void initView() {
         home_tab = findViewById(R.id.home_tab);
+
+        CheckUpdate.getInstance(this,0);
     }
 
     @Override

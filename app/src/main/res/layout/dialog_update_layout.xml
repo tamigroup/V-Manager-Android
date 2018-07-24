@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical" android:layout_width="match_parent"
+              android:background="@android:color/transparent"
+              android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="@dimen/x560"
+        android:orientation="vertical"
+        android:background="@drawable/shape_dialog_3dp"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="4dp"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            android:layout_gravity="left"
+            android:layout_marginLeft="@dimen/x40"
+            android:text="123"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="@dimen/x40"
+            android:id="@+id/tv_msg"
+            android:layout_width="match_parent"
+            android:textColor="@android:color/black"
+            android:text="123465"
+            android:layout_height="wrap_content" />
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/color_C8C8C8"
+            android:layout_height="1px"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/next_time"
+                android:id="@+id/versionchecklib_version_dialog_cancel"
+                android:textColor="@color/color_303030"
+                android:textSize="@dimen/sp_16"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/update_now"
+                android:id="@+id/versionchecklib_version_dialog_commit"
+                android:textColor="@color/color_303030"
+                android:textSize="@dimen/sp_16"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

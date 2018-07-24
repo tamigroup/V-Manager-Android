@@ -237,11 +237,47 @@
 
     </android.support.constraint.ConstraintLayout>
 
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/version_update_cl"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_45"
+        android:background="@drawable/item_bg"
+        android:layout_marginTop="@dimen/dp_15"
+        app:layout_constraintTop_toBottomOf="@+id/aas_settings_layout">
+
+        <TextView
+            android:id="@+id/version_update"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_45"
+            android:textSize="@dimen/sp_16"
+            android:textColor="@color/color_303030"
+            android:background="@drawable/item_bg"
+            android:text="@string/version_update"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/dp_20"
+            android:paddingRight="@dimen/dp_20"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/version_name"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_45"
+            android:textSize="@dimen/sp_16"
+            android:textColor="@color/color_303030"
+            android:background="@drawable/item_bg"
+            android:text="@string/version_name"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/dp_20"
+            android:paddingRight="@dimen/dp_20"
+            app:layout_constraintEnd_toEndOf="parent"/>
+    </android.support.constraint.ConstraintLayout>
+
+
     <TextView
         android:id="@+id/aas_change_the_password"
         android:layout_width="@dimen/dp_0"
         android:layout_height="@dimen/dp_45"
-        android:layout_marginTop="@dimen/dp_26"
+        android:layout_marginTop="@dimen/dp_15"
         android:background="@drawable/item_bg"
         android:drawableRight="@mipmap/right_triangle"
         android:gravity="center_vertical"
@@ -252,7 +288,7 @@
         android:textSize="@dimen/sp_16"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/aas_settings_layout" />
+        app:layout_constraintTop_toBottomOf="@+id/version_update_cl" />
 
     <Button
         android:id="@+id/aas_exit_login"
