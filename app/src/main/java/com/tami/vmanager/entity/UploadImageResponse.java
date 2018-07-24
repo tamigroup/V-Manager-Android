@@ -20,7 +20,8 @@ public class UploadImageResponse extends FileMobileMessage implements Serializab
     public Item data;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public static class Item {
+    public static class Item implements Serializable{
+        private static final long serialVersionUID = -2751954003621449113L;
         public List<String> dataList;
     }
 }

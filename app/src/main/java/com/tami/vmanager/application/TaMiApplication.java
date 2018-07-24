@@ -46,7 +46,15 @@ public class TaMiApplication extends Application {
         initJIM();
 
         initLeakCanary();
+
+        initCrashHandler();
     }
+
+    private void initCrashHandler() {
+        CrashHandler crashHandler = CrashHandler.getInstance();
+        crashHandler.init(this);
+    }
+
 
     private void initJIM() {
         //初始化IM

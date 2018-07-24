@@ -112,6 +112,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentListener {
         num_group = findViewById(R.id.num_group);
         home_total = findViewById(R.id.home_total);
         home_have_been_held = findViewById(R.id.home_have_been_held);
+
     }
 
     @Override

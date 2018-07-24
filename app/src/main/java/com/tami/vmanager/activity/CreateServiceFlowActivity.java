@@ -169,7 +169,6 @@ public class CreateServiceFlowActivity extends BaseActivity {
 
     @Override
     public void requestNetwork() {
-        getMeetingDays();
         getSystemRoleList();
     }
 
@@ -437,18 +436,23 @@ public class CreateServiceFlowActivity extends BaseActivity {
         bottomRecyclerView.setAdapter(bottomAdapter);
     }
 
+    private TimePickerView pvTime;
+
     /**
      * 弹出时间框
      *
      * @param view 点击哪个VIEW
      */
     private void createTime(TextView view, int position, boolean flag) {
+        if (pvTime != null && pvTime.getDialog() != null && pvTime.getDialog().isShowing()) {
+            pvTime.getDialog().dismiss();
+        }
         Calendar selectedDate = Calendar.getInstance();
         if (!TextUtils.isEmpty(dateSelected.getText())) {
             Date selectData = TimeUtils.string2Date(dateSelected.getText().toString(), TimeUtils.DATE_YYYYMMDD_SLASH);
             selectedDate.setTime(selectData);
         }
-        TimePickerView pvTime = new TimePickerBuilder(this, (Date date, View v) -> {
+        pvTime = new TimePickerBuilder(this, (Date date, View v) -> {
             if (flag) {
                 topData.get(position).startOn = date.getTime();
                 Collections.sort(topData);
@@ -537,7 +541,24 @@ public class CreateServiceFlowActivity extends BaseActivity {
                             if (topData != null && topData.size() > 0) {
                                 topData.clear();
                             }
-                            topData.addAll(array.dataList);
+                            for (GetMeetingItemsResponse.Array.Item item : array.dataList) {
+                                if (item.systemId != 0) {
+                                    for (SystemRoleListResponse.Item roleItem : roleData) {
+                                        if (item.roleId == roleItem.id) {
+                                            item.isCustom = true;
+                                            item.isSelected = true;
+                                            if (item.role == null) {
+                                                item.role = new GetMeetingItemsResponse.Array.Item.Role();
+                                            }
+                                            item.role.id = roleItem.id;
+                                            item.role.name = roleItem.roleName;
+                                            break;
+                                        }
+                                    }
+                                }
+                                topData.add(item);
+                            }
+//                            topData.addAll(array.dataList);
                             Collections.sort(topData);
                             topAdapter.notifyDataSetChanged();
                         }
@@ -687,6 +708,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            getMeetingDays();
         });
     }
 

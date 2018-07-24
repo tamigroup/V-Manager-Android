@@ -698,6 +698,9 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
      * @param date     记录的起始时间或结束时间
      */
     private void createTime(final TextView view, final boolean dataFlag, Date date) {
+        if (pvTime != null && pvTime.getDialog() != null && pvTime.getDialog().isShowing()) {
+            pvTime.getDialog().dismiss();
+        }
         Calendar selectedDate = Calendar.getInstance();
         if (date != null) {
             selectedDate.setTime(date);
@@ -710,12 +713,13 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
         if (!dataFlag && recordStartDate != null) {
             startDate.setTime(recordStartDate);
         } else {
-            startDate.set(Calendar.HOUR_OF_DAY, 00);//时
-            startDate.set(Calendar.MINUTE, 00);//分
-            startDate.set(Calendar.SECOND, 00);//秒
+            startDate.set(2000, 00, 00, 00, 00, 00);
+//            startDate.set(Calendar.HOUR_OF_DAY, 00);//时
+//            startDate.set(Calendar.MINUTE, 00);//分
+//            startDate.set(Calendar.SECOND, 00);//秒
         }
         Calendar endDate = Calendar.getInstance();
-        endDate.set(2030, 11, 31, 00, 00, 00);
+        endDate.set(2100, 11, 31, 00, 00, 00);
         pvTime = new TimePickerBuilder(this, (Date selectDate, View v) -> {
             if (dataFlag) {
                 if (recordEndDate == null || recordEndDate.getTime() > selectDate.getTime()) {

@@ -90,6 +90,8 @@
 # 保留Parcelable序列化类不被混淆
 -keep class * implements android.os.Parcelable {
     public static final android.os.Parcelable$Creator *;
+    public <fields>;
+    private <fields>;
 }
 # 保留Serializable序列化的类不被混淆
 -keepclassmembers class * implements java.io.Serializable {

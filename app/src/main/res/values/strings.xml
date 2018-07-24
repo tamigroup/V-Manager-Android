@@ -217,7 +217,7 @@
     <string name="group_chat_notification">群聊通知</string>
     <string name="on">开</string>
     <string name="off">关</string>
-    <string name="change_the_password">更改密码</string>
+    <string name="change_the_password">修改密码</string>
     <string name="exit_login">退出登录</string>
 
     <string name="create_meeting_and_service_process">创建会议与服务流程</string>

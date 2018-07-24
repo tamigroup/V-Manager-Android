@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by Tang on 2018/7/16
  * 获取会议实到人数 服务器返回
  */
-public class GetActualNumResponseBean extends MobileMessage implements Serializable{
+public class GetActualNumResponseBean extends MobileMessage implements Serializable {
 
     private static final long serialVersionUID = -3547690948822334413L;
     /**
@@ -23,7 +23,8 @@ public class GetActualNumResponseBean extends MobileMessage implements Serializa
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable {
+        private static final long serialVersionUID = -1147008049848924145L;
         /**
          * actualNum : 10
          */
