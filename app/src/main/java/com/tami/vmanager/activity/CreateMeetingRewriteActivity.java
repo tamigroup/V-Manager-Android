@@ -296,7 +296,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
             if (EasyPermissions.hasPermissions(this, PERMISSIONS_STORAGE)) {
                 initHeadIconFile();
             } else {
-                EasyPermissions.requestPermissions(this, getString(R.string.app_name),
+                EasyPermissions.requestPermissions(this, getString(R.string.sd_card_read_and_write_permissions),
                         REQUEST_EXTERNAL_STORAGE, PERMISSIONS_STORAGE);
             }
         } else {
@@ -536,7 +536,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
             if (EasyPermissions.hasPermissions(this, PERMISSIONS_CAMERA)) {
                 openCamera();
             } else {
-                EasyPermissions.requestPermissions(this, getString(R.string.app_name),
+                EasyPermissions.requestPermissions(this, getString(R.string.get_the_right_to_take_photos),
                         REQUEST_CAMERA, PERMISSIONS_CAMERA);
             }
         } else {

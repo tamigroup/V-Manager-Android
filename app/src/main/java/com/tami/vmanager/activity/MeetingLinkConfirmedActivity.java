@@ -174,7 +174,7 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
                             if (EasyPermissions.hasPermissions(getApplicationContext(), PERMISSIONS_CALL_PHONE)) {
                                 callPhone(item.mobile);
                             } else {
-                                EasyPermissions.requestPermissions(MeetingLinkConfirmedActivity.this, getString(R.string.app_name),
+                                EasyPermissions.requestPermissions(MeetingLinkConfirmedActivity.this, getString(R.string.phone_permission),
                                         REQUEST_CALL_PHONE, PERMISSIONS_CALL_PHONE);
                             }
                         } else {

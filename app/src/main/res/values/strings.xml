@@ -377,4 +377,6 @@
 
     <string name="one_more_exit_program">再按一次退出程序</string>
 
+    <string name="get_the_right_to_take_photos">获取拍照权限</string>
+    <string name="sd_card_read_and_write_permissions">SD卡读写权限</string>
 </resources>

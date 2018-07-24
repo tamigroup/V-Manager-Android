@@ -193,7 +193,7 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
             if (EasyPermissions.hasPermissions(getContext(), PERMISSIONS_STORAGE)) {
                 initHeadIconFile();
             } else {
-                EasyPermissions.requestPermissions(this, getString(R.string.app_name), REQUEST_EXTERNAL_STORAGE, PERMISSIONS_STORAGE);
+                EasyPermissions.requestPermissions(this, getString(R.string.sd_card_read_and_write_permissions), REQUEST_EXTERNAL_STORAGE, PERMISSIONS_STORAGE);
             }
         } else {
             initHeadIconFile();
@@ -304,7 +304,7 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
             if (EasyPermissions.hasPermissions(getContext(), PERMISSIONS_CAMERA)) {
                 openCamera();
             } else {
-                EasyPermissions.requestPermissions(this, getString(R.string.app_name),
+                EasyPermissions.requestPermissions(this, getString(R.string.get_the_right_to_take_photos),
                         REQUEST_CAMERA, PERMISSIONS_CAMERA);
             }
         } else {
