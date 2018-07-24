@@ -102,6 +102,8 @@ dependencies {
     //leakcanary
     debugApi 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseApi 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+    //update
+    api 'com.allenliu.versionchecklib:library:2.0.5'
 }
 
 def buildTime() {
