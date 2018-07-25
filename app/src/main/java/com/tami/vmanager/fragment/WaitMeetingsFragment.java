@@ -95,16 +95,20 @@ public class WaitMeetingsFragment extends ViewPagerBaseFragment {
                 setNameTextLayoutParams(nameView, item.meetingName);
                 //会议状态
                 MeetingStateView stateView = holder.getView(R.id.item_meeting_state);
-                stateView.setMeetingStateText(item.meetingStatus, 20);
+                if (TextUtils.isEmpty(item.meetingStatus)) {
+                    stateView.setMeetingStateText(getString(R.string.daiban), 20);
+                } else {
+                    stateView.setMeetingStateText(item.meetingStatus, 20);
+                }
                 if (TextUtils.isEmpty(item.cancelStatus)) {
                     stateView.setVisibility(View.VISIBLE);
                 } else {
                     stateView.setVisibility(View.INVISIBLE);
                 }
                 //时间
-                holder.setText(R.id.item_meeting_start_time, item.autoDayTime);
-//                holder.setText(R.id.item_meeting_start_time, TimeUtils.milliseconds2String(item.startTime, TimeUtils.DATE_YYYYMMDDHHMM_SLASH));
-//                holder.setText(R.id.item_meeting_end_time, TimeUtils.milliseconds2String(item.endTime, TimeUtils.DATE_YYYYMMDDHHMM_SLASH));
+//                holder.setText(R.id.item_meeting_start_time, item.autoDayTime);
+                holder.setText(R.id.item_meeting_start_time, TimeUtils.milliseconds2String(item.startTime, TimeUtils.DATE_YYYYMMDDHHMM_SLASH));
+                holder.setText(R.id.item_meeting_end_time, TimeUtils.milliseconds2String(item.endTime, TimeUtils.DATE_YYYYMMDDHHMM_SLASH));
                 //V图片
                 AppCompatImageView vipImageView = holder.getView(R.id.item_meeting_level_icon);
                 vipImageView.setVisibility(item.isImportant == 0 ? View.GONE : View.VISIBLE);
@@ -244,7 +248,7 @@ public class WaitMeetingsFragment extends ViewPagerBaseFragment {
                         }
                         listData.addAll(array.elements);
                         commonAdapter.notifyDataSetChanged();
-                    }else{
+                    } else {
                         isEmptyPage();
                     }
                     pullToRefreshLayout.finishRefresh();

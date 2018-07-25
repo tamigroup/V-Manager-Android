@@ -148,7 +148,11 @@ public class SearchDetailActivity extends BaseActivity {
                 holder.setText(R.id.item_meeting_name, dataBean.getMeetingName());
 
                 MeetingStateView stateView = holder.getView(R.id.item_meeting_state);
-                stateView.setMeetingStateText(dataBean.getMeetingStatus(), 20);
+                if (TextUtils.isEmpty(dataBean.getMeetingStatus())) {
+                    stateView.setMeetingStateText(getString(R.string.daiban), 20);
+                } else {
+                    stateView.setMeetingStateText(dataBean.getMeetingStatus(), 20);
+                }
                 if(TextUtils.isEmpty(dataBean.getCancelStatus())){
                     stateView.setVisibility(View.VISIBLE);
                 }else{
