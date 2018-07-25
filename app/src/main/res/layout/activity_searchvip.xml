@@ -75,7 +75,7 @@
             android:textColor="@color/color_999999"
             android:layout_marginTop="@dimen/dp_15"
             android:layout_marginLeft="@dimen/dp_15"
-            android:text="@string/no_search"
+            android:text="@string/empty_search"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/line"/>

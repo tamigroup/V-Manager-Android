@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.NotificationManagerCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -62,6 +63,7 @@ public class AccountSettingsActivity extends BaseActivity {
     private UpdateBean.DataBean data;
     private String requestUrl = NetworkBroker.BASE_URI + HttpKey.UPDATE;
     private DownloadBuilder builder;
+    private ConstraintLayout aas_new_message_notice_layout;
 
     @Override
     public boolean isTitle() {
@@ -76,6 +78,7 @@ public class AccountSettingsActivity extends BaseActivity {
     @Override
     public void initView() {
         newMessage = findViewById(R.id.aas_new_message_notice_sb);
+        aas_new_message_notice_layout = findViewById(R.id.aas_new_message_notice_layout);
         changeDemand = findViewById(R.id.aas_change_demand_notice_sb);
         changeDemandState = findViewById(R.id.aas_change_demand_notice_state);
         groupMessage = findViewById(R.id.aas_group_message_notice_sb);
@@ -90,25 +93,23 @@ public class AccountSettingsActivity extends BaseActivity {
         version_name = findViewById(R.id.version_name);
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        NotificationManagerCompat notification = NotificationManagerCompat.from(this);
+        boolean isEnabled = notification.areNotificationsEnabled();
+        newMessage.setChecked(isEnabled);
+        Logger.e("通知是否开启==" + isEnabled);
+    }
+
     @Override
     public void initListener() {
-        newMessage.setOnCheckedChangeListener((SwitchButton view, boolean isChecked) -> {
-            if (!isNotificationEnabled()) {
-                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    Intent intent = new Intent();
-                    intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
-                    intent.putExtra("app_package", getPackageName());
-                    intent.putExtra("app_uid", getApplicationInfo().uid);
-                    startActivity(intent);
-                } else if (android.os.Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-                    Intent intent = new Intent();
-                    intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                    intent.addCategory(Intent.CATEGORY_DEFAULT);
-                    intent.setData(Uri.parse("package:" + getPackageName()));
-                    startActivity(intent);
-                }
-            }
+        newMessage.setOnCheckedChangeListener((view, isChecked) -> {
+            // TODO: 2018/7/25 会跳转2次
+                jumpSystemSetup();
         });
+
         changeDemand.setOnCheckedChangeListener((SwitchButton view, boolean isChecked) -> {
             //            changeDemandState.setText(isChecked ? getString(R.string.on) : getString(R.string.off));
             setUserNoticeConfig();
@@ -129,6 +130,31 @@ public class AccountSettingsActivity extends BaseActivity {
         changePassword.setOnClickListener(this);
         exitBtn.setOnClickListener(this);
         version_update_cl.setOnClickListener(this);
+        aas_new_message_notice_layout.setOnClickListener(this);
+    }
+
+    /**
+     * 跳转系统设置
+     */
+    private void jumpSystemSetup() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Intent intent = new Intent();
+            intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+            intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
+            startActivity(intent);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Intent intent = new Intent();
+            intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+            intent.putExtra("app_package", getPackageName());
+            intent.putExtra("app_uid", getApplicationInfo().uid);
+            startActivity(intent);
+        } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
+            Intent intent = new Intent();
+            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            intent.addCategory(Intent.CATEGORY_DEFAULT);
+            intent.setData(Uri.parse("package:" + getPackageName()));
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -163,6 +189,9 @@ public class AccountSettingsActivity extends BaseActivity {
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
+            case R.id.aas_new_message_notice_layout:
+                jumpSystemSetup();
+                break;
             case R.id.aas_change_the_password:
                 changePassword();
                 break;
@@ -170,7 +199,7 @@ public class AccountSettingsActivity extends BaseActivity {
                 editLogin();
                 break;
             case R.id.version_update_cl:
-                CheckUpdate.getInstance(this,1);
+                CheckUpdate.getInstance(this, 1);
                 break;
         }
     }

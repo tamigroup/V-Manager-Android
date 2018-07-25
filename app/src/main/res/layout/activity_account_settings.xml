@@ -36,7 +36,7 @@
             app:layout_constraintTop_toTopOf="@+id/aas_new_message_notice_txt"
             app:sb_background="@android:color/white"
             app:sb_button_color="@android:color/white"
-            app:sb_checked="false"
+            app:sb_checked="true"
             app:sb_checked_color="@color/color_FF5657"
             app:sb_show_indicator="false" />
     </android.support.constraint.ConstraintLayout>

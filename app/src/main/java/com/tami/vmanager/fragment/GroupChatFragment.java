@@ -5,8 +5,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jwenfeng.library.pulltorefresh.BaseRefreshListener;
@@ -50,6 +52,7 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
     private Bundle bundle;
     private int meetingId;
     private boolean is_invisible;
+    private TextView empty_tv;
 
     @Override
     public int getContentViewId() {
@@ -63,6 +66,7 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
         pullToRefreshLayout = findViewById(R.id.pullRL);
         sendTxt = findViewById(R.id.fgc_send_txt);
         sendBtn = findViewById(R.id.fgc_send_btn);
+        empty_tv = findViewById(R.id.empty_tv);
 
         networkBroker = new NetworkBroker(getActivity());
         bundle = getArguments();
@@ -149,8 +153,11 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
                 if (response.getCode() == 200) {
                     MeetingChatPageResponse.DataBean responseData = response.getData();
                     if (responseData != null) {
-                        if (responseData.getElements() != null && responseData.getElements().size() > 0) {
-                            List<MeetingChatPageResponse.DataBean.ElementsBean> elements = responseData.getElements();
+                        List<MeetingChatPageResponse.DataBean.ElementsBean> elements = responseData.getElements();
+                        if (elements != null && elements.size() > 0) {
+                            empty_tv.setVisibility(View.GONE);
+                            recyclerView.setVisibility(View.VISIBLE);
+
                             Collections.reverse(elements);
                             if (isRefresh) {
                                 listData.addAll(0, elements);
@@ -159,6 +166,9 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
                             }
                             isRefresh = false;
                             adapter.notifyDataSetChanged();
+                        }else {
+                            empty_tv.setVisibility(View.VISIBLE);
+                            recyclerView.setVisibility(View.GONE);
                         }
                         if (responseData.isLastPage()) {
                             pullToRefreshLayout.setCanRefresh(false);

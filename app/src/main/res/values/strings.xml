@@ -277,7 +277,6 @@
     <string name="xiaovtixing">加餐或减餐建议、增加茶歇或减少荼歇建议。\n更多功能，敬请期待！</string>
     <string name="modify">修改</string>
     <string name="editor">编辑</string>
-    <string name="no_search">没有找到“%s”哦~</string>
     <string name="group_edit">编辑群公告</string>
     <string name="group_release">发布</string>
     <string name="load_more">查看更多群成员</string>
@@ -334,7 +333,7 @@
     <string name="whether_create_process">是否创建流程？</string>
     <string name="create_meeting_toast">创建会议%s!</string>
     <string name="enter_keyword">请输入关键字</string>
-    <string name="empty_search">没有找到“%s”哦~</string>
+    <string name="empty_search">搜索不到关于“%s”会议</string>
     <string name="search">搜索</string>
     <string name="look_at_flow">查看流程单</string>
     <string name="please_create_flow">暂未创建服务流程</string>
@@ -385,4 +384,5 @@
 
     <string name="get_the_right_to_take_photos">获取拍照权限</string>
     <string name="sd_card_read_and_write_permissions">SD卡读写权限</string>
+    <string name="empty_group_chat">暂无群消息哦</string>
 </resources>
