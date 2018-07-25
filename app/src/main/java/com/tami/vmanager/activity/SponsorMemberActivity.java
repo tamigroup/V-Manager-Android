@@ -30,6 +30,7 @@ public class SponsorMemberActivity extends BaseActivity {
     private NetworkBroker networkBroker;
     private CommonAdapter<SponsorUserListResponseBean.DataBean.DataListBean> commonAdapter;
     private int meetingId;
+    private int vzhihui;
     private TextView empty_tv;
 
     @Override
@@ -51,6 +52,7 @@ public class SponsorMemberActivity extends BaseActivity {
         Intent intent = getIntent();
         if (intent != null) {
             meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 0);
+            vzhihui = intent.getIntExtra(Constants.IS_VZHIHUI, 0);
         }
     }
 
@@ -100,8 +102,13 @@ public class SponsorMemberActivity extends BaseActivity {
                             empty_tv.setVisibility(View.GONE);
                             listData.addAll(data.getDataList());
                             commonAdapter.notifyDataSetChanged();
-                        }else {
+                        } else {
                             recyclerView.setVisibility(View.GONE);
+                            if (vzhihui == 0) {
+                                empty_tv.setText(getString(R.string.non_v_can_not_check_the_personnel_information_oh));
+                            } else {
+                                empty_tv.setText(getString(R.string.empty_sponsor_member));
+                            }
                             empty_tv.setVisibility(View.VISIBLE);
                         }
                     }

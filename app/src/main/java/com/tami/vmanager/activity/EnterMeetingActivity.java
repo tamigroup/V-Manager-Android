@@ -341,6 +341,7 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
     private void sponsorMember() {
         Intent intent_sponsorMember = new Intent(getApplicationContext(), SponsorMemberActivity.class);
         intent_sponsorMember.putExtra(Constants.KEY_MEETING_ID, meetingId);
+        intent_sponsorMember.putExtra(Constants.IS_VZHIHUI,meetingInfo.isVzh);
         startActivity(intent_sponsorMember);
     }
 

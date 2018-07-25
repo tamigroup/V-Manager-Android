@@ -31,4 +31,6 @@
     <string name="no_meeting_to_create_meeting">暂无创建会议</string>
     <string name="no_meeting">暂无会议哦</string>
 
+    <string name="non_v_can_not_check_the_personnel_information_oh">非V智会会议，无法查看人员信息哦</string>
+
 </resources>
