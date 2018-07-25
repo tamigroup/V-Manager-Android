@@ -53,6 +53,7 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
     private int meetingId;
     private boolean is_invisible;
     private TextView empty_tv;
+    private boolean isLoadMore = false;
 
     @Override
     public int getContentViewId() {
@@ -77,7 +78,6 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
 
     @Override
     public void initListener() {
-        pullToRefreshLayout.setCanLoadMore(false);
         pullToRefreshLayout.setRefreshListener(new BaseRefreshListener() {
             @Override
             public void refresh() {
@@ -87,7 +87,9 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
 
             @Override
             public void loadMore() {
-
+                isLoadMore = true;
+                CurPage = 1;
+                queryData();
             }
         });
     }
@@ -161,12 +163,16 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
                             Collections.reverse(elements);
                             if (isRefresh) {
                                 listData.addAll(0, elements);
+                            } else if (isLoadMore) {
+                                listData.clear();
+                                listData.addAll(elements);
                             } else {
                                 listData.addAll(elements);
                             }
+                            isLoadMore = false;
                             isRefresh = false;
                             adapter.notifyDataSetChanged();
-                        }else {
+                        } else {
                             empty_tv.setVisibility(View.VISIBLE);
                             recyclerView.setVisibility(View.GONE);
                         }
@@ -175,12 +181,11 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
                         }
                     }
                     pullToRefreshLayout.finishRefresh();
+                    pullToRefreshLayout.finishLoadMore();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-
         });
     }
 
@@ -203,7 +208,7 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
         SendMsgRequest sendMsgRequest = new SendMsgRequest();
         sendMsgRequest.setContent(content);
         sendMsgRequest.setMeetingId(String.valueOf(meetingId));
-        sendMsgRequest.setType("1");
+        sendMsgRequest.setType("1"); // 1-v管家  2-v智会 3-VV群
         item = GlobaVariable.getInstance().item;
         if (item != null) {
             sendMsgRequest.setUserId(String.valueOf(item.getId()));
@@ -228,11 +233,15 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
                             elementsBean.setUserId(item.getId());
                             elementsBean.setUserIcon(item.getIconUrl());
                         }
+                        //username不一致，暂用sp解决
                         String username = (String) SPUtils.get(getContext(), "username", "");
                         elementsBean.setUserName(username);
                         elementsBean.setMeetingId(String.valueOf(meetingId));
                         elementsBean.setType("1");
                         listData.add(elementsBean);
+
+                        empty_tv.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.VISIBLE);
                         adapter.notifyItemInserted(listData.size() - 1);
                         recyclerView.scrollToPosition(listData.size() - 1);
                     } else {
