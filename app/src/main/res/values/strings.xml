@@ -385,4 +385,5 @@
     <string name="get_the_right_to_take_photos">获取拍照权限</string>
     <string name="sd_card_read_and_write_permissions">SD卡读写权限</string>
     <string name="empty_group_chat">暂无群消息哦</string>
+    <string name="open_notification">请手动设置通知管理</string>
 </resources>

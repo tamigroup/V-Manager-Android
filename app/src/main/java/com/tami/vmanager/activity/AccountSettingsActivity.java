@@ -34,7 +34,6 @@ import com.tami.vmanager.utils.CheckUpdate;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.Utils;
 import com.tami.vmanager.view.SwitchButton;
-import com.zhy.http.okhttp.utils.L;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -108,7 +107,6 @@ public class AccountSettingsActivity extends BaseActivity {
         if (returnFlag && messageFlag == isChecked) {
             returnFlag = false;
         }
-        Logger.e("通知是否开启==" + isChecked);
     }
 
     @Override
@@ -120,11 +118,11 @@ public class AccountSettingsActivity extends BaseActivity {
     @Override
     public void initListener() {
         newMessage.setOnCheckedChangeListener((view, isChecked) -> {
-            //TODO: 2018/7/25 会跳转2次
             if (returnFlag) {//如果是系统返回且改变状态时调用
                 returnFlag = false;
             } else {//点击开关时调用
                 jumpSystemSetup();
+                //                NotificationPageHelper.open(this);
             }
             messageFlag = isChecked;
         });
@@ -156,18 +154,14 @@ public class AccountSettingsActivity extends BaseActivity {
      * 跳转系统设置
      */
     private void jumpSystemSetup() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Intent intent = new Intent();
-            intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
-            intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
-            startActivity(intent);
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        showToast(R.string.open_notification);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             Intent intent = new Intent();
             intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
             intent.putExtra("app_package", getPackageName());
             intent.putExtra("app_uid", getApplicationInfo().uid);
             startActivity(intent);
-        } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
+        } else {
             Intent intent = new Intent();
             intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
             intent.addCategory(Intent.CATEGORY_DEFAULT);
@@ -209,7 +203,7 @@ public class AccountSettingsActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.aas_new_message_notice_layout:
-                jumpSystemSetup();
+//                jumpSystemSetup();
                 break;
             case R.id.aas_change_the_password:
                 changePassword();
