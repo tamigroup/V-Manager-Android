@@ -34,6 +34,7 @@ import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.SPUtils;
+import com.tami.vmanager.utils.TimeUtils;
 import com.tami.vmanager.utils.Utils;
 import com.tami.vmanager.view.MeetingStateView;
 
@@ -267,7 +268,13 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
     private void initUIdata(GetMeetingResponse.Item item) {
         if (item != null) {
             meetingName.setText(item.meetingName);
-            meetingTime.setText(item.autoDayTime);
+            StringBuilder time = new StringBuilder();
+            String startTime = TimeUtils.milliseconds2String(item.startTime,TimeUtils.DATE_MMDDHHMM_SLASH);
+            time.append(startTime);
+            time.append(" - ");
+            String endTime = TimeUtils.milliseconds2String(item.endTime,TimeUtils.DATE_MMDDHHMM_SLASH);
+            time.append(endTime);
+            meetingTime.setText(time.toString());
             meetingRoom.setText(item.meetingAddress);
             memhMponsor.setText(String.format(getString(R.string.host_name), item.sponsorName));
             meetingPersonnel.setText(String.format(getString(R.string.salename), item.saleUserName));

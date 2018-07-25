@@ -96,7 +96,13 @@ public class ConferenceInformationFragment extends ViewPagerBaseFragment {
         }
         host_name.setText(String.format(getResources().getString(R.string.host_name), item.sponsorName));
         meeting_address.setText(item.meetingAddress);
-        meeting_time.setText(item.autoDayTime);
+        StringBuilder time = new StringBuilder();
+        String startTime = TimeUtils.milliseconds2String(item.startTime,TimeUtils.DATE_MMDDHHMM_SLASH);
+        time.append(startTime);
+        time.append(" - ");
+        String endTime = TimeUtils.milliseconds2String(item.endTime,TimeUtils.DATE_MMDDHHMM_SLASH);
+        time.append(endTime);
+        meeting_time.setText(time.toString());
         sale_name.setText(String.format(getResources().getString(R.string.salename), item.saleUserName));
         meeting_reserve_number.setText(String.format(getResources().getString(R.string.predetermined_number), String.valueOf(item.estimateNum)));
         meeting_bottom_number.setText(String.format(getResources().getString(R.string.bottom_number), String.valueOf(item.minNum)));
