@@ -41,6 +41,7 @@ public class NoticeFragment extends ViewPagerBaseFragment {
     private List<NoticeResponseBean.DataBean.ElementsBean> listData;
     private int meetingId;
     private TextView empty_tv;
+    private boolean isLoadMore = false;
 
     @Override
     public int getContentViewId() {
@@ -64,6 +65,8 @@ public class NoticeFragment extends ViewPagerBaseFragment {
 
             @Override
             public void loadMore() {
+                isLoadMore = true;
+                CurPage = 1;
                 requestNetwork();
             }
         });
@@ -119,7 +122,13 @@ public class NoticeFragment extends ViewPagerBaseFragment {
                     if (data != null && data.size() > 0) {
                         recyclerView.setVisibility(View.VISIBLE);
                         empty_tv.setVisibility(View.GONE);
-                        listData.addAll(data);
+                        if (isLoadMore){
+                            listData.clear();
+                            listData.addAll(data);
+                        }else {
+                            listData.addAll(data);
+                        }
+                        isLoadMore = false;
                         commonAdapter.notifyDataSetChanged();
                     }else {
                         recyclerView.setVisibility(View.GONE);

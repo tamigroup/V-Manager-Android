@@ -61,13 +61,14 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
     private List<String> fastRepayList;
     private TextView empty_tv;
     private TextView vzhihui_tv;
+    private boolean isLoadMore = false;
 
     public FeedbackFragment() {
     }
 
 
     @SuppressLint("ValidFragment")
-    public FeedbackFragment(int meetingId,GetMeetingResponse.Item item) {
+    public FeedbackFragment(int meetingId, GetMeetingResponse.Item item) {
         this.meetingId = meetingId;
         this.item = item;
     }
@@ -97,6 +98,8 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
 
             @Override
             public void loadMore() {
+                isLoadMore = true;
+                CurPage = 1;
                 queryData();
             }
         });
@@ -149,19 +152,19 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 boolean is_invisible = (boolean) SPUtils.get(view.getContext(), Constants.IS_INVISIBLE, false);
-                if (is_invisible){
+                if (is_invisible) {
                     showToast(getString(R.string.view_only));
                     return;
                 }
                 TextView have_reply = holder.itemView.findViewById(R.id.have_reply);
-                if (have_reply.getText().equals(getString(R.string.has_replay))){
+                if (have_reply.getText().equals(getString(R.string.has_replay))) {
                     showToast(getString(R.string.y_has_replay));
                     return;
                 }
                 //弹出EditText回复
                 //replay(view, holder, position);
                 //快速回复
-                fastReplay(view,holder, position);
+                fastReplay(view, holder, position);
             }
 
             @Override
@@ -276,7 +279,7 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
 
     @Override
     public void requestNetwork() {
-        if (item.isVzh == 1){
+        if (item.isVzh == 1) {
             queryData();
         }
     }
@@ -284,7 +287,7 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
     private void queryData() {
         ChangeDemandRequestBean changeDemandRequestBean = new ChangeDemandRequestBean();
         changeDemandRequestBean.setMeetingId(String.valueOf(meetingId));
-//        changeDemandRequestBean.setMeetingId(String.valueOf(1));
+        //        changeDemandRequestBean.setMeetingId(String.valueOf(1));
         changeDemandRequestBean.setCurPage(CurPage++);
         changeDemandRequestBean.setPageSize(10);
         networkBroker.ask(changeDemandRequestBean, (Exception exl, MobileMessage res) -> {
@@ -296,11 +299,17 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
                 ChangeDemandResponseBean response = (ChangeDemandResponseBean) res;
                 if (response.getCode() == 200) {
                     ChangeDemandResponseBean.DataBean data = response.getData();
-                    if (data != null){
+                    if (data != null) {
                         if (data.getElements() != null && data.getElements().size() > 0) {
-                            listData.addAll(data.getElements());
+                            if (isLoadMore) {
+                                listData.clear();
+                                listData.addAll(data.getElements());
+                            } else {
+                                listData.addAll(data.getElements());
+                            }
+                            isLoadMore = false;
                             commonAdapter.notifyDataSetChanged();
-                        }else {
+                        } else {
                             recyclerView.setVisibility(View.GONE);
                             empty_tv.setVisibility(View.VISIBLE);
                             empty_tv.setText(getString(R.string.no_change_in_the_event));

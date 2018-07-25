@@ -32,7 +32,7 @@
         android:id="@+id/vip_detail_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="avd_title,recyc"/>
+        app:constraint_referenced_ids="recyc"/>
 
     <TextView
         android:id="@+id/empty_tv"
@@ -42,6 +42,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/avd_title"/>
 
 </android.support.constraint.ConstraintLayout>
