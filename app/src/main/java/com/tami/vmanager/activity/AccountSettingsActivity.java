@@ -34,6 +34,7 @@ import com.tami.vmanager.utils.CheckUpdate;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.Utils;
 import com.tami.vmanager.view.SwitchButton;
+import com.zhy.http.okhttp.utils.L;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -64,6 +65,9 @@ public class AccountSettingsActivity extends BaseActivity {
     private String requestUrl = NetworkBroker.BASE_URI + HttpKey.UPDATE;
     private DownloadBuilder builder;
     private ConstraintLayout aas_new_message_notice_layout;
+
+    private boolean messageFlag = true;//开关的状态
+    private boolean returnFlag = false;//从系统设置返回记录
 
     @Override
     public boolean isTitle() {
@@ -98,16 +102,31 @@ public class AccountSettingsActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         NotificationManagerCompat notification = NotificationManagerCompat.from(this);
-        boolean isEnabled = notification.areNotificationsEnabled();
-        newMessage.setChecked(isEnabled);
-        Logger.e("通知是否开启==" + isEnabled);
+        boolean isChecked = notification.areNotificationsEnabled();
+        newMessage.setChecked(isChecked);
+        //(如果开关为打开状态再次设置打开不调用setOnCheckedChangeListener监听)需在系统设置返回并且做开关状态改变后需要把系统返回状态置成false
+        if (returnFlag && messageFlag == isChecked) {
+            returnFlag = false;
+        }
+        Logger.e("通知是否开启==" + isChecked);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        returnFlag = true;
     }
 
     @Override
     public void initListener() {
         newMessage.setOnCheckedChangeListener((view, isChecked) -> {
-            // TODO: 2018/7/25 会跳转2次
+            //TODO: 2018/7/25 会跳转2次
+            if (returnFlag) {//如果是系统返回且改变状态时调用
+                returnFlag = false;
+            } else {//点击开关时调用
                 jumpSystemSetup();
+            }
+            messageFlag = isChecked;
         });
 
         changeDemand.setOnCheckedChangeListener((SwitchButton view, boolean isChecked) -> {
