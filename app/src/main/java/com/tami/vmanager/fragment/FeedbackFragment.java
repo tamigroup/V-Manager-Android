@@ -24,6 +24,7 @@ import com.tami.vmanager.entity.ChangeDemandReplayRequestBean;
 import com.tami.vmanager.entity.ChangeDemandReplayResponseBean;
 import com.tami.vmanager.entity.ChangeDemandRequestBean;
 import com.tami.vmanager.entity.ChangeDemandResponseBean;
+import com.tami.vmanager.entity.GetMeetingResponse;
 import com.tami.vmanager.entity.MobileMessage;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
@@ -47,6 +48,7 @@ import java.util.List;
 
 public class FeedbackFragment extends ViewPagerBaseFragment {
 
+    private GetMeetingResponse.Item item;
     private int meetingId;
     private RecyclerView recyclerView;
     private PullToRefreshLayout pullToRefreshLayout;
@@ -58,14 +60,16 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
     private DialogPlus fastDialog;
     private List<String> fastRepayList;
     private TextView empty_tv;
+    private TextView vzhihui_tv;
 
     public FeedbackFragment() {
     }
 
 
     @SuppressLint("ValidFragment")
-    public FeedbackFragment(int meetingId) {
+    public FeedbackFragment(int meetingId,GetMeetingResponse.Item item) {
         this.meetingId = meetingId;
+        this.item = item;
     }
 
     @Override
@@ -80,6 +84,7 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
         networkBroker = new NetworkBroker(getActivity());
         fastRepayList = Arrays.asList(getString(R.string.fast_replay_1), getString(R.string.fast_replay_2), getString(R.string.fast_replay_3), getString(R.string.fast_replay_4));
         empty_tv = findViewById(R.id.empty_tv);
+        vzhihui_tv = findViewById(R.id.Vzhihui_tv);
     }
 
     @Override
@@ -99,6 +104,12 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
 
     @Override
     public void initData() {
+        if (item.isVzh != 1) {
+            recyclerView.setVisibility(View.GONE);
+            empty_tv.setVisibility(View.GONE);
+            vzhihui_tv.setVisibility(View.VISIBLE);
+            return;
+        }
         listData = new ArrayList<>();
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         commonAdapter = new CommonAdapter<ChangeDemandResponseBean.DataBean.ElementsBean>(getActivity(), R.layout.item_feedback, listData) {
@@ -148,7 +159,7 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
                     return;
                 }
                 //弹出EditText回复
-                replay(view, holder, position);
+                //replay(view, holder, position);
                 //快速回复
                 fastReplay(view,holder, position);
             }
@@ -193,10 +204,6 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
             }
         });
     }
-
-
-
-
 
     private void replay(View view, RecyclerView.ViewHolder holder, int position) {
         dialog = DialogPlus.newDialog(view.getContext())
@@ -269,7 +276,9 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
 
     @Override
     public void requestNetwork() {
-        queryData();
+        if (item.isVzh == 1){
+            queryData();
+        }
     }
 
     private void queryData() {

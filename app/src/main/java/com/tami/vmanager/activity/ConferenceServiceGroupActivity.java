@@ -74,7 +74,7 @@ public class ConferenceServiceGroupActivity extends BaseActivity {
         arrayFragment[0] = new ConferenceInformationFragment(meetingId, item, actualNum);
         arrayFragment[1] = new GroupChatFragment();
         arrayFragment[1].setArguments(bundle);
-        arrayFragment[2] = new FeedbackFragment(meetingId);
+        arrayFragment[2] = new FeedbackFragment(meetingId,item);
         arrayFragment[3] = new NoticeFragment();
         arrayFragment[3].setArguments(bundle);
 
