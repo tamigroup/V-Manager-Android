@@ -79,25 +79,20 @@
         app:layout_constraintStart_toEndOf="@+id/acsf_title_contacts"
         app:layout_constraintTop_toBottomOf="@+id/acsf_meeting_name" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_10"
-        android:orientation="vertical"
+    <ListView
+        android:id="@+id/acsf_listview"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="@dimen/dp_0"
         android:layout_marginLeft="@dimen/dp_25"
         android:layout_marginRight="@dimen/dp_25"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:layout_marginTop="8dp"
+        android:divider="@color/color_EAEAEA"
+        android:dividerHeight="1px"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/acsf_title_time">
-
-        <ListView
-            android:id="@+id/acsf_listview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:divider="@color/color_EAEAEA"
-            android:dividerHeight="1px"
-            android:scrollbars="none"
-            />
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/acsf_title_time" />
 
 </android.support.constraint.ConstraintLayout>

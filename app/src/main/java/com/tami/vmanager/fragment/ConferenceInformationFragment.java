@@ -97,10 +97,10 @@ public class ConferenceInformationFragment extends ViewPagerBaseFragment {
         host_name.setText(String.format(getResources().getString(R.string.host_name), item.sponsorName));
         meeting_address.setText(item.meetingAddress);
         StringBuilder time = new StringBuilder();
-        String startTime = TimeUtils.milliseconds2String(item.startTime,TimeUtils.DATE_MMDDHHMM_SLASH);
+        String startTime = TimeUtils.milliseconds2String(item.startTime,TimeUtils.DATE_YYYYMMDDHHMM_SLASH);
         time.append(startTime);
         time.append(" - ");
-        String endTime = TimeUtils.milliseconds2String(item.endTime,TimeUtils.DATE_MMDDHHMM_SLASH);
+        String endTime = TimeUtils.milliseconds2String(item.endTime,TimeUtils.DATE_YYYYMMDDHHMM_SLASH);
         time.append(endTime);
         meeting_time.setText(time.toString());
         sale_name.setText(String.format(getResources().getString(R.string.salename), item.saleUserName));

@@ -158,7 +158,14 @@ public class SearchDetailActivity extends BaseActivity {
                 }else{
                     stateView.setVisibility(View.INVISIBLE);
                 }
-                holder.setText(R.id.item_meeting_start_time,dataBean.getAutoDayTime());
+                StringBuilder time = new StringBuilder();
+                String startTime = TimeUtils.milliseconds2String(dataBean.getStartTime(), TimeUtils.DATE_YYYYMMDDHHMM_SLASH);
+                time.append(startTime);
+                time.append(" - ");
+                String endTime = TimeUtils.milliseconds2String(dataBean.getEndTime(), TimeUtils.DATE_YYYYMMDDHHMM_SLASH);
+                time.append(endTime);
+                holder.setText(R.id.item_meeting_start_time, time.toString());
+//                holder.setText(R.id.item_meeting_start_time,dataBean.getAutoDayTime());
 //                holder.setText(R.id.item_meeting_start_time, TimeUtils.milliseconds2String(dataBean.getStartTime(),TimeUtils.DATE_YYYYMMDDHHMM_SLASH));
 //                holder.setText(R.id.item_meeting_end_time, TimeUtils.milliseconds2String(dataBean.getStartTime(),TimeUtils.DATE_YYYYMMDDHHMM_SLASH));
                 holder.setText(R.id.item_meeting_room, dataBean.getMeetingAddress());
