@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.jwenfeng.library.pulltorefresh.PullToRefreshLayout;
+import com.jwenfeng.library.pulltorefresh.ViewStatus;
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.entity.LoginResponse;
@@ -38,7 +39,6 @@ public class GroupNoticeActivity extends BaseActivity {
     private List<NoticeResponseBean.DataBean.ElementsBean> listData;
     private int CurPage = 1;
     private boolean is_invisible;
-    private TextView empty_tv;
 
     @Override
     public boolean isTitle() {
@@ -54,7 +54,6 @@ public class GroupNoticeActivity extends BaseActivity {
     public void initView() {
         pullToRefreshLayout = findViewById(R.id.agn_PullToRefreshLayout);
         recyclerView = findViewById(R.id.agn_recyclerview);
-        empty_tv = findViewById(R.id.empty_tv);
     }
 
     @Override
@@ -97,13 +96,6 @@ public class GroupNoticeActivity extends BaseActivity {
 
     @Override
     public void requestNetwork() {
-        CurPage = 1;
-        getNotice();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         CurPage = 1;
         getNotice();
     }
@@ -186,16 +178,13 @@ public class GroupNoticeActivity extends BaseActivity {
                     if (dataBean != null) {
                         List<NoticeResponseBean.DataBean.ElementsBean> data = dataBean.getElements();
                         if (data != null && data.size() > 0) {
-                            recyclerView.setVisibility(View.VISIBLE);
-                            empty_tv.setVisibility(View.GONE);
                             if (listData != null && listData.size() > 0) {
                                 listData.clear();
                             }
                             listData.addAll(data);
                             commonAdapter.notifyDataSetChanged();
                         } else {
-                            recyclerView.setVisibility(View.GONE);
-                            empty_tv.setVisibility(View.VISIBLE);
+                            isEmptyPage();
                         }
                         if (dataBean.isLastPage()) {
                             pullToRefreshLayout.setCanLoadMore(false);
@@ -216,6 +205,19 @@ public class GroupNoticeActivity extends BaseActivity {
             //发布公告返回
             CurPage = 1;
             getNotice();
+        }
+    }
+
+    /**
+     * 是否显示空页面
+     */
+    private void isEmptyPage() {
+        if (CurPage == 2 && listData.size() == 0) {
+            pullToRefreshLayout.showView(ViewStatus.EMPTY_STATUS);
+            TextView emptyTxt = (TextView) pullToRefreshLayout.getView(ViewStatus.EMPTY_STATUS);
+            emptyTxt.setText(getString(R.string.empty_notice));
+        } else {
+            pullToRefreshLayout.showView(ViewStatus.CONTENT_STATUS);
         }
     }
 }

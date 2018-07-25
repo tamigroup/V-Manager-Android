@@ -252,7 +252,7 @@ public class TodayMeetingActivity extends BaseActivity {
                         listData.addAll(array.elements);
                         commonAdapter.notifyDataSetChanged();
                     }else{
-
+                        isEmptyPage();
                     }
                     pullToRefreshLayout.finishRefresh();
                     pullToRefreshLayout.finishLoadMore();

@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.jwenfeng.library.pulltorefresh.BaseRefreshListener;
 import com.jwenfeng.library.pulltorefresh.PullToRefreshLayout;
+import com.jwenfeng.library.pulltorefresh.ViewStatus;
 import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.ListViewAdapter;
 import com.tami.vmanager.adapter.ViewHolder;
@@ -259,6 +260,8 @@ public class MyCreateActivity extends BaseActivity {
                         }
                         listData.addAll(array.elements);
                         listViewAdapter.notifyDataSetChanged();
+                    }else{
+                        isEmptyPage();
                     }
                     pullToRefreshLayout.finishLoadMore();
                     if (array.lastPage) {
@@ -318,5 +321,18 @@ public class MyCreateActivity extends BaseActivity {
                 e.printStackTrace();
             }
         });
+    }
+
+    /**
+     * 是否显示空页面
+     */
+    private void isEmptyPage() {
+        if (CurPage == 2 && listData.size() == 0) {
+            pullToRefreshLayout.showView(ViewStatus.EMPTY_STATUS);
+            TextView emptyTxt = (TextView) pullToRefreshLayout.getView(ViewStatus.EMPTY_STATUS);
+            emptyTxt.setText(getString(R.string.no_meeting_to_create_meeting));
+        } else {
+            pullToRefreshLayout.showView(ViewStatus.CONTENT_STATUS);
+        }
     }
 }

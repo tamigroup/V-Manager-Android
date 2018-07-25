@@ -28,4 +28,7 @@
     <string name="non_v_conference_unable_to_view_satisfaction">非V智会会议，无法查看满意度哦</string>
     <string name="non_v_conference_can_check_the_change_of_activity">非V智会会议，无法查看活动变化哦</string>
 
+    <string name="no_meeting_to_create_meeting">暂无创建会议</string>
+    <string name="no_meeting">暂无会议哦</string>
+
 </resources>

@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.jwenfeng.library.pulltorefresh.BaseRefreshListener;
 import com.jwenfeng.library.pulltorefresh.PullToRefreshLayout;
+import com.jwenfeng.library.pulltorefresh.ViewStatus;
 import com.tami.vmanager.R;
 import com.tami.vmanager.activity.MeetingOverviewActivity;
 import com.tami.vmanager.adapter.RecycleViewDivider;
@@ -262,6 +263,8 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
                         }
                         listData.addAll(array.elements);
                         commonAdapter.notifyDataSetChanged();
+                    }else{
+                        isEmptyPage();
                     }
                     pullToRefreshLayout.finishRefresh();
                     pullToRefreshLayout.finishLoadMore();
@@ -277,7 +280,6 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
                 pullToRefreshLayout.finishLoadMore();
                 e.printStackTrace();
             }
-
         });
     }
 
@@ -346,6 +348,19 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
                 follow.setTextColor(ContextCompat.getColor(getContext(), R.color.color_333333));
                 follow.setBackgroundResource(R.drawable.item_meeting_follow_unselected1);
             }
+        }
+    }
+
+    /**
+     * 是否显示空页面
+     */
+    private void isEmptyPage() {
+        if (CurPage == 2 && listData.size() == 0) {
+            pullToRefreshLayout.showView(ViewStatus.EMPTY_STATUS);
+            TextView emptyTxt = (TextView) pullToRefreshLayout.getView(ViewStatus.EMPTY_STATUS);
+            emptyTxt.setText(getString(R.string.no_meeting));
+        } else {
+            pullToRefreshLayout.showView(ViewStatus.CONTENT_STATUS);
         }
     }
 
