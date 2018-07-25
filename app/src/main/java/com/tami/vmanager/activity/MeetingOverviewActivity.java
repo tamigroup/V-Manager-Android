@@ -482,7 +482,6 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
         //判断当前用户的权限
         LoginResponse.Item userItem = GlobaVariable.getInstance().item;
         if (userItem != null) {
-            Logger.d("检测用户登录信息是否为空！");
             List<LoginResponse.Item.UserRole> userRoleList = userItem.getUserRoleList();
             if (userRoleList != null && userRoleList.size() > 0) {
                 boolean visibility = false;

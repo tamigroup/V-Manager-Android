@@ -38,6 +38,7 @@ public class GroupMembersActivty extends BaseActivity {
     private CommonAdapter<MeetingUserGroupPageResponse.Array.Item> commonAdapter;
     private NetworkBroker networkBroker;
     private int meetingId;
+    private int saleUserId;
     private int total = 0;//传给查看全部的条数
     private int CurPage = 1;
 
@@ -73,6 +74,7 @@ public class GroupMembersActivty extends BaseActivity {
         Intent intent = getIntent();
         if (intent != null) {
             meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 0);
+            saleUserId = intent.getIntExtra(Constants.KEY_SALE_USER_ID, 0);
         }
         setTitleName(getString(R.string.group_members));
         initRecyc();
@@ -112,11 +114,11 @@ public class GroupMembersActivty extends BaseActivity {
 
     @Override
     public void emptyObject() {
-        if(data!=null){
+        if (data != null) {
             data.clear();
             data = null;
         }
-        if(networkBroker!= null){
+        if (networkBroker != null) {
             networkBroker.cancelAllRequests();
             networkBroker = null;
         }
@@ -139,6 +141,7 @@ public class GroupMembersActivty extends BaseActivity {
                 //跳转
                 Intent intent = new Intent(getApplicationContext(), GroupNoticeActivity.class);
                 intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
+                intent.putExtra(Constants.KEY_SALE_USER_ID, saleUserId);
                 startActivity(intent);
                 break;
         }

@@ -105,5 +105,7 @@ public class Constants {
     public static final int GROUP_EDIT_NOTICE = 0x17;
     //本地json,调试
     public static final String LOCAL_JSON = "cars.json";
+    //会议创建人
+    public static final String KEY_SALE_USER_ID="saleUserId";
 
 }

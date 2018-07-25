@@ -114,6 +114,7 @@ public class ConferenceServiceGroupActivity extends BaseActivity {
             case R.id.titleRightBtn:
                 Intent intent = new Intent(getApplicationContext(), GroupMembersActivty.class);
                 intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
+                intent.putExtra(Constants.KEY_SALE_USER_ID,item.saleUserId);
                 startActivity(intent);
                 break;
         }

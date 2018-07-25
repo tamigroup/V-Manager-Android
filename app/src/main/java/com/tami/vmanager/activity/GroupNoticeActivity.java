@@ -31,6 +31,7 @@ public class GroupNoticeActivity extends BaseActivity {
 
     private NetworkBroker networkBroker;
     private int meetingId;
+    private int saleUserId;
     private PullToRefreshLayout pullToRefreshLayout;
     private RecyclerView recyclerView;
     private CommonAdapter<NoticeResponseBean.DataBean.ElementsBean> commonAdapter;
@@ -64,12 +65,29 @@ public class GroupNoticeActivity extends BaseActivity {
     @Override
     public void initData() {
         setTitleName(getString(R.string.group_notice));
-        setTitleRightBtn(R.mipmap.edit_notice);
         is_invisible = (boolean) SPUtils.get(getApplicationContext(), Constants.IS_INVISIBLE, false);
 
         Intent intent = getIntent();
         if (intent != null) {
             meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 0);
+            saleUserId = intent.getIntExtra(Constants.KEY_SALE_USER_ID, 0);
+        }
+        LoginResponse.Item userItem = GlobaVariable.getInstance().item;
+        if (userItem != null) {
+            List<LoginResponse.Item.UserRole> userRoleList = userItem.getUserRoleList();
+            if (userRoleList != null && userRoleList.size() > 0) {
+                boolean visibility = false;
+                for (LoginResponse.Item.UserRole userRole : userRoleList) {
+                    if (userRole != null && saleUserId == userRole.userId) {
+                        visibility = true;
+                        break;
+                    }
+                }
+                //当前用户是创建者
+                if (visibility) {
+                    setTitleRightBtn(R.mipmap.edit_notice);
+                }
+            }
         }
         networkBroker = new NetworkBroker(this);
         networkBroker.setCancelTag(getTAG());
@@ -175,7 +193,7 @@ public class GroupNoticeActivity extends BaseActivity {
                             }
                             listData.addAll(data);
                             commonAdapter.notifyDataSetChanged();
-                        }else {
+                        } else {
                             recyclerView.setVisibility(View.GONE);
                             empty_tv.setVisibility(View.VISIBLE);
                         }
