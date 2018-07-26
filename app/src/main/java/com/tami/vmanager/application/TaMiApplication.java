@@ -47,7 +47,7 @@ public class TaMiApplication extends Application {
 
         initLeakCanary();
 
-        initCrashHandler();
+//        initCrashHandler();
     }
 
     private void initCrashHandler() {

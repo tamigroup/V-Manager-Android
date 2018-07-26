@@ -14,9 +14,13 @@ import com.tami.vmanager.entity.CreateNoticeResponse;
 import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
+import com.tami.vmanager.message.MessageEvent;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.view.SwitchButton;
+
+import org.greenrobot.eventbus.EventBus;
+
 
 /**
  * Created by Tang on 2018/7/7
@@ -136,6 +140,7 @@ public class GroupEditNoticeActivity extends BaseActivity {
                 try {
                     CreateNoticeResponse response = (CreateNoticeResponse) res;
                     if (response.getCode() == 200 && response.data) {
+                        EventBus.getDefault().post(new MessageEvent(true));
                         showToast(getString(R.string.announcements, getString(R.string.success)));
                         setResult(Constants.GROUP_EDIT_NOTICE);
                         finish();

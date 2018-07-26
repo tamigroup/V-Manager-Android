@@ -18,10 +18,15 @@ import com.tami.vmanager.entity.NoticeRequestBean;
 import com.tami.vmanager.entity.NoticeResponseBean;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
+import com.tami.vmanager.message.MessageEvent;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,6 +101,10 @@ public class NoticeFragment extends ViewPagerBaseFragment {
         };
         recyclerView.setAdapter(commonAdapter);
         pullToRefreshLayout.setCanRefresh(false);
+
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     @Override
@@ -122,15 +131,15 @@ public class NoticeFragment extends ViewPagerBaseFragment {
                     if (data != null && data.size() > 0) {
                         recyclerView.setVisibility(View.VISIBLE);
                         empty_tv.setVisibility(View.GONE);
-                        if (isLoadMore){
+                        if (isLoadMore) {
                             listData.clear();
                             listData.addAll(data);
-                        }else {
+                        } else {
                             listData.addAll(data);
                         }
                         isLoadMore = false;
                         commonAdapter.notifyDataSetChanged();
-                    }else {
+                    } else {
                         recyclerView.setVisibility(View.GONE);
                         empty_tv.setVisibility(View.VISIBLE);
                         empty_tv.setText(R.string.empty_notice);
@@ -145,7 +154,7 @@ public class NoticeFragment extends ViewPagerBaseFragment {
 
     @Override
     public void removeListener() {
-
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -154,4 +163,21 @@ public class NoticeFragment extends ViewPagerBaseFragment {
             networkBroker.cancelAllRequests();
         }
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEventMain(MessageEvent event) {
+        if (event.isRefresh()) {
+            isLoadMore = true;
+            CurPage = 1;
+            requestNetwork();
+        }
+        EventBus.getDefault().cancelEventDelivery(event);
+    }
+
 }
