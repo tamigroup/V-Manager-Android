@@ -377,16 +377,13 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
                 //从相册选取照片后返回
                 if (resultCode == RESULT_OK && data != null) {
                     Uri originalUri = data.getData(); // 获得图片的uri
-                    Logger.d("originalUri : " + originalUri);
                     boolean isEmpty = false;
                     if (originalUri != null) {
                         filePath = GetImagePath.getPath(getApplicationContext(), originalUri);
                         if (!TextUtils.isEmpty(filePath)) {
                             //图片压缩
                             filePath = ImageUtils.compressImage(filePath);
-                            File file = new File(filePath);
-                            if (file.exists()) {
-//                                imageName.setText(file.getName());
+                            if (!TextUtils.isEmpty(filePath)) {
                                 imageSize.setText(FileSizeUtil.getAutoFileOrFilesSize(filePath));
                                 imageGroup.setVisibility(View.VISIBLE);
                                 addPicToGallery(filePath);
