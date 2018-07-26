@@ -3,6 +3,8 @@ package com.tami.vmanager.activity;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -325,6 +327,7 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Logger.d("resultCode:------------->" + resultCode);
         switch (requestCode) {
             case Constants.CREATE_MEETING_DIDIAN:
                 if (data != null) {
@@ -378,14 +381,12 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
                 break;
             case EO_DAN_XIANGCE:
                 //从相册选取照片后返回
-                if (resultCode == RESULT_OK) {
-                    if (data != null) {
-                        Uri originalUri = data.getData(); // 获得图片的uri
-                        Logger.d("originalUri : " + originalUri);
-                        if (originalUri != null) {
-                            addImage.setImageURI(originalUri);
-                            filePath = GetImagePath.getPath(getApplicationContext(), originalUri);
-                        }
+                if (resultCode == RESULT_OK && data != null) {
+                    Uri originalUri = data.getData(); // 获得图片的uri
+                    Logger.d("originalUri : " + originalUri);
+                    boolean isEmpty = false;
+                    if (originalUri != null) {
+                        filePath = GetImagePath.getPath(getApplicationContext(), originalUri);
                         if (!TextUtils.isEmpty(filePath)) {
                             //图片压缩
                             filePath = ImageUtils.compressImage(filePath);
@@ -395,22 +396,32 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
                                 imageSize.setText(FileSizeUtil.getAutoFileOrFilesSize(filePath));
                                 imageGroup.setVisibility(View.VISIBLE);
                                 addPicToGallery(filePath);
+                                addImage.setImageBitmap(BitmapFactory.decodeFile(filePath));
+                            } else {
+                                isEmpty = true;
                             }
+                        } else {
+                            isEmpty = true;
                         }
+                    } else {
+                        isEmpty = true;
+                    }
+                    if (isEmpty) {
+                        showToast(getString(R.string.get_a_picture_failure));
                     }
                 }
                 break;
             case EO_DAN_PAIZHAO:
                 //拍照
                 //图片压缩
-                filePath = ImageUtils.compressImage(eoFile.getAbsolutePath());
-                File pzFile = new File(filePath);
-                if (pzFile.exists()) {
-                    addImage.setImageBitmap(ImageUtils.revitionImageSize(filePath));
-//                    imageName.setText(pzFile.getName());
-                    imageSize.setText(FileSizeUtil.getAutoFileOrFilesSize(filePath));
-                    imageGroup.setVisibility(View.VISIBLE);
-                    addPicToGallery(filePath);
+                if (resultCode == RESULT_OK) {
+                    filePath = ImageUtils.compressImage(eoFile.getAbsolutePath());
+                    if (!TextUtils.isEmpty(filePath)) {
+                        addImage.setImageBitmap(ImageUtils.revitionImageSize(filePath));
+                        imageSize.setText(FileSizeUtil.getAutoFileOrFilesSize(filePath));
+                        imageGroup.setVisibility(View.VISIBLE);
+                        addPicToGallery(filePath);
+                    }
                 }
                 break;
             case Constants.CREATE_FLOW:
