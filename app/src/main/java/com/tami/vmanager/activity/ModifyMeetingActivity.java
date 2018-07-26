@@ -97,7 +97,7 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
     private int meetingLevelIndex = 0;//会议级别
     //接待人
     private RecyclerView receptionistList;
-    private List<UserListOfPositionResponse.Item.TitleItem.ContentList> receptionistListData;
+    private ArrayList<UserListOfPositionResponse.Item.TitleItem.ContentList> receptionistListData;
     private CommonAdapter<UserListOfPositionResponse.Item.TitleItem.ContentList> receptionistListAdapter;
     //Vip介绍
     private RecyclerView vipRecyclerView;
@@ -339,22 +339,30 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
             case Constants.CREATE_MEETING_JIEDAIREN:
                 //接待人返回
                 if (data != null) {
+//                    List<UserListOfPositionResponse.Item.TitleItem.ContentList> itemList = data.getParcelableArrayListExtra(Constants.RESULT_JIEDAIREN);
+//                    if (itemList != null && itemList.size() > 0) {
+//                        for (UserListOfPositionResponse.Item.TitleItem.ContentList cl : itemList) {
+//                            boolean flag = true;
+//                            for (UserListOfPositionResponse.Item.TitleItem.ContentList rld : receptionistListData) {
+//                                if (cl.id == rld.id) {
+//                                    flag = false;
+//                                    break;
+//                                }
+//                            }
+//                            if (flag) {
+//                                receptionistListData.add(0, cl);
+//                            }
+//                        }
+//                        receptionistListAdapter.notifyDataSetChanged();
+//                    }
+                    while (receptionistListData != null && receptionistListData.size() > 1) {
+                        receptionistListData.remove(0);
+                    }
                     List<UserListOfPositionResponse.Item.TitleItem.ContentList> itemList = data.getParcelableArrayListExtra(Constants.RESULT_JIEDAIREN);
                     if (itemList != null && itemList.size() > 0) {
-                        for (UserListOfPositionResponse.Item.TitleItem.ContentList cl : itemList) {
-                            boolean flag = true;
-                            for (UserListOfPositionResponse.Item.TitleItem.ContentList rld : receptionistListData) {
-                                if (cl.id == rld.id) {
-                                    flag = false;
-                                    break;
-                                }
-                            }
-                            if (flag) {
-                                receptionistListData.add(0, cl);
-                            }
-                        }
-                        receptionistListAdapter.notifyDataSetChanged();
+                        receptionistListData.addAll(0, itemList);
                     }
+                    receptionistListAdapter.notifyDataSetChanged();
                 }
                 break;
             case Constants.CREATE_MEETING_VIP:
@@ -629,7 +637,9 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
                     group.setVisibility(View.GONE);
                     defaultImage.setVisibility(View.VISIBLE);
                     defaultImage.setOnClickListener((View v) -> {
-                        startActivityForResult(new Intent(getApplicationContext(), AddReceptionistActivity.class), Constants.CREATE_MEETING_JIEDAIREN);
+                        Intent intent = new Intent(getApplicationContext(), AddReceptionistActivity.class);
+                        intent.putParcelableArrayListExtra(Constants.RESULT_JIEDAIREN, receptionistListData);
+                        startActivityForResult(intent, Constants.CREATE_MEETING_JIEDAIREN);
                     });
                     return;
                 } else {

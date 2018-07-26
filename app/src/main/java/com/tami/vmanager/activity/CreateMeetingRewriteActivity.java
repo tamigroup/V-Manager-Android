@@ -98,7 +98,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
     private TextView meetingLevel;
     //接待人
     private RecyclerView receptionistList;
-    private List<UserListOfPositionResponse.Item.TitleItem.ContentList> receptionistListData;
+    private ArrayList<UserListOfPositionResponse.Item.TitleItem.ContentList> receptionistListData;
     private CommonAdapter<UserListOfPositionResponse.Item.TitleItem.ContentList> receptionistListAdapter;
     //Vip介绍
     private RecyclerView vipRecyclerView;
@@ -337,22 +337,26 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
             case Constants.CREATE_MEETING_JIEDAIREN:
                 //接待人返回
                 if (data != null) {
+                    while (receptionistListData != null && receptionistListData.size() > 1) {
+                        receptionistListData.remove(0);
+                    }
                     List<UserListOfPositionResponse.Item.TitleItem.ContentList> itemList = data.getParcelableArrayListExtra(Constants.RESULT_JIEDAIREN);
                     if (itemList != null && itemList.size() > 0) {
-                        for (UserListOfPositionResponse.Item.TitleItem.ContentList cl : itemList) {
-                            boolean flag = true;
-                            for (UserListOfPositionResponse.Item.TitleItem.ContentList rld : receptionistListData) {
-                                if (cl.id == rld.id) {
-                                    flag = false;
-                                    break;
-                                }
-                            }
-                            if (flag) {
-                                receptionistListData.add(0, cl);
-                            }
-                        }
-                        receptionistListAdapter.notifyDataSetChanged();
+//                        for (UserListOfPositionResponse.Item.TitleItem.ContentList cl : itemList) {
+//                            boolean flag = true;
+//                            for (UserListOfPositionResponse.Item.TitleItem.ContentList rld : receptionistListData) {
+//                                if (cl.id == rld.id) {
+//                                    flag = false;
+//                                    break;
+//                                }
+//                            }
+//                            if (flag) {
+//                                receptionistListData.add(0, cl);
+//                            }
+//                        }
+                        receptionistListData.addAll(0, itemList);
                     }
+                    receptionistListAdapter.notifyDataSetChanged();
                 }
                 break;
             case Constants.CREATE_MEETING_VIP:
@@ -481,9 +485,9 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
      * 结束时间
      */
     private void endTime() {
-        if(recordEndDate == null){
+        if (recordEndDate == null) {
             createTime(endTimeView, false, recordStartDate);
-        }else{
+        } else {
             createTime(endTimeView, false, recordEndDate);
         }
     }
@@ -635,7 +639,9 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
                     group.setVisibility(View.GONE);
                     defaultImage.setVisibility(View.VISIBLE);
                     defaultImage.setOnClickListener((View v) -> {
-                        startActivityForResult(new Intent(getApplicationContext(), AddReceptionistActivity.class), Constants.CREATE_MEETING_JIEDAIREN);
+                        Intent intent = new Intent(getApplicationContext(), AddReceptionistActivity.class);
+                        intent.putParcelableArrayListExtra(Constants.RESULT_JIEDAIREN, receptionistListData);
+                        startActivityForResult(intent, Constants.CREATE_MEETING_JIEDAIREN);
                     });
                     return;
                 } else {

@@ -43,6 +43,7 @@ public class AddReceptionistActivity extends BaseActivity {
     private NetworkBroker networkBroker;
     //统计
     private int count;
+    private List<UserListOfPositionResponse.Item.TitleItem.ContentList> selectedList = new ArrayList<>();
 
     @Override
     public boolean isTitle() {
@@ -72,6 +73,11 @@ public class AddReceptionistActivity extends BaseActivity {
         //初始化选择人数
         setPeople(count);
         initRecyclerView();
+
+        Intent intent = getIntent();
+        if (intent != null) {
+            selectedList = intent.getParcelableArrayListExtra(Constants.RESULT_JIEDAIREN);
+        }
 
         networkBroker = new NetworkBroker(this);
         networkBroker.setCancelTag(getTAG());
@@ -191,8 +197,14 @@ public class AddReceptionistActivity extends BaseActivity {
                                         if (userList != null) {
                                             for (UserListOfPositionResponse.Item.TitleItem.ContentList contentdata : userList) {
                                                 contentList.add(contentdata);
-                                                if (contentdata.isSelected) {
-                                                    count++;
+                                                if (selectedList != null && selectedList.size() > 0) {
+                                                    for (UserListOfPositionResponse.Item.TitleItem.ContentList selectedItem : selectedList) {
+                                                        if (contentdata.id == selectedItem.id) {
+                                                            contentdata.isSelected = true;
+                                                            count++;
+                                                            break;
+                                                        }
+                                                    }
                                                 }
                                                 if (!TextUtils.isEmpty(tieleItem.departmentName)) {
                                                     titleList.add(tieleItem.departmentName);
