@@ -162,9 +162,9 @@ public class HostFragment extends ViewPagerBaseFragment {
                     commonAdapter.notifyDataSetChanged();
                 } else {
                     comment.setText(getResources().getString(R.string.comment, 0 + ""));
-                    if (vzhihui == 1) {
-                        isEmptyPage();
-                    }
+                }
+                if (vzhihui == 1) {
+                    isEmptyPage();
                 }
                 pulltorefreshlayout.finishLoadMore();
                 if (data.isLastPage()) {

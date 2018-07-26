@@ -301,10 +301,9 @@ public class ChangeDemandActivity extends BaseActivity {
                         if (data.getElements() != null && data.getElements().size() > 0) {
                             listData.addAll(data.getElements());
                             commonAdapter.notifyDataSetChanged();
-                        } else {
-                            if (isVzh == 1) {
-                                isEmptyPage();
-                            }
+                        }
+                        if (isVzh == 1) {
+                            isEmptyPage();
                         }
                         if (data.isLastPage()) {
                             pullToRefreshLayout.setCanLoadMore(false);

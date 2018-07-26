@@ -260,9 +260,8 @@ public class MyCreateActivity extends BaseActivity {
                         }
                         listData.addAll(array.elements);
                         listViewAdapter.notifyDataSetChanged();
-                    }else{
-                        isEmptyPage();
                     }
+                    isEmptyPage();
                     pullToRefreshLayout.finishLoadMore();
                     if (array.lastPage) {
                         pullToRefreshLayout.setCanLoadMore(false);

@@ -167,10 +167,9 @@ public class ParticipantsFragment extends ViewPagerBaseFragment {
                 if (data.getElements() != null && data.getElements().size() > 0) {
                     listData.addAll(data.getElements());
                     commonAdapter.notifyDataSetChanged();
-                } else {
-                    if (vzhihui == 1) {
-                        isEmptyPage();
-                    }
+                }
+                if (vzhihui == 1) {
+                    isEmptyPage();
                 }
                 pulltorefreshlayout.finishLoadMore();
                 if (data.isLastPage()) {

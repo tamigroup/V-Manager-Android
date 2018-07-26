@@ -183,9 +183,8 @@ public class GroupNoticeActivity extends BaseActivity {
                             }
                             listData.addAll(data);
                             commonAdapter.notifyDataSetChanged();
-                        } else {
-                            isEmptyPage();
                         }
+                        isEmptyPage();
                         if (dataBean.isLastPage()) {
                             pullToRefreshLayout.setCanLoadMore(false);
                         }

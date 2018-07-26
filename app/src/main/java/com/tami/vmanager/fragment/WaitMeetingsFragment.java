@@ -254,9 +254,8 @@ public class WaitMeetingsFragment extends ViewPagerBaseFragment {
                         }
                         listData.addAll(array.elements);
                         commonAdapter.notifyDataSetChanged();
-                    } else {
-                        isEmptyPage();
                     }
+                    isEmptyPage();
                     pullToRefreshLayout.finishRefresh();
                     pullToRefreshLayout.finishLoadMore();
                     if (array.lastPage) {
