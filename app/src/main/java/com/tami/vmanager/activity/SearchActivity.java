@@ -161,7 +161,7 @@ public class SearchActivity extends BaseActivity {
     @SuppressLint("CheckResult")
     private void QueryData() {
         dao.getSearchHistory(userId)
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(searchHistoryBeans -> {
                     switch (searchHistoryBeans.size()) {

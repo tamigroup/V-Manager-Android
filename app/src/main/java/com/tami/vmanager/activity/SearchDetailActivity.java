@@ -183,7 +183,7 @@ public class SearchDetailActivity extends BaseActivity {
                 vipImageView.setImageResource(getImageResId(dataBean.getIsImportant()));
 
                 AppCompatImageView imageView1 = holder.getView(R.id.item_meeting_level_icon1);
-                imageView1.setVisibility(dataBean.getFromPlat() == 1 ? View.VISIBLE : View.GONE);
+                imageView1.setVisibility( dataBean.getIsVzh() ==  1 ? View.VISIBLE : View.GONE);
             }
         };
         commonAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
