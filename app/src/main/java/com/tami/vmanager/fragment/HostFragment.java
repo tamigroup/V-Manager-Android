@@ -196,6 +196,8 @@ public class HostFragment extends ViewPagerBaseFragment {
                     ratingBar.setRating(data.getAvg());
                     switch (data.getAvg()) {
                         case 0:
+                            setEvaluate(R.string.no);
+                            break;
                         case 1:
                             setEvaluate(R.string.very_bad);
                             break;
