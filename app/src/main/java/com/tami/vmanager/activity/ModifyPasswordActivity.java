@@ -146,10 +146,13 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnFocus
             showToast(R.string.please_enter_the_password_again);
             return false;
         }
-        if (checkPassWord(oldPassWord.getText().toString())
-                || checkPassWord(newPassWord.getText().toString())
+        if (checkPassWord(newPassWord.getText().toString())
                 || checkPassWord(newPassWord1.getText().toString())) {
-            showToast(R.string.please_enter_the_correct_password);
+            showToast(R.string.cryptographic_format);
+            return false;
+        }
+        if (!newPassWord.getText().toString().equals(newPassWord1.getText().toString())) {
+            showToast(getString(R.string.two_inconsistencies_in_cipher_input));
             return false;
         }
         return true;

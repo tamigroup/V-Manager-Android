@@ -26,6 +26,7 @@ import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.http.HttpKey;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
+import com.tami.vmanager.message.MessageEvent;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.ScreenUtil;
@@ -33,6 +34,10 @@ import com.tami.vmanager.utils.TimeUtils;
 import com.tami.vmanager.view.MeetingStateView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +86,10 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
 
     @Override
     public void initData() {
+        if(!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this);
+        }
+
         int screenWidth = ScreenUtil.getScreenWidth(getContext());
         //创建一个线性的布局管理器并设置
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -231,6 +240,7 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
 //        if (networkBroker != null) {
 //            networkBroker.cancelAllRequests();
 //        }
+        EventBus.getDefault().unregister(this);
     }
 
     /**
@@ -363,4 +373,11 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEventMain(MessageEvent event) {
+        if (event.isRefresh()) {
+            CurPage = 1;
+            query(true);
+        }
+    }
 }

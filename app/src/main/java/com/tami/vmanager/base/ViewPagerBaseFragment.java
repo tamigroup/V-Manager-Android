@@ -203,12 +203,12 @@ public abstract class ViewPagerBaseFragment extends Fragment implements IBaseFra
 
     @Override
     public void showToast(@NonNull String msg) {
-        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity().getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void showToast(@StringRes int resId) {
-        Toast.makeText(getContext(), getString(resId), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity().getApplicationContext(), getString(resId), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -248,7 +248,7 @@ public abstract class ViewPagerBaseFragment extends Fragment implements IBaseFra
         }
     }
 
-    public  String getTAG() {
+    public String getTAG() {
         return this.getClass().getSimpleName();
     }
 }

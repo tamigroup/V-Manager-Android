@@ -127,8 +127,10 @@ public class MeetingPlaceSelectActivity extends BaseActivity {
 
     private void confirm() {
         Intent intent = new Intent();
-        GetMeetingAddressListResponse.Array.Item item = listData.get(onClick);
-        intent.putExtra(Constants.RESULT_DIDIAN, item);
+        if (onClick != -1) {
+            GetMeetingAddressListResponse.Array.Item item = listData.get(onClick);
+            intent.putExtra(Constants.RESULT_DIDIAN, item);
+        }
         setResult(Constants.CREATE_MEETING_DIDIAN, intent);
         finish();
     }

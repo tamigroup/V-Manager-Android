@@ -274,7 +274,8 @@
     <string name="confirmed">已确认</string>
     <string name="no_confirmed">待确认</string>
     <string name="re_confirmed">再确认</string>
-    <string name="xiaovtixing">加餐或减餐建议、增加茶歇或减少荼歇建议。\n更多功能，敬请期待！</string>
+    <string name="xiaovtixing_top">小v将会根据会议变化，及时给您发送智能建议哒。</string>
+    <string name="xiaovtixing">如：加餐或减餐建议、增加茶歇或减少茶歇建议。\n更多功能，敬请期待！</string>
     <string name="modify">修改</string>
     <string name="editor">编辑</string>
     <string name="group_edit">编辑群公告</string>

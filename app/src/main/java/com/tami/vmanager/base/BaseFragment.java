@@ -182,12 +182,12 @@ public abstract class BaseFragment extends Fragment implements IBaseFragment, Vi
 
     @Override
     public void showToast(@NonNull String msg) {
-        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity().getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void showToast(@StringRes int resId) {
-        Toast.makeText(getContext(), getString(resId), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity().getApplicationContext(), getString(resId), Toast.LENGTH_SHORT).show();
     }
 
     @Override
