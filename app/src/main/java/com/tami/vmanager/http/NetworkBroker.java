@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -44,7 +45,8 @@ public class NetworkBroker extends BaseBroker {
     public static final int SUCCESS = 0;
     public static final int UNKNOWN_ERR = -1;
     public static final int SERVER_TIME_OUT = -100;
-    public static final int NO_AUTH = -101;
+//    public static final int NO_AUTH = -101;
+    public static final int NO_AUTH = 401;
     public static final int CONCURRENT = -102;
     public static final int AUTH_FAIL = -103;
     public static final int VFCODE_WRONG = -1002;
@@ -143,6 +145,7 @@ public class NetworkBroker extends BaseBroker {
                     public void onError(Call call, Exception ex1, int id) {
                         if (showLoading) loadingSubject.onNext(false);
                         Logger.d("接受报文: 错误" + CancelTag + ex1.getLocalizedMessage());
+                        Toast.makeText(context, "错误："+ex1.getMessage(),Toast.LENGTH_LONG).show();
                         callback.apply(ex1, null);
                         return;
                     }
