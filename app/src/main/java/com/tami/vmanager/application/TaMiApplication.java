@@ -27,11 +27,17 @@ import okhttp3.OkHttpClient;
 public class TaMiApplication extends Application {
 
     public static String registrationID;
+    private static Application context;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        context = this;
         init();
+    }
+
+    public static Application getContext() {
+        return context;
     }
 
     @Override

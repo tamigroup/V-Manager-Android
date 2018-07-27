@@ -107,5 +107,12 @@ public class Constants {
     public static final String LOCAL_JSON = "cars.json";
     //会议创建人
     public static final String KEY_SALE_USER_ID="saleUserId";
-
+    //自动登录
+    public static final String AUTO_LOGIN = "auto_login";
+    //token
+    public static final String TOKEN = "token";
+    //保存登录信息
+    public static final String SAVE_LOGIN_DATA = "save_login_data";
+    //sp保存对象key
+    public static final String FILE_KEY = "file_key";
 }

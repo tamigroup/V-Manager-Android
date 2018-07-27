@@ -1,5 +1,6 @@
 package com.tami.vmanager.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,6 +14,7 @@ import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.fragment.GuidePageFragment;
 import com.tami.vmanager.manager.ActivityManager;
 import com.tami.vmanager.utils.Constants;
+import com.tami.vmanager.utils.SPUtils;
 import com.tami.vmanager.utils.SharePreferenceTools;
 import com.tami.vmanager.view.ViewPagerIndicator;
 
@@ -86,7 +88,7 @@ public class GuidePageActivity extends BaseActivity {
         viewPager.setAdapter(guidePageFragmentPagerAdapter);
 
         handler.sendEmptyMessage(1);
-//        handler.sendEmptyMessageDelayed(1, 3000);
+        //        handler.sendEmptyMessageDelayed(1, 3000);
     }
 
     @Override
@@ -113,6 +115,7 @@ public class GuidePageActivity extends BaseActivity {
         handler.removeCallbacksAndMessages(null);
     }
 
+    @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -123,7 +126,12 @@ public class GuidePageActivity extends BaseActivity {
                 if (!firstLanding) {
                     sharePreferenceTools.putBoolean(Constants.FIRST_LANDING, true);
                 } else {
-                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                    boolean auto_login = (boolean) SPUtils.get(GuidePageActivity.this, Constants.AUTO_LOGIN, false);
+                    if (auto_login) {
+                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                    } else {
+                        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                    }
                     finish();
                 }
             }
@@ -131,8 +139,7 @@ public class GuidePageActivity extends BaseActivity {
     };
 
     /**
-     * //     * ViewPager滚动监听
-     * //
+     * ViewPager滚动监听
      */
     public static class ViewPagerOnPageChangeListener implements ViewPager.OnPageChangeListener {
 
