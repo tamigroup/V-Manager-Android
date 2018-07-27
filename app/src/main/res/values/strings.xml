@@ -332,7 +332,7 @@
     <string name="select_process_node_least">最少选择一个流程节点！</string>
     <string name="please_create_meeting">请先创建会议！</string>
     <string name="meeting_not_exist_please_recreate">会议不存在请重新创建！</string>
-    <string name="whether_create_process">是否创建流程？</string>
+    <string name="whether_create_process">创建会议成功</string>
     <string name="create_meeting_toast">创建会议%s!</string>
     <string name="enter_keyword">请输入关键字</string>
     <string name="empty_search">搜索不到关于“%s”会议</string>

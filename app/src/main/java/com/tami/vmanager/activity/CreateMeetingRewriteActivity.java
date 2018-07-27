@@ -194,6 +194,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
 
         cemd = new ConfirmEnterMeetingDialog(this);
         cemd.setContentRes(R.string.whether_create_process);
+        cemd.setRightStr(getString(R.string.continue_to_create_the_process));
     }
 
     @Override

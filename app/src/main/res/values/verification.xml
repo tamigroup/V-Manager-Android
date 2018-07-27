@@ -35,4 +35,8 @@
 
     <string name="cryptographic_format">密码格式为6~16位字母数字组合</string>
     <string name="two_inconsistencies_in_cipher_input">两次密码输入不一致</string>
+
+    <string name="continue_to_create_the_process">继续创建流程</string>
+
+
 </resources>
