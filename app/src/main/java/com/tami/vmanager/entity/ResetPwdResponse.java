@@ -22,6 +22,5 @@ public class ResetPwdResponse extends MobileMessage implements Serializable{
 		super();
 	}
 
-	
-
+	public boolean data;
 }

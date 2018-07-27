@@ -173,7 +173,7 @@ public class SearchDetailActivity extends BaseActivity {
                 holder.setText(R.id.item_meeting_cancel, dataBean.getCancelStatus());
 
                 AppCompatImageView vipImageView = holder.getView(R.id.item_meeting_level_icon);
-                vipImageView.setVisibility(dataBean.getIsImportant() == 0 ? View.GONE : View.VISIBLE);
+                vipImageView.setVisibility((dataBean.getIsImportant() == 0||dataBean.getIsImportant() == 10) ? View.GONE : View.VISIBLE);
                 vipImageView.setImageResource(getImageResId(dataBean.getIsImportant()));
 
                 AppCompatImageView imageView1 = holder.getView(R.id.item_meeting_level_icon1);

@@ -184,11 +184,11 @@ public class TimeUtils {
      */
     public static final SimpleDateFormat DEFAULT_SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     public static final SimpleDateFormat DATE_YYYYMMHH_SLASH = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
-    public static final SimpleDateFormat DATE_YYYYMMDDHHMM_SLASH = new SimpleDateFormat("yyyy年MM月dd HH:mm", Locale.getDefault());
+    public static final SimpleDateFormat DATE_YYYYMMDDHHMM_SLASH = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
     public static final SimpleDateFormat DATE_HHMM_SLASH = new SimpleDateFormat("HH:mm", Locale.getDefault());
     public static final SimpleDateFormat DATE_YYYYMMDD_SLASH = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
     public static final SimpleDateFormat DATE_MMDD_SLASH = new SimpleDateFormat("MM月dd日", Locale.getDefault());
-    public static final SimpleDateFormat DATE_MMDDHHMM_SLASH = new SimpleDateFormat("MM月dd日HH:mm", Locale.getDefault());
+    public static final SimpleDateFormat DATE_MMDDHHMM_SLASH = new SimpleDateFormat("yyyy年MM月dd HH:mm", Locale.getDefault());
 
     /**
      * 将时间戳转为时间字符串

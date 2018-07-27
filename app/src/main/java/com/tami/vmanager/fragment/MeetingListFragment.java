@@ -119,7 +119,7 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
 //                holder.setText(R.id.item_meeting_end_time, TimeUtils.milliseconds2String(item.endTime, TimeUtils.DATE_YYYYMMDDHHMM_SLASH));
                 //V图片
                 AppCompatImageView vipImageView = holder.getView(R.id.item_meeting_level_icon);
-                vipImageView.setVisibility(item.isImportant == 0 ? View.GONE : View.VISIBLE);
+                vipImageView.setVisibility((item.isImportant == 0||item.isImportant == 10) ? View.GONE : View.VISIBLE);
                 vipImageView.setImageResource(getImageResId(item.isImportant));
                 //智图片
                 AppCompatImageView imageView1 = holder.getView(R.id.item_meeting_level_icon1);

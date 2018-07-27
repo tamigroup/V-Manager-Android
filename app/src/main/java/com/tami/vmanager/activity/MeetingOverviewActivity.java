@@ -328,10 +328,10 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
             this.meetingInfo = item;
             meetingName.setText(item.meetingName);
             StringBuilder time = new StringBuilder();
-            String startTime = TimeUtils.milliseconds2String(item.startTime,TimeUtils.DATE_YYYYMMDDHHMM_SLASH);
+            String startTime = TimeUtils.milliseconds2String(item.startTime,TimeUtils.DATE_MMDDHHMM_SLASH);
             time.append(startTime);
             time.append(" - ");
-            String endTime = TimeUtils.milliseconds2String(item.endTime,TimeUtils.DATE_YYYYMMDDHHMM_SLASH);
+            String endTime = TimeUtils.milliseconds2String(item.endTime,TimeUtils.DATE_MMDDHHMM_SLASH);
             time.append(endTime);
             meetingTime.setText(time.toString());
             meetingRoom.setText(item.meetingAddress);

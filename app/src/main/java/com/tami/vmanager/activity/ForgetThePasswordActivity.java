@@ -12,6 +12,7 @@ import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.entity.ResetPwdRequest;
+import com.tami.vmanager.entity.ResetPwdResponse;
 import com.tami.vmanager.entity.SendVerifyCodeRequest;
 import com.tami.vmanager.entity.SendVerifyCodeResponse;
 import com.tami.vmanager.http.HttpKey;
@@ -196,34 +197,67 @@ public class ForgetThePasswordActivity extends BaseActivity {
      * 确认按钮点击
      */
     private void identification() {
-        ResetPwdRequest resetPwdRequest = new ResetPwdRequest();
-        resetPwdRequest.setMobile(mobile);
-        resetPwdRequest.setNewPassWord(againPassword.getText().toString());
-        resetPwdRequest.setSmsCode(smsCode);
-        networkBroker.ask(resetPwdRequest, (ex1, res) -> {
-            if (null != ex1) {
-                Logger.d(ex1.getMessage() + "-" + ex1);
-                return;
-            }
-            try {
-                SendVerifyCodeResponse response = (SendVerifyCodeResponse) res;
-                if (response.getCode() == 200) {
-                    title.setText(getString(R.string.congratulations));
-                    prompt.setVisibility(View.VISIBLE);
-                    prompt.setText(getString(R.string.password_resetting_success));
-                    name.setVisibility(View.INVISIBLE);
-                    value.setVisibility(View.INVISIBLE);
-                    againIdentification.setVisibility(View.INVISIBLE);
-                    againPassword.setVisibility(View.INVISIBLE);
-                    confirmBtn.setBackgroundResource(R.color.color_FF5657);
-                    confirmBtn.setText(getString(R.string.go_login));
+        if (isEmpty()) {
+            ResetPwdRequest resetPwdRequest = new ResetPwdRequest();
+            resetPwdRequest.setMobile(mobile);
+            resetPwdRequest.setNewPassWord(againPassword.getText().toString());
+            resetPwdRequest.setSmsCode(smsCode);
+            networkBroker.ask(resetPwdRequest, (ex1, res) -> {
+                if (null != ex1) {
+                    Logger.d(ex1.getMessage() + "-" + ex1);
+                    return;
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+                try {
+                    ResetPwdResponse response = (ResetPwdResponse) res;
+                    showToast(res.getMessage());
+                    if (response.getCode() == 200) {
+                        title.setText(getString(R.string.congratulations));
+                        prompt.setVisibility(View.VISIBLE);
+                        prompt.setText(getString(R.string.password_resetting_success));
+                        name.setVisibility(View.INVISIBLE);
+                        value.setVisibility(View.INVISIBLE);
+                        againIdentification.setVisibility(View.INVISIBLE);
+                        againPassword.setVisibility(View.INVISIBLE);
+                        confirmBtn.setBackgroundResource(R.color.color_FF5657);
+                        confirmBtn.setText(getString(R.string.go_login));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-        });
+            });
+        }
     }
+
+    /**
+     * 页面输入项判断
+     *
+     * @return
+     */
+    private boolean isEmpty() {
+        if (TextUtils.isEmpty(value.getText())) {
+            showToast(R.string.please_enter_a_new_password);
+            return false;
+        }
+        if (TextUtils.isEmpty(againPassword.getText())) {
+            showToast(R.string.please_enter_the_password_again);
+            return false;
+        }
+        if (checkPassWord(value.getText().toString())
+                || checkPassWord(againPassword.getText().toString())) {
+            showToast(R.string.please_enter_the_correct_password);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean checkPassWord(String passwrod) {
+        if (passwrod.length() < 6) {
+            return true;
+        }
+        return false;
+    }
+
 
     /**
      * 去登陆
