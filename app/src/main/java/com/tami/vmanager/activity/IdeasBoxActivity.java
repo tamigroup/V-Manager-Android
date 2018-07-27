@@ -63,8 +63,6 @@ public class IdeasBoxActivity extends BaseActivity {
 
         setTitleName(R.string.complaints_box);
 
-      //V智慧判断
-
         Bundle bundle = new Bundle();
         bundle.putInt(Constants.KEY_MEETING_ID, meetingId);
         bundle.putInt(Constants.IS_VZHIHUI,isVzh);

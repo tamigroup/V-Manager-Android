@@ -2,15 +2,21 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "b0eafc5ff129aa50f964b75dc4ce24ba",
+    "identityHash": "e06cf9e0ef987660e8b27e83245b41d8",
     "entities": [
       {
         "tableName": "SearchHistoryBean",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `SearchHistory` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `UserId` INTEGER NOT NULL, `SearchHistory` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "UserId",
+            "columnName": "UserId",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -65,7 +71,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"b0eafc5ff129aa50f964b75dc4ce24ba\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"e06cf9e0ef987660e8b27e83245b41d8\")"
     ]
   }
 }

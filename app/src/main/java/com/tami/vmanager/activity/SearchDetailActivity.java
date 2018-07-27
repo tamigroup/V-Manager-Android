@@ -61,6 +61,7 @@ public class SearchDetailActivity extends BaseActivity {
     private String query;
     private int type;
     private boolean isLoadmore = false;
+    private int userId;
 
     @Override
     public int getContentViewId() {
@@ -108,6 +109,10 @@ public class SearchDetailActivity extends BaseActivity {
 
     @Override
     public void initData() {
+        LoginResponse.Item item = GlobaVariable.getInstance().item;
+        if (null != item){
+            userId = item.getId();
+        }
         InitRecyc();
         searchView.setQueryHint(getString(R.string.enter_keyword));
         searchView.setIconifiedByDefault(true);
@@ -116,6 +121,7 @@ public class SearchDetailActivity extends BaseActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 searchView.setQueryHint("");
+                searchHistoryBean.setUserId(userId);
                 searchHistoryBean.setSearchHistory(query);
                 new Thread(() -> dao.insert(searchHistoryBean)).start();
                 CurPage = 1;
@@ -177,7 +183,7 @@ public class SearchDetailActivity extends BaseActivity {
                 vipImageView.setImageResource(getImageResId(dataBean.getIsImportant()));
 
                 AppCompatImageView imageView1 = holder.getView(R.id.item_meeting_level_icon1);
-                imageView1.setVisibility(dataBean.getFromPlat() == 1 ? View.VISIBLE : View.GONE);
+                imageView1.setVisibility( dataBean.getIsVzh() ==  1 ? View.VISIBLE : View.GONE);
             }
         };
         commonAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {

@@ -19,6 +19,10 @@ public interface SearchHistoryDao {
     @Insert
     void insert(SearchHistoryBean ... SearchHistory);
 
-    @Query("SELECT * FROM SearchHistoryBean order by id desc limit 6")
-    Flowable<List<SearchHistoryBean>> getSearchHistory();
+    @Query("SELECT * FROM SearchHistoryBean where UserId = :userId order by id desc limit 6")
+    Flowable<List<SearchHistoryBean>> getSearchHistory(int userId);
+
+
+
+
 }

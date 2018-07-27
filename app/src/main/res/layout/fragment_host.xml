@@ -36,7 +36,7 @@
             app:srb_drawableFilled="@mipmap/icon_star"
             app:srb_isIndicator="true"
             app:srb_numStars="5"
-            app:srb_rating="3"
+            app:srb_rating="0"
             app:srb_starHeight="29dp"
             app:srb_starPadding="4dp"
             app:srb_starWidth="29dp" />

@@ -127,6 +127,7 @@
     <string name="good">好</string>
     <string name="general">一般</string>
     <string name="bad">差</string>
+    <string name="no">无</string>
     <string name="very_bad">非常差</string>
     <string name="service">服务：%s</string>
     <string name="comment">评论(%s)</string>

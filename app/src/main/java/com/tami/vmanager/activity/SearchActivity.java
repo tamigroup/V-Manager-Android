@@ -13,7 +13,9 @@ import com.tami.vmanager.Database.dao.SearchHistoryDao;
 import com.tami.vmanager.Database.entity.SearchHistoryBean;
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
+import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.enums.SearchType;
+import com.tami.vmanager.manager.GlobaVariable;
 
 import java.util.List;
 
@@ -55,6 +57,7 @@ public class SearchActivity extends BaseActivity {
     private TextView search_history;
     private View line;
     private boolean is_first;
+    private int userId;
 
     @Override
     public int getContentViewId() {
@@ -116,12 +119,17 @@ public class SearchActivity extends BaseActivity {
 
     @Override
     public void initData() {
+        LoginResponse.Item item = GlobaVariable.getInstance().item;
+        if (null != item){
+            userId = item.getId();
+        }
         QueryData();
 //        searchView.setQueryHint(getString(R.string.enter_keyword));
         searchView.setOnSearchClickListener(v -> search_group.setVisibility(View.GONE));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                searchHistoryBean.setUserId(userId);
                 searchHistoryBean.setSearchHistory(query);
                 new Thread(() -> dao.insert(searchHistoryBean)).start();
                 SearchDetailActivity.Start(SearchActivity.this,query,SearchType.MEETING_NAME.getType(), false);
@@ -152,8 +160,8 @@ public class SearchActivity extends BaseActivity {
      */
     @SuppressLint("CheckResult")
     private void QueryData() {
-        dao.getSearchHistory()
-                .subscribeOn(Schedulers.newThread())
+        dao.getSearchHistory(userId)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(searchHistoryBeans -> {
                     switch (searchHistoryBeans.size()) {

@@ -13,8 +13,9 @@ import java.util.List;
 public class EvaluatePageResponseBean extends MobileMessage implements Serializable{
 
     private static final long serialVersionUID = 2738785611200411111L;
+
     /**
-     * data : {"curPage":1,"elements":[{"content":"酒店的机器 人小V很赞","createOn":1528106660000,"iconUrl":"","id":4,"meetingId":1,"score":4,"status":0,"type":2,"updateOn":1528106660000,"userId":2,"userName":"李小二"},{"content":"不错不错不错","createOn":1528106610000,"iconUrl":"","id":2,"meetingId":1,"score":4,"status":0,"type":2,"updateOn":1528106610000,"userId":2,"userName":"李小二"}],"firstPage":true,"lastPage":true,"lastPageNumber":1,"nextPage":2,"pageSize":10,"previousPage":0,"thisPageFirstElementNumber":1,"thisPageLastElementNumber":2,"totalElements":2}
+     * data : {"curPage":1,"elements":[{"anonymous":0,"content":"拉几","createOn":1532672217000,"flag":1,"iconUrl":"http://test.tamigroup.com/portrait/15201209183.png","id":155,"meetingId":314,"score":5,"status":0,"type":2,"updateOn":1532672217000,"userId":15201209183,"userName":"159"}],"firstPage":true,"lastPage":true,"lastPageNumber":1,"nextPage":2,"pageSize":10,"previousPage":0,"thisPageFirstElementNumber":1,"thisPageLastElementNumber":1,"totalElements":1}
      */
 
     private DataBean data;
@@ -26,12 +27,11 @@ public class EvaluatePageResponseBean extends MobileMessage implements Serializa
     public void setData(DataBean data) {
         this.data = data;
     }
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+
     public static class DataBean implements Serializable{
-        private static final long serialVersionUID = -8563466038619136537L;
         /**
          * curPage : 1
-         * elements : [{"content":"酒店的机器 人小V很赞","createOn":1528106660000,"iconUrl":"","id":4,"meetingId":1,"score":4,"status":0,"type":2,"updateOn":1528106660000,"userId":2,"userName":"李小二"},{"content":"不错不错不错","createOn":1528106610000,"iconUrl":"","id":2,"meetingId":1,"score":4,"status":0,"type":2,"updateOn":1528106610000,"userId":2,"userName":"李小二"}]
+         * elements : [{"anonymous":0,"content":"拉几","createOn":1532672217000,"flag":1,"iconUrl":"http://test.tamigroup.com/portrait/15201209183.png","id":155,"meetingId":314,"score":5,"status":0,"type":2,"updateOn":1532672217000,"userId":15201209183,"userName":"159"}]
          * firstPage : true
          * lastPage : true
          * lastPageNumber : 1
@@ -39,8 +39,8 @@ public class EvaluatePageResponseBean extends MobileMessage implements Serializa
          * pageSize : 10
          * previousPage : 0
          * thisPageFirstElementNumber : 1
-         * thisPageLastElementNumber : 2
-         * totalElements : 2
+         * thisPageLastElementNumber : 1
+         * totalElements : 1
          */
 
         private int curPage;
@@ -142,25 +142,28 @@ public class EvaluatePageResponseBean extends MobileMessage implements Serializa
         public void setElements(List<ElementsBean> elements) {
             this.elements = elements;
         }
-        @JsonInclude(JsonInclude.Include.NON_NULL)
+
         public static class ElementsBean implements Serializable{
-            private static final long serialVersionUID = -4358625560806911894L;
             /**
-             * content : 酒店的机器 人小V很赞
-             * createOn : 1528106660000
-             * iconUrl :
-             * id : 4
-             * meetingId : 1
-             * score : 4
+             * anonymous : 0
+             * content : 拉几
+             * createOn : 1532672217000
+             * flag : 1
+             * iconUrl : http://test.tamigroup.com/portrait/15201209183.png
+             * id : 155
+             * meetingId : 314
+             * score : 5
              * status : 0
              * type : 2
-             * updateOn : 1528106660000
-             * userId : 2
-             * userName : 李小二
+             * updateOn : 1532672217000
+             * userId : 15201209183
+             * userName : 159
              */
 
+            private int anonymous;
             private String content;
             private long createOn;
+            private int flag;
             private String iconUrl;
             private int id;
             private int meetingId;
@@ -168,9 +171,8 @@ public class EvaluatePageResponseBean extends MobileMessage implements Serializa
             private int status;
             private int type;
             private long updateOn;
-            private int userId;
+            private long userId;
             private String userName;
-            private	int	anonymous;	/*0*/
 
             public int getAnonymous() {
                 return anonymous;
@@ -194,6 +196,14 @@ public class EvaluatePageResponseBean extends MobileMessage implements Serializa
 
             public void setCreateOn(long createOn) {
                 this.createOn = createOn;
+            }
+
+            public int getFlag() {
+                return flag;
+            }
+
+            public void setFlag(int flag) {
+                this.flag = flag;
             }
 
             public String getIconUrl() {
@@ -252,11 +262,11 @@ public class EvaluatePageResponseBean extends MobileMessage implements Serializa
                 this.updateOn = updateOn;
             }
 
-            public int getUserId() {
+            public long getUserId() {
                 return userId;
             }
 
-            public void setUserId(int userId) {
+            public void setUserId(long userId) {
                 this.userId = userId;
             }
 
