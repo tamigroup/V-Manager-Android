@@ -13,7 +13,16 @@ public class SearchHistoryBean {
     @PrimaryKey(autoGenerate = true)
     public int id;
 
+    private int UserId;
     private String SearchHistory;
+
+    public int getUserId() {
+        return UserId;
+    }
+
+    public void setUserId(int userId) {
+        UserId = userId;
+    }
 
     public String getSearchHistory() {
         return SearchHistory;

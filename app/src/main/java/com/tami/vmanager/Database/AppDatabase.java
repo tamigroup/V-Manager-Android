@@ -15,7 +15,7 @@ import com.tami.vmanager.utils.Logger;
  * Created by Tang on 2018/7/3
  * room
  */
-@Database(entities = {SearchHistoryBean.class, SearchVipHistoryBean.class}, version = 1)
+@Database(entities = {SearchHistoryBean.class, SearchVipHistoryBean.class}, version = 2)
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase INSTANCE;
     private static final String DB_NAME = "tami";
