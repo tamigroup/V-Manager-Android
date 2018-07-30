@@ -296,13 +296,14 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
     private void initUIdata(GetMeetingResponse.Item item) {
         if (item != null) {
             meetingName.setText(item.meetingName);
-            StringBuilder time = new StringBuilder();
-            String startTime = TimeUtils.milliseconds2String(item.startTime,TimeUtils.DATE_MMDDHHMM_SLASH);
-            time.append(startTime);
-            time.append(" - ");
-            String endTime = TimeUtils.milliseconds2String(item.endTime,TimeUtils.DATE_MMDDHHMM_SLASH);
-            time.append(endTime);
-            meetingTime.setText(time.toString());
+//            StringBuilder time = new StringBuilder();
+//            String startTime = TimeUtils.milliseconds2String(item.startTime,TimeUtils.DATE_MMDDHHMM_SLASH);
+//            time.append(startTime);
+//            time.append(" - ");
+//            String endTime = TimeUtils.milliseconds2String(item.endTime,TimeUtils.DATE_MMDDHHMM_SLASH);
+//            time.append(endTime);
+//            meetingTime.setText(time.toString());
+            meetingTime.setText(item.autoDayTime);
             meetingRoom.setText(item.meetingAddress);
             memhMponsor.setText(String.format(getString(R.string.host_name), item.sponsorName));
             meetingPersonnel.setText(String.format(getString(R.string.salename), item.saleUserName));
