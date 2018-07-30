@@ -273,8 +273,8 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
                     Logger.d("onActivityResult()---headClipFile : " + headClipFile.getAbsolutePath());
                     addPicToGallery(headIconFile.getAbsolutePath());
                     addPicToGallery(headClipFile.getAbsolutePath());
-                    avatar_image.setImageBitmap(BitmapFactory.decodeFile(headClipFile.getAbsolutePath()));
                     if (!TextUtils.isEmpty(headClipFile.getAbsolutePath())) {
+//                        avatar_image.setImageBitmap(BitmapFactory.decodeFile(headClipFile.getAbsolutePath()));
                         uploadImage();
                     }
                 } else {
@@ -424,6 +424,8 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
                 UpdateUserIconResponse response = (UpdateUserIconResponse) res;
                 if (response.getCode() == 200) {
                     GlobaVariable.getInstance().item.setIconUrl(imageUrl);
+//                    Picasso.get().load(imageUrl).into(avatar_image);
+                    avatar_image.setImageBitmap(BitmapFactory.decodeFile(headClipFile.getAbsolutePath()));
                     SPUtils.save(Constants.FILE_KEY,Constants.SAVE_LOGIN_DATA,GlobaVariable.getInstance().item);
                     showToast(getString(R.string.replace_head_image, getString(R.string.success)));
                 } else {
