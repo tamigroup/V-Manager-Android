@@ -35,7 +35,6 @@ import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.SPUtils;
-import com.tami.vmanager.utils.TimeUtils;
 import com.tami.vmanager.utils.Utils;
 import com.tami.vmanager.view.MeetingStateView;
 
@@ -215,6 +214,7 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
                 //查看人员 实到人数
                 Intent intent_personnel = new Intent(getApplicationContext(), PersonnelListActivity.class);
                 intent_personnel.putExtra(Constants.KEY_MEETING_ID, meetingId);
+                intent_personnel.putExtra(Constants.IS_VZHIHUI,meetingInfo.isVzh);
                 startActivity(intent_personnel);
                 break;
             case R.id.enter_meeting_service_group_layout:

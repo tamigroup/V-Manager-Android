@@ -20,6 +20,7 @@ import com.tami.vmanager.manager.GlobaVariable;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -58,6 +59,7 @@ public class SearchActivity extends BaseActivity {
     private View line;
     private boolean is_first;
     private int userId;
+    private Disposable disposable;
 
     @Override
     public int getContentViewId() {
@@ -160,7 +162,7 @@ public class SearchActivity extends BaseActivity {
      */
     @SuppressLint("CheckResult")
     private void QueryData() {
-        dao.getSearchHistory(userId)
+        disposable = dao.getSearchHistory(userId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(searchHistoryBeans -> {
@@ -177,7 +179,7 @@ public class SearchActivity extends BaseActivity {
                             search_history_tv1.setOnClickListener(v -> {
                                 setClickColor(search_history_tv1, R.color.color_344266, R.drawable.shape_cricle_line, searchHistoryBeans.get(0).getSearchHistory());
                                 setContentClickColor();
-                                RequestData(searchHistoryBeans.get(0).getSearchHistory(), SearchType.MEETING_NAME.getType(),false);
+                                RequestData(searchHistoryBeans.get(0).getSearchHistory(), SearchType.MEETING_NAME.getType(), false);
                             });
                             break;
                         case 2:
@@ -192,13 +194,13 @@ public class SearchActivity extends BaseActivity {
                                 setClickColor(search_history_tv2, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(1).getSearchHistory());
                                 setClickColor(search_history_tv1, R.color.color_344266, R.drawable.shape_cricle_line, searchHistoryBeans.get(0).getSearchHistory());
                                 setContentClickColor();
-                                RequestData(searchHistoryBeans.get(0).getSearchHistory(), SearchType.MEETING_NAME.getType(),false);
+                                RequestData(searchHistoryBeans.get(0).getSearchHistory(), SearchType.MEETING_NAME.getType(), false);
                             });
                             search_history_tv2.setOnClickListener(v -> {
                                 setClickColor(search_history_tv1, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(0).getSearchHistory());
                                 setClickColor(search_history_tv2, R.color.color_344266, R.drawable.shape_cricle_line, searchHistoryBeans.get(1).getSearchHistory());
                                 setContentClickColor();
-                                RequestData(searchHistoryBeans.get(1).getSearchHistory(), SearchType.MEETING_NAME.getType(),false);
+                                RequestData(searchHistoryBeans.get(1).getSearchHistory(), SearchType.MEETING_NAME.getType(), false);
                             });
                             break;
                         case 3:
@@ -216,21 +218,21 @@ public class SearchActivity extends BaseActivity {
                                 setClickColor(search_history_tv3, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(2).getSearchHistory());
                                 setClickColor(search_history_tv1, R.color.color_344266, R.drawable.shape_cricle_line, searchHistoryBeans.get(0).getSearchHistory());
                                 setContentClickColor();
-                                RequestData(searchHistoryBeans.get(0).getSearchHistory(), SearchType.MEETING_NAME.getType(),false);
+                                RequestData(searchHistoryBeans.get(0).getSearchHistory(), SearchType.MEETING_NAME.getType(), false);
                             });
                             search_history_tv2.setOnClickListener(v -> {
                                 setClickColor(search_history_tv1, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(0).getSearchHistory());
                                 setClickColor(search_history_tv3, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(2).getSearchHistory());
                                 setClickColor(search_history_tv2, R.color.color_344266, R.drawable.shape_cricle_line, searchHistoryBeans.get(1).getSearchHistory());
                                 setContentClickColor();
-                                RequestData(searchHistoryBeans.get(1).getSearchHistory(), SearchType.MEETING_NAME.getType(),false);
+                                RequestData(searchHistoryBeans.get(1).getSearchHistory(), SearchType.MEETING_NAME.getType(), false);
                             });
                             search_history_tv3.setOnClickListener(v -> {
                                 setClickColor(search_history_tv1, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(0).getSearchHistory());
                                 setClickColor(search_history_tv2, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(1).getSearchHistory());
                                 setClickColor(search_history_tv3, R.color.color_344266, R.drawable.shape_cricle_line, searchHistoryBeans.get(2).getSearchHistory());
                                 setContentClickColor();
-                                RequestData(searchHistoryBeans.get(2).getSearchHistory(), SearchType.MEETING_NAME.getType(),false);
+                                RequestData(searchHistoryBeans.get(2).getSearchHistory(), SearchType.MEETING_NAME.getType(), false);
                             });
 
                             break;
@@ -252,7 +254,7 @@ public class SearchActivity extends BaseActivity {
                                 setClickColor(search_history_tv4, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(3).getSearchHistory());
                                 setClickColor(search_history_tv1, R.color.color_344266, R.drawable.shape_cricle_line, searchHistoryBeans.get(0).getSearchHistory());
                                 setContentClickColor();
-                                RequestData(searchHistoryBeans.get(0).getSearchHistory(), SearchType.MEETING_NAME.getType(),false);
+                                RequestData(searchHistoryBeans.get(0).getSearchHistory(), SearchType.MEETING_NAME.getType(), false);
                             });
                             search_history_tv2.setOnClickListener(v -> {
                                 setClickColor(search_history_tv1, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(0).getSearchHistory());
@@ -260,7 +262,7 @@ public class SearchActivity extends BaseActivity {
                                 setClickColor(search_history_tv4, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(3).getSearchHistory());
                                 setClickColor(search_history_tv2, R.color.color_344266, R.drawable.shape_cricle_line, searchHistoryBeans.get(1).getSearchHistory());
                                 setContentClickColor();
-                                RequestData(searchHistoryBeans.get(1).getSearchHistory(), SearchType.MEETING_NAME.getType(),false);
+                                RequestData(searchHistoryBeans.get(1).getSearchHistory(), SearchType.MEETING_NAME.getType(), false);
                             });
                             search_history_tv3.setOnClickListener(v -> {
                                 setClickColor(search_history_tv1, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(0).getSearchHistory());
@@ -268,7 +270,7 @@ public class SearchActivity extends BaseActivity {
                                 setClickColor(search_history_tv4, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(3).getSearchHistory());
                                 setClickColor(search_history_tv3, R.color.color_344266, R.drawable.shape_cricle_line, searchHistoryBeans.get(2).getSearchHistory());
                                 setContentClickColor();
-                                RequestData(searchHistoryBeans.get(2).getSearchHistory(), SearchType.MEETING_NAME.getType(),false);
+                                RequestData(searchHistoryBeans.get(2).getSearchHistory(), SearchType.MEETING_NAME.getType(), false);
                             });
                             search_history_tv4.setOnClickListener(v -> {
                                 setClickColor(search_history_tv1, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(0).getSearchHistory());
@@ -276,7 +278,7 @@ public class SearchActivity extends BaseActivity {
                                 setClickColor(search_history_tv3, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(2).getSearchHistory());
                                 setClickColor(search_history_tv4, R.color.color_344266, R.drawable.shape_cricle_line, searchHistoryBeans.get(3).getSearchHistory());
                                 setContentClickColor();
-                                RequestData(searchHistoryBeans.get(3).getSearchHistory(), SearchType.MEETING_NAME.getType(),false);
+                                RequestData(searchHistoryBeans.get(3).getSearchHistory(), SearchType.MEETING_NAME.getType(), false);
                             });
                             break;
                         case 5:
@@ -301,7 +303,7 @@ public class SearchActivity extends BaseActivity {
                                 setClickColor(search_history_tv5, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(4).getSearchHistory());
                                 setClickColor(search_history_tv1, R.color.color_344266, R.drawable.shape_cricle_line, searchHistoryBeans.get(0).getSearchHistory());
                                 setContentClickColor();
-                                RequestData(searchHistoryBeans.get(0).getSearchHistory(), SearchType.MEETING_NAME.getType(),false);
+                                RequestData(searchHistoryBeans.get(0).getSearchHistory(), SearchType.MEETING_NAME.getType(), false);
                             });
                             search_history_tv2.setOnClickListener(v -> {
                                 setClickColor(search_history_tv1, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(0).getSearchHistory());
@@ -310,7 +312,7 @@ public class SearchActivity extends BaseActivity {
                                 setClickColor(search_history_tv5, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(4).getSearchHistory());
                                 setClickColor(search_history_tv2, R.color.color_344266, R.drawable.shape_cricle_line, searchHistoryBeans.get(1).getSearchHistory());
                                 setContentClickColor();
-                                RequestData(searchHistoryBeans.get(1).getSearchHistory(), SearchType.MEETING_NAME.getType(),false);
+                                RequestData(searchHistoryBeans.get(1).getSearchHistory(), SearchType.MEETING_NAME.getType(), false);
                             });
                             search_history_tv3.setOnClickListener(v -> {
                                 setClickColor(search_history_tv1, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(0).getSearchHistory());
@@ -319,7 +321,7 @@ public class SearchActivity extends BaseActivity {
                                 setClickColor(search_history_tv5, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(4).getSearchHistory());
                                 setClickColor(search_history_tv3, R.color.color_344266, R.drawable.shape_cricle_line, searchHistoryBeans.get(2).getSearchHistory());
                                 setContentClickColor();
-                                RequestData(searchHistoryBeans.get(2).getSearchHistory(), SearchType.MEETING_NAME.getType(),false);
+                                RequestData(searchHistoryBeans.get(2).getSearchHistory(), SearchType.MEETING_NAME.getType(), false);
                             });
                             search_history_tv4.setOnClickListener(v -> {
                                 setClickColor(search_history_tv1, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(0).getSearchHistory());
@@ -328,7 +330,7 @@ public class SearchActivity extends BaseActivity {
                                 setClickColor(search_history_tv5, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(4).getSearchHistory());
                                 setClickColor(search_history_tv4, R.color.color_344266, R.drawable.shape_cricle_line, searchHistoryBeans.get(3).getSearchHistory());
                                 setContentClickColor();
-                                RequestData(searchHistoryBeans.get(3).getSearchHistory(), SearchType.MEETING_NAME.getType(),false);
+                                RequestData(searchHistoryBeans.get(3).getSearchHistory(), SearchType.MEETING_NAME.getType(), false);
                             });
                             search_history_tv5.setOnClickListener(v -> {
                                 setClickColor(search_history_tv1, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(0).getSearchHistory());
@@ -337,7 +339,7 @@ public class SearchActivity extends BaseActivity {
                                 setClickColor(search_history_tv4, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(3).getSearchHistory());
                                 setClickColor(search_history_tv5, R.color.color_344266, R.drawable.shape_cricle_line, searchHistoryBeans.get(4).getSearchHistory());
                                 setContentClickColor();
-                                RequestData(searchHistoryBeans.get(4).getSearchHistory(), SearchType.MEETING_NAME.getType(),false);
+                                RequestData(searchHistoryBeans.get(4).getSearchHistory(), SearchType.MEETING_NAME.getType(), false);
                             });
                             break;
                         case 6:
@@ -365,7 +367,7 @@ public class SearchActivity extends BaseActivity {
                                 setClickColor(search_history_tv6, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(5).getSearchHistory());
                                 setClickColor(search_history_tv1, R.color.color_344266, R.drawable.shape_cricle_line, searchHistoryBeans.get(0).getSearchHistory());
                                 setContentClickColor();
-                                RequestData(searchHistoryBeans.get(0).getSearchHistory(), SearchType.MEETING_NAME.getType(),false);
+                                RequestData(searchHistoryBeans.get(0).getSearchHistory(), SearchType.MEETING_NAME.getType(), false);
 
                             });
                             search_history_tv2.setOnClickListener(v -> {
@@ -376,7 +378,7 @@ public class SearchActivity extends BaseActivity {
                                 setClickColor(search_history_tv6, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(5).getSearchHistory());
                                 setClickColor(search_history_tv2, R.color.color_344266, R.drawable.shape_cricle_line, searchHistoryBeans.get(1).getSearchHistory());
                                 setContentClickColor();
-                                RequestData(searchHistoryBeans.get(1).getSearchHistory(), SearchType.MEETING_NAME.getType(),false);
+                                RequestData(searchHistoryBeans.get(1).getSearchHistory(), SearchType.MEETING_NAME.getType(), false);
                             });
                             search_history_tv3.setOnClickListener(v -> {
                                 setClickColor(search_history_tv1, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(0).getSearchHistory());
@@ -386,7 +388,7 @@ public class SearchActivity extends BaseActivity {
                                 setClickColor(search_history_tv6, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(5).getSearchHistory());
                                 setClickColor(search_history_tv3, R.color.color_344266, R.drawable.shape_cricle_line, searchHistoryBeans.get(2).getSearchHistory());
                                 setContentClickColor();
-                                RequestData(searchHistoryBeans.get(2).getSearchHistory(), SearchType.MEETING_NAME.getType(),false);
+                                RequestData(searchHistoryBeans.get(2).getSearchHistory(), SearchType.MEETING_NAME.getType(), false);
                             });
                             search_history_tv4.setOnClickListener(v -> {
                                 setClickColor(search_history_tv1, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(0).getSearchHistory());
@@ -396,7 +398,7 @@ public class SearchActivity extends BaseActivity {
                                 setClickColor(search_history_tv6, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(5).getSearchHistory());
                                 setClickColor(search_history_tv4, R.color.color_344266, R.drawable.shape_cricle_line, searchHistoryBeans.get(3).getSearchHistory());
                                 setContentClickColor();
-                                RequestData(searchHistoryBeans.get(3).getSearchHistory(), SearchType.MEETING_NAME.getType(),false);
+                                RequestData(searchHistoryBeans.get(3).getSearchHistory(), SearchType.MEETING_NAME.getType(), false);
                             });
                             search_history_tv5.setOnClickListener(v -> {
                                 setClickColor(search_history_tv1, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(0).getSearchHistory());
@@ -406,7 +408,7 @@ public class SearchActivity extends BaseActivity {
                                 setClickColor(search_history_tv6, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(5).getSearchHistory());
                                 setClickColor(search_history_tv5, R.color.color_344266, R.drawable.shape_cricle_line, searchHistoryBeans.get(4).getSearchHistory());
                                 setContentClickColor();
-                                RequestData(searchHistoryBeans.get(4).getSearchHistory(), SearchType.MEETING_NAME.getType(),false);
+                                RequestData(searchHistoryBeans.get(4).getSearchHistory(), SearchType.MEETING_NAME.getType(), false);
                             });
                             search_history_tv6.setOnClickListener(v -> {
                                 setClickColor(search_history_tv1, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(0).getSearchHistory());
@@ -416,7 +418,7 @@ public class SearchActivity extends BaseActivity {
                                 setClickColor(search_history_tv5, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(4).getSearchHistory());
                                 setClickColor(search_history_tv6, R.color.color_344266, R.drawable.shape_cricle_line, searchHistoryBeans.get(5).getSearchHistory());
                                 setContentClickColor();
-                                RequestData(searchHistoryBeans.get(5).getSearchHistory(), SearchType.MEETING_NAME.getType(),false);
+                                RequestData(searchHistoryBeans.get(5).getSearchHistory(), SearchType.MEETING_NAME.getType(), false);
                             });
                             break;
                     }
@@ -450,6 +452,7 @@ public class SearchActivity extends BaseActivity {
             searchHistoryBeans.clear();
             searchHistoryBeans = null;
         }
+        disposable.dispose();
     }
 
     @Override
