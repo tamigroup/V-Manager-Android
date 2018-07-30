@@ -12,9 +12,13 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
+import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.entity.MeetingUserGroupPageRequest;
 import com.tami.vmanager.entity.MeetingUserGroupPageResponse;
+import com.tami.vmanager.entity.OutGroupUserRequestBean;
+import com.tami.vmanager.entity.OutGroupUserResponseBean;
 import com.tami.vmanager.http.NetworkBroker;
+import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -136,10 +140,7 @@ public class GroupMembersActivty extends BaseActivity {
                 break;
             case R.id.out_meeting:
                 //跳到会议概览
-                Intent intent_meetingOverv = new Intent(getApplicationContext(), MeetingOverviewActivity.class);
-                intent_meetingOverv.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent_meetingOverv.putExtra(Constants.KEY_MEETING_ID, meetingId);
-                startActivity(intent_meetingOverv);
+                outGroupMeeting();
                 break;
             case R.id.agm_notice:
                 //跳转
@@ -149,6 +150,41 @@ public class GroupMembersActivty extends BaseActivity {
                 startActivity(intent);
                 break;
         }
+    }
+
+    /**
+     * 退出此会议
+     */
+    private void outGroupMeeting() {
+        OutGroupUserRequestBean requestBean = new OutGroupUserRequestBean();
+        LoginResponse.Item item = GlobaVariable.getInstance().item;
+        if (null!=item){
+            requestBean.setUserId(item.getId());
+        }
+
+        requestBean.setMeetingId(meetingId);
+        networkBroker.ask(requestBean,(exl,res)->{
+            if (null != exl){
+                Logger.d(exl.getMessage() + "-" + exl);
+                return;
+            }
+            try {
+                OutGroupUserResponseBean response = (OutGroupUserResponseBean) res;
+                if (response.getCode() == 200) {
+                    if (response.isData()){
+                        Intent intent_meetingOverv = new Intent(getApplicationContext(), MeetingOverviewActivity.class);
+                        intent_meetingOverv.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent_meetingOverv.putExtra(Constants.KEY_MEETING_ID, meetingId);
+                        startActivity(intent_meetingOverv);
+                    }
+                }else if (response.getCode() == 400){
+                    showToast(R.string.has_delete);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        });
     }
 
     /**

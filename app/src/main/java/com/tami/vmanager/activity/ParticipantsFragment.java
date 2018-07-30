@@ -118,15 +118,20 @@ public class ParticipantsFragment extends ViewPagerBaseFragment {
 
             @Override
             protected void convert(ViewHolder holder, EvaluatePageResponseBean.DataBean.ElementsBean elementsBean, int position) {
-                if (!TextUtils.isEmpty(elementsBean.getIconUrl())) {
+                if (elementsBean.getAnonymous() == 1) {
+                    holder.setText(R.id.header_name, getString(R.string.anonymous));
                     ImageView header_image = holder.getView(R.id.header_image);
-                    Picasso.get().load(elementsBean.getIconUrl()).into(header_image);
+                    Picasso.get().load(R.mipmap.touxiang).into(header_image);
+                } else {
+                    if (!TextUtils.isEmpty(elementsBean.getIconUrl())) {
+                        ImageView header_image = holder.getView(R.id.header_image);
+                        Picasso.get().load(elementsBean.getIconUrl()).into(header_image);
+                    }
+                    holder.setText(R.id.header_name, elementsBean.getUserName());
                 }
-                holder.setText(R.id.header_name, elementsBean.getUserName());
                 BaseRatingBar rating_bar = holder.getView(R.id.rating_bar);
                 rating_bar.setRating(elementsBean.getScore());
                 holder.setText(R.id.item_content, elementsBean.getContent());
-
             }
         };
         recyclerview.setAdapter(commonAdapter);

@@ -138,6 +138,12 @@ public class HttpKey {
     public static final String SET_MEETING_ITEMS_STATUS = "meeting/setMeetingItemsStatus";
     //版本更新
     public static final String UPDATE = "upgrade/getUpgrade";
+    //添加用户到会议分组(进群)
+    public static final String INTOGROUPUSER = "group/IntoGroupUser";
+    //从会议分组中删除用户(退群)
+    public static final String OUTGROUPUSER = "group/outGroupUser";
+    //校验用户是否在群中
+    public static final String CHECKGROUPUSER = "group/checkGroupUser";
 
 
 

@@ -22,13 +22,14 @@ import com.tami.vmanager.adapter.TimeLineHorizontalAdapter;
 import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.dialog.ConfirmEnterMeetingDialog;
 import com.tami.vmanager.dialog.ConfirmEnterMeetingListener;
+import com.tami.vmanager.entity.CheckGroupUserRequestBean;
+import com.tami.vmanager.entity.CheckGroupUserResponseBean;
 import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdRequest;
 import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdResponse;
-import com.tami.vmanager.dialog.ConfirmEnterMeetingDialog;
-import com.tami.vmanager.dialog.ConfirmEnterMeetingListener;
-import com.tami.vmanager.entity.GetMeetingItemFlowRequest;
-import com.tami.vmanager.entity.GetMeetingItemFlowResponse;
 import com.tami.vmanager.entity.GetMeetingResponse;
+import com.tami.vmanager.entity.IntoGroupUserRequestBean;
+import com.tami.vmanager.entity.IntoGroupUserResponseBean;
+import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Constants;
@@ -78,6 +79,7 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
     private ImageView sale_phone;
     private ConfirmEnterMeetingDialog confirmEnterMeetingDialog;//弹框查看会议
     private int actualNum;
+    private int userId;
 
     @Override
     public boolean isTitle() {
@@ -133,6 +135,11 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
 
     @Override
     public void initData() {
+        LoginResponse.Item item = GlobaVariable.getInstance().item;
+        if (null != item){
+            userId = item.getId();
+        }
+
         Intent intent = getIntent();
         if (intent != null) {
             meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 0);
@@ -158,7 +165,7 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
             @Override
             public void leftBtn() {
                 SPUtils.put(EnterMeetingActivity.this, Constants.IS_INVISIBLE, true);
-                serviceGroup();
+                startConferenceServiceGroupActivity();
             }
 
             @Override
@@ -216,7 +223,7 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
                 break;
             case R.id.enter_meeting_service_group_layout:
                 //会议服务群
-                confirmEnterMeetingDialog.show();
+                checkGroupUser();
                 break;
             case R.id.enter_meeting_sponsor_member_layout:
                 //主办方成员
@@ -235,6 +242,35 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
                 requiresPermission();
                 break;
         }
+    }
+
+    /**
+     * 校验用户是否在群中
+     */
+    private void checkGroupUser() {
+        CheckGroupUserRequestBean requestBean = new CheckGroupUserRequestBean();
+        requestBean.setUserId(userId);
+        requestBean.setMeetingId(meetingId);
+        networkBroker.ask(requestBean,(exl,res)->{
+            if (null != exl){
+                Logger.d(exl.getMessage() + "-" + exl);
+                return;
+            }
+            try {
+                CheckGroupUserResponseBean response = (CheckGroupUserResponseBean) res;
+                if (response.getCode() == 200) {
+                    if (response.isData()){
+                        startConferenceServiceGroupActivity();
+                    }
+                }else if (response.getCode() == 400){
+                    //不在群中
+                    confirmEnterMeetingDialog.show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        });
     }
 
     @AfterPermissionGranted(Constants.CALL_PHONE_REQUEST_CODE)
@@ -328,6 +364,33 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
      * 会议服务群
      */
     private void serviceGroup() {
+        IntoGroupUserRequestBean requestBean = new IntoGroupUserRequestBean();
+        requestBean.setUserId(userId);
+        requestBean.setMeetingId(meetingId);
+        networkBroker.ask(requestBean,(exl,res)->{
+            if (null != exl){
+                Logger.d(exl.getMessage() + "-" + exl);
+                return;
+            }
+            try {
+                IntoGroupUserResponseBean response = (IntoGroupUserResponseBean) res;
+                if (response.getCode() == 200) {
+                    if (response.isData()){
+                        startConferenceServiceGroupActivity();
+                    }
+                }else if (response.getCode() == 400){
+                    showToast(R.string.has_in_meeting);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    /**
+     * 跳转会议服务群
+     */
+    private void startConferenceServiceGroupActivity() {
         Intent intent = new Intent(getApplicationContext(), ConferenceServiceGroupActivity.class);
         intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
         intent.putExtra(Constants.ACTUAL_NUM, actualNum);

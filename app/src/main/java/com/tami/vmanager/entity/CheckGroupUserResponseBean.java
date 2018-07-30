@@ -1,9 +1,9 @@
 package com.tami.vmanager.entity;
 
-import java.io.Serializable;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import java.io.Serializable;
 
 
 /**
@@ -13,15 +13,26 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  * 
  */
 @JsonInclude(Include.NON_NULL)
-public class CheckGroupUserResponse extends MobileMessage implements Serializable{
+public class CheckGroupUserResponseBean extends MobileMessage implements Serializable{
 
 
 	private static final long serialVersionUID = 2438118811266109472L;
+	/**
+	 * data : true
+	 */
 
-	public CheckGroupUserResponse() {
+	private boolean data;
+
+	public CheckGroupUserResponseBean() {
 		super();
 	}
 
-	
 
+	public boolean isData() {
+		return data;
+	}
+
+	public void setData(boolean data) {
+		this.data = data;
+	}
 }
