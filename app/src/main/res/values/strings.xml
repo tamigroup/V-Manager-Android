@@ -390,7 +390,8 @@
     <string name="open_notification">请手动设置通知管理</string>
 
     <string name="get_a_picture_failure">获取图片失败！</string>
-
+    <string name="has_delete">该用户已经从会议组删除</string>
+    <string name="has_in_meeting">该用户已经在会议群组中</string>
 
 
 </resources>
