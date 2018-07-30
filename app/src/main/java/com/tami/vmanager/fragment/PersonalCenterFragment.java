@@ -104,13 +104,15 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
         networkBroker = new NetworkBroker(getActivity());
         networkBroker.setCancelTag(getTAG());
 
-        LoginResponse.Item item = GlobaVariable.getInstance().item;
-        if (item != null) {
-            full_name.setText(item.getRealName());
-            position.setText(item.getDepName() + "-" + item.getPositionName());
-            if (!TextUtils.isEmpty(item.getIconUrl())) {
-                Picasso.get().load(item.getIconUrl()).into(avatar_image);
-            }
+        initUser();
+
+//        LoginResponse.Item item = GlobaVariable.getInstance().item;
+//        if (item != null) {
+//            full_name.setText(item.getRealName());
+//            position.setText(item.getDepName() + "-" + item.getPositionName());
+//            if (!TextUtils.isEmpty(item.getIconUrl())) {
+//                Picasso.get().load(item.getIconUrl()).into(avatar_image);
+//            }
 //            List<LoginResponse.Item.UserRole> roleList = item.getUserRoleList();
 //            if (roleList != null && roleList.size() > 0) {
 //                boolean visibility = false;
@@ -129,6 +131,17 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
 //                    lineView.setVisibility(View.VISIBLE);
 //                }
 //            }
+//        }
+    }
+
+    private void initUser(){
+        LoginResponse.Item item = GlobaVariable.getInstance().item;
+        if (item != null) {
+            full_name.setText(item.getRealName());
+            position.setText(item.getDepName() + "-" + item.getPositionName());
+            if (!TextUtils.isEmpty(item.getIconUrl())) {
+                Picasso.get().load(item.getIconUrl()).into(avatar_image);
+            }
         }
     }
 
@@ -198,6 +211,7 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
         } else {
             initHeadIconFile();
         }
+        initUser();
     }
 
     private void initHeadIconFile() {
