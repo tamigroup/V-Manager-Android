@@ -128,10 +128,10 @@ public class ParticipantsFragment extends ViewPagerBaseFragment {
                         Picasso.get().load(elementsBean.getIconUrl()).into(header_image);
                     }
                     holder.setText(R.id.header_name, elementsBean.getUserName());
-                    BaseRatingBar rating_bar = holder.getView(R.id.rating_bar);
-                    rating_bar.setRating(elementsBean.getScore());
-                    holder.setText(R.id.item_content, elementsBean.getContent());
                 }
+                BaseRatingBar rating_bar = holder.getView(R.id.rating_bar);
+                rating_bar.setRating(elementsBean.getScore());
+                holder.setText(R.id.item_content, elementsBean.getContent());
             }
         };
         recyclerview.setAdapter(commonAdapter);
