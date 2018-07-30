@@ -16,6 +16,7 @@ import com.tami.vmanager.fragment.FeedbackFragment;
 import com.tami.vmanager.fragment.GroupChatFragment;
 import com.tami.vmanager.fragment.NoticeFragment;
 import com.tami.vmanager.utils.Constants;
+import com.tami.vmanager.utils.SPUtils;
 
 import cn.jiguang.api.JCoreInterface;
 
@@ -66,7 +67,10 @@ public class ConferenceServiceGroupActivity extends BaseActivity {
         }
         setTitleName(R.string.conference_service_group);
         //设置右边功能按钮图片
-        setTitleRightBtn(R.mipmap.icon_people);
+        Boolean is_invisible = (Boolean) SPUtils.get(this, Constants.IS_INVISIBLE, false);
+        if (null!=is_invisible && !is_invisible){
+            setTitleRightBtn(R.mipmap.icon_people);
+        }
 
         Bundle bundle = new Bundle();
         bundle.putInt(Constants.KEY_MEETING_ID, meetingId);
