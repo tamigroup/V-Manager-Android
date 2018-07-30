@@ -424,7 +424,7 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
                 UpdateUserIconResponse response = (UpdateUserIconResponse) res;
                 if (response.getCode() == 200) {
                     GlobaVariable.getInstance().item.setIconUrl(imageUrl);
-                    SPUtils.get(getContext(), Constants.PERSONAL_CENTER_ICONURL,imageUrl);
+                    SPUtils.save(Constants.FILE_KEY,Constants.SAVE_LOGIN_DATA,GlobaVariable.getInstance().item);
                     showToast(getString(R.string.replace_head_image, getString(R.string.success)));
                 } else {
                     showToast(getString(R.string.replace_head_image, getString(R.string.failure)));
