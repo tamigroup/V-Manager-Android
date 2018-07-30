@@ -145,7 +145,7 @@ public class EvaluatePageResponseBean extends MobileMessage implements Serializa
 
         public static class ElementsBean implements Serializable{
             /**
-             * anonymous : 0
+             * anonymous : 0   0是不匿名 1是匿名
              * content : 拉几
              * createOn : 1532672217000
              * flag : 1
