@@ -31,7 +31,9 @@ import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.ActivityManager;
 import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.CheckUpdate;
+import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
+import com.tami.vmanager.utils.SPUtils;
 import com.tami.vmanager.utils.Utils;
 import com.tami.vmanager.view.SwitchButton;
 
@@ -239,6 +241,9 @@ public class AccountSettingsActivity extends BaseActivity {
             try {
                 LoginOutResponse response = (LoginOutResponse) res;
                 if (response.getCode() == 200) {
+                    SPUtils.remove(AccountSettingsActivity.this,Constants.SAVE_LOGIN_DATA);
+                    SPUtils.remove(AccountSettingsActivity.this,Constants.TOKEN);
+                    SPUtils.remove(AccountSettingsActivity.this,Constants.AUTO_LOGIN);
                     GlobaVariable.getInstance().item = null;
                     ActivityManager.getInstance().finishAllActivity();
                     startActivity(new Intent(getApplicationContext(), LoginActivity.class));

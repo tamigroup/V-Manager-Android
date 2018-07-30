@@ -22,7 +22,9 @@ import com.tami.vmanager.http.HttpKey;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.ActivityManager;
 import com.tami.vmanager.manager.GlobaVariable;
+import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
+import com.tami.vmanager.utils.SPUtils;
 import com.tami.vmanager.utils.Utils;
 import com.tami.vmanager.utils.VerificationCode;
 
@@ -252,6 +254,7 @@ public class LoginActivity extends BaseActivity {
                 } else {
                     showToast(R.string.input_code);
                 }
+                SPUtils.put(this, Constants.AUTO_LOGIN,false);
                 return;
             }
             try {
@@ -260,8 +263,9 @@ public class LoginActivity extends BaseActivity {
                     LoginResponse.Item data = response.getData();
                     GlobaVariable.getInstance().item = data;
                     //                    Login_JIM(response.getData().getMobile(), response.getData().getPassword());
-                    bindRegistrationId(data.getId(), TaMiApplication.registrationID);
+                    bindRegistrationId(data, TaMiApplication.registrationID);
                 } else {
+                    SPUtils.put(this, Constants.AUTO_LOGIN,false);
                     if (response.getMessage().equals(getString(R.string.login_fail))) {
                         showToast(R.string.login_fail);
                     } else if (response.getMessage().equals(getString(R.string.no_phone_num))) {
@@ -283,13 +287,12 @@ public class LoginActivity extends BaseActivity {
 
     /**
      * 绑定用户RegistrationId
-     *
-     * @param id             userId
+     *  @param item id          userId
      * @param registrationID 极光注册Id
      */
-    private void bindRegistrationId(int id, String registrationID) {
+    private void bindRegistrationId(LoginResponse.Item item, String registrationID) {
         SetUserRegistrationIdRequestBean setUserRegistrationIdRequestBean = new SetUserRegistrationIdRequestBean();
-        setUserRegistrationIdRequestBean.setUserId(id);
+        setUserRegistrationIdRequestBean.setUserId(item.getId());
         setUserRegistrationIdRequestBean.setRegistrationId(registrationID);
         networkBroker.ask(setUserRegistrationIdRequestBean, (exl, res) -> {
             if (null != exl) {
@@ -300,13 +303,16 @@ public class LoginActivity extends BaseActivity {
                 SetUserRegistrationIdResponseBean response = (SetUserRegistrationIdResponseBean) res;
                 if (response.getCode() == 200) {
                     boolean data = response.isData();
+                    Logger.e("绑定极光："+data);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
+//            SPUtils.put(this,Constants.SAVE_LOGIN_DATA,item);
+            SPUtils.save(Constants.FILE_KEY,Constants.SAVE_LOGIN_DATA,item);
+            SPUtils.put(this,Constants.TOKEN,item.getToken());
+            SPUtils.put(this, Constants.AUTO_LOGIN,true);
             startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-            this.finish();
         });
     }
 

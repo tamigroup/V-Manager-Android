@@ -15,13 +15,17 @@ import android.widget.TextView;
 
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
+import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.fragment.HomeFragment;
 import com.tami.vmanager.fragment.HomeFragmentListener;
 import com.tami.vmanager.fragment.MeetingFragment;
 import com.tami.vmanager.fragment.PersonalCenterFragment;
 import com.tami.vmanager.manager.ActivityManager;
+import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.CheckUpdate;
+import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
+import com.tami.vmanager.utils.SPUtils;
 
 /**
  * 主页
@@ -47,6 +51,10 @@ public class HomeActivity extends BaseActivity implements TabLayout.OnTabSelecte
 
     @Override
     public void initView() {
+        LoginResponse.Item Login_item = (LoginResponse.Item) SPUtils.get(Constants.FILE_KEY, Constants.SAVE_LOGIN_DATA);
+        if (Login_item != null){
+            GlobaVariable.getInstance().item = Login_item;
+        }
         home_tab = findViewById(R.id.home_tab);
 
         CheckUpdate.getInstance(this,0);

@@ -137,6 +137,7 @@ public class GroupMembersActivty extends BaseActivity {
             case R.id.out_meeting:
                 //跳到会议概览
                 Intent intent_meetingOverv = new Intent(getApplicationContext(), MeetingOverviewActivity.class);
+                intent_meetingOverv.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent_meetingOverv.putExtra(Constants.KEY_MEETING_ID, meetingId);
                 startActivity(intent_meetingOverv);
                 break;
