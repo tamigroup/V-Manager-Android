@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.tami.vmanager.activity.HomeActivity;
 import com.tami.vmanager.utils.Logger;
 
 import org.json.JSONException;
@@ -55,10 +56,10 @@ public class MessageReceiver extends BroadcastReceiver {
                 Logger.d("[极光MessageReceiver] 用户点击打开了通知");
 
                 //打开自定义的Activity
-//                Intent i = new Intent(context, HomeActivity.class);
-//                i.putExtras(bundle);
-//                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
-//                context.startActivity(i);
+                Intent i = new Intent(context, HomeActivity.class);
+                i.putExtras(bundle);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
+                context.startActivity(i);
 
             } else if (JPushInterface.ACTION_RICHPUSH_CALLBACK.equals(intent.getAction())) {
                 Logger.d("[极光MessageReceiver] 用户收到到RICH PUSH CALLBACK: " + bundle.getString(JPushInterface.EXTRA_EXTRA));
