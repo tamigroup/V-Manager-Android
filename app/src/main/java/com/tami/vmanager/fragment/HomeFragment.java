@@ -32,6 +32,7 @@ import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 
 import com.tami.vmanager.message.MessageEvent;
+
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
@@ -340,11 +341,34 @@ public class HomeFragment extends BaseFragment implements HomeFragmentListener {
         if (requestCode == Constants.CREATE_MEETING) {
             EventBus.getDefault().post(new MessageEvent(true));
             getIndex();
+            getBannerData(getGroupIndex());
         }
     }
 
     @Override
     public void tabOnCLick() {
         getIndex();
+        getBannerData(getGroupIndex());
+    }
+
+    /**
+     * 获取选中下标
+     *
+     * @return
+     */
+    private int getGroupIndex() {
+        int index  = 0;
+        switch (time_radio_group.getCheckedRadioButtonId()){
+            case R.id.today_rb:
+                index = 0;
+                break;
+            case R.id.month_rb:
+                index = 1;
+                break;
+            case R.id.year_rb:
+                index = 2;
+                break;
+        }
+        return index;
     }
 }

@@ -67,8 +67,7 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
 
     private ConstraintLayout serviceGroup;//会议服务群
     private ConstraintLayout sponsorMember; //主办方成员
-    private TextView meetingDetails;//会议详情
-    private TextView vipDetails;//VIP详情
+    private ConstraintLayout vipDetails;//VIP详情
 
     private int meetingId;//会议ID
     private GetMeetingResponse.Item meetingInfo;
@@ -112,10 +111,8 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
         serviceGroup = findViewById(R.id.enter_meeting_service_group_layout);
         //主办方成员
         sponsorMember = findViewById(R.id.enter_meeting_sponsor_member_layout);
-        //会议详情
-        meetingDetails = findViewById(R.id.enter_meeting_meeting_details);
         //VIP详情
-        vipDetails = findViewById(R.id.enter_meeting_vip_details);
+        vipDetails = findViewById(R.id.enter_meeting_vip_details_layout);
 
         confirmEnterMeetingDialog = new ConfirmEnterMeetingDialog(this);
         confirmEnterMeetingDialog.setLeftStr(getString(R.string.view_only));
@@ -128,7 +125,6 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
         actualNumber.setOnClickListener(this);
         serviceGroup.setOnClickListener(this);
         sponsorMember.setOnClickListener(this);
-        meetingDetails.setOnClickListener(this);
         vipDetails.setOnClickListener(this);
         sale_phone.setOnClickListener(this);
     }
@@ -229,11 +225,7 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
                 //主办方成员
                 sponsorMember();
                 break;
-            case R.id.enter_meeting_meeting_details:
-                //会议详情
-                meetingDetails();
-                break;
-            case R.id.enter_meeting_vip_details:
+            case R.id.enter_meeting_vip_details_layout:
                 //VIP详情
                 vipDetails();
                 break;
@@ -406,13 +398,6 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
         intent_sponsorMember.putExtra(Constants.KEY_MEETING_ID, meetingId);
         intent_sponsorMember.putExtra(Constants.IS_VZHIHUI,meetingInfo.isVzh);
         startActivity(intent_sponsorMember);
-    }
-
-    /**
-     * 会议详情
-     */
-    private void meetingDetails() {
-
     }
 
     /**
