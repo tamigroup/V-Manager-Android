@@ -659,6 +659,8 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
                     CircleImageView avatarImage = holder.getView(R.id.icmr_avatar_image);
                     if (!TextUtils.isEmpty(contentList.iconUrl)) {
                         Picasso.get().load(contentList.iconUrl).into(avatarImage);
+                    }else{
+                        defaultImage.setBackgroundResource(R.mipmap.touxiang);
                     }
                     AppCompatImageView deleteImage = holder.getView(R.id.icmr_delete_image);
                     deleteImage.setOnClickListener((View v) -> {
@@ -936,11 +938,13 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
             return false;
         }
 
-        if (TextUtils.isEmpty(estimatedNumberPeople.getText())) {
+        if (TextUtils.isEmpty(estimatedNumberPeople.getText())||Integer.parseInt(estimatedNumberPeople.getText().toString())==0) {
             showToast(getString(R.string.please_enter_, getString(R.string.yudingrenshu)));
+            return false;
         }
-        if (TextUtils.isEmpty(bottomNumberPeople.getText())) {
+        if (TextUtils.isEmpty(bottomNumberPeople.getText())||Integer.parseInt(bottomNumberPeople.getText().toString())==0) {
             showToast(getString(R.string.please_enter_, getString(R.string.baodingrenshu)));
+            return false;
         }
         return true;
     }

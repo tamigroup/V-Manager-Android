@@ -157,7 +157,7 @@
     <!--    会议概览    -->
     <string name="meeting_ganlan">会议概览</string>
     <string name="flow_chart">会议流程</string>
-    <string name="predetermined_number">%s\n预定人数</string>
+    <string name="predetermined_number">%s\n预计人数</string>
     <string name="bottom_number">%s\n保底人数</string>
     <string name="actual_number">%s\n实到人数</string>
     <string name="create_process">创建流程</string>

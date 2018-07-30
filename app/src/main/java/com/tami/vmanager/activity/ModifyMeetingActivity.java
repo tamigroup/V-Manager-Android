@@ -929,11 +929,13 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
             return false;
         }
 
-        if (TextUtils.isEmpty(estimatedNumberPeople.getText())) {
+        if (TextUtils.isEmpty(estimatedNumberPeople.getText())||Integer.parseInt(estimatedNumberPeople.getText().toString())==0) {
             showToast(getString(R.string.please_enter_, getString(R.string.yudingrenshu)));
+            return false;
         }
-        if (TextUtils.isEmpty(bottomNumberPeople.getText())) {
+        if (TextUtils.isEmpty(bottomNumberPeople.getText())||Integer.parseInt(bottomNumberPeople.getText().toString())==0) {
             showToast(getString(R.string.please_enter_, getString(R.string.baodingrenshu)));
+            return false;
         }
         return true;
     }

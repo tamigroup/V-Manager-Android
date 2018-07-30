@@ -6,7 +6,7 @@
     <string name="please_enter_">请输入%s</string>
     <string name="sponsor_name">主办方名称</string>
     <string name="please_choose_">请选择%s</string>
-    <string name="yudingrenshu">预定人数</string>
+    <string name="yudingrenshu">预计人数</string>
     <string name="baodingrenshu">保底人数</string>
 
     <string name="please_choose_node_time">请选择%s时间</string>
