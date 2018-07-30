@@ -29,8 +29,10 @@ import com.tami.vmanager.entity.UploadImageRequest;
 import com.tami.vmanager.entity.UploadImageResponse;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
+import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.GetImagePath;
 import com.tami.vmanager.utils.Logger;
+import com.tami.vmanager.utils.SPUtils;
 import com.tami.vmanager.view.CircleImageView;
 
 import java.io.File;
@@ -422,6 +424,7 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
                 UpdateUserIconResponse response = (UpdateUserIconResponse) res;
                 if (response.getCode() == 200) {
                     GlobaVariable.getInstance().item.setIconUrl(imageUrl);
+                    SPUtils.get(getContext(), Constants.PERSONAL_CENTER_ICONURL,imageUrl);
                     showToast(getString(R.string.replace_head_image, getString(R.string.success)));
                 } else {
                     showToast(getString(R.string.replace_head_image, getString(R.string.failure)));

@@ -115,4 +115,6 @@ public class Constants {
     public static final String SAVE_LOGIN_DATA = "save_login_data";
     //sp保存对象key
     public static final String FILE_KEY = "file_key";
+    //sp保存 PersonalCenterFragment IconUrl imageUrl
+    public static final String PERSONAL_CENTER_ICONURL = "personal_center_iconurl";
 }
