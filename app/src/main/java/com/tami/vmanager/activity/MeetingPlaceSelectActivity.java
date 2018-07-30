@@ -126,13 +126,19 @@ public class MeetingPlaceSelectActivity extends BaseActivity {
     }
 
     private void confirm() {
-        Intent intent = new Intent();
         if (onClick != -1) {
+            Intent intent = new Intent();
             GetMeetingAddressListResponse.Array.Item item = listData.get(onClick);
-            intent.putExtra(Constants.RESULT_DIDIAN, item);
+            if (item.isState) {
+                intent.putExtra(Constants.RESULT_DIDIAN, item);
+                setResult(Constants.CREATE_MEETING_DIDIAN, intent);
+                finish();
+            } else {
+                showToast(getString(R.string.please_choose_, getString(R.string.meeting_place)));
+            }
+        } else {
+            showToast(getString(R.string.please_choose_, getString(R.string.meeting_place)));
         }
-        setResult(Constants.CREATE_MEETING_DIDIAN, intent);
-        finish();
     }
 
     /**

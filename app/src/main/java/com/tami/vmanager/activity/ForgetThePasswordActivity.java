@@ -208,7 +208,11 @@ public class ForgetThePasswordActivity extends BaseActivity {
      */
     private void confirm() {
         if (TextUtils.isEmpty(value.getText())) {
-            showToast("请输入验证码！");
+            showToast(getString(R.string.please_input_authentication_code));
+            return;
+        }
+        if (value.getText().length() < 6) {
+            showToast(getString(R.string.please_enter_the_correct_verification_code));
             return;
         }
         verificationCode.stop();

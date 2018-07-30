@@ -24,7 +24,7 @@
         android:layout_centerInParent="true"
         android:layout_marginTop="@dimen/dp_70"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_launcher_background"
+        android:src="@mipmap/touxiang"
         app:civ_border_color="@android:color/white"
         app:civ_border_width="0dp"
         app:layout_constraintEnd_toEndOf="parent"

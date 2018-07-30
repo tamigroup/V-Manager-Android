@@ -377,6 +377,7 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
     public void onMessageEventMain(MessageEvent event) {
         if (event.isRefresh()) {
             CurPage = 1;
+            pullToRefreshLayout.setCanLoadMore(true);
             query(true);
         }
     }

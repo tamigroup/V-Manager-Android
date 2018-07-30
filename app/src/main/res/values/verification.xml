@@ -38,5 +38,7 @@
 
     <string name="continue_to_create_the_process">继续创建流程</string>
 
+    <string name="please_enter_the_correct_verification_code">请输入正确的验证码</string>
+
 
 </resources>
