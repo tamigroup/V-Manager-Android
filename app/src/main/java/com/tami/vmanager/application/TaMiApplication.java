@@ -7,7 +7,7 @@ import android.support.multidex.MultiDex;
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.readystatesoftware.chuck.ChuckInterceptor;
-//import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.LeakCanary;
 import com.tami.vmanager.BuildConfig;
 import com.tami.vmanager.utils.Constants;
 import com.tencent.bugly.Bugly;
@@ -100,10 +100,10 @@ public class TaMiApplication extends Application {
     }
 
     private void initLeakCanary() {
-//        if (LeakCanary.isInAnalyzerProcess(this)) {
-//            return;
-//        }
-//        LeakCanary.install(this);
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return;
+        }
+        LeakCanary.install(this);
     }
 
     private void initStetho() {
