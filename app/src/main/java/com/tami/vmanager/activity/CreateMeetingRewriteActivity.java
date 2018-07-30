@@ -659,8 +659,6 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
                     CircleImageView avatarImage = holder.getView(R.id.icmr_avatar_image);
                     if (!TextUtils.isEmpty(contentList.iconUrl)) {
                         Picasso.get().load(contentList.iconUrl).into(avatarImage);
-                    }else{
-                        defaultImage.setBackgroundResource(R.mipmap.touxiang);
                     }
                     AppCompatImageView deleteImage = holder.getView(R.id.icmr_delete_image);
                     deleteImage.setOnClickListener((View v) -> {

@@ -12,7 +12,7 @@
         android:layout_width="@dimen/dp_40"
         android:layout_height="@dimen/dp_40"
         android:layout_marginLeft="@dimen/dp_20"
-        android:src="@mipmap/icon_star"
+        android:src="@mipmap/touxiang"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
