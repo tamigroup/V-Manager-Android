@@ -156,7 +156,7 @@ public class NetworkBroker extends BaseBroker {
                         if (showLoading)
                             loadingSubject.onNext(false);
                         Logger.d("接受报文: 错误" + CancelTag + ex1.getLocalizedMessage());
-                        Toast.makeText(context.getApplicationContext(), "错误：" + ex1.getMessage(), Toast.LENGTH_LONG).show();
+//                        Toast.makeText(context.getApplicationContext(), "错误：" + ex1.getMessage(), Toast.LENGTH_LONG).show();
                         callback.apply(ex1, null);
                         return;
                     }
