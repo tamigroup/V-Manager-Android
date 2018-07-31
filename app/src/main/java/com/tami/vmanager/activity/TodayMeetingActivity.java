@@ -10,9 +10,9 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
-import com.jwenfeng.library.pulltorefresh.BaseRefreshListener;
-import com.jwenfeng.library.pulltorefresh.PullToRefreshLayout;
-import com.jwenfeng.library.pulltorefresh.ViewStatus;
+import com.tami.pulltorefresh.BaseRefreshListener;
+import com.tami.pulltorefresh.PullToRefreshLayout;
+import com.tami.pulltorefresh.ViewStatus;
 import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.RecycleViewDivider;
 import com.tami.vmanager.base.BaseActivity;

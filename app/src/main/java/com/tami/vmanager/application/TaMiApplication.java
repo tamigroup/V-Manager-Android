@@ -4,8 +4,13 @@ import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
+import com.facebook.stetho.Stetho;
+import com.facebook.stetho.okhttp3.StethoInterceptor;
+import com.readystatesoftware.chuck.ChuckInterceptor;
+import com.squareup.leakcanary.LeakCanary;
 import com.tami.vmanager.BuildConfig;
 import com.tami.vmanager.utils.Constants;
+import com.tami.vmanager.utils.Utils;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -49,10 +54,6 @@ public class TaMiApplication extends Application {
 
         initJIM();
 
-        initLeakCanary();
-
-        initStetho();
-
 //        initCrashHandler();
     }
 
@@ -75,7 +76,7 @@ public class TaMiApplication extends Application {
     private void initBugly() {
         CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(this);
         strategy.setAppChannel("tencent");
-        strategy.setAppVersion("1.0");
+        strategy.setAppVersion(Utils.getLocalVersionName(this));
         strategy.setAppPackageName("com.tami.vmanager");
         CrashReport.setIsDevelopmentDevice(this, BuildConfig.DEBUG);
         CrashReport.initCrashReport(getApplicationContext(), "93294bd277", BuildConfig.DEBUG, strategy);
@@ -83,26 +84,31 @@ public class TaMiApplication extends Application {
     }
 
     private void initOkHttp() {
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                //.addInterceptor(new ChuckInterceptor(this))
-                //.addNetworkInterceptor(new StethoInterceptor())
+        OkHttpClient.Builder builder = new OkHttpClient.Builder()
                 .addInterceptor(new LoggerInterceptor(Constants.LOG_TAG, true))
                 .connectTimeout(30000L, TimeUnit.MILLISECONDS)
-                .readTimeout(30000L, TimeUnit.MILLISECONDS)
-                //其他配置
-                .build();
+                .readTimeout(30000L, TimeUnit.MILLISECONDS);
 
+        if (BuildConfig.DEBUG){
+            builder.addInterceptor(new ChuckInterceptor(this));
+            builder.addNetworkInterceptor(new StethoInterceptor());
+
+            initLeakCanary();
+
+            initStetho();
+        }
+        OkHttpClient okHttpClient = builder.build();
         OkHttpUtils.initClient(okHttpClient);
     }
 
     private void initLeakCanary() {
-//        if (LeakCanary.isInAnalyzerProcess(this)) {
-//            return;
-//        }
-//        LeakCanary.install(this);
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return;
+        }
+        LeakCanary.install(this);
     }
 
     private void initStetho() {
-        //Stetho.initializeWithDefaults(this);
+        Stetho.initializeWithDefaults(this);
     }
 }

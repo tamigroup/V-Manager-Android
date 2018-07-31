@@ -165,8 +165,8 @@
 -keep class com.zhy.**{*;}
 -dontwarn com.bigkoo.**
 -keep class com.bigkoo.**{*;}
--dontwarn com.readystatesoftware.chuck.**
--keep class com.readystatesoftware.chuck.**{*;}
+#-dontwarn com.readystatesoftware.chuck.**
+#-keep class com.readystatesoftware.chuck.**{*;}
 -dontwarn com.github.promeg.**
 -keep class com.github.promeg.**{*;}
 -dontwarn com.jwenfeng.library.**

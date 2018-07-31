@@ -11,10 +11,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.jwenfeng.library.pulltorefresh.BaseRefreshListener;
-import com.jwenfeng.library.pulltorefresh.PullToRefreshLayout;
-import com.jwenfeng.library.pulltorefresh.ViewStatus;
 import com.squareup.picasso.Picasso;
+import com.tami.pulltorefresh.BaseRefreshListener;
+import com.tami.pulltorefresh.PullToRefreshLayout;
+import com.tami.pulltorefresh.ViewStatus;
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.ViewPagerBaseFragment;
 import com.tami.vmanager.entity.EvaluatePageRequestBean;
@@ -31,6 +31,8 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
+
+
 
 /**
  * Created by Tang on 2018/7/5
