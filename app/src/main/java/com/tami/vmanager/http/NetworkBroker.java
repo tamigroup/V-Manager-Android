@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tami.vmanager.BuildConfig;
 import com.tami.vmanager.R;
 import com.tami.vmanager.activity.LoginActivity;
 import com.tami.vmanager.entity.FileMobileMessage;

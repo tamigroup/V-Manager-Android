@@ -28,7 +28,7 @@ public class GetMeetingResponse extends MobileMessage implements Serializable {
         public static final long serialVersionUID = 4172542378039500196L;
 
         public String saleUserName;	/*小塔米*/
-        public int saleUserId;	/*1*/
+        public int saleUserId;	/*会议创建人 销售Id*/
         public String meetingAddress;	/*满月楼*/
         public String eoUrl;	/*http://vgj.oss-cn-beijing.aliyuncs.com/app/af20180704180454_87882.png*/
         public int actualNum;	/*0*/
