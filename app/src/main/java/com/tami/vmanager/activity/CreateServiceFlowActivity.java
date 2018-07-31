@@ -87,6 +87,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
 
     //日期选择框
     private PopupWindow popupWindow;
+    private int meetingDayIndex = 0;
     private List<GetMeetingDayResponse.Array.Item> meetingDayList;
     private CommonAdapter<GetMeetingDayResponse.Array.Item> meetingDayAdapter;
     //选择角色
@@ -646,6 +647,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
                     popupWindow.dismiss();
                     String dataStr = dataView.getText().toString();
                     view.setText(dataStr);
+                    meetingDayIndex = position;
                     getMeetingItems(dataStr);
                     if (bottomData != null) {
                         bottomData.clear();
@@ -803,8 +805,18 @@ public class CreateServiceFlowActivity extends BaseActivity {
                             if (flag) {
                                 showPopWindow(dateSelected);
                             } else {
-                                setResult(Constants.CREATE_FLOW);
-                                finish();
+                                if (meetingDayList != null && meetingDayList.size() > 1) {
+                                    if (meetingDayIndex == meetingDayList.size() - 1) {
+                                        setResult(Constants.CREATE_FLOW);
+                                        finish();
+                                    } else {
+                                        getMeetingItems(meetingDayList.get(++meetingDayIndex).day);
+                                        dateSelected.setText(meetingDayList.get(meetingDayIndex).day);
+                                    }
+                                } else {
+                                    setResult(Constants.CREATE_FLOW);
+                                    finish();
+                                }
                             }
                         } else {
                             showToast(getString(R.string.save_flow, getString(R.string.failure)));

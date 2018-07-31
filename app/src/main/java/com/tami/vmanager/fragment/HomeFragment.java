@@ -16,6 +16,7 @@ import com.tami.vmanager.R;
 import com.tami.vmanager.activity.CreateMeetingRewriteActivity;
 import com.tami.vmanager.activity.FollowMeetingsActivity;
 import com.tami.vmanager.activity.HomeActivity;
+import com.tami.vmanager.activity.MyCreateActivity;
 import com.tami.vmanager.activity.SearchActivity;
 import com.tami.vmanager.activity.TodayMeetingActivity;
 import com.tami.vmanager.activity.WaitMeetingsActivity;
@@ -50,6 +51,8 @@ public class HomeFragment extends BaseFragment implements HomeFragmentListener {
     private TextView my_attention_num;//我的关注数
     private ConstraintLayout conference_layout;//待办会议布局
     private TextView conference_num;//待办会议数
+    private ConstraintLayout myCreateLayout;//我的创建
+    private TextView myCreateNum;//我的创建数
     private AppCompatImageView createMeeting;
 
     private BottomSheetDialog mBottomSheetDialog;
@@ -92,6 +95,9 @@ public class HomeFragment extends BaseFragment implements HomeFragmentListener {
         conference_num = findViewById(R.id.home_pending_conference_num);
         createMeeting = findViewById(R.id.home_create_meeting);
 
+        myCreateLayout = findViewById(R.id.home_my_create_layout);
+        myCreateNum = findViewById(R.id.home_my_create_num);
+
         //高管财务总负责人
         chief_group = findViewById(R.id.chief_group);
         time_radio_group = findViewById(R.id.time_radio_group);
@@ -116,6 +122,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentListener {
         today_meeting_layout.setOnClickListener(this);
         my_attention_layout.setOnClickListener(this);
         conference_layout.setOnClickListener(this);
+        myCreateLayout.setOnClickListener(this);
         createMeeting.setOnClickListener(this);
         ((HomeActivity) getActivity()).setHomeFragmentListener(this);
     }
@@ -222,6 +229,10 @@ public class HomeFragment extends BaseFragment implements HomeFragmentListener {
                 //待办会议
                 pendingConference();
                 break;
+            case R.id.home_my_create_layout:
+                //我的创建
+                myCreate();
+                break;
             case R.id.home_create_meeting:
                 //主页创建会议
                 createMeeting();
@@ -256,6 +267,14 @@ public class HomeFragment extends BaseFragment implements HomeFragmentListener {
     private void pendingConference() {
         startActivity(new Intent(getActivity(), WaitMeetingsActivity.class));
     }
+
+    /**
+     * 我的创建
+     */
+    private void myCreate() {
+        startActivity(new Intent(getActivity(), MyCreateActivity.class));
+    }
+
 
     /**
      * 创建会议
@@ -326,6 +345,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentListener {
                         oday_meeting_num.setText(String.valueOf(gItem.getTodayMeetingsCount()));
                         my_attention_num.setText(String.valueOf(gItem.getMyFollowMeetingsCount()));
                         conference_num.setText(String.valueOf(gItem.getWaitMeetingsCount()));
+                        myCreateNum.setText(String.valueOf(gItem.getWaitMeetingsCount()));
                     }
                 }
             } catch (Exception e) {
