@@ -33,7 +33,7 @@ import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
-import com.tami.vmanager.utils.TimeUtils;
+import com.tami.vmanager.utils.SPUtils;
 import com.tami.vmanager.utils.Utils;
 import com.tami.vmanager.view.MeetingStateView;
 
@@ -237,6 +237,7 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
                 Intent intent1 = new Intent(getApplicationContext(), ChangeDemandActivity.class);
                 intent1.putExtra(Constants.KEY_MEETING_ID, meetingId);
                 intent1.putExtra(Constants.IS_VZHIHUI, meetingInfo.isVzh);
+                intent1.putExtra(Constants.CREATE_MEETING_SALEUSER, meetingInfo.saleUserId);
                 startActivity(intent1);
                 break;
             case R.id.meeting_overview_v_emind:
@@ -326,6 +327,7 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
     private void initUIdata(GetMeetingResponse.Item item) {
         if (item != null) {
             this.meetingInfo = item;
+            SPUtils.put(this,Constants.CREATE_MEETING_SALEUSER,meetingInfo.saleUserId);
             meetingName.setText(item.meetingName);
 //            StringBuilder time = new StringBuilder();
 //            String startTime = TimeUtils.milliseconds2String(item.startTime,TimeUtils.DATE_MMDDHHMM_SLASH);

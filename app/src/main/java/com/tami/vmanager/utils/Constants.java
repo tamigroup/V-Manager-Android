@@ -117,4 +117,6 @@ public class Constants {
     public static final String FILE_KEY = "file_key";
     //sp保存 PersonalCenterFragment IconUrl imageUrl
     public static final String PERSONAL_CENTER_ICONURL = "personal_center_iconurl";
+    //会议创建者 销售Id
+    public static final String CREATE_MEETING_SALEUSER  = "create_meeting_saleuser";
 }

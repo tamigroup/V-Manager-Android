@@ -394,6 +394,7 @@
     <string name="has_in_meeting">该用户已经在会议群组中</string>
     <string name="anonymous">匿名用户</string>
     <string name="login_overdue">登录过期</string>
+    <string name="no_permission_to_reply">权限不足，无法回复</string>
 
 
 </resources>

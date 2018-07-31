@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tami.vmanager.BuildConfig;
 import com.tami.vmanager.R;
 import com.tami.vmanager.activity.LoginActivity;
 import com.tami.vmanager.entity.FileMobileMessage;
@@ -41,8 +40,8 @@ public class NetworkBroker extends BaseBroker {
 
     private String CancelTag = NetworkBroker.class.getSimpleName();
     //正式环境
-//    public static final String BASE_URI = "https://vgjapi.tamiyun.com/apis/tm/";
-    public static final String BASE_URI = BuildConfig.API_SERVER_URL;
+    public static final String BASE_URI = "https://vgjapi.tamiyun.com/apis/tm/";
+//    public static final String BASE_URI = BuildConfig.API_SERVER_URL;
     //测试
 //    public static final String BASE_URI = "http://192.168.103.104:8080/apis/tm/";
     //    public static final String BASE_URI = "http://192.168.1.50:8300/tm/";

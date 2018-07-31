@@ -25,6 +25,7 @@ import com.tami.vmanager.entity.ChangeDemandReplayRequestBean;
 import com.tami.vmanager.entity.ChangeDemandReplayResponseBean;
 import com.tami.vmanager.entity.ChangeDemandRequestBean;
 import com.tami.vmanager.entity.ChangeDemandResponseBean;
+import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.entity.MobileMessage;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
@@ -57,6 +58,7 @@ public class ChangeDemandActivity extends BaseActivity {
     private List<String> fastRepayList;
     private int isVzh;
     private TextView no_v;
+    private int create_meeting_saleuser;
 
     @Override
     public boolean isTitle() {
@@ -100,6 +102,7 @@ public class ChangeDemandActivity extends BaseActivity {
         if (null != intent) {
             meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 1);
             isVzh = intent.getIntExtra(Constants.IS_VZHIHUI, 0);
+            create_meeting_saleuser = intent.getIntExtra(Constants.CREATE_MEETING_SALEUSER, 0);
         }
         if (isVzh == 1) {
             recyclerView.setVisibility(View.VISIBLE);
@@ -158,10 +161,19 @@ public class ChangeDemandActivity extends BaseActivity {
                     showToast(getString(R.string.y_has_replay));
                     return;
                 }
+
+                LoginResponse.Item item = GlobaVariable.getInstance().item;
+                if (null != item) {
+                    int userId = item.getId();
+                    if (userId == create_meeting_saleuser) {
+                        //快速回复
+                        fastReplay(holder, position);
+                    } else {
+                        showToast(R.string.no_permission_to_reply);
+                    }
+                }
                 //弹出EditText回复
                 //replay(holder, position);
-                //快速回复
-                fastReplay(holder, position);
             }
 
             @Override
@@ -329,10 +341,10 @@ public class ChangeDemandActivity extends BaseActivity {
             listData.clear();
             listData = null;
         }
-//        if(fastRepayList!=null){
-//            fastRepayList.clear();
-//            fastRepayList = null;
-//        }
+        //        if(fastRepayList!=null){
+        //            fastRepayList.clear();
+        //            fastRepayList = null;
+        //        }
         if (networkBroker != null) {
             networkBroker.cancelAllRequests();
         }

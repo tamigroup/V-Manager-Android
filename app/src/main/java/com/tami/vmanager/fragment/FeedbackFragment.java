@@ -25,6 +25,7 @@ import com.tami.vmanager.entity.ChangeDemandReplayResponseBean;
 import com.tami.vmanager.entity.ChangeDemandRequestBean;
 import com.tami.vmanager.entity.ChangeDemandResponseBean;
 import com.tami.vmanager.entity.GetMeetingResponse;
+import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.entity.MobileMessage;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
@@ -62,6 +63,7 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
     private TextView empty_tv;
     private TextView vzhihui_tv;
     private boolean isLoadMore = false;
+    private int saleUserId;
 
     public FeedbackFragment() {
     }
@@ -113,11 +115,13 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
             vzhihui_tv.setVisibility(View.VISIBLE);
             return;
         }
+        saleUserId = item.saleUserId;
         listData = new ArrayList<>();
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         commonAdapter = new CommonAdapter<ChangeDemandResponseBean.DataBean.ElementsBean>(getActivity(), R.layout.item_feedback, listData) {
             @Override
             protected void convert(ViewHolder holder, ChangeDemandResponseBean.DataBean.ElementsBean item, int position) {
+                holder.setIsRecyclable(false);
                 if (!item.getRequestIconUrl().trim().isEmpty()) {
                     CircleImageView circleImageView = holder.getView(R.id.in_avatar_image);
                     Picasso.get().load(item.getRequestIconUrl()).into(circleImageView);
@@ -161,10 +165,19 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
                     showToast(getString(R.string.y_has_replay));
                     return;
                 }
+
+                LoginResponse.Item LoginItem = GlobaVariable.getInstance().item;
+                if (null != LoginItem) {
+                    int userId = LoginItem.getId();
+                    if (userId == saleUserId){
+                        //快速回复
+                        fastReplay(view, holder, position);
+                    }else{
+                        showToast(R.string.no_permission_to_reply);
+                    }
+                }
                 //弹出EditText回复
                 //replay(view, holder, position);
-                //快速回复
-                fastReplay(view, holder, position);
             }
 
             @Override
