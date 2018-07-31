@@ -90,9 +90,6 @@ public class ConferenceServiceGroupActivity extends BaseActivity {
         viewPagerOnTabSelectedListener = new TabLayout.ViewPagerOnTabSelectedListener(viewPager);
         tabLayout.addOnTabSelectedListener(viewPagerOnTabSelectedListener);
         viewPager.setCurrentItem(1);
-//        tabLayout.postDelayed(() -> {
-//            tabLayout.getTabAt(1).select();
-//        }, 100);
     }
 
     @Override
