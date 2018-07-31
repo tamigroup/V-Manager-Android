@@ -14,7 +14,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.RecycleViewDivider;
@@ -63,7 +62,7 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
     private Button confirmBtn;
     private List<GetSelectMeetingItemsUserResponse.Array.Item> listData;
     private CommonAdapter<GetSelectMeetingItemsUserResponse.Array.Item> commonAdapter;
-    private GetMeetingItemsByMeetingIdResponse.Array.Item item;//环节信息
+    private GetMeetingItemsByMeetingIdResponse.Array.Item gmibmirItem;//环节信息
 
     public static final int REQUEST_CALL_PHONE = 5;
     public static final String[] PERMISSIONS_CALL_PHONE = {Manifest.permission.CALL_PHONE};
@@ -127,18 +126,20 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
 
         Intent intent = getIntent();
         if (intent != null) {
-            item = (GetMeetingItemsByMeetingIdResponse.Array.Item) intent.getSerializableExtra(Constants.KEY_MEETING_LINK);
-            if (item != null) {
-                content.setText(TimeUtils.date2String(new Date(item.startOn), TimeUtils.DATE_HHMM_SLASH) + item.meetingItemName);
+            gmibmirItem = (GetMeetingItemsByMeetingIdResponse.Array.Item) intent.getSerializableExtra(Constants.KEY_MEETING_LINK);
+            if (gmibmirItem != null) {
+                if(gmibmirItem.startOn !=0){
+                    content.setText(TimeUtils.date2String(new Date(gmibmirItem.startOn), TimeUtils.DATE_HHMM_SLASH) + gmibmirItem.meetingItemName);
+                }
             }
         }
 
         //已确认隐藏功能按钮
-        if (item.selectStatus == 1) {
+        if (gmibmirItem.selectStatus == 1) {
             constraintLayout.setVisibility(View.GONE);
             addPerson.setVisibility(View.GONE);
             confirmBtn.setVisibility(View.GONE);
-        } else if (item.selectStatus == 2) {
+        } else if (gmibmirItem.selectStatus == 2) {
             switchbtn.setChecked(false);
             important.setText(getString(R.string.yes));
             confirmBtn.setText(getString(R.string.again_identification));
@@ -162,9 +163,14 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
                 holder.setText(R.id.mlc_position, item.positionName);
                 AppCompatImageView phone = holder.getView(R.id.mlc_phone);
                 AppCompatImageView delete_person = holder.getView(R.id.delete_person_);
-                delete_person.setOnClickListener((View v) -> {
-                    checkAddMeetingItemUser(position, item.id);
-                });
+                if (gmibmirItem.selectStatus == 1) {
+                    delete_person.setVisibility(View.GONE);
+                } else {
+                    delete_person.setVisibility(View.VISIBLE);
+                    delete_person.setOnClickListener((View v) -> {
+                        checkAddMeetingItemUser(position, item.id);
+                    });
+                }
                 phone.setOnClickListener(new View.OnClickListener() {
                     @Override
                     @AfterPermissionGranted(REQUEST_CALL_PHONE)
@@ -221,7 +227,7 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
             listData.clear();
             listData = null;
         }
-        item = null;
+        gmibmirItem = null;
         if (networkBroker != null) {
             networkBroker.cancelAllRequests();
             networkBroker = null;
@@ -279,7 +285,7 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
      */
     private void getSelectMeetingItemsUser() {
         GetSelectMeetingItemsUserRequest gsmiur = new GetSelectMeetingItemsUserRequest();
-        gsmiur.setMeetingItemSetId(item.meetingItemSetId);
+        gsmiur.setMeetingItemSetId(gmibmirItem.meetingItemSetId);
         networkBroker.ask(gsmiur, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);
@@ -313,7 +319,7 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
         if (userItem != null) {
             camiur.setUserId(userItem.getId());
         }
-        camiur.setMeetingItemSetId(item.meetingItemSetId);
+        camiur.setMeetingItemSetId(gmibmirItem.meetingItemSetId);
         networkBroker.ask(camiur, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);
@@ -325,7 +331,7 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
                     if (index == -1) {
                         //添加负责人页面
                         Intent intent = new Intent(getApplicationContext(), AddPersonChargeActivty.class);
-                        intent.putExtra(Constants.KEY_MEETING_ITEM_SETID, item.meetingItemSetId);
+                        intent.putExtra(Constants.KEY_MEETING_ITEM_SETID, gmibmirItem.meetingItemSetId);
                         startActivityForResult(intent, Constants.ADD_PERSON_CHARGE);
                     } else {
                         //删除负责人功能
@@ -350,7 +356,7 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
     public void deleteMeetingItemsUser(int index, int userId) {
         DeleteMeetingItemsUserRequest dmiur = new DeleteMeetingItemsUserRequest();
         dmiur.setUserId(userId);
-        dmiur.setMeetingItemSetId(item.meetingItemSetId);
+        dmiur.setMeetingItemSetId(gmibmirItem.meetingItemSetId);
         networkBroker.ask(dmiur, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);
@@ -381,7 +387,7 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
         if (userItem != null) {
             smisr.setUserId(userItem.getId());
         }
-        smisr.setMeetingItemSetId(item.meetingItemSetId);
+        smisr.setMeetingItemSetId(gmibmirItem.meetingItemSetId);
         smisr.setStatus(switchbtn.isChecked() ? 1 : 2);
         networkBroker.ask(smisr, (ex1, res) -> {
             if (null != ex1) {
@@ -391,7 +397,7 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
             try {
                 SetMeetingItemsStatusResponse response = (SetMeetingItemsStatusResponse) res;
                 if (response.getCode() == 200) {
-
+                    finish();
                 }
                 showToast(response.getMessage());
             } catch (Exception e) {

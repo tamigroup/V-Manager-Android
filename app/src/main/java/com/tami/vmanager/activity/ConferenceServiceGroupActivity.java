@@ -68,7 +68,7 @@ public class ConferenceServiceGroupActivity extends BaseActivity {
         setTitleName(R.string.conference_service_group);
         //设置右边功能按钮图片
         Boolean is_invisible = (Boolean) SPUtils.get(this, Constants.IS_INVISIBLE, false);
-        if (null!=is_invisible && !is_invisible){
+        if (null != is_invisible && !is_invisible) {
             setTitleRightBtn(R.mipmap.icon_people);
         }
 
@@ -78,7 +78,7 @@ public class ConferenceServiceGroupActivity extends BaseActivity {
         arrayFragment[0] = new ConferenceInformationFragment(meetingId, item, actualNum);
         arrayFragment[1] = new GroupChatFragment();
         arrayFragment[1].setArguments(bundle);
-        arrayFragment[2] = new FeedbackFragment(meetingId,item);
+        arrayFragment[2] = new FeedbackFragment(meetingId, item);
         arrayFragment[3] = new NoticeFragment();
         arrayFragment[3].setArguments(bundle);
 
@@ -86,9 +86,13 @@ public class ConferenceServiceGroupActivity extends BaseActivity {
         viewPager.setAdapter(guidePageFragmentPagerAdapter);
         tabLayoutOnPageChangeListener = new TabLayout.TabLayoutOnPageChangeListener(tabLayout);
         viewPager.addOnPageChangeListener(tabLayoutOnPageChangeListener);
-        viewPager.setOffscreenPageLimit(3);
+//        viewPager.setOffscreenPageLimit(3);
         viewPagerOnTabSelectedListener = new TabLayout.ViewPagerOnTabSelectedListener(viewPager);
         tabLayout.addOnTabSelectedListener(viewPagerOnTabSelectedListener);
+        viewPager.setCurrentItem(1);
+//        tabLayout.postDelayed(() -> {
+//            tabLayout.getTabAt(1).select();
+//        }, 100);
     }
 
     @Override
@@ -118,7 +122,7 @@ public class ConferenceServiceGroupActivity extends BaseActivity {
             case R.id.titleRightBtn:
                 Intent intent = new Intent(getApplicationContext(), GroupMembersActivty.class);
                 intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
-                intent.putExtra(Constants.KEY_SALE_USER_ID,item.saleUserId);
+                intent.putExtra(Constants.KEY_SALE_USER_ID, item.saleUserId);
                 startActivity(intent);
                 break;
         }

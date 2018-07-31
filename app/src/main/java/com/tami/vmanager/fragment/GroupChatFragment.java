@@ -69,7 +69,6 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
         sendBtn = findViewById(R.id.fgc_send_btn);
         empty_tv = findViewById(R.id.empty_tv);
 
-        networkBroker = new NetworkBroker(getActivity());
         bundle = getArguments();
         if (bundle != null) {
             meetingId = this.bundle.getInt(Constants.KEY_MEETING_ID);
@@ -104,11 +103,7 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
         adapter.addItemViewDelegate(new MsgComingItemDelagate());
         adapter.notifyDataSetChanged();
         recyclerView.setAdapter(adapter);
-    }
 
-    @Override
-    public void requestNetwork() {
-        queryData();
         if (is_invisible) {
             sendTxt.setFocusable(false);
             sendBtn.setBackgroundColor(getResources().getColor(R.color.color_999999));
@@ -137,6 +132,12 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
                 }
             });
         }
+    }
+
+    @Override
+    public void requestNetwork() {
+        networkBroker = new NetworkBroker(getActivity());
+        queryData();
     }
 
     private void queryData() {

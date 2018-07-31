@@ -20,6 +20,8 @@
             android:id="@+id/fgc_send_btn"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_40"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:layout_marginRight="@dimen/dp_20"
             android:background="@color/color_FF5657"
             android:text="@string/send"

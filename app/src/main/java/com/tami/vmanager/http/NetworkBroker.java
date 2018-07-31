@@ -41,8 +41,8 @@ public class NetworkBroker extends BaseBroker {
 
     private String CancelTag = NetworkBroker.class.getSimpleName();
     //正式环境
-//    public static final String BASE_URI = "https://vgjapi.tamiyun.com/apis/tm/";
-    public static final String BASE_URI = BuildConfig.API_SERVER_URL;
+    public static final String BASE_URI = "https://vgjapi.tamiyun.com/apis/tm/";
+//    public static final String BASE_URI = BuildConfig.API_SERVER_URL;
     //测试
 //    public static final String BASE_URI = "http://192.168.103.104:8080/apis/tm/";
 //        public static final String BASE_URI = "http://192.168.100.152:8300/tm/";

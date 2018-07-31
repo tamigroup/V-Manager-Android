@@ -203,6 +203,6 @@ public class ConferenceInformationFragment extends ViewPagerBaseFragment {
 
     @Override
     public void emptyObject() {
-        networkBroker.cancelAllRequests();
+//        networkBroker.cancelAllRequests();
     }
 }
