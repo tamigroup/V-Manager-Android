@@ -34,7 +34,7 @@
     </android.support.constraint.ConstraintLayout>
 
 
-    <com.jwenfeng.library.pulltorefresh.PullToRefreshLayout
+    <com.tami.pulltorefresh.PullToRefreshLayout
         android:id="@+id/fml_PullToRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/white"/>
-    </com.jwenfeng.library.pulltorefresh.PullToRefreshLayout>
+    </com.tami.pulltorefresh.PullToRefreshLayout>
 
     <TextView
         android:id="@+id/empty_tv"

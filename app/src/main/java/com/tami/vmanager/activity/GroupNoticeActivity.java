@@ -6,8 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.jwenfeng.library.pulltorefresh.PullToRefreshLayout;
-import com.jwenfeng.library.pulltorefresh.ViewStatus;
+import com.tami.pulltorefresh.PullToRefreshLayout;
+import com.tami.pulltorefresh.ViewStatus;
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.entity.LoginResponse;

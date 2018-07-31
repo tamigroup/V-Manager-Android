@@ -5,12 +5,11 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.AppCompatImageView;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.TextView;
 
-import com.jwenfeng.library.pulltorefresh.BaseRefreshListener;
-import com.jwenfeng.library.pulltorefresh.PullToRefreshLayout;
-import com.jwenfeng.library.pulltorefresh.ViewStatus;
+import com.tami.pulltorefresh.BaseRefreshListener;
+import com.tami.pulltorefresh.PullToRefreshLayout;
+import com.tami.pulltorefresh.ViewStatus;
 import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.ListViewAdapter;
 import com.tami.vmanager.adapter.ViewHolder;
