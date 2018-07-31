@@ -4,10 +4,6 @@ import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
-import com.facebook.stetho.Stetho;
-import com.facebook.stetho.okhttp3.StethoInterceptor;
-import com.readystatesoftware.chuck.ChuckInterceptor;
-import com.squareup.leakcanary.LeakCanary;
 import com.tami.vmanager.BuildConfig;
 import com.tami.vmanager.utils.Constants;
 import com.tencent.bugly.Bugly;
@@ -88,8 +84,8 @@ public class TaMiApplication extends Application {
 
     private void initOkHttp() {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .addInterceptor(new ChuckInterceptor(this))
-                .addNetworkInterceptor(new StethoInterceptor())
+                //.addInterceptor(new ChuckInterceptor(this))
+                //.addNetworkInterceptor(new StethoInterceptor())
                 .addInterceptor(new LoggerInterceptor(Constants.LOG_TAG, true))
                 .connectTimeout(30000L, TimeUnit.MILLISECONDS)
                 .readTimeout(30000L, TimeUnit.MILLISECONDS)
@@ -100,13 +96,13 @@ public class TaMiApplication extends Application {
     }
 
     private void initLeakCanary() {
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            return;
-        }
-        LeakCanary.install(this);
+//        if (LeakCanary.isInAnalyzerProcess(this)) {
+//            return;
+//        }
+//        LeakCanary.install(this);
     }
 
     private void initStetho() {
-        Stetho.initializeWithDefaults(this);
+        //Stetho.initializeWithDefaults(this);
     }
 }

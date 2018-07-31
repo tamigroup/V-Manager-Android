@@ -39,7 +39,7 @@ public class CheckUpdate {
         return new CheckUpdate(context, num);
     }
 
-    public CheckUpdate(Activity context, int num) {
+    private CheckUpdate(Activity context, int num) {
         HttpParams httpParams = new HttpParams();
         httpParams.put("versionId", Utils.getLocalVersionName(context));
         httpParams.put("appId", 1);   //appId 1是Android
@@ -65,7 +65,6 @@ public class CheckUpdate {
 
                     @Override
                     public void onRequestVersionFailure(String message) {
-
                     }
                 });
         builder.excuteMission(context);
@@ -109,7 +108,7 @@ public class CheckUpdate {
         if (data != null) {
             if (data.getMustUpdate() == UpdateType.noUpdate.getType()) {
                 if (num == 1) {
-                    Toast.makeText(context, R.string.latest_version, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context.getApplicationContext(), R.string.latest_version, Toast.LENGTH_SHORT).show();
                 }
             } else if (data.getMustUpdate() == UpdateType.update.getType()) {
                 crateUIData();
