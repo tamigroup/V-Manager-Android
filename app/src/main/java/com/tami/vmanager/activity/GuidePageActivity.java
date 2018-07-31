@@ -25,8 +25,6 @@ import com.tami.vmanager.view.ViewPagerIndicator;
 public class GuidePageActivity extends BaseActivity {
 
     private ViewPager viewPager;
-    private ViewPagerIndicator viewPagerIndicator;
-    private ViewPagerOnPageChangeListener viewPagerOnPageChangeListener;
     private Fragment[] arrayFragment;
 
     @Override
@@ -47,13 +45,10 @@ public class GuidePageActivity extends BaseActivity {
     @Override
     public void initView() {
         viewPager = findViewById(R.id.viewpage_id);
-        viewPagerIndicator = findViewById(R.id.viewpager_indicator);
     }
 
     @Override
     public void initListener() {
-        viewPagerOnPageChangeListener = new ViewPagerOnPageChangeListener(viewPagerIndicator);
-        viewPager.addOnPageChangeListener(viewPagerOnPageChangeListener);
     }
 
     @Override
@@ -98,7 +93,6 @@ public class GuidePageActivity extends BaseActivity {
 
     @Override
     public void removeListener() {
-        viewPager.removeOnPageChangeListener(viewPagerOnPageChangeListener);
     }
 
     @Override
@@ -108,9 +102,6 @@ public class GuidePageActivity extends BaseActivity {
             fragment = null;
         }
         arrayFragment = null;
-        viewPagerOnPageChangeListener.removeViewPagerIndicator();
-        viewPagerOnPageChangeListener = null;
-        viewPagerIndicator = null;
         viewPager = null;
         handler.removeCallbacksAndMessages(null);
     }
@@ -138,40 +129,4 @@ public class GuidePageActivity extends BaseActivity {
         }
     };
 
-    /**
-     * ViewPager滚动监听
-     */
-    public static class ViewPagerOnPageChangeListener implements ViewPager.OnPageChangeListener {
-
-        private ViewPagerIndicator viewPagerIndicator;
-
-        public ViewPagerOnPageChangeListener(ViewPagerIndicator viewPagerIndicator) {
-            this.viewPagerIndicator = viewPagerIndicator;
-        }
-
-        public void removeViewPagerIndicator() {
-            this.viewPagerIndicator = null;
-        }
-
-        @Override
-        public void onPageSelected(int position) {
-            if (viewPagerIndicator != null) {
-                viewPagerIndicator.setSelectPosition(position);
-            }
-        }
-
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            if (viewPagerIndicator != null) {
-                viewPagerIndicator.onPageScrolled(position, positionOffset, positionOffsetPixels);
-            }
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int position) {
-            if (position == 0 && viewPagerIndicator != null) {
-                viewPagerIndicator.onPageScrollEnd();
-            }
-        }
-    }
 }

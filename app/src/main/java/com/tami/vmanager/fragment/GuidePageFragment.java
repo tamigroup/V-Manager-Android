@@ -18,8 +18,6 @@ import com.tami.vmanager.utils.Constants;
 public class GuidePageFragment extends ViewPagerBaseFragment {
 
     private AppCompatImageView imageView;
-    private Button skip_btn;
-    private Button immediate_experience;
 
     @Override
     public void onClick(View v) {
@@ -34,8 +32,6 @@ public class GuidePageFragment extends ViewPagerBaseFragment {
     @Override
     public void initView() {
         imageView = findViewById(R.id.guidepage_image_id);
-        skip_btn = findViewById(R.id.guidepage_skip_btn);
-        immediate_experience = findViewById(R.id.guidepage_immediate_experience);
     }
 
     @Override
@@ -50,20 +46,9 @@ public class GuidePageFragment extends ViewPagerBaseFragment {
             String key = bundle.getString(Constants.IMAGE_KEY);
             int imageId = getDrawableId(key);
             imageView.setImageResource(imageId);
-            boolean skipBtnFlag = bundle.getBoolean(Constants.SKIP_BTN);
-            if (skipBtnFlag) {
-                immediate_experience.setVisibility(View.GONE);
-                skip_btn.setVisibility(View.VISIBLE);
-                skip_btn.setOnClickListener((View view) -> {
-                    getActivity().startActivity(new Intent(getActivity(), LoginActivity.class));
-                    getActivity().finish();
-                });
-            }
             boolean experienceFlag = bundle.getBoolean(Constants.EXPERIENCE);
             if (experienceFlag) {
-                skip_btn.setVisibility(View.GONE);
-                immediate_experience.setVisibility(View.VISIBLE);
-                immediate_experience.setOnClickListener((View view) -> {
+                imageView.setOnClickListener((View view) -> {
                     getActivity().startActivity(new Intent(getActivity(), LoginActivity.class));
                     getActivity().finish();
                 });
