@@ -903,18 +903,18 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
             showToast(getString(R.string.please_enter_correct_, getString(R.string.meeting_name)));
             return false;
         }
-        if (nameView.getText().length() < 5) {
-            showToast(getString(R.string.please_enter_, getString(R.string.meeting_name)));
-            return false;
-        }
+//        if (nameView.getText().length() < 5) {
+//            showToast(getString(R.string.please_enter_, getString(R.string.meeting_name)));
+//            return false;
+//        }
         if (TextUtils.isEmpty(sponsorView.getText())) {
             showToast(getString(R.string.please_enter_correct_, getString(R.string.sponsor_name)));
             return false;
         }
-        if (sponsorView.getText().length() < 5) {
-            showToast(getString(R.string.please_enter_, getString(R.string.sponsor_name)));
-            return false;
-        }
+//        if (sponsorView.getText().length() < 5) {
+//            showToast(getString(R.string.please_enter_, getString(R.string.sponsor_name)));
+//            return false;
+//        }
         if (addressId == -1) {
             showToast(getString(R.string.please_choose_, getString(R.string.meeting_place)));
             return false;
@@ -1002,16 +1002,18 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
                 case R.id.acmr_meeting_name:
                     if (TextUtils.isEmpty(nameView.getText())) {
                         showToast(getString(R.string.please_enter_correct_, getString(R.string.meeting_name)));
-                    } else if (nameView.getText().length() < 5) {
-                        showToast(getString(R.string.please_enter_, getString(R.string.meeting_name)));
                     }
+//                    else if (nameView.getText().length() < 5) {
+//                        showToast(getString(R.string.please_enter_, getString(R.string.meeting_name)));
+//                    }
                     break;
                 case R.id.acmr_sponsor:
                     if (TextUtils.isEmpty(sponsorView.getText())) {
                         showToast(getString(R.string.please_enter_correct_, getString(R.string.sponsor_name)));
-                    } else if (sponsorView.getText().length() < 5) {
-                        showToast(getString(R.string.please_enter_, getString(R.string.sponsor_name)));
                     }
+//                    else if (sponsorView.getText().length() < 5) {
+//                        showToast(getString(R.string.please_enter_, getString(R.string.sponsor_name)));
+//                    }
                     break;
                 case R.id.acmr_estimated_number_people:
                     if (TextUtils.isEmpty(estimatedNumberPeople.getText())) {

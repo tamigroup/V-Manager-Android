@@ -120,6 +120,7 @@ public class AddPersonChargeActivty extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.aapc_confirm:
+                confirm.setEnabled(false);
                 confirm();
                 break;
         }
@@ -255,22 +256,25 @@ public class AddPersonChargeActivty extends BaseActivity {
             networkBroker.ask(siur, (ex1, res) -> {
                 if (null != ex1) {
                     Logger.d(ex1.getMessage() + "-" + ex1);
+                    confirm.setEnabled(true);
                     return;
                 }
                 try {
                     SetMeetingItemsUserResponse response = (SetMeetingItemsUserResponse) res;
                     if (response.getCode() == 200 && response.data) {
+                        confirm.setEnabled(true);
                         Intent intent = new Intent();
                         intent.putExtra(Constants.RESULT_JIEDAIREN, true);
                         setResult(Constants.ADD_PERSON_CHARGE, intent);
                         finish();
                     }
                 } catch (Exception e) {
+                    confirm.setEnabled(true);
                     e.printStackTrace();
                 }
-
             });
         } else {
+            confirm.setEnabled(true);
             Intent intent = new Intent();
             intent.putExtra(Constants.RESULT_JIEDAIREN, false);
             setResult(Constants.ADD_PERSON_CHARGE, intent);

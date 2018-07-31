@@ -79,6 +79,9 @@ public class CreateMeetingBottomMenu extends BottomSheetDialog implements View.O
             case R.id.smml_vip4_selected:
                 menuOnClickListener.menuOnClick("VIP 4", 4);
                 break;
+            case R.id.smml_cancel:
+                menuOnClickListener.menuOnClick("", 0);
+                break;
         }
         dismiss();
     }
