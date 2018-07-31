@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tami.vmanager.R;
 import com.tami.vmanager.activity.LoginActivity;
 import com.tami.vmanager.entity.FileMobileMessage;
 import com.tami.vmanager.entity.LoginResponse;
@@ -155,7 +156,7 @@ public class NetworkBroker extends BaseBroker {
                         if (showLoading)
                             loadingSubject.onNext(false);
                         Logger.d("接受报文: 错误" + CancelTag + ex1.getLocalizedMessage());
-                        Toast.makeText(context, "错误：" + ex1.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(context.getApplicationContext(), "错误：" + ex1.getMessage(), Toast.LENGTH_LONG).show();
                         callback.apply(ex1, null);
                         return;
                     }
@@ -177,9 +178,9 @@ public class NetworkBroker extends BaseBroker {
                             } else {
                                 int code = Integer.valueOf(statusCode);
                                 if (NO_AUTH == code) {
-                                    //                                    // Session过期引起的重新登录
-                                    //                                    LocalSettings.inst().clearLogin();
-                                    Toast.makeText(context, "登录过期", Toast.LENGTH_LONG).show();
+                                    // Session过期引起的重新登录
+                                    // LocalSettings.inst().clearLogin();
+                                    Toast.makeText(context.getApplicationContext(), R.string.login_overdue, Toast.LENGTH_LONG).show();
                                     Intent intent = new Intent(context, LoginActivity.class);
                                     context.startActivity(intent);
                                 } else if (UNKNOWN_ERR == code) {

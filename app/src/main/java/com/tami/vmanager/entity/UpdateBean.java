@@ -1,9 +1,11 @@
 package com.tami.vmanager.entity;
 
+import java.io.Serializable;
+
 /**
  * Created by Tang on 2018/7/19
  */
-public class UpdateBean extends MobileMessage{
+public class UpdateBean extends MobileMessage implements Serializable{
 
 
     /**
@@ -20,7 +22,7 @@ public class UpdateBean extends MobileMessage{
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable {
         /**
          * appId : 1
          * updateUrl : update url android
