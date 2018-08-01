@@ -95,7 +95,11 @@ public class ConferenceInformationFragment extends ViewPagerBaseFragment {
         company_name.setText(item.meetingName);
         if (TextUtils.isEmpty(item.cancelStatus)) {
             meeting_status.setVisibility(View.VISIBLE);
-            meeting_status.setText(item.meetingStatus);
+            if (TextUtils.isEmpty(item.meetingStatus)) {
+                meeting_status.setText(getString(R.string.daiban));
+            } else {
+                meeting_status.setText(item.meetingStatus);
+            }
         } else {
             meeting_status.setVisibility(View.GONE);
         }

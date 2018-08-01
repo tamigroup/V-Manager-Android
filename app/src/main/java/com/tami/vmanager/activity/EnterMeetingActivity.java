@@ -317,7 +317,11 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
             meeting_status.setMeetingStateText(item.meetingStatus, 20);
             if (TextUtils.isEmpty(item.cancelStatus)) {
                 meeting_status.setVisibility(View.VISIBLE);
-                meeting_status.setMeetingStateText(item.meetingStatus, 20);
+                if (TextUtils.isEmpty(item.meetingStatus)) {
+                    meeting_status.setMeetingStateText(getString(R.string.daiban), 20);
+                } else {
+                    meeting_status.setMeetingStateText(item.meetingStatus, 20);
+                }
             } else {
                 meeting_status.setVisibility(View.GONE);
             }

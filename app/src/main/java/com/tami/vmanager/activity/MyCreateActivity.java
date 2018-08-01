@@ -108,7 +108,11 @@ public class MyCreateActivity extends BaseActivity {
                 setNameTextLayoutParams(nameView, item.meetingName);
                 //会议状态
                 MeetingStateView stateView = viewHolder.getItemView(R.id.item_content_state);
-                stateView.setMeetingStateText(item.meetingStatus, 20);
+                if (TextUtils.isEmpty(item.meetingStatus)) {
+                    stateView.setMeetingStateText(getString(R.string.daiban), 20);
+                } else {
+                    stateView.setMeetingStateText(item.meetingStatus, 20);
+                }
                 if (TextUtils.isEmpty(item.cancelStatus)) {
                     stateView.setVisibility(View.VISIBLE);
                 } else {
