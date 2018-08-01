@@ -136,6 +136,7 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
 
         //已确认隐藏功能按钮
         if (gmibmirItem.selectStatus == 1) {
+            setTitleName(R.string.the_meeting_has_been_confirmed);
             constraintLayout.setVisibility(View.GONE);
             addPerson.setVisibility(View.GONE);
             confirmBtn.setVisibility(View.GONE);

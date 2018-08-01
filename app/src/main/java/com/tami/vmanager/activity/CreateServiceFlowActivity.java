@@ -16,6 +16,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,6 +100,8 @@ public class CreateServiceFlowActivity extends BaseActivity {
     private ConfirmEnterMeetingDialog cemd;
 
     private int meetingId = -1;//会议ID
+
+    private boolean isSave;
 
     @Override
     public boolean isTitle() {
@@ -220,8 +223,10 @@ public class CreateServiceFlowActivity extends BaseActivity {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onClick(View v) {
-        super.onClick(v);
         switch (v.getId()) {
+            case R.id.titleLeftBtn:
+                result();
+                break;
             case R.id.acsf_date_selected:
                 if (meetingDayList != null && meetingDayList.size() > 1) {
                     cemd.show();
@@ -800,6 +805,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
                 try {
                     SetMeetingItemsResponse response = (SetMeetingItemsResponse) res;
                     if (response.getCode() == 200) {
+                        isSave = true;
                         if (response.data) {
                             showToast(getString(R.string.save_flow, getString(R.string.success)));
                             if (flag) {
@@ -807,15 +813,13 @@ public class CreateServiceFlowActivity extends BaseActivity {
                             } else {
                                 if (meetingDayList != null && meetingDayList.size() > 1) {
                                     if (meetingDayIndex == meetingDayList.size() - 1) {
-                                        setResult(Constants.CREATE_FLOW);
-                                        finish();
+                                        result();
                                     } else {
                                         getMeetingItems(meetingDayList.get(++meetingDayIndex).day);
                                         dateSelected.setText(meetingDayList.get(meetingDayIndex).day);
                                     }
                                 } else {
-                                    setResult(Constants.CREATE_FLOW);
-                                    finish();
+                                    result();
                                 }
                             }
                         } else {
@@ -868,5 +872,29 @@ public class CreateServiceFlowActivity extends BaseActivity {
             }
         }
         return true;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            result();
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    /**
+     * 是否保存过流程
+     */
+    public void result() {
+        if (isSave) {
+            Intent intent = new Intent();
+            intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
+            setResult(Constants.RESULT_CREATE_FLOW, intent);
+            finish();
+        } else {
+            setResult(Constants.CANCEL_CREATE_FLOW);
+            finish();
+        }
     }
 }

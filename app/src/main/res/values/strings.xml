@@ -176,6 +176,7 @@
     <string name="edit_process">编辑流程</string>
     <!--    会议环节待确认    -->
     <string name="meeting_link_confirmed">会议环节待确认</string>
+    <string name="the_meeting_has_been_confirmed">会议环节已确认</string>
     <string name="confirmation_content">确认内容</string>
     <string name="add_the_person_in_charge">+ 添加负责人</string>
 
@@ -306,7 +307,7 @@
     <string name="hint_replay">回复: %s</string>
     <string name="total">总计</string>
     <string name="complete">已完成</string>
-    <string name="no_complete">未完成</string>
+    <string name="no_complete">待完成</string>
 
     <string name="jiaxing_1">* 会议名称</string>
     <string name="jiaxing_2">* 主办方</string>

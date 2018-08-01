@@ -38,6 +38,7 @@ public class GetIndexResponse extends MobileMessage implements Serializable {
         private int myFollowMeetingsCount;
         private int todayMeetingsCount;
         private int waitMeetingsCount;
+        private int myCreateMeetingCount;
 
         public int getMyFollowMeetingsCount() {
             return myFollowMeetingsCount;
@@ -61,6 +62,14 @@ public class GetIndexResponse extends MobileMessage implements Serializable {
 
         public void setWaitMeetingsCount(int waitMeetingsCount) {
             this.waitMeetingsCount = waitMeetingsCount;
+        }
+
+        public int getMyCreateMeetingCount() {
+            return myCreateMeetingCount;
+        }
+
+        public void setMyCreateMeetingCount(int myCreateMeetingCount) {
+            this.myCreateMeetingCount = myCreateMeetingCount;
         }
     }
 }

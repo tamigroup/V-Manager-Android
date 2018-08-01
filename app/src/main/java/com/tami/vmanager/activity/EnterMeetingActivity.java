@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
@@ -24,6 +26,8 @@ import com.tami.vmanager.dialog.ConfirmEnterMeetingDialog;
 import com.tami.vmanager.dialog.ConfirmEnterMeetingListener;
 import com.tami.vmanager.entity.CheckGroupUserRequestBean;
 import com.tami.vmanager.entity.CheckGroupUserResponseBean;
+import com.tami.vmanager.entity.GetActualNumRequestBean;
+import com.tami.vmanager.entity.GetActualNumResponseBean;
 import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdRequest;
 import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdResponse;
 import com.tami.vmanager.entity.GetMeetingResponse;
@@ -131,7 +135,7 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
     @Override
     public void initData() {
         LoginResponse.Item item = GlobaVariable.getInstance().item;
-        if (null != item){
+        if (null != item) {
             userId = item.getId();
         }
 
@@ -188,6 +192,9 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
             confirmEnterMeetingDialog.dismiss();
         }
         confirmEnterMeetingDialog = null;
+        if (handler != null) {
+            handler.removeCallbacksAndMessages(null);
+        }
         meetingInfo = null;
         if (listData != null) {
             listData.clear();
@@ -214,7 +221,7 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
                 //查看人员 实到人数
                 Intent intent_personnel = new Intent(getApplicationContext(), PersonnelListActivity.class);
                 intent_personnel.putExtra(Constants.KEY_MEETING_ID, meetingId);
-                intent_personnel.putExtra(Constants.IS_VZHIHUI,meetingInfo.isVzh);
+                intent_personnel.putExtra(Constants.IS_VZHIHUI, meetingInfo.isVzh);
                 startActivity(intent_personnel);
                 break;
             case R.id.enter_meeting_service_group_layout:
@@ -243,18 +250,18 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
         CheckGroupUserRequestBean requestBean = new CheckGroupUserRequestBean();
         requestBean.setUserId(userId);
         requestBean.setMeetingId(meetingId);
-        networkBroker.ask(requestBean,(exl,res)->{
-            if (null != exl){
+        networkBroker.ask(requestBean, (exl, res) -> {
+            if (null != exl) {
                 Logger.d(exl.getMessage() + "-" + exl);
                 return;
             }
             try {
                 CheckGroupUserResponseBean response = (CheckGroupUserResponseBean) res;
                 if (response.getCode() == 200) {
-                    if (response.isData()){
+                    if (response.isData()) {
                         startConferenceServiceGroupActivity();
                     }
-                }else if (response.getCode() == 400){
+                } else if (response.getCode() == 400) {
                     //不在群中
                     confirmEnterMeetingDialog.show();
                 }
@@ -308,10 +315,10 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
             memhMponsor.setText(String.format(getString(R.string.host_name), item.sponsorName));
             meetingPersonnel.setText(String.format(getString(R.string.salename), item.saleUserName));
             meeting_status.setMeetingStateText(item.meetingStatus, 20);
-            if(TextUtils.isEmpty(item.cancelStatus)){
+            if (TextUtils.isEmpty(item.cancelStatus)) {
                 meeting_status.setVisibility(View.VISIBLE);
                 meeting_status.setMeetingStateText(item.meetingStatus, 20);
-            }else{
+            } else {
                 meeting_status.setVisibility(View.GONE);
             }
             initUITxt(predeterminedNumber, String.valueOf(item.estimateNum), R.string.predetermined_number, android.R.color.white);
@@ -320,6 +327,7 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
             //V智慧判断
             if (item.isVzh == 1) {
                 initUITxt(actualNumber, String.valueOf(actualNum), R.string.actual_number, R.color.color_FF5657);
+                handler.sendEmptyMessage(2);
             } else {
                 initUITxt(actualNumber, "--", R.string.actual_number, R.color.color_FF5657);
             }
@@ -360,18 +368,18 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
         IntoGroupUserRequestBean requestBean = new IntoGroupUserRequestBean();
         requestBean.setUserId(userId);
         requestBean.setMeetingId(meetingId);
-        networkBroker.ask(requestBean,(exl,res)->{
-            if (null != exl){
+        networkBroker.ask(requestBean, (exl, res) -> {
+            if (null != exl) {
                 Logger.d(exl.getMessage() + "-" + exl);
                 return;
             }
             try {
                 IntoGroupUserResponseBean response = (IntoGroupUserResponseBean) res;
                 if (response.getCode() == 200) {
-                    if (response.isData()){
+                    if (response.isData()) {
                         startConferenceServiceGroupActivity();
                     }
-                }else if (response.getCode() == 400){
+                } else if (response.getCode() == 400) {
                     showToast(R.string.has_in_meeting);
                 }
             } catch (Exception e) {
@@ -397,7 +405,7 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
     private void sponsorMember() {
         Intent intent_sponsorMember = new Intent(getApplicationContext(), SponsorMemberActivity.class);
         intent_sponsorMember.putExtra(Constants.KEY_MEETING_ID, meetingId);
-        intent_sponsorMember.putExtra(Constants.IS_VZHIHUI,meetingInfo.isVzh);
+        intent_sponsorMember.putExtra(Constants.IS_VZHIHUI, meetingInfo.isVzh);
         startActivity(intent_sponsorMember);
     }
 
@@ -458,5 +466,57 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
         if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
             new AppSettingsDialog.Builder(this).build().show();
         }
+    }
+
+    public Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 2) {
+                Logger.d("EnterMeetingActivity---handler---->");
+                getActualNum();
+            }
+        }
+    };
+
+    /**
+     * 获取实到人数
+     */
+    private void getActualNum() {
+        GetActualNumRequestBean getActualNumRequestBean = new GetActualNumRequestBean();
+        getActualNumRequestBean.setMeetingId(meetingId);
+        networkBroker.ask(getActualNumRequestBean, false, (ex1, res) -> {
+            handler.sendEmptyMessageDelayed(2, 5000);
+            if (null != ex1) {
+                Logger.d(ex1.getMessage() + "-" + ex1);
+                return;
+            }
+            try {
+                GetActualNumResponseBean response = (GetActualNumResponseBean) res;
+                if (response.getCode() == 200) {
+                    GetActualNumResponseBean.DataBean data = response.getData();
+                    if (data != null) {
+                        actualNum = data.getActualNum();
+                        initUITxt(actualNumber, String.valueOf(actualNum), R.string.actual_number, R.color.color_FF5657);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        handler.removeCallbacksAndMessages(null);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        getMeetingItemsByMeetingId();
+        handler.sendEmptyMessage(2);
     }
 }

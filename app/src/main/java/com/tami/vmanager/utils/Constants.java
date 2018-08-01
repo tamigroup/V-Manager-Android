@@ -91,6 +91,8 @@ public class Constants {
     public static final String ACTUAL_NUM = "actual_num";
     //创建会议
     public static final int CREATE_MEETING = 0x15;
+    public static final int CANCEL_CREATE_FLOW = 0x18;
+    public static final int RESULT_CREATE_FLOW = 0x19;
     //会议名称
     public static final String KEY_MEETING_NAME = "meetingName";
     //创建会议

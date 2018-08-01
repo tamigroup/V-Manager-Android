@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
@@ -39,6 +41,7 @@ import com.tami.vmanager.view.MeetingStateView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimerTask;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
@@ -164,7 +167,8 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
         GetActualNumRequestBean getActualNumRequestBean = new GetActualNumRequestBean();
         getActualNumRequestBean.setMeetingId(meetingId);
         //        getActualNumRequestBean.setMeetingId(46);
-        networkBroker.ask(getActualNumRequestBean, (ex1, res) -> {
+        networkBroker.ask(getActualNumRequestBean, false, (ex1, res) -> {
+            handler.sendEmptyMessageDelayed(1, 5000);
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);
                 return;
@@ -194,6 +198,9 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
     public void emptyObject() {
         adapter.removeTimeLineMeetingFlowItem();
         meetingInfo = null;
+        if (handler != null) {
+            handler.removeCallbacksAndMessages(null);
+        }
         if (listData != null) {
             listData.clear();
             listData = null;
@@ -327,7 +334,7 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
     private void initUIdata(GetMeetingResponse.Item item) {
         if (item != null) {
             this.meetingInfo = item;
-            SPUtils.put(this,Constants.CREATE_MEETING_SALEUSER,meetingInfo.saleUserId);
+            SPUtils.put(this, Constants.CREATE_MEETING_SALEUSER, meetingInfo.saleUserId);
             meetingName.setText(item.meetingName);
 //            StringBuilder time = new StringBuilder();
 //            String startTime = TimeUtils.milliseconds2String(item.startTime,TimeUtils.DATE_MMDDHHMM_SLASH);
@@ -571,5 +578,24 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
     protected void onRestart() {
         super.onRestart();
         getMeetingItemsByMeetingId();
+        handler.sendEmptyMessage(1);
     }
+
+    public Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 1) {
+                Logger.d("MeetingOverviewActivity---handler---->");
+                getActualNum();
+            }
+        }
+    };
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        handler.removeCallbacksAndMessages(null);
+    }
+
 }

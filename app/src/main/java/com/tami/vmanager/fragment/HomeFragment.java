@@ -231,7 +231,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentListener {
                 break;
             case R.id.home_my_create_layout:
                 //我的创建
-                myCreate();
+                myCreate(0);
                 break;
             case R.id.home_create_meeting:
                 //主页创建会议
@@ -271,8 +271,10 @@ public class HomeFragment extends BaseFragment implements HomeFragmentListener {
     /**
      * 我的创建
      */
-    private void myCreate() {
-        startActivity(new Intent(getActivity(), MyCreateActivity.class));
+    private void myCreate(int meetingId) {
+        Intent intent = new Intent(getActivity(), MyCreateActivity.class);
+        intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
+        startActivity(intent);
     }
 
 
@@ -345,7 +347,12 @@ public class HomeFragment extends BaseFragment implements HomeFragmentListener {
                         oday_meeting_num.setText(String.valueOf(gItem.getTodayMeetingsCount()));
                         my_attention_num.setText(String.valueOf(gItem.getMyFollowMeetingsCount()));
                         conference_num.setText(String.valueOf(gItem.getWaitMeetingsCount()));
-                        myCreateNum.setText(String.valueOf(gItem.getWaitMeetingsCount()));
+                        if (gItem.getMyCreateMeetingCount() == 0) {//如果我的创建为0不显示
+                            myCreateLayout.setVisibility(View.GONE);
+                        } else {
+                            myCreateLayout.setVisibility(View.VISIBLE);
+                            myCreateNum.setText(String.valueOf(gItem.getMyCreateMeetingCount()));
+                        }
                     }
                 }
             } catch (Exception e) {
@@ -358,11 +365,33 @@ public class HomeFragment extends BaseFragment implements HomeFragmentListener {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Logger.d("HomeFragment---->requestCode:" + requestCode);
+        Logger.d("HomeFragment---->resultCode:" + resultCode);
         if (requestCode == Constants.CREATE_MEETING) {
-            EventBus.getDefault().post(new MessageEvent(true));
-            getIndex();
-            getBannerData(getGroupIndex());
+            int meetingId = 0;
+            switch (resultCode) {
+                case Constants.CANCEL_CREATE_FLOW:
+                    refreshHome();
+                    myCreate(meetingId);
+                    break;
+                case Constants.RESULT_CREATE_FLOW:
+                    refreshHome();
+                    if (data != null) {
+                        meetingId = data.getIntExtra(Constants.KEY_MEETING_ID, 0);
+                    }
+                    myCreate(meetingId);
+                    break;
+            }
         }
+    }
+
+    /**
+     * 刷新首页信息
+     */
+    private void refreshHome() {
+        EventBus.getDefault().post(new MessageEvent(true));
+        getIndex();
+        getBannerData(getGroupIndex());
     }
 
     @Override
@@ -377,8 +406,8 @@ public class HomeFragment extends BaseFragment implements HomeFragmentListener {
      * @return
      */
     private int getGroupIndex() {
-        int index  = 0;
-        switch (time_radio_group.getCheckedRadioButtonId()){
+        int index = 0;
+        switch (time_radio_group.getCheckedRadioButtonId()) {
             case R.id.today_rb:
                 index = 0;
                 break;

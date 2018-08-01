@@ -219,7 +219,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
         cemd.setConfirmEnterMeetingListener(new ConfirmEnterMeetingListener() {
             @Override
             public void leftBtn() {
-                setResult(Constants.CREATE_MEETING);
+                setResult(Constants.CANCEL_CREATE_FLOW);
                 finish();
             }
 
@@ -326,7 +326,8 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Logger.d("resultCode:------------->" + resultCode);
+        Logger.d("CreateMeetingRewriteActivity---->requestCode:" + requestCode);
+        Logger.d("CreateMeetingRewriteActivity---->resultCode:" + resultCode);
         switch (requestCode) {
             case Constants.CREATE_MEETING_DIDIAN:
                 if (data != null) {
@@ -418,7 +419,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
                 break;
             case Constants.CREATE_FLOW:
                 //创建流程返回
-                setResult(Constants.CREATE_MEETING);
+                setResult(resultCode,data);
                 finish();
                 break;
         }
