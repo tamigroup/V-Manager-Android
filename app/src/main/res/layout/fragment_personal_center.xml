@@ -74,13 +74,15 @@
             android:gravity="center_vertical"
             android:text="@string/my_creation"
             android:textColor="@color/color_303030"
-            android:textSize="@dimen/sp_14" />
+            android:textSize="@dimen/sp_14"
+            android:visibility="gone" />
 
         <View
             android:id="@+id/fpc_line"
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/color_EAEAEA" />
+            android:background="@color/color_EAEAEA"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/personal_center_account_settings"
