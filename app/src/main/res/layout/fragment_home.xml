@@ -447,7 +447,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@mipmap/home_wait"
+                    android:drawableLeft="@mipmap/home_create"
                     android:drawablePadding="@dimen/dp_10"
                     android:gravity="center_vertical"
                     android:paddingLeft="@dimen/dp_10"

@@ -22,20 +22,12 @@ public class HttpKey {
     public static final String USER_CHANGE_PASSWORD = "user/changePassWord";
     // 重置密码
     public static final String USER_RESET_PASSOWRD = "user/resetPwd";
-    //获取部门用户组
-    public static final String USER_GET_USER_DEPARTMENT = "user/getUserInDepartment";
     //提醒消息设置
     public static final String USER_NOTICE_CONFIG = "user/setUserNoticeConfig";
     //获取提醒消息
     public static final String USER_GET_NOTICE_CONFIG = "user/getUserNoticeConfig";
-    //获取用户信息
-    public static final String USER_APP_USER = "user/getAppUser";
     //修改用户头像
     public static final String USER_UPDATE_USER_ICON = "user/updateUserIcon";
-    // App创建会议
-    public static final String USER_CREATE_MEETING = "meeting/createMeeting";
-
-
     // 首页顶部数据
     public static final String USER_GET_BANNER_DATA = "meeting/getBannerData";
     // 首页下面数据
@@ -56,8 +48,6 @@ public class HttpKey {
     public static final String CREATE_VIPGUEST = "vip/createVipGuest";
     //获取所有职位及职位下的人员列表
     public static final String USER_LIST_OF_POSITION = "user/userListOfPosition";
-    // 编辑保存VIP接待人员
-    public static final String SAVE_RECEIVE_USER = "vip/saveReceiveUser";
     // App创建会议
     public static final String CREATE_MEETING = "meeting/createMeeting";
     // 根据酒店ID查询会议厅List
@@ -70,8 +60,6 @@ public class HttpKey {
     public static final String SEARCH_MEETING = "meeting/searchMeetingPage";
     //获取反馈信息列表
     public static final String FEED_BACK = "chat/feedBackPage";
-    // 获取公告
-    public static final String GET_NOTICE = "notice/getNotice";
     //分页查询公告列表
     public static final String GET_NOTICE_LIST = "notice/noticePage";
     //查询会议概览信息/查看EO单
@@ -105,9 +93,6 @@ public class HttpKey {
     public static final String GET_MEETING_REQUIREMENT_PAGE = "meeting/meetingRequirementPage";
     // 回复会议变化(活动变化)需求
     public static final String REPLY_MEETING_REQUIREMENT = "meeting/replyMeetingRequirement";
-    //创建会议变化(活动变化)需求
-    public static final String CREATE_MEETING_REQUIREMENT = "meeting/createMeetingRequirement";
-
     // 系统内置角色List
     public static final String GET_SYSTEM_ROLE_LIST = "user/getSystemRoleList";
     // 创建自定义流程节点

@@ -17,9 +17,9 @@
         android:lines="1"
         android:textColor="@android:color/white"
         android:textSize="@dimen/sp_12"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/meeting_overview_look_eo"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/meeting_status"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.tami.vmanager.view.MeetingStateView
