@@ -46,7 +46,6 @@ public class NoticeFragment extends ViewPagerBaseFragment {
     private List<NoticeResponseBean.DataBean.ElementsBean> listData;
     private int meetingId;
     private TextView empty_tv;
-    private boolean isLoadMore = false;
 
     @Override
     public int getContentViewId() {
@@ -70,19 +69,13 @@ public class NoticeFragment extends ViewPagerBaseFragment {
 
             @Override
             public void loadMore() {
-                isLoadMore = true;
-                CurPage = 1;
-                requestNetwork();
+                queryData();
             }
         });
     }
 
     @Override
     public void initData() {
-        Bundle arguments = getArguments();
-        if (arguments != null) {
-            meetingId = (int) arguments.get(Constants.KEY_MEETING_ID);
-        }
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
@@ -109,10 +102,25 @@ public class NoticeFragment extends ViewPagerBaseFragment {
 
     @Override
     public void requestNetwork() {
+        if (null == networkBroker){
+            networkBroker = new NetworkBroker(getActivity());
+        }
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            meetingId = (int) arguments.get(Constants.KEY_MEETING_ID);
+        }
+        CurPage = 1;
+        queryData();
+    }
+
+    /**
+     * 获取公告数据
+     */
+    private void queryData() {
         NoticeRequestBean noticeRequestBean = new NoticeRequestBean();
         LoginResponse.Item item = GlobaVariable.getInstance().item;
         noticeRequestBean.setSystemId(item.getSystemId());
-//        noticeRequestBean.setMeetingId(1);
+        //        noticeRequestBean.setMeetingId(1);
         noticeRequestBean.setMeetingId(meetingId);
         noticeRequestBean.setGroupType(1);//1-V管家 2-V智会 3-VV群
         noticeRequestBean.setNoticeType(0);// 0-全部  1-系统通知  2-会务广播 3-群内公告
@@ -131,18 +139,15 @@ public class NoticeFragment extends ViewPagerBaseFragment {
                     if (data != null && data.size() > 0) {
                         recyclerView.setVisibility(View.VISIBLE);
                         empty_tv.setVisibility(View.GONE);
-                        if (isLoadMore) {
-                            listData.clear();
-                            listData.addAll(data);
-                        } else {
-                            listData.addAll(data);
-                        }
-                        isLoadMore = false;
+                        listData.addAll(data);
                         commonAdapter.notifyDataSetChanged();
                     } else {
                         recyclerView.setVisibility(View.GONE);
                         empty_tv.setVisibility(View.VISIBLE);
                         empty_tv.setText(R.string.empty_notice);
+                    }
+                    if (response.getData().isLastPage()){
+                        pullToRefreshLayout.setCanLoadMore(false);
                     }
                     pullToRefreshLayout.finishLoadMore();
                 }
@@ -173,9 +178,7 @@ public class NoticeFragment extends ViewPagerBaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEventMain(MessageEvent event) {
         if (event.isRefresh()) {
-            isLoadMore = true;
-            CurPage = 1;
-            requestNetwork();
+            queryData();
         }
         EventBus.getDefault().cancelEventDelivery(event);
     }

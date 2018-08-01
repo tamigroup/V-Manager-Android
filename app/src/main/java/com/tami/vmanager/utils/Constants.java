@@ -121,4 +121,7 @@ public class Constants {
     public static final String PERSONAL_CENTER_ICONURL = "personal_center_iconurl";
     //会议创建者 销售Id
     public static final String CREATE_MEETING_SALEUSER  = "create_meeting_saleuser";
+    //推送 点击跳转的key
+    public static final String JPUSH_KEY  = "jpush_key";
+    public static final String JPUSH_MEETINGID  = "jpush_meetingid";
 }

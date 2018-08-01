@@ -16,17 +16,14 @@ import com.tami.vmanager.entity.GetActualNumRequestBean;
 import com.tami.vmanager.entity.GetActualNumResponseBean;
 import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdRequest;
 import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdResponse;
+import com.tami.vmanager.entity.GetMeetingRequest;
 import com.tami.vmanager.entity.GetMeetingResponse;
 import com.tami.vmanager.enums.ServiceFlowType;
 import com.tami.vmanager.http.NetworkBroker;
-import com.tami.vmanager.utils.Constants;
-import com.tami.vmanager.utils.JsonUtils;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.TimeUtils;
-import com.tami.vmanager.utils.Utils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
-import com.zhy.http.okhttp.utils.L;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -59,10 +56,9 @@ public class ConferenceInformationFragment extends ViewPagerBaseFragment {
     }
 
     @SuppressLint("ValidFragment")
-    public ConferenceInformationFragment(int meetingId, GetMeetingResponse.Item item, int actualNum) {
+    public ConferenceInformationFragment(int meetingId, GetMeetingResponse.Item item) {
         this.meetingId = meetingId;
         this.item = item;
-        this.actualNum = actualNum;
     }
 
     @Override
@@ -72,6 +68,9 @@ public class ConferenceInformationFragment extends ViewPagerBaseFragment {
 
     @Override
     public void initView() {
+        if (networkBroker == null) {
+            networkBroker = new NetworkBroker(getActivity());
+        }
         company_name = findViewById(R.id.company_name);
         meeting_status = findViewById(R.id.meeting_status);
         host_name = findViewById(R.id.host_name);
@@ -92,6 +91,20 @@ public class ConferenceInformationFragment extends ViewPagerBaseFragment {
 
     @Override
     public void initData() {
+        //item为null是点击推送进入ConferenceServiceGroupActivity 会议服务群
+        if (null == item) {
+            getMeeting();
+        }else {
+            initUI();
+        }
+        listData = new ArrayList<>();
+        initRecyc();
+    }
+
+    /**
+     * 初始化UI
+     */
+    private void initUI() {
         company_name.setText(item.meetingName);
         if (TextUtils.isEmpty(item.cancelStatus)) {
             meeting_status.setVisibility(View.VISIBLE);
@@ -105,13 +118,13 @@ public class ConferenceInformationFragment extends ViewPagerBaseFragment {
         }
         host_name.setText(String.format(getResources().getString(R.string.host_name), item.sponsorName));
         meeting_address.setText(item.meetingAddress);
-//        StringBuilder time = new StringBuilder();
-//        String startTime = TimeUtils.milliseconds2String(item.startTime,TimeUtils.DATE_MMDDHHMM_SLASH);
-//        time.append(startTime);
-//        time.append(" - ");
-//        String endTime = TimeUtils.milliseconds2String(item.endTime,TimeUtils.DATE_MMDDHHMM_SLASH);
-//        time.append(endTime);
-//        meeting_time.setText(time.toString());
+        //        StringBuilder time = new StringBuilder();
+        //        String startTime = TimeUtils.milliseconds2String(item.startTime,TimeUtils.DATE_MMDDHHMM_SLASH);
+        //        time.append(startTime);
+        //        time.append(" - ");
+        //        String endTime = TimeUtils.milliseconds2String(item.endTime,TimeUtils.DATE_MMDDHHMM_SLASH);
+        //        time.append(endTime);
+        //        meeting_time.setText(time.toString());
         meeting_time.setText(item.autoDayTime);
         sale_name.setText(String.format(getResources().getString(R.string.salename), item.saleUserName));
         meeting_reserve_number.setText(String.format(getResources().getString(R.string.predetermined_number), String.valueOf(item.estimateNum)));
@@ -119,19 +132,35 @@ public class ConferenceInformationFragment extends ViewPagerBaseFragment {
 
         //V智慧判断
         if (item.isVzh == 1) {
-//            meeting_actual_number.setText(String.format(getResources().getString(R.string.actual_number), String.valueOf(item.actualNum)));
+            //            meeting_actual_number.setText(String.format(getResources().getString(R.string.actual_number), String.valueOf(item.actualNum)));
             meeting_actual_number.setText(String.format(getResources().getString(R.string.actual_number), String.valueOf(actualNum)));
-            if (networkBroker == null) {
-                networkBroker = new NetworkBroker(getActivity());
-            }
             handler.sendEmptyMessage(3);
         } else {
             meeting_actual_number.setText(String.format(getResources().getString(R.string.actual_number), "--"));
         }
+    }
 
-
-        listData = new ArrayList<>();
-        initRecyc();
+    /**
+     * 获取会议信息
+     */
+    private void getMeeting() {
+        GetMeetingRequest gmr = new GetMeetingRequest();
+        gmr.setMeetingId(meetingId);
+        networkBroker.ask(gmr, (ex1, res) -> {
+            if (null != ex1) {
+                Logger.d(ex1.getMessage() + "-" + ex1);
+                return;
+            }
+            try {
+                GetMeetingResponse response = (GetMeetingResponse) res;
+                if (response.getCode() == 200) {
+                    this.item = response.data;
+                    initUI();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void initRecyc() {
@@ -185,7 +214,9 @@ public class ConferenceInformationFragment extends ViewPagerBaseFragment {
 
     @Override
     public void requestNetwork() {
-        networkBroker = new NetworkBroker(getActivity());
+        if (null == networkBroker){
+            networkBroker = new NetworkBroker(getActivity());
+        }
         GetMeetingItemsByMeetingIdRequest getMeetingItemsByMeetingIdRequest = new GetMeetingItemsByMeetingIdRequest();
         getMeetingItemsByMeetingIdRequest.setMeetingId(meetingId);
         //        getMeetingItemsByMeetingIdRequest.setMeetingId(1);
@@ -216,19 +247,20 @@ public class ConferenceInformationFragment extends ViewPagerBaseFragment {
 
     @Override
     public void emptyObject() {
-//        networkBroker.cancelAllRequests();
+        //        networkBroker.cancelAllRequests();
         if (handler != null) {
             handler.removeCallbacksAndMessages(null);
         }
     }
 
 
+    @SuppressLint("HandlerLeak")
     public Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (msg.what == 3) {
-                Logger.d("ConferenceInformationFragment---handler---->:"+getUserVisibleHint());
+                Logger.d("ConferenceInformationFragment---handler---->:" + getUserVisibleHint());
                 if (getUserVisibleHint()) {
                     getActualNum();
                 } else {
