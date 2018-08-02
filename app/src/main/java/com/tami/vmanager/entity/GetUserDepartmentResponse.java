@@ -54,8 +54,6 @@ public class GetUserDepartmentResponse extends MobileMessage implements Serializ
                 public Long updateOn;	/*1533122115000*/
                 public int roleId;	/*0*/
                 public String mobile;	/*13000000099*/
-
-                public boolean isSelected;
             }
 
             public List<User> userList;	/*List<TUserList>*/

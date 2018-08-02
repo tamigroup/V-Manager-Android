@@ -143,11 +143,11 @@ public class AddPersonChargeActivty extends BaseActivity {
                 holder.setText(R.id.iapc_position, user.depName);
                 holder.setText(R.id.iapc_name, user.realName);
                 AppCompatImageView selectImage = holder.getView(R.id.iapc_select_image);
-                selectImage.setImageResource(user.isSelected ? R.mipmap.people_checkbox_selected : R.mipmap.people_checkbox_unselected);
+                selectImage.setImageResource(user.status == 1 ? R.mipmap.people_checkbox_selected : R.mipmap.people_checkbox_unselected);
                 holder.getView(R.id.iapc_layout).setOnClickListener((View v) -> {
-                    user.isSelected = !user.isSelected;
-                    selectImage.setImageResource(user.isSelected ? R.mipmap.people_checkbox_selected : R.mipmap.people_checkbox_unselected);
-                    setPeople(count = user.isSelected ? ++count : --count);
+                    user.status = user.status == 1 ? 0 : 1;
+                    selectImage.setImageResource(user.status == 1 ? R.mipmap.people_checkbox_selected : R.mipmap.people_checkbox_unselected);
+                    setPeople(count = user.status == 1 ? ++count : --count);
                 });
             }
         };
@@ -182,13 +182,14 @@ public class AddPersonChargeActivty extends BaseActivity {
         if (item != null) {
             guidr.setUserId(item.getId());
         }
+        guidr.setMeetingItemSetId(meetingItemSetId);
         networkBroker.ask(guidr, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);
                 return;
             }
             try {
-                GetUserDepartmentResponse response= (GetUserDepartmentResponse) res;
+                GetUserDepartmentResponse response = (GetUserDepartmentResponse) res;
                 if (response.getCode() == 200) {
                     if (response.data != null) {
                         GetUserDepartmentResponse.Array guidrItem = response.data;
@@ -201,7 +202,7 @@ public class AddPersonChargeActivty extends BaseActivity {
                                         if (userList != null) {
                                             for (GetUserDepartmentResponse.Array.Item.User userData : userList) {
                                                 contentList.add(userData);
-                                                if (userData.isSelected) {
+                                                if (userData.status == 1) {
                                                     count++;
                                                 }
                                                 if (!TextUtils.isEmpty(tieleItem.depName)) {
@@ -232,7 +233,7 @@ public class AddPersonChargeActivty extends BaseActivity {
     private void confirm() {
         ArrayList<SetMeetingItemsUserJson> data = new ArrayList<>();
         for (GetUserDepartmentResponse.Array.Item.User item : contentList) {
-            if (item.isSelected) {
+            if (item.status == 1) {
                 SetMeetingItemsUserJson smiuj = new SetMeetingItemsUserJson();
                 smiuj.setId(item.id);
                 smiuj.setRealName(item.realName);
@@ -263,7 +264,7 @@ public class AddPersonChargeActivty extends BaseActivity {
                         intent.putExtra(Constants.RESULT_JIEDAIREN, true);
                         setResult(Constants.ADD_PERSON_CHARGE, intent);
                         finish();
-                    }else{
+                    } else {
                         showToast(response.getMessage());
                     }
                 } catch (Exception e) {

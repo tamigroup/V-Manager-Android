@@ -30,7 +30,7 @@
     <TextView
         android:id="@+id/mlc_distribution"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_11"
         android:gravity="center_vertical"
         android:textColor="@color/color_303030"
@@ -58,13 +58,15 @@
         android:lines="1"
         android:textColor="@color/color_303030"
         android:textSize="@dimen/sp_16"
+        app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/mlc_phone"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_max="150dp" />
 
     <TextView
         android:id="@+id/mlc_position"
-        android:layout_width="@dimen/dp_0"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/dp_10"
         android:ellipsize="end"
@@ -72,9 +74,10 @@
         android:lines="1"
         android:textColor="@color/color_888888"
         android:textSize="@dimen/sp_16"
+        app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/mlc_name"
-        app:layout_constraintStart_toEndOf="@+id/mlc_distribution"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_max="@dimen/dp_100" />
 
 </android.support.constraint.ConstraintLayout>

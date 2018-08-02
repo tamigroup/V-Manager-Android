@@ -12,6 +12,7 @@ public class GetUserDepartmentRequest extends MobileMessage implements Serializa
     private static final long serialVersionUID = -597573195844276470L;
 
     private int userId;
+    private int meetingItemSetId;
 
     public GetUserDepartmentRequest() {
         super();
@@ -19,6 +20,14 @@ public class GetUserDepartmentRequest extends MobileMessage implements Serializa
 
     public int getUserId() {
         return userId;
+    }
+
+    public int getMeetingItemSetId() {
+        return meetingItemSetId;
+    }
+
+    public void setMeetingItemSetId(int meetingItemSetId) {
+        this.meetingItemSetId = meetingItemSetId;
     }
 
     public void setUserId(int userId) {
