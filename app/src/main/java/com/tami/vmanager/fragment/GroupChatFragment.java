@@ -236,9 +236,6 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
                             elementsBean.setUserName(userItem.getRealName());
                             elementsBean.setUserIcon(userItem.getIconUrl());
                         }
-//                        //username不一致，暂用sp解决
-//                        String username = (String) SPUtils.get(getContext(), "username", "");
-//                        elementsBean.setUserName(username);
                         elementsBean.setMeetingId(String.valueOf(meetingId));
                         elementsBean.setType("1");
                         listData.add(elementsBean);
