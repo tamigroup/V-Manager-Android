@@ -106,4 +106,16 @@ public class ActivityManager {
         android.os.Process.killProcess(android.os.Process.myPid());
         System.exit(0);
     }
+
+    /**
+     * Activity是否在前台
+     */
+    public static boolean hasActivityInForeground() {
+        for (int i = 0, size = activityStack.size(); i < size; i++) {
+            if (null != activityStack.get(i)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

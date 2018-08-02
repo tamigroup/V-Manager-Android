@@ -124,4 +124,5 @@ public class Constants {
     //推送 点击跳转的key
     public static final String JPUSH_KEY  = "jpush_key";
     public static final String JPUSH_MEETINGID  = "jpush_meetingid";
+    public static final String JPUSH_NOTICEMESSAGEID  = "jpush_noticemessageid";
 }
