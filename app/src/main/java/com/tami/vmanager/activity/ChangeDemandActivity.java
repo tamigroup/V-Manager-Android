@@ -25,6 +25,8 @@ import com.tami.vmanager.entity.ChangeDemandReplayRequestBean;
 import com.tami.vmanager.entity.ChangeDemandReplayResponseBean;
 import com.tami.vmanager.entity.ChangeDemandRequestBean;
 import com.tami.vmanager.entity.ChangeDemandResponseBean;
+import com.tami.vmanager.entity.GetMeetingSellUserIdRequestBean;
+import com.tami.vmanager.entity.GetMeetingSellUserIdResponeBean;
 import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.entity.MobileMessage;
 import com.tami.vmanager.http.NetworkBroker;
@@ -58,7 +60,7 @@ public class ChangeDemandActivity extends BaseActivity {
     private List<String> fastRepayList;
     private int isVzh;
     private TextView no_v;
-    private int create_meeting_saleuser;
+    private int create_meetingId;
 
     @Override
     public boolean isTitle() {
@@ -102,8 +104,6 @@ public class ChangeDemandActivity extends BaseActivity {
         if (null != intent) {
             meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 1);
             isVzh = intent.getIntExtra(Constants.IS_VZHIHUI, 1);
-            // TODO: 2018/8/1 从接口获取创建会议的ID  销售总负责 2
-            create_meeting_saleuser = intent.getIntExtra(Constants.CREATE_MEETING_SALEUSER, 0);
         }
         if (isVzh == 1) {
             recyclerView.setVisibility(View.VISIBLE);
@@ -162,15 +162,20 @@ public class ChangeDemandActivity extends BaseActivity {
                     showToast(getString(R.string.y_has_replay));
                     return;
                 }
-
+                //从接口获取 创建会议的ID  销售总负责 2 可以回复
                 LoginResponse.Item item = GlobaVariable.getInstance().item;
                 if (null != item) {
                     int userId = item.getId();
-                    if (userId == create_meeting_saleuser) {
-                        //快速回复
-                        fastReplay(holder, position);
-                    } else {
-                        showToast(R.string.no_permission_to_reply);
+                    List<LoginResponse.Item.UserRole> userRoleList = item.getUserRoleList();
+                    if (userRoleList != null && userRoleList.size() > 0) {
+                        for (LoginResponse.Item.UserRole userRole : userRoleList) {
+                            if (userId == create_meetingId || userRole.roleId == 2) {
+                                //快速回复
+                                fastReplay(holder, position);
+                            } else {
+                                showToast(R.string.no_permission_to_reply);
+                            }
+                        }
                     }
                 }
                 //弹出EditText回复
@@ -208,7 +213,6 @@ public class ChangeDemandActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder fastHolder, int po) {
                 requestNet(fastRepayList.get(po), listData.get(position).getId(), GlobaVariable.getInstance().item.getId(), holder);
-                fastDialog.dismiss();
             }
 
             @Override
@@ -272,6 +276,7 @@ public class ChangeDemandActivity extends BaseActivity {
             ChangeDemandReplayResponseBean replayResponse = (ChangeDemandReplayResponseBean) res;
             if (replayResponse.getCode() == 200) {
                 if (replayResponse.isData()) {
+                    fastDialog.dismiss();
                     showToast(getString(R.string.replay_success));
                     TextView have_reply = holder.itemView.findViewById(R.id.have_reply);
                     have_reply.setText(getResources().getString(R.string.has_replay));
@@ -292,8 +297,31 @@ public class ChangeDemandActivity extends BaseActivity {
     @Override
     public void requestNetwork() {
         if (isVzh == 1) {
+            GetMeetingSellUserId();
             queryData();
         }
+    }
+
+    /**
+     * 获取创建会议人的Id
+     */
+    private void GetMeetingSellUserId() {
+        GetMeetingSellUserIdRequestBean getMeetingSellUserIdRequestBean = new GetMeetingSellUserIdRequestBean();
+        getMeetingSellUserIdRequestBean.setMeetingId(meetingId);
+        networkBroker.ask(getMeetingSellUserIdRequestBean, (Exception exl, MobileMessage res) -> {
+            if (null != exl) {
+                Logger.d(exl.getMessage() + "-" + exl);
+                return;
+            }
+            try {
+                GetMeetingSellUserIdResponeBean response = (GetMeetingSellUserIdResponeBean) res;
+                if (response.getCode() == 200) {
+                    create_meetingId = response.getData();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void queryData() {
