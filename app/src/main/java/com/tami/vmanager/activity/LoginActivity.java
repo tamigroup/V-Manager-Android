@@ -263,6 +263,7 @@ public class LoginActivity extends BaseActivity {
                     LoginResponse.Item data = response.getData();
                     GlobaVariable.getInstance().item = data;
                     //                    Login_JIM(response.getData().getMobile(), response.getData().getPassword());
+                    Logger.e("极光ID=="+TaMiApplication.registrationID);
                     bindRegistrationId(data, TaMiApplication.registrationID);
                 } else {
                     SPUtils.put(this, Constants.AUTO_LOGIN,false);

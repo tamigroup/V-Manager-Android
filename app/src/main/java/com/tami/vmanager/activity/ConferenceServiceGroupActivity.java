@@ -35,6 +35,7 @@ public class ConferenceServiceGroupActivity extends BaseActivity {
     private int meetingId;
     private GetMeetingResponse.Item item;
     private int actualNum;
+    private int noticemessageId;
 
     @Override
     public boolean isTitle() {
@@ -62,6 +63,7 @@ public class ConferenceServiceGroupActivity extends BaseActivity {
         Intent intent = getIntent();
         if (intent != null) {
             meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 0);
+            noticemessageId = intent.getIntExtra(Constants.JPUSH_NOTICEMESSAGEID, 0);
 //            actualNum = intent.getIntExtra(Constants.ACTUAL_NUM, 0);
             item = (GetMeetingResponse.Item) intent.getSerializableExtra(Constants.MEETING_INFO);
         }
@@ -89,7 +91,12 @@ public class ConferenceServiceGroupActivity extends BaseActivity {
 //        viewPager.setOffscreenPageLimit(3);
         viewPagerOnTabSelectedListener = new TabLayout.ViewPagerOnTabSelectedListener(viewPager);
         tabLayout.addOnTabSelectedListener(viewPagerOnTabSelectedListener);
-        viewPager.setCurrentItem(1);
+        //群公告Id 为0表示不是推送进来
+        if (noticemessageId == 0){
+            viewPager.setCurrentItem(1);
+        }else {
+            viewPager.setCurrentItem(3);
+        }
     }
 
     @Override
