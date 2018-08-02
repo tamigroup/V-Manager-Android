@@ -215,9 +215,9 @@ public class GroupMembersActivty extends BaseActivity {
                             }
                             data.addAll(item);
                             commonAdapter.notifyDataSetChanged();
+                            total = array.totalElements;
                             if (!array.lastPage) {
                                 load_more.setVisibility(View.VISIBLE);
-                                total = array.totalElements;
                             } else {
                                 load_more.setVisibility(View.GONE);
                             }
