@@ -173,6 +173,7 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
                             isLoadMore = false;
                             isRefresh = false;
                             adapter.notifyDataSetChanged();
+                            recyclerView.scrollToPosition(listData.size()-1);
                         } else {
                             empty_tv.setVisibility(View.VISIBLE);
                             recyclerView.setVisibility(View.GONE);
@@ -236,9 +237,6 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
                             elementsBean.setUserName(userItem.getRealName());
                             elementsBean.setUserIcon(userItem.getIconUrl());
                         }
-//                        //username不一致，暂用sp解决
-//                        String username = (String) SPUtils.get(getContext(), "username", "");
-//                        elementsBean.setUserName(username);
                         elementsBean.setMeetingId(String.valueOf(meetingId));
                         elementsBean.setType("1");
                         listData.add(elementsBean);

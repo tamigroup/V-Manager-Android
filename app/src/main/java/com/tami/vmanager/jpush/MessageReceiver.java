@@ -13,6 +13,7 @@ import com.tami.vmanager.activity.ConferenceServiceGroupActivity;
 import com.tami.vmanager.activity.HomeActivity;
 import com.tami.vmanager.activity.IdeasBoxActivity;
 import com.tami.vmanager.activity.MeetingOverviewActivity;
+import com.tami.vmanager.application.TaMiApplication;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.JsonUtils;
 import com.tami.vmanager.utils.Logger;
@@ -69,6 +70,7 @@ public class MessageReceiver extends BroadcastReceiver {
 
             } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
                 //当用户点击时触发
+                Logger.d("[极光MessageReceiver] 用户点击打开了通知 是否在前台=="+ TaMiApplication.isBackground(context));
                 Logger.d("[极光MessageReceiver] 用户点击打开了通知");
                 String Jpush_key = (String) SPUtils.get(context, Constants.JPUSH_KEY, "");
                 int jpush_meetingid = (int) SPUtils.get(context, Constants.JPUSH_MEETINGID, 0);
@@ -83,44 +85,19 @@ public class MessageReceiver extends BroadcastReceiver {
                 // userTask标识为分配服务节点 创建会议  会议概览页
                 // createMeeting updateMeeting setMeetingItem 会议概览页
                 // noticeMessage,55,234  群公告推送 55代表会议ID  234代表公告ID
-                if (TextUtils.isEmpty(Jpush_key)) {
+
+                if (TaMiApplication.isBackground(context)){
+                    //在后台
                     //跳到HomeActivity
                     Intent i = new Intent(context, HomeActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     context.startActivity(i);
-                } else if (Jpush_key.equals("needChange")) {
-                    //跳到活动变化
-                    Intent changeDemandIntent = new Intent(context, ChangeDemandActivity.class);
-                    changeDemandIntent.putExtra(Constants.KEY_MEETING_ID,jpush_meetingid);
-                    changeDemandIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    context.startActivity(changeDemandIntent);
-                }else if (Jpush_key.equals("groupMessage")){
-                    //跳到会议服务群 群消息
-                    Intent ConferenceServiceGroupIntent= new Intent(context,ConferenceServiceGroupActivity.class);
-                    ConferenceServiceGroupIntent.putExtra(Constants.KEY_MEETING_ID,jpush_meetingid);
-                    ConferenceServiceGroupIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    context.startActivity(ConferenceServiceGroupIntent);
-                } else if (Jpush_key.equals("noticeMessage")){
-                    //跳到会议服务群 群公告
-                    Intent ConferenceServiceGroupIntent= new Intent(context,ConferenceServiceGroupActivity.class);
-                    ConferenceServiceGroupIntent.putExtra(Constants.KEY_MEETING_ID,jpush_meetingid);
-                    ConferenceServiceGroupIntent.putExtra(Constants.JPUSH_NOTICEMESSAGEID,jpush_noticemessageid);
-                    ConferenceServiceGroupIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    context.startActivity(ConferenceServiceGroupIntent);
-                }else if (Jpush_key.equals("opinionCase")) {
-                    //跳到满意度
-                    Intent IdeasBoxIntent= new Intent(context,IdeasBoxActivity.class);
-                    IdeasBoxIntent.putExtra(Constants.KEY_MEETING_ID,jpush_meetingid);
-                    IdeasBoxIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    context.startActivity(IdeasBoxIntent);
-                } else if (Jpush_key.equals("userTask")||Jpush_key.equals("createMeeting")||Jpush_key.equals("updateMeeting")||Jpush_key.equals("setMeetingItem")) {
-                    //跳到会议概览页
-                    Intent changeDemandIntent = new Intent(context, MeetingOverviewActivity.class);
-                    changeDemandIntent.putExtra(Constants.KEY_MEETING_ID,jpush_meetingid);
-                    changeDemandIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    context.startActivity(changeDemandIntent);
+                    inStartFront(context, Jpush_key, jpush_meetingid, jpush_noticemessageid);
+                    Logger.d("app在后台==");
+                }else {
+                    inStartFront(context, Jpush_key, jpush_meetingid, jpush_noticemessageid);
+                    Logger.d("app在前台==");
                 }
-
             } else if (JPushInterface.ACTION_RICHPUSH_CALLBACK.equals(intent.getAction())) {
                 Logger.d("[极光MessageReceiver] 用户收到到RICH PUSH CALLBACK: " + bundle.getString(JPushInterface.EXTRA_EXTRA));
                 //在这里根据 JPushInterface.EXTRA_EXTRA 的内容处理代码，比如打开新的Activity， 打开一个网页等..
@@ -135,6 +112,49 @@ public class MessageReceiver extends BroadcastReceiver {
             Logger.d("[极光MessageReceiver] Exception --- " + e.getMessage());
         }
 
+    }
+
+    /**
+     * app处于前台可见
+     */
+    private void inStartFront(Context context, String jpush_key, int jpush_meetingid, int jpush_noticemessageid) {
+        if (TextUtils.isEmpty(jpush_key)) {
+            //跳到HomeActivity
+            Intent i = new Intent(context, HomeActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            context.startActivity(i);
+        } else if (jpush_key.equals("needChange")) {
+            //跳到活动变化
+            Intent changeDemandIntent = new Intent(context, ChangeDemandActivity.class);
+            changeDemandIntent.putExtra(Constants.KEY_MEETING_ID,jpush_meetingid);
+            changeDemandIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            context.startActivity(changeDemandIntent);
+        }else if (jpush_key.equals("groupMessage")){
+            //跳到会议服务群 群消息
+            Intent ConferenceServiceGroupIntent= new Intent(context,ConferenceServiceGroupActivity.class);
+            ConferenceServiceGroupIntent.putExtra(Constants.KEY_MEETING_ID,jpush_meetingid);
+            ConferenceServiceGroupIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            context.startActivity(ConferenceServiceGroupIntent);
+        } else if (jpush_key.equals("noticeMessage")){
+            //跳到会议服务群 群公告
+            Intent ConferenceServiceGroupIntent= new Intent(context,ConferenceServiceGroupActivity.class);
+            ConferenceServiceGroupIntent.putExtra(Constants.KEY_MEETING_ID,jpush_meetingid);
+            ConferenceServiceGroupIntent.putExtra(Constants.JPUSH_NOTICEMESSAGEID,jpush_noticemessageid);
+            ConferenceServiceGroupIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            context.startActivity(ConferenceServiceGroupIntent);
+        }else if (jpush_key.equals("opinionCase")) {
+            //跳到满意度
+            Intent IdeasBoxIntent= new Intent(context,IdeasBoxActivity.class);
+            IdeasBoxIntent.putExtra(Constants.KEY_MEETING_ID,jpush_meetingid);
+            IdeasBoxIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            context.startActivity(IdeasBoxIntent);
+        } else if (jpush_key.equals("userTask")|| jpush_key.equals("createMeeting")|| jpush_key.equals("updateMeeting")|| jpush_key.equals("setMeetingItem")) {
+            //跳到会议概览页
+            Intent changeDemandIntent = new Intent(context, MeetingOverviewActivity.class);
+            changeDemandIntent.putExtra(Constants.KEY_MEETING_ID,jpush_meetingid);
+            changeDemandIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            context.startActivity(changeDemandIntent);
+        }
     }
 
     // 打印所有的 intent extra 数据

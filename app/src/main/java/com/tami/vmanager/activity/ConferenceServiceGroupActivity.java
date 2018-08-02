@@ -10,12 +10,15 @@ import android.view.View;
 import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.GuidePageFragmentPagerAdapter;
 import com.tami.vmanager.base.BaseActivity;
+import com.tami.vmanager.entity.GetMeetingRequest;
 import com.tami.vmanager.entity.GetMeetingResponse;
 import com.tami.vmanager.fragment.ConferenceInformationFragment;
 import com.tami.vmanager.fragment.FeedbackFragment;
 import com.tami.vmanager.fragment.GroupChatFragment;
 import com.tami.vmanager.fragment.NoticeFragment;
+import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.utils.Constants;
+import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.SPUtils;
 
 import cn.jiguang.api.JCoreInterface;
@@ -36,6 +39,7 @@ public class ConferenceServiceGroupActivity extends BaseActivity {
     private GetMeetingResponse.Item item;
     private int actualNum;
     private int noticemessageId;
+    private NetworkBroker networkBroker;
 
     @Override
     public boolean isTitle() {
@@ -51,6 +55,7 @@ public class ConferenceServiceGroupActivity extends BaseActivity {
     public void initView() {
         tabLayout = findViewById(R.id.csg_tab_layout);
         viewPager = findViewById(R.id.csg_view_pager);
+        networkBroker = new NetworkBroker(this);
     }
 
     @Override
@@ -66,6 +71,9 @@ public class ConferenceServiceGroupActivity extends BaseActivity {
             noticemessageId = intent.getIntExtra(Constants.JPUSH_NOTICEMESSAGEID, 0);
 //            actualNum = intent.getIntExtra(Constants.ACTUAL_NUM, 0);
             item = (GetMeetingResponse.Item) intent.getSerializableExtra(Constants.MEETING_INFO);
+        }
+        if (null == item){
+            getMeeting();
         }
         setTitleName(R.string.conference_service_group);
         //设置右边功能按钮图片
@@ -97,6 +105,28 @@ public class ConferenceServiceGroupActivity extends BaseActivity {
         }else {
             viewPager.setCurrentItem(3);
         }
+    }
+
+    /**
+     * 获取会议信息
+     */
+    private void getMeeting() {
+        GetMeetingRequest gmr = new GetMeetingRequest();
+        gmr.setMeetingId(meetingId);
+        networkBroker.ask(gmr, (ex1, res) -> {
+            if (null != ex1) {
+                Logger.d(ex1.getMessage() + "-" + ex1);
+                return;
+            }
+            try {
+                GetMeetingResponse response = (GetMeetingResponse) res;
+                if (response.getCode() == 200) {
+                    this.item = response.data;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override
