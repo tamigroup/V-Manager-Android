@@ -173,6 +173,7 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
                             isLoadMore = false;
                             isRefresh = false;
                             adapter.notifyDataSetChanged();
+                            recyclerView.scrollToPosition(listData.size()-1);
                         } else {
                             empty_tv.setVisibility(View.VISIBLE);
                             recyclerView.setVisibility(View.GONE);

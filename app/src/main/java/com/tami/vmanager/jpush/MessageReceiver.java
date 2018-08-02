@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.tami.vmanager.R;
+import com.tami.vmanager.activity.ChangeDemandActivity;
 import com.tami.vmanager.activity.ConferenceServiceGroupActivity;
 import com.tami.vmanager.activity.HomeActivity;
 import com.tami.vmanager.activity.IdeasBoxActivity;
@@ -124,14 +125,10 @@ public class MessageReceiver extends BroadcastReceiver {
             context.startActivity(i);
         } else if (jpush_key.equals("needChange")) {
             //跳到活动变化
-//            Intent changeDemandIntent = new Intent(context, ChangeDemandActivity.class);
-//            changeDemandIntent.putExtra(Constants.KEY_MEETING_ID,jpush_meetingid);
-//            changeDemandIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//            context.startActivity(changeDemandIntent);
-            Intent ConferenceServiceGroupIntent= new Intent(context,ConferenceServiceGroupActivity.class);
-            ConferenceServiceGroupIntent.putExtra(Constants.KEY_MEETING_ID,jpush_meetingid);
-            ConferenceServiceGroupIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            context.startActivity(ConferenceServiceGroupIntent);
+            Intent changeDemandIntent = new Intent(context, ChangeDemandActivity.class);
+            changeDemandIntent.putExtra(Constants.KEY_MEETING_ID,jpush_meetingid);
+            changeDemandIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            context.startActivity(changeDemandIntent);
         }else if (jpush_key.equals("groupMessage")){
             //跳到会议服务群 群消息
             Intent ConferenceServiceGroupIntent= new Intent(context,ConferenceServiceGroupActivity.class);
