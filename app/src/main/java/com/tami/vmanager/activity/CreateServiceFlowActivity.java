@@ -271,7 +271,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
                     group.setVisibility(View.VISIBLE);
                     holder.getView(R.id.icsf_editing_time).setVisibility(View.GONE);
                     customRole.setOnClickListener((View v) -> {
-                        showCustomRole(customRole, item);
+                        showCustomRole(customRole, item, true);
                     });
                     if (item.isSelected) {
                         customRole.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_3B89E9));
@@ -391,7 +391,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
                 });
                 //角色选择
                 customRole.setOnClickListener((View v) -> {
-                    showCustomRole(customRole, item);
+                    showCustomRole(customRole, item, false);
                 });
                 if (item.isSelected) {
                     //勾选的时间颜色会变
@@ -594,7 +594,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
      *
      * @param textView
      */
-    public void showCustomRole(TextView textView, GetMeetingItemsResponse.Array.Item item) {
+    public void showCustomRole(TextView textView, GetMeetingItemsResponse.Array.Item item, boolean isTop) {
         mBottomSheetDialog = new BottomSheetDialog(this);
         ConstraintLayout cLayout = (ConstraintLayout) getLayoutInflater().inflate(R.layout.show_menu_service_flow, null);
         TextView cancle = cLayout.findViewById(R.id.smsf_cancel);
@@ -605,7 +605,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
         confirm.setOnClickListener((View v) -> {
             mBottomSheetDialog.dismiss();
             if (selectIndex != -1) {
-                createUserMeetingItem(item);
+                createUserMeetingItem(item, isTop);
             }
         });
         roleRecyclerView = cLayout.findViewById(R.id.smsf_recyclerview);
@@ -735,7 +735,7 @@ public class CreateServiceFlowActivity extends BaseActivity {
     /**
      * 创建自定义流程节点
      */
-    private void createUserMeetingItem(GetMeetingItemsResponse.Array.Item item) {
+    private void createUserMeetingItem(GetMeetingItemsResponse.Array.Item item, boolean isTop) {
         CreateUserMeetingItemRequest cumir = new CreateUserMeetingItemRequest();
         cumir.setMeetingId(meetingId);
         cumir.setMeetingItemId(item.id);
@@ -756,17 +756,22 @@ public class CreateServiceFlowActivity extends BaseActivity {
                         item.id = cItem.id;
                         //只有时间和角色都选择后才向TOP追加
                         if (item.startOn != 0) {
-                            topData.add(item);
-                            Collections.sort(topData);
-                            topAdapter.notifyDataSetChanged();
-                            //底部列表移除数据
-                            bottomData.remove(item);
-                            //没有数据时隐藏一下
-                            if (bottomData.size() > 0) {
-                                Collections.sort(bottomData);
-                                bottomAdapter.notifyDataSetChanged();
+                            if (isTop) {
+                                Collections.sort(topData);
+                                topAdapter.notifyDataSetChanged();
                             } else {
-                                bottomRecyclerView.setVisibility(View.GONE);
+                                topData.add(item);
+                                Collections.sort(topData);
+                                topAdapter.notifyDataSetChanged();
+                                //底部列表移除数据
+                                bottomData.remove(item);
+                                //没有数据时隐藏一下
+                                if (bottomData.size() > 0) {
+                                    Collections.sort(bottomData);
+                                    bottomAdapter.notifyDataSetChanged();
+                                } else {
+                                    bottomRecyclerView.setVisibility(View.GONE);
+                                }
                             }
                         } else {
                             Collections.sort(bottomData);
