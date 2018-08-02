@@ -62,7 +62,7 @@ public class ConferenceServiceGroupActivity extends BaseActivity {
         Intent intent = getIntent();
         if (intent != null) {
             meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 0);
-            actualNum = intent.getIntExtra(Constants.ACTUAL_NUM, 0);
+//            actualNum = intent.getIntExtra(Constants.ACTUAL_NUM, 0);
             item = (GetMeetingResponse.Item) intent.getSerializableExtra(Constants.MEETING_INFO);
         }
         setTitleName(R.string.conference_service_group);
@@ -75,7 +75,7 @@ public class ConferenceServiceGroupActivity extends BaseActivity {
         Bundle bundle = new Bundle();
         bundle.putInt(Constants.KEY_MEETING_ID, meetingId);
         arrayFragment = new Fragment[4];
-        arrayFragment[0] = new ConferenceInformationFragment(meetingId, item, actualNum);
+        arrayFragment[0] = new ConferenceInformationFragment(meetingId, item);
         arrayFragment[1] = new GroupChatFragment();
         arrayFragment[1].setArguments(bundle);
         arrayFragment[2] = new FeedbackFragment(meetingId, item);

@@ -24,6 +24,7 @@ import com.tami.vmanager.entity.ChangeDemandReplayRequestBean;
 import com.tami.vmanager.entity.ChangeDemandReplayResponseBean;
 import com.tami.vmanager.entity.ChangeDemandRequestBean;
 import com.tami.vmanager.entity.ChangeDemandResponseBean;
+import com.tami.vmanager.entity.GetMeetingRequest;
 import com.tami.vmanager.entity.GetMeetingResponse;
 import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.entity.MobileMessage;
@@ -101,7 +102,6 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
             @Override
             public void loadMore() {
                 isLoadMore = true;
-                CurPage = 1;
                 queryData();
             }
         });
@@ -109,14 +109,29 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
 
     @Override
     public void initData() {
+        if (null == item){
+            getMeeting();
+        }else {
+            initUI();
+        }
+
+        listData = new ArrayList<>();
+        initRecycle();
+        onItemClick();
+    }
+
+    private void initUI() {
         if (item.isVzh != 1) {
             recyclerView.setVisibility(View.GONE);
             empty_tv.setVisibility(View.GONE);
             vzhihui_tv.setVisibility(View.VISIBLE);
             return;
         }
+        // TODO: 2018/8/1 从接口获取创建会议的ID  销售总负责 2
         saleUserId = item.saleUserId;
-        listData = new ArrayList<>();
+    }
+
+    private void initRecycle() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         commonAdapter = new CommonAdapter<ChangeDemandResponseBean.DataBean.ElementsBean>(getActivity(), R.layout.item_feedback, listData) {
             @Override
@@ -148,7 +163,6 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
         };
         commonAdapter.notifyDataSetChanged();
         recyclerView.setAdapter(commonAdapter);
-        onItemClick();
     }
 
     private void onItemClick() {
@@ -259,6 +273,29 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
         });
     }
 
+    /**
+     * 获取会议信息
+     */
+    private void getMeeting() {
+        GetMeetingRequest gmr = new GetMeetingRequest();
+        gmr.setMeetingId(meetingId);
+        networkBroker.ask(gmr, (ex1, res) -> {
+            if (null != ex1) {
+                Logger.d(ex1.getMessage() + "-" + ex1);
+                return;
+            }
+            try {
+                GetMeetingResponse response = (GetMeetingResponse) res;
+                if (response.getCode() == 200) {
+                    this.item = response.data;
+                    initUI();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
     private void requestNet(String content, int meetingRequirementId, int replyUserId, RecyclerView.ViewHolder holder) {
         ChangeDemandReplayRequestBean changeDemandReplayRequestBean = new ChangeDemandReplayRequestBean();
         changeDemandReplayRequestBean.setMeetingRequirementId(meetingRequirementId);
@@ -292,6 +329,7 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
 
     @Override
     public void requestNetwork() {
+        CurPage = 1;
         if (item.isVzh == 1) {
             queryData();
         }
@@ -314,12 +352,13 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
                     ChangeDemandResponseBean.DataBean data = response.getData();
                     if (data != null) {
                         if (data.getElements() != null && data.getElements().size() > 0) {
-                            if (isLoadMore) {
-                                listData.clear();
-                                listData.addAll(data.getElements());
-                            } else {
-                                listData.addAll(data.getElements());
-                            }
+//                            if (isLoadMore) {
+//                                listData.clear();
+//                                listData.addAll(data.getElements());
+//                            } else {
+//                                listData.addAll(data.getElements());
+//                            }
+                            listData.addAll(data.getElements());
                             isLoadMore = false;
                             commonAdapter.notifyDataSetChanged();
                         } else {
@@ -328,6 +367,7 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
                             empty_tv.setText(getString(R.string.no_change_in_the_event));
                         }
                         if (data.isLastPage()) {
+                            pullToRefreshLayout.setCanRefresh(false);
                             pullToRefreshLayout.setCanLoadMore(false);
                         }
                     }

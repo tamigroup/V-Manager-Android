@@ -68,11 +68,6 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
         sendTxt = findViewById(R.id.fgc_send_txt);
         sendBtn = findViewById(R.id.fgc_send_btn);
         empty_tv = findViewById(R.id.empty_tv);
-
-        bundle = getArguments();
-        if (bundle != null) {
-            meetingId = this.bundle.getInt(Constants.KEY_MEETING_ID);
-        }
     }
 
     @Override
@@ -95,7 +90,7 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
 
     @Override
     public void initData() {
-        is_invisible = (boolean) SPUtils.get(getActivity(), Constants.IS_INVISIBLE, false);
+        is_invisible = (boolean) SPUtils.get(getActivity(), Constants.IS_INVISIBLE, true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         listData = new ArrayList<>();
         adapter = new MultiItemTypeAdapter(getContext(), listData);
@@ -137,6 +132,11 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
     @Override
     public void requestNetwork() {
         networkBroker = new NetworkBroker(getActivity());
+        bundle = getArguments();
+        if (bundle != null) {
+            meetingId = this.bundle.getInt(Constants.KEY_MEETING_ID);
+        }
+        CurPage = 1;
         queryData();
     }
 
@@ -179,6 +179,7 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
                         }
                         if (responseData.isLastPage()) {
                             pullToRefreshLayout.setCanRefresh(false);
+                            pullToRefreshLayout.setCanLoadMore(false);
                         }
                     }
                     pullToRefreshLayout.finishRefresh();

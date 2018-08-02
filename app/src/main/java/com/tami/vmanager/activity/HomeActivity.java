@@ -104,7 +104,6 @@ public class HomeActivity extends BaseActivity implements TabLayout.OnTabSelecte
     }
 
     public void onSelected(int selectId) {
-        // TODO Auto-generated method stub
         Logger.d("选择Fragment页面下标selectId为:" + selectId);
         try {
             fragmentManager = getSupportFragmentManager();

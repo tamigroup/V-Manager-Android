@@ -101,7 +101,8 @@ public class ChangeDemandActivity extends BaseActivity {
         Intent intent = getIntent();
         if (null != intent) {
             meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 1);
-            isVzh = intent.getIntExtra(Constants.IS_VZHIHUI, 0);
+            isVzh = intent.getIntExtra(Constants.IS_VZHIHUI, 1);
+            // TODO: 2018/8/1 从接口获取创建会议的ID  销售总负责 2
             create_meeting_saleuser = intent.getIntExtra(Constants.CREATE_MEETING_SALEUSER, 0);
         }
         if (isVzh == 1) {

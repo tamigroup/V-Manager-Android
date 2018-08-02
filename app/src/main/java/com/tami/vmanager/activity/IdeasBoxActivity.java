@@ -58,7 +58,7 @@ public class IdeasBoxActivity extends BaseActivity {
         Intent intent = getIntent();
         if (intent != null) {
             meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 0);
-            isVzh = intent.getIntExtra(Constants.IS_VZHIHUI, 0);
+            isVzh = intent.getIntExtra(Constants.IS_VZHIHUI, 1);
         }
 
         setTitleName(R.string.complaints_box);
