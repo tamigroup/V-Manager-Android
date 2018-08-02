@@ -301,7 +301,7 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
         switch (requestCode) {
             case Constants.CREATE_FLOW:
                 //创建服务流程返回
-                getMeetingItemsByMeetingId();
+//                getMeetingItemsByMeetingId();
                 break;
             case AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE:
                 call();
