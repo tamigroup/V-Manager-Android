@@ -36,9 +36,9 @@ public class MsgComingItemDelagate implements ItemViewDelegate<MeetingChatPageRe
             if (!TextUtils.isEmpty(list.getUserIcon())) {
                 Picasso.get().load(list.getUserIcon()).into(igc_avatar_image);
             }
-            if (!TextUtils.isEmpty(list.getUserName())) {
-                SPUtils.put(holder.itemView.getContext(), "username", list.getUserName());
-            }
+//            if (!TextUtils.isEmpty(list.getUserName())) {
+//                SPUtils.put(holder.itemView.getContext(), "username", list.getUserName());
+//            }
             holder.setText(R.id.igc_position_name, list.getUserName());
             holder.setText(R.id.igc_left_content, list.getContent());
             holder.setText(R.id.send_time, list.getSendDate());

@@ -231,13 +231,15 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
                         sendTxt.setText("");
                         MeetingChatPageResponse.DataBean.ElementsBean elementsBean = new MeetingChatPageResponse.DataBean.ElementsBean();
                         elementsBean.setContent(content);
-                        if (item != null) {
-                            elementsBean.setUserId(item.getId());
-                            elementsBean.setUserIcon(item.getIconUrl());
+                        LoginResponse.Item userItem =  GlobaVariable.getInstance().item;
+                        if (userItem != null) {
+                            elementsBean.setUserId(userItem.getId());
+                            elementsBean.setUserName(userItem.getRealName());
+                            elementsBean.setUserIcon(userItem.getIconUrl());
                         }
-                        //username不一致，暂用sp解决
-                        String username = (String) SPUtils.get(getContext(), "username", "");
-                        elementsBean.setUserName(username);
+//                        //username不一致，暂用sp解决
+//                        String username = (String) SPUtils.get(getContext(), "username", "");
+//                        elementsBean.setUserName(username);
                         elementsBean.setMeetingId(String.valueOf(meetingId));
                         elementsBean.setType("1");
                         listData.add(elementsBean);
