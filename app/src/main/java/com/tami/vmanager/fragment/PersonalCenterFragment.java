@@ -136,7 +136,7 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
 //        }
     }
 
-    private void initUser(){
+    private void initUser() {
         LoginResponse.Item item = GlobaVariable.getInstance().item;
         if (item != null) {
             full_name.setText(item.getRealName());
@@ -159,6 +159,12 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
 
     @Override
     public void emptyObject() {
+        if (headIconFile != null && headIconFile.exists()) {
+            headIconFile.delete();
+        }
+        if (headClipFile != null && headClipFile.exists()) {
+            headClipFile.delete();
+        }
         if (mBottomSheetDialog != null && mBottomSheetDialog.isShowing()) {
             mBottomSheetDialog.dismiss();
             mBottomSheetDialog.setContentView(null);
@@ -426,7 +432,7 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
                     GlobaVariable.getInstance().item.setIconUrl(imageUrl);
 //                    Picasso.get().load(imageUrl).into(avatar_image);
                     avatar_image.setImageBitmap(BitmapFactory.decodeFile(headClipFile.getAbsolutePath()));
-                    SPUtils.save(Constants.FILE_KEY,Constants.SAVE_LOGIN_DATA,GlobaVariable.getInstance().item);
+                    SPUtils.save(Constants.FILE_KEY, Constants.SAVE_LOGIN_DATA, GlobaVariable.getInstance().item);
                     showToast(getString(R.string.replace_head_image, getString(R.string.success)));
                     headIconFile.delete();
                     headClipFile.delete();

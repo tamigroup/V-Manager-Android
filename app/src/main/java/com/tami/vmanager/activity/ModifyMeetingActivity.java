@@ -283,6 +283,9 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
         deleteImage.setBackgroundResource(0);
         recordStartDate = null;
         recordEndDate = null;
+        if (eoFile != null && eoFile.exists()) {
+            eoFile.delete();
+        }
         eoFile = null;
         imageUri = null;
         if (networkBroker != null) {

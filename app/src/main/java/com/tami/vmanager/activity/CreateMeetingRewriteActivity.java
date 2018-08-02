@@ -282,6 +282,9 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
         deleteImage.setBackgroundResource(0);
         recordStartDate = null;
         recordEndDate = null;
+        if (eoFile != null && eoFile.exists()) {
+            eoFile.delete();
+        }
         eoFile = null;
         imageUri = null;
         if (networkBroker != null) {
@@ -419,7 +422,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
                 break;
             case Constants.CREATE_FLOW:
                 //创建流程返回
-                setResult(resultCode,data);
+                setResult(resultCode, data);
                 finish();
                 break;
         }
@@ -660,7 +663,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
                     CircleImageView avatarImage = holder.getView(R.id.icmr_avatar_image);
                     if (!TextUtils.isEmpty(contentList.iconUrl)) {
                         Picasso.get().load(contentList.iconUrl).into(avatarImage);
-                    }else{
+                    } else {
                         defaultImage.setBackgroundResource(R.mipmap.touxiang);
                     }
                     AppCompatImageView deleteImage = holder.getView(R.id.icmr_delete_image);
@@ -939,11 +942,11 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
             return false;
         }
 
-        if (TextUtils.isEmpty(estimatedNumberPeople.getText())||Integer.parseInt(estimatedNumberPeople.getText().toString())==0) {
+        if (TextUtils.isEmpty(estimatedNumberPeople.getText()) || Integer.parseInt(estimatedNumberPeople.getText().toString()) == 0) {
             showToast(getString(R.string.please_enter_, getString(R.string.yudingrenshu)));
             return false;
         }
-        if (TextUtils.isEmpty(bottomNumberPeople.getText())||Integer.parseInt(bottomNumberPeople.getText().toString())==0) {
+        if (TextUtils.isEmpty(bottomNumberPeople.getText()) || Integer.parseInt(bottomNumberPeople.getText().toString()) == 0) {
             showToast(getString(R.string.please_enter_, getString(R.string.baodingrenshu)));
             return false;
         }
