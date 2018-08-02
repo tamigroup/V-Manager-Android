@@ -308,16 +308,26 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
 
 
     private void xiangCe() {
+        Intent openAlbumIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        openAlbumIntent.setType(IMAGE_TYPE);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-            startActivityForResult(new Intent(Intent.ACTION_GET_CONTENT).setType("image/*"), CHOOSE_PHOTO_REQUEST_CODE);
+            startActivityForResult(openAlbumIntent, CHOOSE_PHOTO_REQUEST_CODE);
         } else {
             String state = Environment.getExternalStorageState();
             if (state.equals(Environment.MEDIA_MOUNTED)) {
-                Intent openAlbumIntent = new Intent(Intent.ACTION_GET_CONTENT);
-                openAlbumIntent.setType(IMAGE_TYPE);
                 startActivityForResult(openAlbumIntent, CHOOSE_PHOTO_REQUEST_CODE);
             }
         }
+//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+//            startActivityForResult(new Intent(Intent.ACTION_GET_CONTENT).setType("image/*"), CHOOSE_PHOTO_REQUEST_CODE);
+//        } else {
+//            String state = Environment.getExternalStorageState();
+//            if (state.equals(Environment.MEDIA_MOUNTED)) {
+//                Intent openAlbumIntent = new Intent(Intent.ACTION_GET_CONTENT);
+//                openAlbumIntent.setType(IMAGE_TYPE);
+//                startActivityForResult(openAlbumIntent, CHOOSE_PHOTO_REQUEST_CODE);
+//            }
+//        }
     }
 
     @AfterPermissionGranted(REQUEST_CAMERA)

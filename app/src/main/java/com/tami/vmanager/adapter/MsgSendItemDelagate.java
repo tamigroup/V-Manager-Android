@@ -1,5 +1,6 @@
 package com.tami.vmanager.adapter;
 
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
@@ -7,6 +8,7 @@ import com.squareup.picasso.Picasso;
 import com.tami.vmanager.R;
 import com.tami.vmanager.entity.MeetingChatPageResponse;
 import com.tami.vmanager.manager.GlobaVariable;
+import com.tami.vmanager.utils.Logger;
 import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -31,6 +33,8 @@ public class MsgSendItemDelagate implements ItemViewDelegate<MeetingChatPageResp
             ImageView igc_avatar_image = holder.getView(R.id.igc_avatar_image);
             if (!TextUtils.isEmpty(list.getUserIcon())) {
                 Picasso.get().load(list.getUserIcon()).into(igc_avatar_image);
+            } else {
+                igc_avatar_image.setImageDrawable(ContextCompat.getDrawable(holder.getConvertView().getContext(),R.mipmap.touxiang));
             }
             holder.setText(R.id.igc_position_name, list.getUserName());
             holder.setText(R.id.igc_left_content, list.getContent());
