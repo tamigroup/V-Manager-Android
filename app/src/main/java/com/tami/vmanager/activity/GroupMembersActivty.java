@@ -143,7 +143,7 @@ public class GroupMembersActivty extends BaseActivity {
                 outGroupMeeting();
                 break;
             case R.id.agm_notice:
-                //跳转
+                //跳转群公告
                 Intent intent = new Intent(getApplicationContext(), GroupNoticeActivity.class);
                 intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
                 intent.putExtra(Constants.KEY_SALE_USER_ID, saleUserId);

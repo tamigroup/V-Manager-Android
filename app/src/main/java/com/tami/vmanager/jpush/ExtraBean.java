@@ -1,9 +1,11 @@
 package com.tami.vmanager.jpush;
 
+import java.io.Serializable;
+
 /**
  * Created by Tang on 2018/7/31
  */
-public class ExtraBean {
+public class ExtraBean implements Serializable {
 
 
     /**
