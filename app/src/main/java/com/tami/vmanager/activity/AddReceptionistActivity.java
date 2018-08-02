@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.RSectionDecoration;
-import com.tami.vmanager.adapter.SectionDecoration;
 import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.entity.UserListOfPositionRequest;

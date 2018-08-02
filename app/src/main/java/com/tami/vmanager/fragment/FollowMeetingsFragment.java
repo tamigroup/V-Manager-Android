@@ -20,6 +20,8 @@ import com.tami.vmanager.adapter.RecycleViewDivider;
 import com.tami.vmanager.base.ViewPagerBaseFragment;
 import com.tami.vmanager.entity.AllMeetingsRequest;
 import com.tami.vmanager.entity.AllMeetingsResponse;
+import com.tami.vmanager.entity.FollowUserMeetingRequest;
+import com.tami.vmanager.entity.FollowUserMeetingResponse;
 import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.http.HttpKey;
 import com.tami.vmanager.http.NetworkBroker;
@@ -89,7 +91,7 @@ public class FollowMeetingsFragment extends ViewPagerBaseFragment {
         recyclerView.addItemDecoration(new RecycleViewDivider(getContext(), LinearLayoutManager.HORIZONTAL,
                 1, ContextCompat.getColor(getContext(), R.color.percentage_10)));
         listData = new ArrayList<>();
-        commonAdapter = new CommonAdapter<AllMeetingsResponse.Array.Item>(getContext(), R.layout.item_today_meeting, listData) {
+        commonAdapter = new CommonAdapter<AllMeetingsResponse.Array.Item>(getContext(), R.layout.item_meeting, listData) {
             @Override
             protected void convert(ViewHolder holder, AllMeetingsResponse.Array.Item item, int position) {
                 //名称
@@ -132,10 +134,16 @@ public class FollowMeetingsFragment extends ViewPagerBaseFragment {
                 //已取消
                 TextView cancel = holder.getView(R.id.item_meeting_cancel);
                 cancel.setText(item.cancelStatus);
+                //关注按钮点击
+                final TextView follow = holder.getView(R.id.item_meeting_follow);
+                followOnClick(follow, item.meetingStatus, item.followStatus);
+                follow.setOnClickListener((View v) -> {
+                    followUserMeeting(follow, item);
+                });
                 //ITEM点击
                 ConstraintLayout itemLayout = holder.getView(R.id.item_meeting_layout);
                 itemLayout.setOnClickListener((View v) -> {
-                    Intent intent = new Intent(getContext(), MeetingOverviewActivity.class);
+                    Intent intent = new Intent(getActivity(), MeetingOverviewActivity.class);
                     intent.putExtra(Constants.KEY_MEETING_ID, item.meetingId);
                     startActivity(intent);
                 });
@@ -175,7 +183,7 @@ public class FollowMeetingsFragment extends ViewPagerBaseFragment {
                 int spec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
                 nameView.measure(spec, spec);
                 int measuredWidthTicketNum = nameView.getMeasuredWidth();
-                int maxWidth = ScreenUtil.dip2px(getActivity(), (screenWidth - 90));
+                int maxWidth = ScreenUtil.dip2px(getActivity(), (screenWidth - 160));
                 if (measuredWidthTicketNum > maxWidth) {
                     setLayoutParams(nameView, maxWidth);
                 }
@@ -285,6 +293,74 @@ public class FollowMeetingsFragment extends ViewPagerBaseFragment {
             emptyTxt.setText(getString(R.string.you_haven_been_paying_attention_to_any_meeting_yet));
         } else {
             pullToRefreshLayout.showView(ViewStatus.CONTENT_STATUS);
+        }
+    }
+
+    /**
+     * 关注/取消关注会议
+     */
+    private void followUserMeeting(TextView follow, AllMeetingsResponse.Array.Item onClickItem) {
+        FollowUserMeetingRequest followUserMeetingRequest = new FollowUserMeetingRequest();
+        LoginResponse.Item item = GlobaVariable.getInstance().item;
+        if (item != null) {
+            followUserMeetingRequest.setUserId(String.valueOf(item.getId()));
+        }
+        followUserMeetingRequest.setMeetingId(String.valueOf(onClickItem.meetingId));
+        followUserMeetingRequest.setRequsetUrl(onClickItem.followStatus == 0 ? HttpKey.FOLLOW_USER_MEETING : HttpKey.CANCEL_USER_MEETING);
+        networkBroker.ask(followUserMeetingRequest, (ex1, res) -> {
+            if (null != ex1) {
+                Logger.d(ex1.getMessage() + "-" + ex1);
+                return;
+            }
+            try {
+                FollowUserMeetingResponse response = (FollowUserMeetingResponse) res;
+                if (response.getCode() == 200) {
+                    if (response.data) {
+                        onClickItem.followStatus = (onClickItem.followStatus == 1 ? 0 : 1);
+                        followOnClick(follow, onClickItem.meetingStatus, onClickItem.followStatus);
+                        if (onClickItem.followStatus == 1) {
+                            showToast(getString(R.string.attention_prompt, getString(R.string.success)));
+                        } else {
+                            showToast(getString(R.string.attention_cancel_prompt, getString(R.string.success)));
+                        }
+                    }
+                } else {
+                    if (onClickItem.followStatus == 0) {
+                        showToast(getString(R.string.attention_prompt, getString(R.string.failure)));
+                    } else {
+                        showToast(getString(R.string.attention_cancel_prompt, getString(R.string.failure)));
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        });
+    }
+
+    /**
+     * 设置关注点击效果
+     *
+     * @param follow
+     * @param status
+     */
+    private void followOnClick(TextView follow, String meetingStatus, int status) {
+        if (getString(R.string.finished).equals(meetingStatus)) {
+            follow.setEnabled(false);
+            follow.setText(getString(R.string.attention));
+            follow.setTextColor(ContextCompat.getColor(getContext(), R.color.color_333333));
+            follow.setBackgroundResource(R.drawable.item_meeting_follow_unselected);
+        } else {
+            follow.setEnabled(true);
+            if (status == 1) {
+                follow.setText(getString(R.string.yi_attention));
+                follow.setTextColor(ContextCompat.getColor(getContext(), R.color.color_FF5657));
+                follow.setBackgroundResource(R.drawable.item_meeting_follow_selected);
+            } else {
+                follow.setText(getString(R.string.attention));
+                follow.setTextColor(ContextCompat.getColor(getContext(), R.color.color_333333));
+                follow.setBackgroundResource(R.drawable.item_meeting_follow_unselected1);
+            }
         }
     }
 }

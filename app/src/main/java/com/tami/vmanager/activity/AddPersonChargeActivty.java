@@ -13,16 +13,13 @@ import com.google.gson.Gson;
 import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.SectionDecoration;
 import com.tami.vmanager.base.BaseActivity;
-import com.tami.vmanager.entity.CreateVipGuestRequest;
-import com.tami.vmanager.entity.CreateVipGuestResponse;
-import com.tami.vmanager.entity.GetUserInDepartmentRequest;
+import com.tami.vmanager.entity.GetUserDepartmentRequest;
+import com.tami.vmanager.entity.GetUserDepartmentResponse;
 import com.tami.vmanager.entity.GetUserInDepartmentResponse;
 import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.entity.SetMeetingItemsUserJson;
 import com.tami.vmanager.entity.SetMeetingItemsUserRequest;
 import com.tami.vmanager.entity.SetMeetingItemsUserResponse;
-import com.tami.vmanager.entity.UserListOfPositionRequest;
-import com.tami.vmanager.entity.UserListOfPositionResponse;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Constants;
@@ -43,8 +40,8 @@ public class AddPersonChargeActivty extends BaseActivity {
     private TextView people;//已选择人数
     private Button confirm;//确定
     private RecyclerView recyclerView;//列表
-    private CommonAdapter<GetUserInDepartmentResponse.Array.Item.User> commonAdapter;
-    private List<GetUserInDepartmentResponse.Array.Item.User> contentList = new ArrayList<>();
+    private CommonAdapter<GetUserDepartmentResponse.Array.Item.User> commonAdapter;
+    private List<GetUserDepartmentResponse.Array.Item.User> contentList = new ArrayList<>();
     private List<String> titleList = new ArrayList<>();
     private NetworkBroker networkBroker;
     //统计
@@ -140,9 +137,9 @@ public class AddPersonChargeActivty extends BaseActivity {
     private void initRecyclerView() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        commonAdapter = new CommonAdapter<GetUserInDepartmentResponse.Array.Item.User>(getApplicationContext(), R.layout.item_add_person_charge, contentList) {
+        commonAdapter = new CommonAdapter<GetUserDepartmentResponse.Array.Item.User>(getApplicationContext(), R.layout.item_add_person_charge, contentList) {
             @Override
-            protected void convert(ViewHolder holder, GetUserInDepartmentResponse.Array.Item.User user, int position) {
+            protected void convert(ViewHolder holder, GetUserDepartmentResponse.Array.Item.User user, int position) {
                 holder.setText(R.id.iapc_position, user.depName);
                 holder.setText(R.id.iapc_name, user.realName);
                 AppCompatImageView selectImage = holder.getView(R.id.iapc_select_image);
@@ -180,10 +177,10 @@ public class AddPersonChargeActivty extends BaseActivity {
      * 获取数据
      */
     private void getListData() {
-        GetUserInDepartmentRequest guidr = new GetUserInDepartmentRequest();
+        GetUserDepartmentRequest guidr = new GetUserDepartmentRequest();
         LoginResponse.Item item = GlobaVariable.getInstance().item;
         if (item != null) {
-            guidr.setSystemId(item.getSystemId());
+            guidr.setUserId(item.getId());
         }
         networkBroker.ask(guidr, (ex1, res) -> {
             if (null != ex1) {
@@ -191,18 +188,18 @@ public class AddPersonChargeActivty extends BaseActivity {
                 return;
             }
             try {
-                GetUserInDepartmentResponse response = (GetUserInDepartmentResponse) res;
+                GetUserDepartmentResponse response= (GetUserDepartmentResponse) res;
                 if (response.getCode() == 200) {
                     if (response.data != null) {
-                        GetUserInDepartmentResponse.Array guidrItem = response.data;
+                        GetUserDepartmentResponse.Array guidrItem = response.data;
                         if (guidrItem.dataList != null) {
-                            List<GetUserInDepartmentResponse.Array.Item> guidrList = guidrItem.dataList;
+                            List<GetUserDepartmentResponse.Array.Item> guidrList = guidrItem.dataList;
                             if (guidrList != null) {
-                                for (GetUserInDepartmentResponse.Array.Item tieleItem : guidrList) {
+                                for (GetUserDepartmentResponse.Array.Item tieleItem : guidrList) {
                                     if (tieleItem.userList != null) {
-                                        List<GetUserInDepartmentResponse.Array.Item.User> userList = tieleItem.userList;
+                                        List<GetUserDepartmentResponse.Array.Item.User> userList = tieleItem.userList;
                                         if (userList != null) {
-                                            for (GetUserInDepartmentResponse.Array.Item.User userData : userList) {
+                                            for (GetUserDepartmentResponse.Array.Item.User userData : userList) {
                                                 contentList.add(userData);
                                                 if (userData.isSelected) {
                                                     count++;
@@ -234,7 +231,7 @@ public class AddPersonChargeActivty extends BaseActivity {
      */
     private void confirm() {
         ArrayList<SetMeetingItemsUserJson> data = new ArrayList<>();
-        for (GetUserInDepartmentResponse.Array.Item.User item : contentList) {
+        for (GetUserDepartmentResponse.Array.Item.User item : contentList) {
             if (item.isSelected) {
                 SetMeetingItemsUserJson smiuj = new SetMeetingItemsUserJson();
                 smiuj.setId(item.id);
@@ -262,16 +259,17 @@ public class AddPersonChargeActivty extends BaseActivity {
                 try {
                     SetMeetingItemsUserResponse response = (SetMeetingItemsUserResponse) res;
                     if (response.getCode() == 200 && response.data) {
-                        confirm.setEnabled(true);
                         Intent intent = new Intent();
                         intent.putExtra(Constants.RESULT_JIEDAIREN, true);
                         setResult(Constants.ADD_PERSON_CHARGE, intent);
                         finish();
+                    }else{
+                        showToast(response.getMessage());
                     }
                 } catch (Exception e) {
-                    confirm.setEnabled(true);
                     e.printStackTrace();
                 }
+                confirm.setEnabled(true);
             });
         } else {
             confirm.setEnabled(true);

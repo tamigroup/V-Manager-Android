@@ -11,6 +11,7 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.view.View;
 import com.tami.vmanager.R;
+import com.tami.vmanager.entity.GetUserDepartmentResponse;
 import com.tami.vmanager.entity.GetUserInDepartmentResponse;
 import com.tami.vmanager.entity.UserListOfPositionResponse;
 import com.tami.vmanager.utils.ScreenUtil;
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class SectionDecoration extends RecyclerView.ItemDecoration {
 
-    private List<GetUserInDepartmentResponse.Array.Item.User> dataList;
+    private List<GetUserDepartmentResponse.Array.Item.User> dataList;
     private DecorationCallback callback;
     private TextPaint textPaint;
     private Paint paint;
@@ -27,7 +28,7 @@ public class SectionDecoration extends RecyclerView.ItemDecoration {
     private Paint.FontMetrics fontMetrics;
 
 
-    public SectionDecoration(List<GetUserInDepartmentResponse.Array.Item.User> dataList, Context context, DecorationCallback decorationCallback) {
+    public SectionDecoration(List<GetUserDepartmentResponse.Array.Item.User> dataList, Context context, DecorationCallback decorationCallback) {
         Resources res = context.getResources();
         this.dataList = dataList;
         this.callback = decorationCallback;
