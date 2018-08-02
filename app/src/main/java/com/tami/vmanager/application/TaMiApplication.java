@@ -1,5 +1,6 @@
 package com.tami.vmanager.application;
 
+import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
@@ -10,12 +11,14 @@ import com.readystatesoftware.chuck.ChuckInterceptor;
 import com.squareup.leakcanary.LeakCanary;
 import com.tami.vmanager.BuildConfig;
 import com.tami.vmanager.utils.Constants;
+import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.Utils;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.log.LoggerInterceptor;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import cn.jpush.android.api.JPushInterface;
@@ -54,7 +57,7 @@ public class TaMiApplication extends Application {
 
         initJIM();
 
-//        initCrashHandler();
+        //        initCrashHandler();
     }
 
     private void initCrashHandler() {
@@ -89,7 +92,7 @@ public class TaMiApplication extends Application {
                 .connectTimeout(30000L, TimeUnit.MILLISECONDS)
                 .readTimeout(30000L, TimeUnit.MILLISECONDS);
 
-        if (BuildConfig.DEBUG){
+        if (BuildConfig.DEBUG) {
             builder.addInterceptor(new ChuckInterceptor(this));
             builder.addNetworkInterceptor(new StethoInterceptor());
 
@@ -110,5 +113,23 @@ public class TaMiApplication extends Application {
 
     private void initStetho() {
         Stetho.initializeWithDefaults(this);
+    }
+
+    public static boolean isBackground(Context context) {
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
+        for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
+            if (appProcess.processName.equals(context.getPackageName())) {
+                Logger.d("此appimportace =" + appProcess.importance + ",context.getClass().getName()=" + context.getClass().getName());
+                if (appProcess.importance != ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                    Logger.d("处于后台" + appProcess.processName);
+                    return true;
+                } else {
+                    Logger.d("处于前台" + appProcess.processName);
+                    return false;
+                }
+            }
+        }
+        return false;
     }
 }
