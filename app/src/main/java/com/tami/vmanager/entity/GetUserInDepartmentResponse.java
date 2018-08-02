@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  * @author 代码生成器v1.0
  */
 @JsonInclude(Include.NON_NULL)
+@Deprecated
 public class GetUserInDepartmentResponse extends MobileMessage implements Serializable {
 
 

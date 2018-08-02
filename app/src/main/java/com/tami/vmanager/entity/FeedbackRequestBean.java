@@ -8,6 +8,7 @@ import java.io.Serializable;
  * Created by Tang on 2018/7/5
  * 反馈 请求服务器参数
  */
+@Deprecated
 public class FeedbackRequestBean extends MobileMessage implements Serializable{
 
     private static final long serialVersionUID = -2551536516263713063L;

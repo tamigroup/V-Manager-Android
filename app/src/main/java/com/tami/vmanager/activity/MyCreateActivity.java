@@ -240,6 +240,7 @@ public class MyCreateActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.CREATE_MEETING) {
             CurPage = 1;
+            pullToRefreshLayout.setCanLoadMore(true);
             getMyCreateList(true);
         }
     }
@@ -248,6 +249,7 @@ public class MyCreateActivity extends BaseActivity {
     protected void onRestart() {
         super.onRestart();
         CurPage = 1;
+        pullToRefreshLayout.setCanLoadMore(true);
         getMyCreateList(true);
     }
 
@@ -330,6 +332,7 @@ public class MyCreateActivity extends BaseActivity {
                 if (response.getCode() == 200 && response.data) {
                     showToast(getString(R.string.delete_meeting, getString(R.string.success)));
                     CurPage = 1;
+                    pullToRefreshLayout.setCanLoadMore(true);
                     getMyCreateList(true);
 //                    listData.remove(position);
 //                    listViewAdapter.notifyDataSetChanged();

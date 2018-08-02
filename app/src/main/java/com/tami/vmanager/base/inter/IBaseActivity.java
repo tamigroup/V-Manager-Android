@@ -160,7 +160,5 @@ public interface IBaseActivity {
      */
     public void dialogDismiss();
 
-    public boolean isNetwork();
-
     public void checkNetworkToast();
 }
