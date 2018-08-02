@@ -1,10 +1,10 @@
 package com.tami.vmanager.activity;
 
 import android.content.Intent;
-import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 import com.tami.vmanager.R;
@@ -14,7 +14,6 @@ import com.tami.vmanager.entity.MeetingUserGroupPageResponse;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
-import com.tami.vmanager.view.CircleImageView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -81,11 +80,11 @@ public class GroupMembersAllActivity extends BaseActivity {
 
     @Override
     public void emptyObject() {
-        if (data != null) {
+        if(data!=null){
             data.clear();
             data = null;
         }
-        if (networkBroker != null) {
+        if(networkBroker!=null){
             networkBroker.cancelAllRequests();
             networkBroker = null;
         }
@@ -99,7 +98,7 @@ public class GroupMembersAllActivity extends BaseActivity {
             protected void convert(ViewHolder holder, MeetingUserGroupPageResponse.Array.Item item, int position) {
                 holder.setText(R.id.item_name, item.realName);
                 if (!TextUtils.isEmpty(item.iconUrl)) {
-                    CircleImageView imageView = holder.getView(R.id.item_header_image);
+                    ImageView imageView = holder.getView(R.id.item_header_image);
                     Picasso.get().load(item.iconUrl).into(imageView);
                 }
             }

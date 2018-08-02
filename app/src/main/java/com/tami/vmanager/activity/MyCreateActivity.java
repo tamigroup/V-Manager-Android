@@ -248,7 +248,7 @@ public class MyCreateActivity extends BaseActivity {
     protected void onRestart() {
         super.onRestart();
         CurPage = 1;
-        getMyCreateList(false);
+        getMyCreateList(true);
     }
 
     /**
