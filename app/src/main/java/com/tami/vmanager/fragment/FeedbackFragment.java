@@ -26,6 +26,8 @@ import com.tami.vmanager.entity.ChangeDemandRequestBean;
 import com.tami.vmanager.entity.ChangeDemandResponseBean;
 import com.tami.vmanager.entity.GetMeetingRequest;
 import com.tami.vmanager.entity.GetMeetingResponse;
+import com.tami.vmanager.entity.GetMeetingSellUserIdRequestBean;
+import com.tami.vmanager.entity.GetMeetingSellUserIdResponeBean;
 import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.entity.MobileMessage;
 import com.tami.vmanager.http.NetworkBroker;
@@ -63,8 +65,7 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
     private List<String> fastRepayList;
     private TextView empty_tv;
     private TextView vzhihui_tv;
-    private boolean isLoadMore = false;
-    private int saleUserId;
+    private int create_meetingId;
 
     public FeedbackFragment() {
     }
@@ -101,7 +102,6 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
 
             @Override
             public void loadMore() {
-                isLoadMore = true;
                 queryData();
             }
         });
@@ -109,9 +109,9 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
 
     @Override
     public void initData() {
-        if (null == item){
+        if (null == item) {
             getMeeting();
-        }else {
+        } else {
             initUI();
         }
 
@@ -127,8 +127,6 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
             vzhihui_tv.setVisibility(View.VISIBLE);
             return;
         }
-        // TODO: 2018/8/1 从接口获取创建会议的ID  销售总负责 2
-        saleUserId = item.saleUserId;
     }
 
     private void initRecycle() {
@@ -179,15 +177,20 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
                     showToast(getString(R.string.y_has_replay));
                     return;
                 }
-
+                //从接口获取 创建会议的ID  销售总负责 2
                 LoginResponse.Item LoginItem = GlobaVariable.getInstance().item;
                 if (null != LoginItem) {
                     int userId = LoginItem.getId();
-                    if (userId == saleUserId){
-                        //快速回复
-                        fastReplay(view, holder, position);
-                    }else{
-                        showToast(R.string.no_permission_to_reply);
+                    List<LoginResponse.Item.UserRole> userRoleList = LoginItem.getUserRoleList();
+                    if (userRoleList != null && userRoleList.size() > 0) {
+                        for (LoginResponse.Item.UserRole userRole : userRoleList) {
+                            if (userId == create_meetingId || userRole.roleId == 2) {
+                                //快速回复
+                                fastReplay(view, holder, position);
+                            } else {
+                                showToast(R.string.no_permission_to_reply);
+                            }
+                        }
                     }
                 }
                 //弹出EditText回复
@@ -331,8 +334,31 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
     public void requestNetwork() {
         CurPage = 1;
         if (item.isVzh == 1) {
+            GetMeetingSellUserId();
             queryData();
         }
+    }
+
+    /**
+     * 获取创建会议人的Id
+     */
+    private void GetMeetingSellUserId() {
+        GetMeetingSellUserIdRequestBean getMeetingSellUserIdRequestBean = new GetMeetingSellUserIdRequestBean();
+        getMeetingSellUserIdRequestBean.setMeetingId(meetingId);
+        networkBroker.ask(getMeetingSellUserIdRequestBean, (Exception exl, MobileMessage res) -> {
+            if (null != exl) {
+                Logger.d(exl.getMessage() + "-" + exl);
+                return;
+            }
+            try {
+                GetMeetingSellUserIdResponeBean response = (GetMeetingSellUserIdResponeBean) res;
+                if (response.getCode() == 200) {
+                    create_meetingId = response.getData();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void queryData() {
@@ -352,14 +378,7 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
                     ChangeDemandResponseBean.DataBean data = response.getData();
                     if (data != null) {
                         if (data.getElements() != null && data.getElements().size() > 0) {
-//                            if (isLoadMore) {
-//                                listData.clear();
-//                                listData.addAll(data.getElements());
-//                            } else {
-//                                listData.addAll(data.getElements());
-//                            }
                             listData.addAll(data.getElements());
-                            isLoadMore = false;
                             commonAdapter.notifyDataSetChanged();
                         } else {
                             recyclerView.setVisibility(View.GONE);

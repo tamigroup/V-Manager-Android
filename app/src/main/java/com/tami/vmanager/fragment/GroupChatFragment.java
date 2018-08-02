@@ -179,7 +179,6 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
                         }
                         if (responseData.isLastPage()) {
                             pullToRefreshLayout.setCanRefresh(false);
-                            pullToRefreshLayout.setCanLoadMore(false);
                         }
                     }
                     pullToRefreshLayout.finishRefresh();

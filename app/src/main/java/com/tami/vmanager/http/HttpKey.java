@@ -131,6 +131,8 @@ public class HttpKey {
     public static final String OUTGROUPUSER = "group/outGroupUser";
     //校验用户是否在群中
     public static final String CHECKGROUPUSER = "group/checkGroupUser";
+    //获取创建会议人的Id
+    public static final String GETMEETINGSELL_USERID = "meeting/getMeetingSellUserId ";
 
 
 
