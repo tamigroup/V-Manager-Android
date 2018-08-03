@@ -164,18 +164,28 @@ public class ChangeDemandActivity extends BaseActivity {
                 }
                 //从接口获取 创建会议的ID  销售总负责 2 可以回复
                 LoginResponse.Item item = GlobaVariable.getInstance().item;
+//                if (null != item) {
+//                    int userId = item.getId();
+//                    List<LoginResponse.Item.UserRole> userRoleList = item.getUserRoleList();
+//                    if (userRoleList != null && userRoleList.size() > 0) {
+//                        for (LoginResponse.Item.UserRole userRole : userRoleList) {
+//                            if (userId == create_meetingId || userRole.roleId == 2) {
+//                                //快速回复
+//                                fastReplay(holder, position);
+//                            } else {
+//                                showToast(R.string.no_permission_to_reply);
+//                            }
+//                        }
+//                    }
+//                }
+
                 if (null != item) {
                     int userId = item.getId();
-                    List<LoginResponse.Item.UserRole> userRoleList = item.getUserRoleList();
-                    if (userRoleList != null && userRoleList.size() > 0) {
-                        for (LoginResponse.Item.UserRole userRole : userRoleList) {
-                            if (userId == create_meetingId || userRole.roleId == 2) {
-                                //快速回复
-                                fastReplay(holder, position);
-                            } else {
-                                showToast(R.string.no_permission_to_reply);
-                            }
-                        }
+                    if (userId == create_meetingId) {
+                        //快速回复
+                        fastReplay(holder, position);
+                    } else {
+                        showToast(R.string.no_permission_to_reply);
                     }
                 }
                 //弹出EditText回复
@@ -347,6 +357,7 @@ public class ChangeDemandActivity extends BaseActivity {
                             isEmptyPage();
                         }
                         if (data.isLastPage()) {
+                            pullToRefreshLayout.setCanRefresh(false);
                             pullToRefreshLayout.setCanLoadMore(false);
                         }
                     }

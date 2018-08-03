@@ -14,11 +14,13 @@ import com.tami.vmanager.activity.HomeActivity;
 import com.tami.vmanager.activity.IdeasBoxActivity;
 import com.tami.vmanager.activity.MeetingOverviewActivity;
 import com.tami.vmanager.application.TaMiApplication;
+import com.tami.vmanager.event.EventManage;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.JsonUtils;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.SPUtils;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -68,6 +70,7 @@ public class MessageReceiver extends BroadcastReceiver {
                 int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
                 Logger.d("[极光MessageReceiver] 接收到推送下来的通知的ID: " + notifactionId);
 
+                EventBus.getDefault().post(new EventManage.Jpush_GroupMessageEvent(EventManage.JPUSH_GROUPMESSAGEEVENT));
             } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
                 //当用户点击时触发
                 Logger.d("[极光MessageReceiver] 用户点击打开了通知 是否在前台=="+ TaMiApplication.isBackground(context));
@@ -98,6 +101,7 @@ public class MessageReceiver extends BroadcastReceiver {
                     inStartFront(context, Jpush_key, jpush_meetingid, jpush_noticemessageid);
                     Logger.d("app在前台==");
                 }
+
             } else if (JPushInterface.ACTION_RICHPUSH_CALLBACK.equals(intent.getAction())) {
                 Logger.d("[极光MessageReceiver] 用户收到到RICH PUSH CALLBACK: " + bundle.getString(JPushInterface.EXTRA_EXTRA));
                 //在这里根据 JPushInterface.EXTRA_EXTRA 的内容处理代码，比如打开新的Activity， 打开一个网页等..

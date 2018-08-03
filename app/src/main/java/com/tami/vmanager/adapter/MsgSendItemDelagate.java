@@ -8,7 +8,6 @@ import com.squareup.picasso.Picasso;
 import com.tami.vmanager.R;
 import com.tami.vmanager.entity.MeetingChatPageResponse;
 import com.tami.vmanager.manager.GlobaVariable;
-import com.tami.vmanager.utils.Logger;
 import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -17,6 +16,8 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
  * 发送的消息
  */
 public class MsgSendItemDelagate implements ItemViewDelegate<MeetingChatPageResponse.DataBean.ElementsBean> {
+    private MeetingChatPageResponse.DataBean.ElementsBean item;
+
     @Override
     public int getItemViewLayoutId() {
         return R.layout.item_groupchat_me;
@@ -24,6 +25,7 @@ public class MsgSendItemDelagate implements ItemViewDelegate<MeetingChatPageResp
 
     @Override
     public boolean isForViewType(MeetingChatPageResponse.DataBean.ElementsBean item, int position) {
+        this.item = item;
         return item.getUserId() == GlobaVariable.getInstance().item.getId();
     }
 
@@ -39,5 +41,9 @@ public class MsgSendItemDelagate implements ItemViewDelegate<MeetingChatPageResp
             holder.setText(R.id.igc_position_name, list.getUserName());
             holder.setText(R.id.igc_left_content, list.getContent());
         }
+    }
+
+    public MeetingChatPageResponse.DataBean.ElementsBean getItem(){
+        return item;
     }
 }

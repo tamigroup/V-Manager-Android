@@ -181,18 +181,27 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
                 LoginResponse.Item LoginItem = GlobaVariable.getInstance().item;
                 if (null != LoginItem) {
                     int userId = LoginItem.getId();
-                    List<LoginResponse.Item.UserRole> userRoleList = LoginItem.getUserRoleList();
-                    if (userRoleList != null && userRoleList.size() > 0) {
-                        for (LoginResponse.Item.UserRole userRole : userRoleList) {
-                            if (userId == create_meetingId || userRole.roleId == 2) {
-                                //快速回复
-                                fastReplay(view, holder, position);
-                            } else {
-                                showToast(R.string.no_permission_to_reply);
-                            }
-                        }
+                    if (userId == create_meetingId) {
+                        //快速回复
+                        fastReplay(view, holder, position);
+                    } else {
+                        showToast(R.string.no_permission_to_reply);
                     }
                 }
+//                if (null != LoginItem) {
+//                    int userId = LoginItem.getId();
+//                    List<LoginResponse.Item.UserRole> userRoleList = LoginItem.getUserRoleList();
+//                    if (userRoleList != null && userRoleList.size() > 0) {
+//                        for (LoginResponse.Item.UserRole userRole : userRoleList) {
+//                            if (userId == create_meetingId || userRole.roleId == 2) {
+//                                //快速回复
+//                                fastReplay(view, holder, position);
+//                            } else {
+//                                showToast(R.string.no_permission_to_reply);
+//                            }
+//                        }
+//                    }
+//                }
                 //弹出EditText回复
                 //replay(view, holder, position);
             }
