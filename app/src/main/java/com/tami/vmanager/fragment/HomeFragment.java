@@ -138,30 +138,6 @@ public class HomeFragment extends BaseFragment implements HomeFragmentListener {
         //设置右边功能按钮图片
         setTitleRightBtn(R.mipmap.home_search);
 
-        LoginResponse.Item item = GlobaVariable.getInstance().item;
-        if (item != null) {
-            setTitleName(item.getSystemName());
-            List<LoginResponse.Item.UserRole> roleList = item.getUserRoleList();
-            if (roleList != null && roleList.size() > 0) {
-                boolean visibility = false;
-                for (LoginResponse.Item.UserRole userRole : roleList) {
-                    if (userRole != null) {
-                        if (userRole.roleId == 2 || userRole.roleId == 11) {
-                            visibility = true;
-                            break;
-                        } else {
-                            visibility = false;
-                        }
-                    }
-                }
-                if (visibility) {
-                    createMeeting.setVisibility(View.VISIBLE);
-                } else {
-                    createMeeting.setVisibility(View.GONE);
-                }
-            }
-        }
-
         time_radio_group.setOnCheckedChangeListener((group, checkedId) -> {
             today_rb = group.findViewById(R.id.today_rb);
             month_rb = group.findViewById(R.id.month_rb);
@@ -422,5 +398,42 @@ public class HomeFragment extends BaseFragment implements HomeFragmentListener {
                 break;
         }
         return index;
+    }
+
+    /**
+     * 是否显示会议创建
+     */
+    private void initCreateMetting() {
+        LoginResponse.Item item = GlobaVariable.getInstance().item;
+        if (item != null) {
+            setTitleName(item.getSystemName());
+            List<LoginResponse.Item.UserRole> roleList = item.getUserRoleList();
+            if (roleList != null && roleList.size() > 0) {
+                boolean visibility = false;
+                for (LoginResponse.Item.UserRole userRole : roleList) {
+                    if (userRole != null) {
+                        if (userRole.roleId == 2 || userRole.roleId == 11) {
+                            visibility = true;
+                            break;
+                        } else {
+                            visibility = false;
+                        }
+                    }
+                }
+                if (visibility) {
+                    createMeeting.setVisibility(View.VISIBLE);
+                } else {
+                    createMeeting.setVisibility(View.GONE);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initCreateMetting();
+        getIndex();
+        getBannerData(getGroupIndex());
     }
 }
