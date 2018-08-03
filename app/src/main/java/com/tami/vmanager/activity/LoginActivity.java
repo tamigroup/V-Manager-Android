@@ -324,6 +324,9 @@ public class LoginActivity extends BaseActivity {
                 SetUserRegistrationIdResponseBean response = (SetUserRegistrationIdResponseBean) res;
                 if (response.getCode() == 200) {
                     boolean data = response.isData();
+                    if (!data) {
+                        showToast("通知会收不到，请您重新登录");
+                    }
                     Logger.e("绑定极光：" + data);
                 }
             } catch (Exception e) {

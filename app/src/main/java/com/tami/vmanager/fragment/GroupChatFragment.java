@@ -174,7 +174,7 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
                             Collections.reverse(elements);
                             if (isRefresh) {
                                 listData.addAll(0, elements);
-                            } else if (isLoadMore) {
+                            } else if (isLoadMore || notification_receipt) {
                                 listData.clear();
                                 listData.addAll(elements);
                             } else {
