@@ -357,6 +357,7 @@ public class ChangeDemandActivity extends BaseActivity {
                             isEmptyPage();
                         }
                         if (data.isLastPage()) {
+                            pullToRefreshLayout.setCanRefresh(false);
                             pullToRefreshLayout.setCanLoadMore(false);
                         }
                     }
