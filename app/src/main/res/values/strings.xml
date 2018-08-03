@@ -326,7 +326,7 @@
     <string name="empty_personnel">暂无实到人数哦</string>
     <string name="empty_group_notice">暂无群公告哦</string>
     <string name="empty_vip_detail">暂无VIP详情哦</string>
-    <string name="empty_sponsor_member">暂主办方成员哦</string>
+    <string name="empty_sponsor_member">暂无主办方成员哦</string>
     <string name="y_has_replay">您已回复</string>
     <string name="not_empty">发送内容不能为空</string>
     <string name="send_fail">发送失败</string>
