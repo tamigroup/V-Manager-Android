@@ -85,12 +85,12 @@ public class ConferenceServiceGroupActivity extends BaseActivity {
         Bundle bundle = new Bundle();
         bundle.putInt(Constants.KEY_MEETING_ID, meetingId);
         arrayFragment = new Fragment[4];
-        arrayFragment[0] = new ConferenceInformationFragment(meetingId, item);
-        arrayFragment[1] = new GroupChatFragment();
-        arrayFragment[1].setArguments(bundle);
-        arrayFragment[2] = new FeedbackFragment(meetingId, item);
-        arrayFragment[3] = new NoticeFragment();
-        arrayFragment[3].setArguments(bundle);
+        arrayFragment[3] = new ConferenceInformationFragment(meetingId, item);
+        arrayFragment[0] = new GroupChatFragment();
+        arrayFragment[0].setArguments(bundle);
+        arrayFragment[1] = new FeedbackFragment(meetingId, item);
+        arrayFragment[2] = new NoticeFragment();
+        arrayFragment[2].setArguments(bundle);
 
         GuidePageFragmentPagerAdapter guidePageFragmentPagerAdapter = new GuidePageFragmentPagerAdapter(getSupportFragmentManager(), arrayFragment);
         viewPager.setAdapter(guidePageFragmentPagerAdapter);
@@ -100,10 +100,8 @@ public class ConferenceServiceGroupActivity extends BaseActivity {
         viewPagerOnTabSelectedListener = new TabLayout.ViewPagerOnTabSelectedListener(viewPager);
         tabLayout.addOnTabSelectedListener(viewPagerOnTabSelectedListener);
         //群公告Id 为0表示不是推送进来
-        if (noticemessageId == 0){
-            viewPager.setCurrentItem(1);
-        }else {
-            viewPager.setCurrentItem(3);
+        if (noticemessageId != 0){
+            viewPager.setCurrentItem(2);
         }
     }
 

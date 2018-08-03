@@ -72,7 +72,11 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
     @Override
     public void initView() {
         //        JMessageClient.registerEventReceiver(getContext()); 需要重写OnEvent
-        EventBus.getDefault().register(this);
+        Logger.e("EventBus注册00"+EventBus.getDefault().isRegistered(this));
+        if (!EventBus.getDefault().isRegistered(this)){
+            Logger.e("EventBus注册"+EventBus.getDefault().isRegistered(this));
+            EventBus.getDefault().register(this);
+        }
         recyclerView = findViewById(R.id.fgc_recycler_view);
         pullToRefreshLayout = findViewById(R.id.pullRL);
         sendTxt = findViewById(R.id.fgc_send_txt);
@@ -281,8 +285,13 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
     }
 
     @Override
-    public void onDestroy() {
+    public void onPause() {
         EventBus.getDefault().unregister(this);
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
         super.onDestroy();
         //JMessageClient.unRegisterEventReceiver(getContext());
     }
