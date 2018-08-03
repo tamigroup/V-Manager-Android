@@ -61,7 +61,7 @@
                     style="@style/CreateMeetingNameTxt"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <EditText
+                <com.tami.vmanager.view.ClearEditText
                     android:id="@+id/acmr_meeting_name"
                     style="@style/ModifyMeetingInput"
                     android:hint="@string/please_enter"
@@ -80,7 +80,7 @@
                     style="@style/CreateMeetingNameTxt"
                     app:layout_constraintTop_toBottomOf="@+id/acmr_meeting_name_line" />
 
-                <EditText
+                <com.tami.vmanager.view.ClearEditText
                     android:id="@+id/acmr_sponsor"
                     style="@style/ModifyMeetingInput"
                     android:hint="@string/please_enter"
@@ -188,7 +188,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <EditText
+                <com.tami.vmanager.view.ClearEditText
                     android:id="@+id/acmr_estimated_number_people"
                     android:layout_width="@dimen/dp_0"
                     android:layout_height="@dimen/dp_0"
@@ -221,7 +221,7 @@
                     app:layout_constraintStart_toEndOf="@+id/acmr_number_participants_line"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <EditText
+                <com.tami.vmanager.view.ClearEditText
                     android:id="@+id/acmr_bottom_number"
                     android:layout_width="@dimen/dp_0"
                     android:layout_height="@dimen/dp_0"

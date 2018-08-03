@@ -58,6 +58,7 @@ import com.tami.vmanager.utils.ScreenUtil;
 import com.tami.vmanager.utils.TimeUtils;
 import com.tami.vmanager.utils.Utils;
 import com.tami.vmanager.view.CircleImageView;
+import com.tami.vmanager.view.ClearEditText;
 import com.tami.vmanager.view.CreateMeetingBottomMenu;
 import com.tami.vmanager.view.SwitchButton;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -85,15 +86,15 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
     private TextView startTimeTxtView;
     private TextView endTimeTxtView;
     //TOP侧面请输入，请选择
-    private EditText nameView;
-    private EditText sponsorView;
+    private ClearEditText nameView;
+    private ClearEditText sponsorView;
     private TextView meeetingPlaceView;
     private TextView startTimeView;
     private TextView endTimeView;
     //参会人
     private TextView numberTxtView;
-    private EditText estimatedNumberPeople;
-    private EditText bottomNumberPeople;
+    private ClearEditText estimatedNumberPeople;
+    private ClearEditText bottomNumberPeople;
     //会议等级
     private TextView meetingLevel;
     private int meetingLevelIndex = 0;//会议级别
@@ -1090,6 +1091,7 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (!hasFocus) {
+            ((ClearEditText)v).onFocusChange(v,hasFocus);
             switch (v.getId()) {
                 case R.id.acmr_meeting_name:
                     if (TextUtils.isEmpty(nameView.getText())) {

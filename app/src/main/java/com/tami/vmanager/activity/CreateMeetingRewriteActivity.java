@@ -3,7 +3,6 @@ package com.tami.vmanager.activity;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
@@ -23,11 +22,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.squareup.picasso.Picasso;
@@ -55,6 +52,7 @@ import com.tami.vmanager.utils.ScreenUtil;
 import com.tami.vmanager.utils.TimeUtils;
 import com.tami.vmanager.utils.Utils;
 import com.tami.vmanager.view.CircleImageView;
+import com.tami.vmanager.view.ClearEditText;
 import com.tami.vmanager.view.CreateMeetingBottomMenu;
 import com.tami.vmanager.view.SwitchButton;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -85,8 +83,8 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
     //    private TextView contractAmountTxtView;
 //    private TextView receivedAmountTxtView;
     //TOP侧面请输入，请选择
-    private EditText nameView;
-    private EditText sponsorView;
+    private ClearEditText nameView;
+    private ClearEditText sponsorView;
     private TextView meeetingPlaceView;
     private TextView startTimeView;
     private TextView endTimeView;
@@ -94,8 +92,8 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
 //    private EditText receivedAmountView;
     //参会人
     private TextView numberTxtView;
-    private EditText estimatedNumberPeople;
-    private EditText bottomNumberPeople;
+    private ClearEditText estimatedNumberPeople;
+    private ClearEditText bottomNumberPeople;
     //会议等级
     private TextView meetingLevel;
     //接待人
@@ -1001,6 +999,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
+        ((ClearEditText)v).onFocusChange(v,hasFocus);
         if (!hasFocus) {
             switch (v.getId()) {
                 case R.id.acmr_meeting_name:
