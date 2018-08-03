@@ -120,6 +120,8 @@ public class ConferenceServiceGroupActivity extends BaseActivity {
                 GetMeetingResponse response = (GetMeetingResponse) res;
                 if (response.getCode() == 200) {
                     this.item = response.data;
+                }else{
+                    showToast(response.getMessage());
                 }
             } catch (Exception e) {
                 e.printStackTrace();

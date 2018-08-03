@@ -145,7 +145,8 @@ public class GroupEditNoticeActivity extends BaseActivity {
                         setResult(Constants.GROUP_EDIT_NOTICE);
                         finish();
                     } else {
-                        showToast(getString(R.string.announcements, getString(R.string.failure)));
+                          showToast(response.getMessage());
+//                        showToast(getString(R.string.announcements, getString(R.string.failure)));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

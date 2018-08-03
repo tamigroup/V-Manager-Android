@@ -206,7 +206,7 @@
     <string name="sign_out_meeting">退出会议</string>
 
     <!--    确定进入此会议    -->
-    <string name="confirm_enter_the_meeting">确定进入此会议</string>
+    <string name="confirm_enter_the_meeting">确认加入此会议服务群</string>
     <string name="view_only">仅查看</string>
     <string name="show_contract_amount">合同金额：%s</string>
     <string name="show_amount_paid">已付金额：%s</string>

@@ -851,8 +851,8 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
                     }
                     showToast(getString(R.string.create_meeting_toast, getString(R.string.success)));
                     cemd.show();
-                } else {
-                    showToast(getString(R.string.create_meeting_toast, getString(R.string.failure)));
+                }else{
+                    showToast(response.getMessage());
                 }
             } catch (Exception e) {
                 showToast(getString(R.string.create_meeting_toast, getString(R.string.failure)));

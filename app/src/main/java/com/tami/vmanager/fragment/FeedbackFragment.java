@@ -301,6 +301,8 @@ public class FeedbackFragment extends ViewPagerBaseFragment {
                 if (response.getCode() == 200) {
                     this.item = response.data;
                     initUI();
+                }else{
+                    showToast(response.getMessage());
                 }
             } catch (Exception e) {
                 e.printStackTrace();

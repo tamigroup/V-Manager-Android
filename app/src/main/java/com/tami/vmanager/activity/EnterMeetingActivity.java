@@ -447,6 +447,8 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
                         listData.addAll(array.dataList);
                         adapter.notifyDataSetChanged();
                     }
+                }else{
+                    showToast(response.getMessage());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -503,6 +505,8 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
                         actualNum = data.getActualNum();
                         initUITxt(actualNumber, String.valueOf(actualNum), R.string.actual_number, R.color.color_FF5657);
                     }
+                }else{
+                    showToast(response.getMessage());
                 }
             } catch (Exception e) {
                 e.printStackTrace();

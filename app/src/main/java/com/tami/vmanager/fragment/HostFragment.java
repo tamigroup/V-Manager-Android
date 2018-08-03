@@ -179,6 +179,7 @@ public class HostFragment extends ViewPagerBaseFragment {
                     pulltorefreshlayout.setCanLoadMore(false);
                 }
             } else {
+                showToast(response.getMessage());
                 pulltorefreshlayout.finishLoadMore();
             }
         });
@@ -223,6 +224,8 @@ public class HostFragment extends ViewPagerBaseFragment {
                             break;
                     }
                 }
+            }else{
+                showToast(response.getMessage());
             }
         });
     }

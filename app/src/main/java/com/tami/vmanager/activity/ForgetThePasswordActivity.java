@@ -248,6 +248,8 @@ public class ForgetThePasswordActivity extends BaseActivity {
                         prompt.setText(getString(R.string.password_resetting_success));
                         confirmBtn.setBackgroundResource(R.color.color_FF5657);
                         confirmBtn.setText(getString(R.string.go_login));
+                    }else{
+                        showToast(response.getMessage());
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -112,6 +112,8 @@ public class SponsorMemberActivity extends BaseActivity {
                             empty_tv.setVisibility(View.VISIBLE);
                         }
                     }
+                }else {
+                    showToast(response.getMessage());
                 }
             } catch (Exception e) {
                 e.printStackTrace();

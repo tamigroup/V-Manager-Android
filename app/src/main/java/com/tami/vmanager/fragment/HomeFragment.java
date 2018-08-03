@@ -294,6 +294,8 @@ public class HomeFragment extends BaseFragment implements HomeFragmentListener {
                     no_complete_pro.setMax(headItem.getAllMeetingCount());
                     no_complete_pro.setProgress(no_over);
                     no_complete_num.setText(String.valueOf(no_over));
+                }else{
+                    showToast(response.getMessage());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -331,6 +333,8 @@ public class HomeFragment extends BaseFragment implements HomeFragmentListener {
                             myCreateNum.setText(String.valueOf(gItem.getMyCreateMeetingCount()));
                         }
                     }
+                }else{
+                    showToast(response.getMessage());
                 }
             } catch (Exception e) {
                 e.printStackTrace();

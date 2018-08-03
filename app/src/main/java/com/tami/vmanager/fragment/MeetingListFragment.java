@@ -281,6 +281,7 @@ public class MeetingListFragment extends ViewPagerBaseFragment {
                         pullToRefreshLayout.setCanLoadMore(false);
                     }
                 } else {
+                    showToast(response.getMessage());
                     pullToRefreshLayout.finishRefresh();
                     pullToRefreshLayout.finishLoadMore();
                 }

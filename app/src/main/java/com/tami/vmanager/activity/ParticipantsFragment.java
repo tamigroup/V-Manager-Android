@@ -181,6 +181,7 @@ public class ParticipantsFragment extends ViewPagerBaseFragment {
                     pulltorefreshlayout.setCanLoadMore(false);
                 }
             } else {
+                showToast(response.getMessage());
                 pulltorefreshlayout.finishLoadMore();
             }
         });
@@ -225,6 +226,8 @@ public class ParticipantsFragment extends ViewPagerBaseFragment {
                             break;
                     }
                 }
+            }else{
+                showToast(response.getMessage());
             }
         });
     }

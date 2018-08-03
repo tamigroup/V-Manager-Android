@@ -150,6 +150,8 @@ public class NoticeFragment extends ViewPagerBaseFragment {
                         pullToRefreshLayout.setCanLoadMore(false);
                     }
                     pullToRefreshLayout.finishLoadMore();
+                }else{
+                    showToast(response.getMessage());
                 }
             } catch (Exception e) {
                 e.printStackTrace();

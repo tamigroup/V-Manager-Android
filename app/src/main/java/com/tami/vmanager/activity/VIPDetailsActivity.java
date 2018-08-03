@@ -143,6 +143,8 @@ public class VIPDetailsActivity extends BaseActivity {
                         vip_detail_group.setVisibility(View.GONE);
                         empty_tv.setVisibility(View.VISIBLE);
                     }
+                }else{
+                    showToast(response.getMessage());
                 }
             } catch (Exception e) {
                 e.printStackTrace();

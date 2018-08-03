@@ -156,6 +156,8 @@ public class ConferenceInformationFragment extends ViewPagerBaseFragment {
                 if (response.getCode() == 200) {
                     this.item = response.data;
                     initUI();
+                }else{
+                    showToast(response.getMessage());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -233,6 +235,8 @@ public class ConferenceInformationFragment extends ViewPagerBaseFragment {
                         listData.addAll(array.dataList);
                         commonAdapter.notifyDataSetChanged();
                     }
+                }else{
+                    showToast(response.getMessage());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -290,6 +294,8 @@ public class ConferenceInformationFragment extends ViewPagerBaseFragment {
                         actualNum = data.getActualNum();
                         meeting_actual_number.setText(String.format(getResources().getString(R.string.actual_number), String.valueOf(actualNum)));
                     }
+                }else{
+                    showToast(response.getMessage());
                 }
             } catch (Exception e) {
                 e.printStackTrace();

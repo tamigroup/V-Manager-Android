@@ -119,6 +119,8 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnFocus
                         } else {
                             showToast(getString(R.string.modify_password_false));
                         }
+                    }else{
+                        showToast(response.getMessage());
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

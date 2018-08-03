@@ -145,6 +145,8 @@ public class ConferenceServiceFlowActivity extends BaseActivity {
                         listData.addAll(array.dataList);
                         listViewAdapter.notifyDataSetChanged();
                     }
+                }else{
+                    showToast(response.getMessage());
                 }
             } catch (Exception e) {
                 e.printStackTrace();

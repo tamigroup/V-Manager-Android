@@ -582,6 +582,8 @@ public class CreateServiceFlowActivity extends BaseActivity {
                             }
                         }
                     }
+                }else{
+                    showToast(response.getMessage());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -700,6 +702,8 @@ public class CreateServiceFlowActivity extends BaseActivity {
                         }
                         getMeetingItems(meetingDayList.get(0).day);
                     }
+                }else{
+                    showToast(response.getMessage());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -724,6 +728,8 @@ public class CreateServiceFlowActivity extends BaseActivity {
                     if (list != null && list.size() > 0) {
                         roleData.addAll(list);
                     }
+                }else{
+                    showToast(response.getMessage());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -778,6 +784,8 @@ public class CreateServiceFlowActivity extends BaseActivity {
                             bottomAdapter.notifyDataSetChanged();
                         }
                     }
+                }else{
+                    showToast(response.getMessage());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -830,6 +838,8 @@ public class CreateServiceFlowActivity extends BaseActivity {
                         } else {
                             showToast(getString(R.string.save_flow, getString(R.string.failure)));
                         }
+                    }else{
+                        showToast(response.getMessage());
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -337,7 +337,8 @@ public class MyCreateActivity extends BaseActivity {
 //                    listData.remove(position);
 //                    listViewAdapter.notifyDataSetChanged();
                 } else {
-                    showToast(getString(R.string.delete_meeting, getString(R.string.failure)));
+                    showToast(response.getMessage());
+//                    showToast(getString(R.string.delete_meeting, getString(R.string.failure)));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
