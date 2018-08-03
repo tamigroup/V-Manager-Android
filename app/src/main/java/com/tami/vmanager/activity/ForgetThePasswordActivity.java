@@ -184,6 +184,8 @@ public class ForgetThePasswordActivity extends BaseActivity {
                         value.setFocusableInTouchMode(true);
                         value.requestFocus();
                         verificationCode.start();
+                    }else{
+                        showToast(response.getMessage());
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -740,10 +740,10 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
         pvTime = new TimePickerBuilder(this, (Date selectDate, View v) -> {
             if (dataFlag) {
                 if (recordEndDate == null || recordEndDate.getTime() > selectDate.getTime()) {
-                    if (selectDate.getTime() < new Date().getTime()) {
-                        showToast(getString(R.string.start_time_xiaoyu_current_time));
-                        return;
-                    }
+//                    if (selectDate.getTime() < new Date().getTime()) {
+//                        showToast(getString(R.string.start_time_xiaoyu_current_time));
+//                        return;
+//                    }
                     recordStartDate = selectDate;
                     view.setText(TimeUtils.date2String(selectDate));
                 } else {
@@ -751,10 +751,10 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
                 }
             } else {
                 if (recordStartDate == null || selectDate.getTime() > recordStartDate.getTime()) {
-                    if (selectDate.getTime() < new Date().getTime()) {
-                        showToast(getString(R.string.end_time_xiaoyu_current_time));
-                        return;
-                    }
+//                    if (selectDate.getTime() < new Date().getTime()) {
+//                        showToast(getString(R.string.end_time_xiaoyu_current_time));
+//                        return;
+//                    }
                     recordEndDate = selectDate;
                     view.setText(TimeUtils.date2String(selectDate));
                 } else {
@@ -922,10 +922,10 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
             return false;
         }
 
-        if (recordStartDate.getTime() < new Date().getTime()) {
-            showToast(getString(R.string.start_time_xiaoyu_current_time));
-            return false;
-        }
+//        if (recordStartDate.getTime() < new Date().getTime()) {
+//            showToast(getString(R.string.start_time_xiaoyu_current_time));
+//            return false;
+//        }
 
         if (recordStartDate.getTime() > recordEndDate.getTime()) {
             showToast(getString(R.string.start_time_dayu_end_time));

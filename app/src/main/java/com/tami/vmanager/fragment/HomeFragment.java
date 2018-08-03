@@ -16,6 +16,7 @@ import com.tami.vmanager.R;
 import com.tami.vmanager.activity.CreateMeetingRewriteActivity;
 import com.tami.vmanager.activity.FollowMeetingsActivity;
 import com.tami.vmanager.activity.HomeActivity;
+import com.tami.vmanager.activity.MeetingOverviewActivity;
 import com.tami.vmanager.activity.MyCreateActivity;
 import com.tami.vmanager.activity.SearchActivity;
 import com.tami.vmanager.activity.TodayMeetingActivity;
@@ -379,7 +380,9 @@ public class HomeFragment extends BaseFragment implements HomeFragmentListener {
                     if (data != null) {
                         meetingId = data.getIntExtra(Constants.KEY_MEETING_ID, 0);
                     }
-                    myCreate(meetingId);
+                    Intent intent = new Intent(getActivity(), MeetingOverviewActivity.class);
+                    intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
+                    startActivity(intent);
                     break;
             }
         }
