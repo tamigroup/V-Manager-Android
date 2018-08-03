@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                             xmlns:app="http://schemas.android.com/apk/res-auto"
-                                             xmlns:tools="http://schemas.android.com/tools"
-                                             android:layout_width="match_parent"
-                                             android:layout_height="wrap_content"
-                                             android:background="@android:color/white">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white">
 
     <com.tami.vmanager.view.CircleImageView
         android:id="@+id/igc_avatar_image"
@@ -18,19 +18,23 @@
         app:civ_border_color="@android:color/white"
         app:civ_border_width="2dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/igc_position_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_20"
+        android:ellipsize="end"
         android:gravity="center_vertical"
+        android:lines="1"
         android:text="TextView"
         android:textColor="@color/color_888888"
         android:textSize="@dimen/sp_12"
+        app:layout_constrainedWidth="true"
         app:layout_constraintStart_toEndOf="@+id/igc_avatar_image"
-        app:layout_constraintTop_toTopOf="@+id/igc_avatar_image"/>
+        app:layout_constraintTop_toTopOf="@+id/igc_avatar_image"
+        app:layout_constraintWidth_max="150dp" />
 
     <TextView
         android:id="@+id/send_time"
@@ -42,16 +46,15 @@
         android:textColor="@color/color_888888"
         android:textSize="@dimen/sp_12"
         app:layout_constraintStart_toEndOf="@+id/igc_position_name"
-        app:layout_constraintTop_toTopOf="@+id/igc_avatar_image"
-        />
+        app:layout_constraintTop_toTopOf="@+id/igc_avatar_image" />
 
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/dp_20"
-        android:layout_marginTop="@dimen/dp_7"
         android:layout_marginEnd="@dimen/x24"
+        android:layout_marginTop="@dimen/dp_7"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -62,12 +65,12 @@
             android:id="@+id/igc_left_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/color_F2F4F5"
             android:layout_gravity="start|center_vertical"
+            android:background="@color/color_F2F4F5"
             android:padding="@dimen/dp_10"
             android:text="TextView"
             android:textColor="@color/color_303030"
-            android:textSize="@dimen/sp_14"/>
+            android:textSize="@dimen/sp_14" />
     </LinearLayout>
 
 
