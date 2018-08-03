@@ -133,6 +133,8 @@ public class HttpKey {
     public static final String CHECKGROUPUSER = "group/checkGroupUser";
     //获取创建会议人的Id
     public static final String GETMEETINGSELL_USERID = "meeting/getMeetingSellUserId ";
+    //清除极光registrationId
+    public static final String longOutForRegistrationId = "user/longOutForRegistrationId ";
 
 
 
