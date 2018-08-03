@@ -59,8 +59,6 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
     private boolean is_invisible;
     private TextView empty_tv;
     private boolean isLoadMore = false;
-    private int userId;
-    private List<MeetingChatPageResponse.DataBean.ElementsBean> elements;
     private MsgSendItemDelagate msgSendItemDelagateAdapter;
     private boolean notification_receipt = false;
 
@@ -72,9 +70,7 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
     @Override
     public void initView() {
         //        JMessageClient.registerEventReceiver(getContext()); 需要重写OnEvent
-        Logger.e("EventBus注册00"+EventBus.getDefault().isRegistered(this));
         if (!EventBus.getDefault().isRegistered(this)){
-            Logger.e("EventBus注册"+EventBus.getDefault().isRegistered(this));
             EventBus.getDefault().register(this);
         }
         recyclerView = findViewById(R.id.fgc_recycler_view);
@@ -175,7 +171,6 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
                         if (elements != null && elements.size() > 0) {
                             empty_tv.setVisibility(View.GONE);
                             recyclerView.setVisibility(View.VISIBLE);
-                            this.elements = elements;
                             Collections.reverse(elements);
                             if (isRefresh) {
                                 listData.addAll(0, elements);

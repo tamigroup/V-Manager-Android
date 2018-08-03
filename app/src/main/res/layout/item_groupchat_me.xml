@@ -31,22 +31,30 @@
         android:textSize="@dimen/sp_12"
         app:layout_constraintEnd_toStartOf="@+id/igc_avatar_image"
         app:layout_constraintTop_toTopOf="@+id/igc_avatar_image"/>
+<LinearLayout
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginStart="@dimen/x24"
+    android:layout_marginBottom="@dimen/dp_20"
+    android:layout_marginTop="@dimen/dp_7"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="@+id/igc_position_name"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/igc_position_name">
 
     <TextView
         android:id="@+id/igc_left_content"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dp_20"
-        android:layout_marginTop="@dimen/dp_7"
         android:background="@color/color_498AFF"
-        android:gravity="left|center_vertical"
+        android:layout_gravity="end|center_vertical"
         android:padding="@dimen/dp_10"
         android:text="TextView"
         android:textColor="@android:color/white"
-        android:textSize="@dimen/sp_14"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/igc_position_name"
-        app:layout_constraintTop_toBottomOf="@+id/igc_position_name"/>
+        android:textSize="@dimen/sp_14"/>
+</LinearLayout>
+
 
 
 </android.support.constraint.ConstraintLayout>

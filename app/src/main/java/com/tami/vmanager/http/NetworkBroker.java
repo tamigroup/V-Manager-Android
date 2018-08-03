@@ -142,15 +142,17 @@ public class NetworkBroker extends BaseBroker {
         LoginResponse.Item item = GlobaVariable.getInstance().item;
         if (item != null) {
             token = item.getToken();
+            Logger.d("登录token=:" +token);
         }
-        if (token == null || token.isEmpty()) {
+        if (TextUtils.isEmpty(token)) {
             token = (String) SPUtils.get(context, Constants.TOKEN, "");
+            Logger.d("SP中的token=:" +token);
         }
         PostStringBuilder postStringBuilder = OkHttpUtils.postString()
                 .mediaType(MediaType.parse("application/json;charset=UTF-8"))
                 .url(uri)
                 .content(json);
-        if (token != null) {
+        if (!TextUtils.isEmpty(token)) {
             postStringBuilder.addHeader("token", token);
         }
         postStringBuilder.tag(CancelTag)

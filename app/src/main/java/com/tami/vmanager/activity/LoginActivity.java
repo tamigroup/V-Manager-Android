@@ -14,6 +14,8 @@ import com.tami.vmanager.application.TaMiApplication;
 import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.entity.LoginRequest;
 import com.tami.vmanager.entity.LoginResponse;
+import com.tami.vmanager.entity.LongOutForRegistrationIdRequestBean;
+import com.tami.vmanager.entity.LongOutForRegistrationIdResponseBean;
 import com.tami.vmanager.entity.SendVerifyCodeRequest;
 import com.tami.vmanager.entity.SendVerifyCodeResponse;
 import com.tami.vmanager.entity.SetUserRegistrationIdRequestBean;
@@ -97,16 +99,33 @@ public class LoginActivity extends BaseActivity {
         networkBroker = new NetworkBroker(this);
         networkBroker.setCancelTag(getTAG());
 
-//        logoin_phone.setText("15901125418");
-//        login_password.setText("111111");
+        //        logoin_phone.setText("15901125418");
+        //        login_password.setText("111111");
         //餐厅总负责
-//        logoin_phone.setText("13888880001");
-//        login_password.setText("111111");
+        //        logoin_phone.setText("13888880001");
+        //        login_password.setText("111111");
     }
 
     @Override
     public void requestNetwork() {
-
+        LongOutForRegistrationIdRequestBean longOutForRegistrationIdRequestBean = new LongOutForRegistrationIdRequestBean();
+        longOutForRegistrationIdRequestBean.setRegistrationId(TaMiApplication.registrationID);
+        networkBroker.ask(longOutForRegistrationIdRequestBean, (exl, res) -> {
+            if (null != exl) {
+                Logger.d(exl.getMessage() + "-" + exl);
+                return;
+            }
+            try {
+                LongOutForRegistrationIdResponseBean responseBean = (LongOutForRegistrationIdResponseBean) res;
+                if (responseBean.getCode() == 200) {
+                    if (responseBean.isData()) {
+                        Logger.e("极光Id清除成功");
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override
@@ -254,7 +273,7 @@ public class LoginActivity extends BaseActivity {
                 } else {
                     showToast(R.string.input_code);
                 }
-                SPUtils.put(this, Constants.AUTO_LOGIN,false);
+                SPUtils.put(this, Constants.AUTO_LOGIN, false);
                 return;
             }
             try {
@@ -263,10 +282,10 @@ public class LoginActivity extends BaseActivity {
                     LoginResponse.Item data = response.getData();
                     GlobaVariable.getInstance().item = data;
                     //                    Login_JIM(response.getData().getMobile(), response.getData().getPassword());
-                    Logger.e("极光ID=="+TaMiApplication.registrationID);
+                    Logger.e("极光ID==" + TaMiApplication.registrationID);
                     bindRegistrationId(data, TaMiApplication.registrationID);
                 } else {
-                    SPUtils.put(this, Constants.AUTO_LOGIN,false);
+                    SPUtils.put(this, Constants.AUTO_LOGIN, false);
                     if (response.getMessage().equals(getString(R.string.login_fail))) {
                         showToast(R.string.login_fail);
                     } else if (response.getMessage().equals(getString(R.string.no_phone_num))) {
@@ -288,7 +307,8 @@ public class LoginActivity extends BaseActivity {
 
     /**
      * 绑定用户RegistrationId
-     *  @param item id          userId
+     *
+     * @param item           id          userId
      * @param registrationID 极光注册Id
      */
     private void bindRegistrationId(LoginResponse.Item item, String registrationID) {
@@ -304,15 +324,14 @@ public class LoginActivity extends BaseActivity {
                 SetUserRegistrationIdResponseBean response = (SetUserRegistrationIdResponseBean) res;
                 if (response.getCode() == 200) {
                     boolean data = response.isData();
-                    Logger.e("绑定极光："+data);
+                    Logger.e("绑定极光：" + data);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-//            SPUtils.put(this,Constants.SAVE_LOGIN_DATA,item);
-            SPUtils.save(Constants.FILE_KEY,Constants.SAVE_LOGIN_DATA,item);
-            SPUtils.put(this,Constants.TOKEN,item.getToken());
-            SPUtils.put(this, Constants.AUTO_LOGIN,true);
+            SPUtils.save(Constants.FILE_KEY, Constants.SAVE_LOGIN_DATA, item);
+            SPUtils.put(this, Constants.TOKEN, item.getToken());
+            SPUtils.put(this, Constants.AUTO_LOGIN, true);
             startActivity(new Intent(getApplicationContext(), HomeActivity.class));
         });
     }
