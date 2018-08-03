@@ -24,10 +24,11 @@
     <EditText
         android:id="@+id/avpi_name"
         android:layout_width="@dimen/dp_0"
-        android:layout_height="@dimen/dp_0"
+        android:layout_height="@dimen/dp_50"
         android:background="@android:color/white"
         android:gravity="center_vertical|right"
         android:hint="@string/please_enter_name"
+        android:lines="1"
         android:inputType="text"
         android:maxLength="50"
         android:paddingRight="@dimen/dp_17"
@@ -64,7 +65,7 @@
         android:inputType="textMultiLine"
         android:maxHeight="310dp"
         android:minHeight="@dimen/dp_100"
-        android:paddingBottom="@dimen/dp_10"
+        android:paddingBottom="@dimen/dp_44"
         android:paddingLeft="@dimen/dp_16"
         android:paddingRight="@dimen/dp_16"
         android:textColor="@color/color_333333"
@@ -83,9 +84,9 @@
         android:paddingRight="@dimen/dp_21"
         android:textColor="@color/color_888888"
         android:textSize="@dimen/sp_14"
+        app:layout_constraintBottom_toBottomOf="@+id/avpi_introduction"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/avpi_introduction" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/avpi_submission"

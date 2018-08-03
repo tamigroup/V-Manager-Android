@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/color_F2F4F5">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/avd_title"
@@ -12,6 +11,10 @@
         android:layout_height="@dimen/dp_45"
         android:background="@android:color/white"
         android:drawablePadding="@dimen/dp_5"
+        android:paddingLeft="@dimen/dp_10"
+        android:paddingRight="@dimen/dp_10"
+        android:lines="1"
+        android:ellipsize="end"
         android:gravity="center"
         android:textColor="@color/color_344266"
         android:textSize="@dimen/sp_16"
