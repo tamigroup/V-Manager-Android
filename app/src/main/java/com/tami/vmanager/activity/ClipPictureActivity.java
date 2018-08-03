@@ -121,8 +121,10 @@ public class ClipPictureActivity extends BaseActivity implements View.OnTouchLis
         saveBtn = null;
         srcPic.setBackgroundResource(0);
         srcPic = null;
-        clipview.removeOnDrawCompleteListener();
-        clipview = null;
+        if (clipview != null) {
+            clipview.removeOnDrawCompleteListener();
+            clipview = null;
+        }
         start = null;
         mid = null;
         if (bitmap != null) {

@@ -82,25 +82,12 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
         <!--    首页的创建会议    -->
-        <activity
-            android:name=".activity.CreateMeetingActivity"
-            android:screenOrientation="portrait"/>
         <!--    会议概览    -->
         <activity
             android:name=".activity.MeetingOverviewActivity"
             android:screenOrientation="portrait"/>
-        <!--    会议服务内容流程    -->
-        <activity
-            android:name=".activity.ConferenceServiceContentActivity"
-            android:screenOrientation="portrait"/>
         <!--    会议流程    -->
-        <activity
-            android:name=".activity.MeetingFlowActivity"
-            android:screenOrientation="portrait"/>
         <!--    会议流程编辑    -->
-        <activity
-            android:name=".activity.MeetingFlowEditActivity"
-            android:screenOrientation="portrait"/>
         <!--    会议环节待确认    -->
         <activity
             android:name=".activity.MeetingLinkConfirmedActivity"
@@ -126,9 +113,6 @@
             android:name=".activity.ClipPictureActivity"
             android:screenOrientation="portrait"/>
         <!--    创建会议与服务流程    -->
-        <activity
-            android:name=".activity.CreateMeetingAndServiceActivity"
-            android:screenOrientation="portrait"/>
         <!--    创建会议    -->
         <activity
             android:name=".activity.CreateMeetingRewriteActivity"

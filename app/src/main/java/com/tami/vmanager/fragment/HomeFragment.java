@@ -372,7 +372,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentListener {
             switch (resultCode) {
                 case Constants.CANCEL_CREATE_FLOW:
                     refreshHome();
-                    myCreate(meetingId);
+//                    myCreate(meetingId);
                     break;
                 case Constants.RESULT_CREATE_FLOW:
                     refreshHome();
