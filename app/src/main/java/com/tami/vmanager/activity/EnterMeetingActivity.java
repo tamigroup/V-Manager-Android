@@ -525,6 +525,8 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
     protected void onRestart() {
         super.onRestart();
         getMeetingItemsByMeetingId();
-        handler.sendEmptyMessage(2);
+        if (meetingInfo.isVzh == 1) {
+            handler.sendEmptyMessage(2);
+        }
     }
 }
