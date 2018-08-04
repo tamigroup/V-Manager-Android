@@ -47,6 +47,7 @@ public class AddPersonChargeActivty extends BaseActivity {
     //统计
     private int count;
     private int meetingItemSetId;
+    private int meetingId;
 
     @Override
     public boolean isTitle() {
@@ -74,6 +75,7 @@ public class AddPersonChargeActivty extends BaseActivity {
     public void initData() {
         Intent intent = getIntent();
         if (intent != null) {
+            meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 0);
             meetingItemSetId = intent.getIntExtra(Constants.KEY_MEETING_ITEM_SETID, -1);
         }
         setTitleName(getString(R.string.add_person_charge));
@@ -249,6 +251,7 @@ public class AddPersonChargeActivty extends BaseActivity {
     public void setMeetingItemsUser(ArrayList<SetMeetingItemsUserJson> data) {
         if (data != null && data.size() > 0) {
             SetMeetingItemsUserRequest siur = new SetMeetingItemsUserRequest();
+            siur.setMeetingId(meetingId);
             siur.setMeetingItemSetId(meetingItemSetId);
             siur.setUserJsonStr(new Gson().toJson(data));
             networkBroker.ask(siur, (ex1, res) -> {

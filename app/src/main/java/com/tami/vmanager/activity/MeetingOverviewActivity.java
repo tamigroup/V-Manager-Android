@@ -569,6 +569,7 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
 //
 //        });
         Intent intent = new Intent(getApplicationContext(), MeetingLinkConfirmedActivity.class);
+        intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
         intent.putExtra(Constants.KEY_MEETING_LINK, item);
         startActivity(intent);
     }

@@ -18,6 +18,7 @@ public class SetMeetingItemsUserRequest extends MobileMessage implements Seriali
         super();
     }
 
+    private int meetingId;
     private int meetingItemSetId;
     private String userJsonStr;
 
@@ -27,6 +28,14 @@ public class SetMeetingItemsUserRequest extends MobileMessage implements Seriali
 
     public void setMeetingItemSetId(int meetingItemSetId) {
         this.meetingItemSetId = meetingItemSetId;
+    }
+
+    public int getMeetingId() {
+        return meetingId;
+    }
+
+    public void setMeetingId(int meetingId) {
+        this.meetingId = meetingId;
     }
 
     public String getUserJsonStr() {

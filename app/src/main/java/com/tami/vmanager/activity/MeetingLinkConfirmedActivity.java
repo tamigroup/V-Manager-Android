@@ -70,6 +70,7 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
     private NetworkBroker networkBroker;
 
     private ConfirmEnterMeetingDialog confirmEnterMeetingDialog;//弹框查看会议
+    private int meetingId;//会议ID
 
     @Override
     public boolean isTitle() {
@@ -126,24 +127,13 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
 
         Intent intent = getIntent();
         if (intent != null) {
+            meetingId = intent.getIntExtra(Constants.KEY_MEETING_ID, 0);
             gmibmirItem = (GetMeetingItemsByMeetingIdResponse.Array.Item) intent.getSerializableExtra(Constants.KEY_MEETING_LINK);
             if (gmibmirItem != null) {
-                if(gmibmirItem.startOn !=0){
+                if (gmibmirItem.startOn != 0) {
                     content.setText(TimeUtils.date2String(new Date(gmibmirItem.startOn), TimeUtils.DATE_HHMM_SLASH) + gmibmirItem.meetingItemName);
                 }
             }
-        }
-
-        //已确认隐藏功能按钮
-        if (gmibmirItem.selectStatus == 1) {
-            setTitleName(R.string.the_meeting_has_been_confirmed);
-            constraintLayout.setVisibility(View.GONE);
-            addPerson.setVisibility(View.GONE);
-            confirmBtn.setVisibility(View.GONE);
-        } else if (gmibmirItem.selectStatus == 2) {
-            switchbtn.setChecked(false);
-            important.setText(getString(R.string.yes));
-            confirmBtn.setText(getString(R.string.again_identification));
         }
 
         networkBroker = new NetworkBroker(this);
@@ -192,6 +182,22 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
             }
         };
         recyclerView.setAdapter(commonAdapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //已确认隐藏功能按钮
+        if (gmibmirItem.selectStatus == 1) {
+            setTitleName(R.string.the_meeting_has_been_confirmed);
+            constraintLayout.setVisibility(View.GONE);
+            addPerson.setVisibility(View.GONE);
+            confirmBtn.setVisibility(View.GONE);
+        } else if (gmibmirItem.selectStatus == 2) {
+            switchbtn.setChecked(false);
+            important.setText(getString(R.string.yes));
+            confirmBtn.setText(getString(R.string.again_identification));
+        }
     }
 
     @Override
@@ -332,6 +338,7 @@ public class MeetingLinkConfirmedActivity extends BaseActivity implements EasyPe
                     if (index == -1) {
                         //添加负责人页面
                         Intent intent = new Intent(getApplicationContext(), AddPersonChargeActivty.class);
+                        intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
                         intent.putExtra(Constants.KEY_MEETING_ITEM_SETID, gmibmirItem.meetingItemSetId);
                         startActivityForResult(intent, Constants.ADD_PERSON_CHARGE);
                     } else {
