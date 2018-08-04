@@ -175,15 +175,19 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
                             if (isRefresh) {
                                 listData.addAll(0, elements);
                             } else if (isLoadMore || notification_receipt) {
+                                pullToRefreshLayout.setCanRefresh(true);
                                 listData.clear();
                                 listData.addAll(elements);
                             } else {
                                 listData.addAll(elements);
                             }
+                            adapter.notifyDataSetChanged();
+                            if (!isRefresh){
+                                recyclerView.scrollToPosition(listData.size() - 1);
+                            }
                             isLoadMore = false;
                             isRefresh = false;
-                            adapter.notifyDataSetChanged();
-                            recyclerView.scrollToPosition(listData.size() - 1);
+
                         } else {
                             empty_tv.setVisibility(View.VISIBLE);
                             recyclerView.setVisibility(View.GONE);

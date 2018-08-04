@@ -95,6 +95,7 @@
         <!--    会议服务群    -->
         <activity
             android:name=".activity.ConferenceServiceGroupActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan"
             android:screenOrientation="portrait"/>
         <!--    进入会议    -->
         <activity
