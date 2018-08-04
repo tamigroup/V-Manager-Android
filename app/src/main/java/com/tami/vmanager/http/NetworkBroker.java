@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,6 +20,7 @@ import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.NetworkUtil;
 import com.tami.vmanager.utils.SPUtils;
+import com.tami.vmanager.utils.ToastUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.builder.PostFormBuilder;
 import com.zhy.http.okhttp.builder.PostStringBuilder;
@@ -187,7 +187,7 @@ public class NetworkBroker extends BaseBroker {
                                 if (NO_AUTH == code) {
                                     // Session过期引起的重新登录
                                     // LocalSettings.inst().clearLogin();
-                                    Toast.makeText(context.getApplicationContext(), R.string.login_overdue, Toast.LENGTH_LONG).show();
+                                    ToastUtils.makeText(context, R.string.login_overdue, ToastUtils.LENGTH_LONG).show();
                                     Intent intent = new Intent(context, LoginActivity.class);
                                     context.startActivity(intent);
                                 } else if (UNKNOWN_ERR == code) {

@@ -15,10 +15,10 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.tami.vmanager.R;
 import com.tami.vmanager.base.inter.IBaseFragment;
+import com.tami.vmanager.utils.ToastUtils;
 
 /**
  * Created by lixishuang on 2017/11/30.
@@ -182,12 +182,14 @@ public abstract class BaseFragment extends Fragment implements IBaseFragment, Vi
 
     @Override
     public void showToast(@NonNull String msg) {
-        Toast.makeText(getActivity().getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getActivity().getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+        ToastUtils.makeText(getActivity(), msg, ToastUtils.LENGTH_LONG).show();
     }
 
     @Override
     public void showToast(@StringRes int resId) {
-        Toast.makeText(getActivity().getApplicationContext(), getString(resId), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getActivity().getApplicationContext(), getString(resId), Toast.LENGTH_SHORT).show();
+        ToastUtils.makeText(getActivity(), resId, ToastUtils.LENGTH_LONG).show();
     }
 
     @Override
