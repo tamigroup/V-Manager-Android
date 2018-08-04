@@ -100,7 +100,7 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
 
     @Override
     public void initData() {
-        is_invisible = (boolean) SPUtils.get(getActivity(), Constants.IS_INVISIBLE, true);
+        is_invisible = (boolean) SPUtils.get(getActivity(), Constants.IS_INVISIBLE, false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         listData = new ArrayList<>();
         adapter = new MultiItemTypeAdapter(getContext(), listData);

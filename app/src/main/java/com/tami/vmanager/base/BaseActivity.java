@@ -15,14 +15,13 @@ import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.qiniu.android.jpush.http.HttpManager;
 import com.tami.vmanager.R;
 import com.tami.vmanager.R.id;
 import com.tami.vmanager.R.string;
 import com.tami.vmanager.base.inter.IBaseActivity;
 import com.tami.vmanager.manager.ActivityManager;
+import com.tami.vmanager.utils.ToastUtils;
 
 /**
  * Created by lixishuang on 2017/11/30.
@@ -56,7 +55,8 @@ public abstract class BaseActivity extends FragmentActivity implements IBaseActi
         layoutInflater = LayoutInflater.from(this);
         //判断是否有Title布局并添充
         if (getContentViewId() == 0) {
-            Toast.makeText(getApplicationContext(), getString(R.string.activity_is_layout), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getApplicationContext(), getString(R.string.activity_is_layout), 1).show();
+            ToastUtils.makeText(this, getString(R.string.activity_is_layout), ToastUtils.LENGTH_LONG).show();
             finish();
             return;
         }
@@ -195,12 +195,12 @@ public abstract class BaseActivity extends FragmentActivity implements IBaseActi
 
     @Override
     public void showToast(@NonNull String msg) {
-        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+        ToastUtils.makeText(this, msg, ToastUtils.LENGTH_LONG).show();
     }
 
     @Override
     public void showToast(@StringRes int resId) {
-        Toast.makeText(getApplicationContext(), getString(resId), Toast.LENGTH_SHORT).show();
+        ToastUtils.makeText(this, resId, ToastUtils.LENGTH_LONG).show();
     }
 
     @Override
