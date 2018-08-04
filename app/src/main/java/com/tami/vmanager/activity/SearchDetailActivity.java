@@ -143,35 +143,35 @@ public class SearchDetailActivity extends BaseActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 searchView.setQueryHint("");
-
+                int search_type = (int) SPUtils.get(SearchDetailActivity.this, SEARCH_TYPE, SearchType.MEETING_NAME.getType());
                 if (searchHistoryBeans != null) {
                     int size = searchHistoryBeans.size();
                     switch (size) {
                         case 0:
-                            insertData(query);
+                            insertData(query,search_type);
                             break;
                         case 1:
                             if (!query.equals(SearchDetailActivity.this.search_history_tv1_text)) {
-                                insertData(query);
+                                insertData(query,search_type);
                             } else {
-                                request(query);
+                                request(query,search_type);
                             }
                             break;
                         case 2:
                             if (!TextUtils.isEmpty(SearchDetailActivity.this.search_history_tv1_text) && !query.equals(SearchDetailActivity.this.search_history_tv1_text)
                                     && !TextUtils.isEmpty(search_history_tv2_text) && !query.equals(search_history_tv2_text)) {
-                                insertData(query);
+                                insertData(query,search_type);
                             } else {
-                                request(query);
+                                request(query,search_type);
                             }
                             break;
                         case 3:
                             if (!TextUtils.isEmpty(SearchDetailActivity.this.search_history_tv1_text) && !query.equals(SearchDetailActivity.this.search_history_tv1_text)
                                     && !TextUtils.isEmpty(search_history_tv2_text) && !query.equals(search_history_tv2_text)
                                     && !TextUtils.isEmpty(search_history_tv3_text) && !query.equals(search_history_tv3_text)) {
-                                insertData(query);
+                                insertData(query,search_type);
                             } else {
-                                request(query);
+                                request(query,search_type);
                             }
                             break;
                         case 4:
@@ -179,9 +179,9 @@ public class SearchDetailActivity extends BaseActivity {
                                     && !TextUtils.isEmpty(search_history_tv2_text) && !query.equals(search_history_tv2_text)
                                     && !TextUtils.isEmpty(search_history_tv3_text) && !query.equals(search_history_tv3_text)
                                     && !TextUtils.isEmpty(search_history_tv4_text) && !query.equals(search_history_tv4_text)) {
-                                insertData(query);
+                                insertData(query,search_type);
                             } else {
-                                request(query);
+                                request(query,search_type);
                             }
                             break;
                         case 5:
@@ -190,9 +190,9 @@ public class SearchDetailActivity extends BaseActivity {
                                     && !TextUtils.isEmpty(search_history_tv3_text) && !query.equals(search_history_tv3_text)
                                     && !TextUtils.isEmpty(search_history_tv4_text) && !query.equals(search_history_tv4_text)
                                     && !TextUtils.isEmpty(search_history_tv5_text) && !query.equals(search_history_tv5_text)) {
-                                insertData(query);
+                                insertData(query,search_type);
                             } else {
-                                request(query);
+                                request(query,search_type);
                             }
                             break;
                         case 6:
@@ -202,14 +202,14 @@ public class SearchDetailActivity extends BaseActivity {
                                     && !TextUtils.isEmpty(search_history_tv4_text) && !query.equals(search_history_tv4_text)
                                     && !TextUtils.isEmpty(search_history_tv5_text) && !query.equals(search_history_tv5_text)
                                     && !TextUtils.isEmpty(search_history_tv6_text) && !query.equals(search_history_tv6_text)) {
-                                insertData(query);
+                                insertData(query,search_type);
                             } else {
-                                request(query);
+                                request(query,search_type);
                             }
                             break;
                     }
                 } else {
-                    insertData(query);
+                    insertData(query,search_type);
                 }
                 return true;
             }
@@ -221,18 +221,18 @@ public class SearchDetailActivity extends BaseActivity {
         });
     }
 
-    public void insertData(String query) {
+    public void insertData(String query,int searcType) {
         searchHistoryBean.setUserId(userId);
         searchHistoryBean.setSearchHistory(query);
         new Thread(() -> dao.insert(searchHistoryBean)).start();
-        request(query);
+        request(query,searcType);
     }
 
-    private void request(String query) {
+    private void request(String query,int searcType) {
         CurPage = 1;
-        SearchDetailActivity.this.query = query;
-        SearchDetailActivity.this.type = type;
-        RequestServer(query, SearchType.MEETING_NAME.getType(), false);
+//        SearchDetailActivity.this.query = query;
+//        SearchDetailActivity.this.type = type;
+        RequestServer(query, searcType, false);
     }
 
     /**
