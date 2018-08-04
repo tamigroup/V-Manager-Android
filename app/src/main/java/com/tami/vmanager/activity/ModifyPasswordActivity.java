@@ -10,10 +10,15 @@ import com.tami.vmanager.R;
 import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.entity.ChangePasswordRequest;
 import com.tami.vmanager.entity.ChangePasswordResponse;
+import com.tami.vmanager.entity.LoginOutRequest;
+import com.tami.vmanager.entity.LoginOutResponse;
 import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.http.NetworkBroker;
+import com.tami.vmanager.manager.ActivityManager;
 import com.tami.vmanager.manager.GlobaVariable;
+import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
+import com.tami.vmanager.utils.SPUtils;
 
 /**
  * 更改密码
@@ -115,7 +120,7 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnFocus
                     if (response.getCode() == 200) {
                         if (response.data) {
                             showToast(getString(R.string.modify_password_true));
-                            finish();
+                            editLogin();
                         } else {
                             showToast(getString(R.string.modify_password_false));
                         }
@@ -128,6 +133,34 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnFocus
 
             });
         }
+    }
+
+    /**
+     * 退出登录
+     */
+    private void editLogin() {
+        LoginOutRequest loginOutRequest = new LoginOutRequest();
+        LoginResponse.Item item = GlobaVariable.getInstance().item;
+        loginOutRequest.setUserId(String.valueOf(item.getId()));
+        networkBroker.ask(loginOutRequest, (ex1, res) -> {
+            if (null != ex1) {
+                Logger.d(ex1.getMessage() + "-" + ex1);
+                return;
+            }
+            try {
+                LoginOutResponse response = (LoginOutResponse) res;
+                if (response.getCode() == 200) {
+                    SPUtils.remove(ModifyPasswordActivity.this, Constants.SAVE_LOGIN_DATA);
+                    SPUtils.remove(ModifyPasswordActivity.this,Constants.TOKEN);
+                    SPUtils.remove(ModifyPasswordActivity.this,Constants.AUTO_LOGIN);
+                    GlobaVariable.getInstance().item = null;
+                    ActivityManager.getInstance().finishAllActivity();
+                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     /**
