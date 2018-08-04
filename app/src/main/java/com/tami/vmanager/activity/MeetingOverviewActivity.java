@@ -582,10 +582,7 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
     @Override
     protected void onRestart() {
         super.onRestart();
-        getMeetingItemsByMeetingId();
-        if (meetingInfo.isVzh == 1) {
-            handler.sendEmptyMessage(1);
-        }
+        getMeeting();
     }
 
     public Handler handler = new Handler() {

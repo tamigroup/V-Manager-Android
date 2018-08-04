@@ -437,6 +437,7 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
     @Override
     public void onClick(View v) {
         super.onClick(v);
+        clearFocus();
         switch (v.getId()) {
             case R.id.acmr_save_btn:
                 save();
@@ -649,6 +650,7 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
                     group.setVisibility(View.GONE);
                     defaultImage.setVisibility(View.VISIBLE);
                     defaultImage.setOnClickListener((View v) -> {
+                        clearFocus();
                         Intent intent = new Intent(getApplicationContext(), AddReceptionistActivity.class);
                         intent.putParcelableArrayListExtra(Constants.RESULT_JIEDAIREN, receptionistListData);
                         startActivityForResult(intent, Constants.CREATE_MEETING_JIEDAIREN);
@@ -663,6 +665,7 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
                     }
                     AppCompatImageView deleteImage = holder.getView(R.id.icmr_delete_image);
                     deleteImage.setOnClickListener((View v) -> {
+                        clearFocus();
                         receptionistListData.remove(position);
                         receptionistListAdapter.notifyDataSetChanged();
                     });
@@ -693,6 +696,7 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
                     defaultImage.setVisibility(View.GONE);
                     AppCompatImageView deleteImage = holder.getView(R.id.icmpi_delete);
                     deleteImage.setOnClickListener((View v) -> {
+                        clearFocus();
                         vipListData.remove(position);
                         vipAdapter.notifyDataSetChanged();
                     });
@@ -701,6 +705,7 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
                     group.setVisibility(View.GONE);
                     defaultImage.setVisibility(View.VISIBLE);
                     defaultImage.setOnClickListener((View v) -> {
+                        clearFocus();
                         Intent intent = new Intent(getApplicationContext(), VIPPersonageIntroductionActivity.class);
                         intent.putExtra(Constants.KEY_MEETING_ID, meetingId);
                         startActivityForResult(intent, Constants.CREATE_MEETING_VIP);
@@ -1020,13 +1025,25 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
      */
     private void initDataView(GetMeetingResponse.Item meetingItem) {
         nameView.setText(meetingItem.meetingName);
+        nameView.setFocusable(true);
+        nameView.requestFocusFromTouch();
+        nameView.clearFocus();
         sponsorView.setText(meetingItem.sponsorName);
+        sponsorView.setFocusable(true);
+        sponsorView.requestFocusFromTouch();
+        sponsorView.clearFocus();
         meeetingPlaceView.setText(meetingItem.meetingAddress);
         addressId = meetingItem.meetingAddressId;
         startTimeView.setText(TimeUtils.date2String(recordStartDate = new Date(meetingItem.startTime)));
         endTimeView.setText(TimeUtils.date2String(recordEndDate = new Date(meetingItem.endTime)));
         estimatedNumberPeople.setText(String.valueOf(meetingItem.estimateNum));
+        estimatedNumberPeople.setFocusable(true);
+        estimatedNumberPeople.requestFocusFromTouch();
+        estimatedNumberPeople.clearFocus();
         bottomNumberPeople.setText(String.valueOf(meetingItem.minNum));
+        bottomNumberPeople.setFocusable(true);
+        bottomNumberPeople.requestFocusFromTouch();
+        bottomNumberPeople.clearFocus();
         meetingLevel.setText(getMeetingLevel(meetingLevelIndex = meetingItem.isImportant));
 
         //接待人
@@ -1121,5 +1138,16 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
                     break;
             }
         }
+    }
+
+    private void clearFocus() {
+        nameView.clearFocus();
+        sponsorView.clearFocus();
+        estimatedNumberPeople.clearFocus();
+        bottomNumberPeople.clearFocus();
+        saveBtn.setFocusable(true);
+        saveBtn.setFocusableInTouchMode(true);
+        saveBtn.requestFocus();
+        saveBtn.requestFocusFromTouch();
     }
 }

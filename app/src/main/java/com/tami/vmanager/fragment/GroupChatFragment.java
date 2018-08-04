@@ -252,7 +252,7 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
                         LoginResponse.Item userItem = GlobaVariable.getInstance().item;
                         if (userItem != null) {
                             elementsBean.setUserId(userItem.getId());
-                            elementsBean.setUserName(msgSendItemDelagateAdapter.getItem().getUserName());
+                            elementsBean.setUserName(userItem.getRealName());
                             elementsBean.setUserIcon(userItem.getIconUrl());
                         }
                         elementsBean.setMeetingId(String.valueOf(meetingId));

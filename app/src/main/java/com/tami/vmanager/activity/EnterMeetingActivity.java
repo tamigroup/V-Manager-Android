@@ -447,7 +447,7 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
                         listData.addAll(array.dataList);
                         adapter.notifyDataSetChanged();
                     }
-                }else{
+                } else {
                     showToast(response.getMessage());
                 }
             } catch (Exception e) {
@@ -505,7 +505,7 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
                         actualNum = data.getActualNum();
                         initUITxt(actualNumber, String.valueOf(actualNum), R.string.actual_number, R.color.color_FF5657);
                     }
-                }else{
+                } else {
                     showToast(response.getMessage());
                 }
             } catch (Exception e) {
@@ -525,7 +525,7 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
     protected void onRestart() {
         super.onRestart();
         getMeetingItemsByMeetingId();
-        if (meetingInfo.isVzh == 1) {
+        if (meetingInfo != null && meetingInfo.isVzh == 1) {
             handler.sendEmptyMessage(2);
         }
     }

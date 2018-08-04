@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.squareup.picasso.Picasso;
@@ -431,6 +432,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
     @Override
     public void onClick(View v) {
         super.onClick(v);
+        clearFocus();
         switch (v.getId()) {
             case R.id.acmr_save_btn:
                 save();
@@ -650,6 +652,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
                     group.setVisibility(View.GONE);
                     defaultImage.setVisibility(View.VISIBLE);
                     defaultImage.setOnClickListener((View v) -> {
+                        clearFocus();
                         Intent intent = new Intent(getApplicationContext(), AddReceptionistActivity.class);
                         intent.putParcelableArrayListExtra(Constants.RESULT_JIEDAIREN, receptionistListData);
                         startActivityForResult(intent, Constants.CREATE_MEETING_JIEDAIREN);
@@ -666,6 +669,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
                     }
                     AppCompatImageView deleteImage = holder.getView(R.id.icmr_delete_image);
                     deleteImage.setOnClickListener((View v) -> {
+                        clearFocus();
                         receptionistListData.remove(position);
                         receptionistListAdapter.notifyDataSetChanged();
                     });
@@ -696,6 +700,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
                     defaultImage.setVisibility(View.GONE);
                     AppCompatImageView deleteImage = holder.getView(R.id.icmpi_delete);
                     deleteImage.setOnClickListener((View v) -> {
+                        clearFocus();
                         vipListData.remove(position);
                         vipAdapter.notifyDataSetChanged();
                     });
@@ -704,6 +709,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
                     group.setVisibility(View.GONE);
                     defaultImage.setVisibility(View.VISIBLE);
                     defaultImage.setOnClickListener((View v) -> {
+                        clearFocus();
                         startActivityForResult(new Intent(getApplicationContext(), VIPPersonageIntroductionActivity.class), Constants.CREATE_MEETING_VIP);
                     });
                     return;
@@ -851,7 +857,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
                     }
                     showToast(getString(R.string.create_meeting_toast, getString(R.string.success)));
                     cemd.show();
-                }else{
+                } else {
                     showToast(response.getMessage());
                 }
             } catch (Exception e) {
@@ -999,7 +1005,7 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
-        ((ClearEditText)v).onFocusChange(v,hasFocus);
+        ((ClearEditText) v).onFocusChange(v, hasFocus);
         if (!hasFocus) {
             switch (v.getId()) {
                 case R.id.acmr_meeting_name:
@@ -1030,5 +1036,16 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
                     break;
             }
         }
+    }
+
+    private void clearFocus() {
+        nameView.clearFocus();
+        sponsorView.clearFocus();
+        estimatedNumberPeople.clearFocus();
+        bottomNumberPeople.clearFocus();
+        saveBtn.setFocusable(true);
+        saveBtn.setFocusableInTouchMode(true);
+        saveBtn.requestFocus();
+        saveBtn.requestFocusFromTouch();
     }
 }
