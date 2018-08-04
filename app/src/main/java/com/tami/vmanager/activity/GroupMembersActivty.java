@@ -139,7 +139,7 @@ public class GroupMembersActivty extends BaseActivity {
                 startActivity(intentAll);
                 break;
             case R.id.out_meeting:
-                //跳到会议概览
+                //退出会议 跳到会议概览
                 outGroupMeeting();
                 break;
             case R.id.agm_notice:
