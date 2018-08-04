@@ -367,10 +367,6 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
             } else {
                 initUITxt(actualNumber, "--", R.string.actual_number, R.color.color_FF5657);
             }
-            if (TextUtils.isEmpty(item.eoUrl)) {
-                lookEO.setText(getString(R.string.no_eo_single));
-                lookEO.setEnabled(false);
-            }
         }
     }
 

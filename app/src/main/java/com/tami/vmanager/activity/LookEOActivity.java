@@ -2,6 +2,8 @@ package com.tami.vmanager.activity;
 
 import android.content.Intent;
 import android.text.TextUtils;
+import android.view.View;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.tami.vmanager.R;
@@ -17,6 +19,7 @@ public class LookEOActivity extends BaseActivity {
 
     private String eoUrl;
     private PhotoView photoView;
+    private TextView textView;
 
     @Override
     public boolean isTitle() {
@@ -31,6 +34,7 @@ public class LookEOActivity extends BaseActivity {
     @Override
     public void initView() {
         photoView = findViewById(R.id.ale_image);
+        textView = findViewById(R.id.not_uploaded_eo_list);
     }
 
     @Override
@@ -45,9 +49,10 @@ public class LookEOActivity extends BaseActivity {
         if (intent != null) {
             eoUrl = intent.getStringExtra(Constants.KEY_EO_URL);
             if (!TextUtils.isEmpty(eoUrl)) {
+                textView.setVisibility(View.GONE);
                 Picasso.get().load(eoUrl).into(photoView);
             } else {
-                finish();
+                textView.setVisibility(View.VISIBLE);
             }
         }
     }

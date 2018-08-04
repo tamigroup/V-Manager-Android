@@ -40,5 +40,5 @@
 
     <string name="please_enter_the_correct_verification_code">请输入正确的验证码</string>
 
-
+    <string name="not_uploaded_eo_list_can_not_see_oh">暂未上传eo单，无法查看哦</string>
 </resources>
