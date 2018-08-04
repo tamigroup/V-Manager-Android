@@ -1,11 +1,14 @@
 package com.tami.vmanager.fragment;
 
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.Group;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatImageView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -21,12 +24,15 @@ import com.tami.vmanager.activity.MyCreateActivity;
 import com.tami.vmanager.activity.SearchActivity;
 import com.tami.vmanager.activity.TodayMeetingActivity;
 import com.tami.vmanager.activity.WaitMeetingsActivity;
+import com.tami.vmanager.application.TaMiApplication;
 import com.tami.vmanager.base.BaseFragment;
 import com.tami.vmanager.entity.GetBannerDataRequest;
 import com.tami.vmanager.entity.GetBannerDataResponse;
 import com.tami.vmanager.entity.GetIndexRequest;
 import com.tami.vmanager.entity.GetIndexResponse;
 import com.tami.vmanager.entity.LoginResponse;
+import com.tami.vmanager.entity.SetUserRegistrationIdRequestBean;
+import com.tami.vmanager.entity.SetUserRegistrationIdResponseBean;
 import com.tami.vmanager.enums.TimeType;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
@@ -34,6 +40,7 @@ import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 
 import com.tami.vmanager.message.MessageEvent;
+import com.tami.vmanager.utils.SPUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -169,6 +176,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentListener {
     public void requestNetwork() {
         getBannerData(TimeType.TODAY.getType());
         getIndex();
+        handler.sendEmptyMessage(100);
     }
 
     @Override
@@ -178,6 +186,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentListener {
 
     @Override
     public void emptyObject() {
+        handler.removeCallbacksAndMessages(null);
         if (mBottomSheetDialog != null && mBottomSheetDialog.isShowing()) {
             mBottomSheetDialog.dismiss();
             mBottomSheetDialog.setContentView(null);
@@ -294,7 +303,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentListener {
                     no_complete_pro.setMax(headItem.getAllMeetingCount());
                     no_complete_pro.setProgress(no_over);
                     no_complete_num.setText(String.valueOf(no_over));
-                }else{
+                } else {
                     showToast(response.getMessage());
                 }
             } catch (Exception e) {
@@ -333,7 +342,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentListener {
                             myCreateNum.setText(String.valueOf(gItem.getMyCreateMeetingCount()));
                         }
                     }
-                }else{
+                } else {
                     showToast(response.getMessage());
                 }
             } catch (Exception e) {
@@ -440,4 +449,52 @@ public class HomeFragment extends BaseFragment implements HomeFragmentListener {
         getIndex();
         getBannerData(getGroupIndex());
     }
+
+    /**
+     * 绑定用户RegistrationId
+     */
+    private void bindRegistrationId() {
+        String registrationID = TaMiApplication.registrationID;
+        if (!TextUtils.isEmpty(registrationID)) {
+            Logger.d("测试数据------------------------------------------》有");
+            LoginResponse.Item item = GlobaVariable.getInstance().item;
+            SetUserRegistrationIdRequestBean setUserRegistrationIdRequestBean = new SetUserRegistrationIdRequestBean();
+            setUserRegistrationIdRequestBean.setUserId(item.getId());
+            setUserRegistrationIdRequestBean.setRegistrationId(registrationID);
+            networkBroker.ask(setUserRegistrationIdRequestBean, (exl, res) -> {
+                if (null != exl) {
+                    Logger.d(exl.getMessage() + "-" + exl);
+                    return;
+                }
+                try {
+                    SetUserRegistrationIdResponseBean response = (SetUserRegistrationIdResponseBean) res;
+                    if (response.getCode() == 200) {
+                        boolean data = response.isData();
+                        if (!data) {
+                            showToast("通知会收不到，请您重新登录");
+                        }
+                        Logger.e("绑定极光：" + data);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                SPUtils.save(Constants.FILE_KEY, Constants.SAVE_LOGIN_DATA, item);
+                SPUtils.put(getActivity(), Constants.TOKEN, item.getToken());
+                SPUtils.put(getActivity(), Constants.AUTO_LOGIN, true);
+            });
+        } else {
+            Logger.d("测试数据------------------------------------------》无");
+            handler.sendEmptyMessageDelayed(100, 1000);
+        }
+    }
+
+    public Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 100) {
+                bindRegistrationId();
+            }
+        }
+    };
 }

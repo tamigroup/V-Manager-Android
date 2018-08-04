@@ -110,7 +110,7 @@ public class LoginActivity extends BaseActivity {
     public void requestNetwork() {
         LongOutForRegistrationIdRequestBean longOutForRegistrationIdRequestBean = new LongOutForRegistrationIdRequestBean();
         longOutForRegistrationIdRequestBean.setRegistrationId(TaMiApplication.registrationID);
-        networkBroker.ask(longOutForRegistrationIdRequestBean, (exl, res) -> {
+        networkBroker.ask(longOutForRegistrationIdRequestBean, false,(exl, res) -> {
             if (null != exl) {
                 Logger.d(exl.getMessage() + "-" + exl);
                 return;

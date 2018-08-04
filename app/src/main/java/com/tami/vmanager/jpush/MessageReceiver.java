@@ -51,36 +51,37 @@ public class MessageReceiver extends BroadcastReceiver {
             // }
 
             Bundle bundle = intent.getExtras();
-            Logger.d("[极光MessageReceiver] onReceive - " + intent.getAction() + ", extras: " + printBundle(bundle));
+            Logger.d("[] onReceive - " + intent.getAction() + ", extras: " + printBundle(bundle));
 
             if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
                 //用户注册成功
                 String regId = bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID);
-                Logger.d("[极光MessageReceiver] 接收Registration Id : " + regId);
+                TaMiApplication.registrationID = regId;
+                Logger.d("[] 接收Registration Id : " + regId);
                 //send the Registration Id to your server...
 
             } else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
                 //接受到推送下来的自定义消息
-                Logger.d("[极光MessageReceiver] 接收到推送下来的自定义消息: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
+                Logger.d("[] 接收到推送下来的自定义消息: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
                 processCustomMessage(context, bundle);
 
             } else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
                 //在通知到达时触发
-                Logger.d("[极光MessageReceiver] 接收到推送下来的通知");
+                Logger.d("[] 接收到推送下来的通知");
                 int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
-                Logger.d("[极光MessageReceiver] 接收到推送下来的通知的ID: " + notifactionId);
+                Logger.d("[] 接收到推送下来的通知的ID: " + notifactionId);
 
                 EventBus.getDefault().post(new EventManage.Jpush_GroupMessageEvent(EventManage.JPUSH_GROUPMESSAGEEVENT));
             } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
                 //当用户点击时触发
-                Logger.d("[极光MessageReceiver] 用户点击打开了通知 是否在前台=="+ TaMiApplication.isBackground(context));
-                Logger.d("[极光MessageReceiver] 用户点击打开了通知");
+                Logger.d("[] 用户点击打开了通知 是否在前台=="+ TaMiApplication.isBackground(context));
+                Logger.d("[] 用户点击打开了通知");
                 String Jpush_key = (String) SPUtils.get(context, Constants.JPUSH_KEY, "");
                 int jpush_meetingid = (int) SPUtils.get(context, Constants.JPUSH_MEETINGID, 0);
                 int jpush_noticemessageid = (int) SPUtils.get(context, Constants.JPUSH_NOTICEMESSAGEID, 0);
-                Logger.d("[极光MessageReceiver] 用户点击打开了通知 Jpush_key" + Jpush_key);
-                Logger.d("[极光MessageReceiver] 用户点击打开了通知 jpush_meetingid" + jpush_meetingid);
-                Logger.d("[极光MessageReceiver] 用户点击打开了通知 jpush_noticemessageid" + jpush_noticemessageid);
+                Logger.d("[] 用户点击打开了通知 Jpush_key" + Jpush_key);
+                Logger.d("[] 用户点击打开了通知 jpush_meetingid" + jpush_meetingid);
+                Logger.d("[] 用户点击打开了通知 jpush_noticemessageid" + jpush_noticemessageid);
 
                 // needChange代表主办方需求变化
                 // groupMessage代表群消息
@@ -103,17 +104,17 @@ public class MessageReceiver extends BroadcastReceiver {
                 }
 
             } else if (JPushInterface.ACTION_RICHPUSH_CALLBACK.equals(intent.getAction())) {
-                Logger.d("[极光MessageReceiver] 用户收到到RICH PUSH CALLBACK: " + bundle.getString(JPushInterface.EXTRA_EXTRA));
+                Logger.d("[] 用户收到到RICH PUSH CALLBACK: " + bundle.getString(JPushInterface.EXTRA_EXTRA));
                 //在这里根据 JPushInterface.EXTRA_EXTRA 的内容处理代码，比如打开新的Activity， 打开一个网页等..
 
             } else if (JPushInterface.ACTION_CONNECTION_CHANGE.equals(intent.getAction())) {
                 boolean connected = intent.getBooleanExtra(JPushInterface.EXTRA_CONNECTION_CHANGE, false);
-                Logger.d("[极光MessageReceiver]" + intent.getAction() + " connected state change to " + connected);
+                Logger.d("[]" + intent.getAction() + " connected state change to " + connected);
             } else {
-                Logger.d("[极光MessageReceiver] Unhandled intent - " + intent.getAction());
+                Logger.d("[] Unhandled intent - " + intent.getAction());
             }
         } catch (Exception e) {
-            Logger.d("[极光MessageReceiver] Exception --- " + e.getMessage());
+            Logger.d("[] Exception --- " + e.getMessage());
         }
 
     }
