@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.Group;
 import android.support.v7.widget.AppCompatImageView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -16,6 +17,8 @@ import com.tami.vmanager.base.BaseActivity;
 import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.enums.SearchType;
 import com.tami.vmanager.manager.GlobaVariable;
+import com.tami.vmanager.utils.SPUtils;
+import com.tami.vmanager.utils.SpUtil;
 
 import java.util.List;
 
@@ -60,6 +63,12 @@ public class SearchActivity extends BaseActivity {
     private boolean is_first;
     private int userId;
     private Disposable disposable;
+    private String search_history_tv1_text;
+    private String search_history_tv2_text;
+    private String search_history_tv3_text;
+    private String search_history_tv4_text;
+    private String search_history_tv5_text;
+    private String search_history_tv6_text;
 
     @Override
     public int getContentViewId() {
@@ -122,20 +131,82 @@ public class SearchActivity extends BaseActivity {
     @Override
     public void initData() {
         LoginResponse.Item item = GlobaVariable.getInstance().item;
-        if (null != item){
+        if (null != item) {
             userId = item.getId();
         }
         QueryData();
-//        searchView.setQueryHint(getString(R.string.enter_keyword));
         searchView.setOnSearchClickListener(v -> search_group.setVisibility(View.GONE));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                searchHistoryBean.setUserId(userId);
-                searchHistoryBean.setSearchHistory(query);
-                new Thread(() -> dao.insert(searchHistoryBean)).start();
-                SearchDetailActivity.Start(SearchActivity.this,query,SearchType.MEETING_NAME.getType(), false);
-                return false;
+                if (searchHistoryBeans != null){
+                    int size = searchHistoryBeans.size();
+                    switch (size) {
+                        case 0:
+                            insertData(query);
+                            break;
+                        case 1:
+                            if (!query.equals(search_history_tv1_text)) {
+                                insertData(query);
+                            }else {
+                                RequestData(query,SearchType.MEETING_NAME.getType(),false);
+                            }
+                            break;
+                        case 2:
+                            if (!TextUtils.isEmpty(search_history_tv1_text) && !query.equals(search_history_tv1_text)
+                                    && !TextUtils.isEmpty(search_history_tv2_text) && !query.equals(search_history_tv2_text)) {
+                                insertData(query);
+                            }else {
+                                RequestData(query,SearchType.MEETING_NAME.getType(),false);
+                            }
+                            break;
+                        case 3:
+                            if (!TextUtils.isEmpty(search_history_tv1_text) && !query.equals(search_history_tv1_text)
+                                    && !TextUtils.isEmpty(search_history_tv2_text) && !query.equals(search_history_tv2_text)
+                                    && !TextUtils.isEmpty(search_history_tv3_text) && !query.equals(search_history_tv3_text)) {
+                                insertData(query);
+                            }else {
+                                RequestData(query,SearchType.MEETING_NAME.getType(),false);
+                            }
+                            break;
+                        case 4:
+                            if (!TextUtils.isEmpty(search_history_tv1_text) && !query.equals(search_history_tv1_text)
+                                    && !TextUtils.isEmpty(search_history_tv2_text) && !query.equals(search_history_tv2_text)
+                                    && !TextUtils.isEmpty(search_history_tv3_text) && !query.equals(search_history_tv3_text)
+                                    && !TextUtils.isEmpty(search_history_tv4_text) && !query.equals(search_history_tv4_text)) {
+                                insertData(query);
+                            }else {
+                                RequestData(query,SearchType.MEETING_NAME.getType(),false);
+                            }
+                            break;
+                        case 5:
+                            if (!TextUtils.isEmpty(search_history_tv1_text) && !query.equals(search_history_tv1_text)
+                                    && !TextUtils.isEmpty(search_history_tv2_text) && !query.equals(search_history_tv2_text)
+                                    && !TextUtils.isEmpty(search_history_tv3_text) && !query.equals(search_history_tv3_text)
+                                    && !TextUtils.isEmpty(search_history_tv4_text) && !query.equals(search_history_tv4_text)
+                                    && !TextUtils.isEmpty(search_history_tv5_text) && !query.equals(search_history_tv5_text)) {
+                                insertData(query);
+                            }else {
+                                RequestData(query,SearchType.MEETING_NAME.getType(),false);
+                            }
+                            break;
+                        case 6:
+                            if (!TextUtils.isEmpty(search_history_tv1_text) && !query.equals(search_history_tv1_text)
+                                    && !TextUtils.isEmpty(search_history_tv2_text) && !query.equals(search_history_tv2_text)
+                                    && !TextUtils.isEmpty(search_history_tv3_text) && !query.equals(search_history_tv3_text)
+                                    && !TextUtils.isEmpty(search_history_tv4_text) && !query.equals(search_history_tv4_text)
+                                    && !TextUtils.isEmpty(search_history_tv5_text) && !query.equals(search_history_tv5_text)
+                                    && !TextUtils.isEmpty(search_history_tv6_text) && !query.equals(search_history_tv6_text)) {
+                                insertData(query);
+                            }else {
+                                RequestData(query,SearchType.MEETING_NAME.getType(),false);
+                            }
+                            break;
+                    }
+                }else {
+                    insertData(query);
+                }
+                return true;
             }
 
             @Override
@@ -145,12 +216,24 @@ public class SearchActivity extends BaseActivity {
         });
     }
 
+    /**
+     * room增加数据
+     *
+     * @param query 搜索内容
+     */
+    private void insertData(String query) {
+        searchHistoryBean.setUserId(userId);
+        searchHistoryBean.setSearchHistory(query);
+        new Thread(() -> dao.insert(searchHistoryBean)).start();
+        RequestData(query,SearchType.MEETING_NAME.getType(),false);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
-        if (is_first){
+        if (is_first) {
             searchView.setQueryHint(getString(R.string.search) + getString(R.string.search_content_tv1));
-        }else {
+        } else {
             searchView.setQueryHint("");
         }
         is_first = false;
@@ -168,6 +251,7 @@ public class SearchActivity extends BaseActivity {
                 .subscribe(searchHistoryBeans -> {
                     switch (searchHistoryBeans.size()) {
                         case 0:
+                            this.searchHistoryBeans = searchHistoryBeans;
                             search_history_tv.setVisibility(View.GONE);
                             break;
                         case 1:
@@ -176,6 +260,7 @@ public class SearchActivity extends BaseActivity {
                                 search_history_tv1.setText(searchHistoryBeans.get(0).getSearchHistory());
                             }
                             search_history_tv1.setVisibility(View.VISIBLE);
+                            search_history_tv1_text = search_history_tv1.getText().toString();
                             search_history_tv1.setOnClickListener(v -> {
                                 setClickColor(search_history_tv1, R.color.color_344266, R.drawable.shape_cricle_line, searchHistoryBeans.get(0).getSearchHistory());
                                 setContentClickColor();
@@ -190,6 +275,10 @@ public class SearchActivity extends BaseActivity {
                             }
                             search_history_tv1.setVisibility(View.VISIBLE);
                             search_history_tv2.setVisibility(View.VISIBLE);
+
+                            search_history_tv1_text = search_history_tv1.getText().toString();
+                            search_history_tv2_text = search_history_tv2.getText().toString();
+
                             search_history_tv1.setOnClickListener(v -> {
                                 setClickColor(search_history_tv2, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(1).getSearchHistory());
                                 setClickColor(search_history_tv1, R.color.color_344266, R.drawable.shape_cricle_line, searchHistoryBeans.get(0).getSearchHistory());
@@ -213,6 +302,11 @@ public class SearchActivity extends BaseActivity {
                             search_history_tv1.setVisibility(View.VISIBLE);
                             search_history_tv2.setVisibility(View.VISIBLE);
                             search_history_tv3.setVisibility(View.VISIBLE);
+
+                            search_history_tv1_text = search_history_tv1.getText().toString();
+                            search_history_tv2_text = search_history_tv2.getText().toString();
+                            search_history_tv3_text = search_history_tv3.getText().toString();
+
                             search_history_tv1.setOnClickListener(v -> {
                                 setClickColor(search_history_tv2, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(1).getSearchHistory());
                                 setClickColor(search_history_tv3, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(2).getSearchHistory());
@@ -248,6 +342,13 @@ public class SearchActivity extends BaseActivity {
                             search_history_tv2.setVisibility(View.VISIBLE);
                             search_history_tv3.setVisibility(View.VISIBLE);
                             search_history_tv4.setVisibility(View.VISIBLE);
+
+                            search_history_tv1_text = search_history_tv1.getText().toString();
+                            search_history_tv2_text = search_history_tv2.getText().toString();
+                            search_history_tv3_text = search_history_tv3.getText().toString();
+                            search_history_tv4_text = search_history_tv4.getText().toString();
+
+
                             search_history_tv1.setOnClickListener(v -> {
                                 setClickColor(search_history_tv2, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(1).getSearchHistory());
                                 setClickColor(search_history_tv3, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(2).getSearchHistory());
@@ -295,6 +396,12 @@ public class SearchActivity extends BaseActivity {
                             search_history_tv3.setVisibility(View.VISIBLE);
                             search_history_tv4.setVisibility(View.VISIBLE);
                             search_history_tv5.setVisibility(View.VISIBLE);
+
+                            search_history_tv1_text = search_history_tv1.getText().toString();
+                            search_history_tv2_text = search_history_tv2.getText().toString();
+                            search_history_tv3_text = search_history_tv3.getText().toString();
+                            search_history_tv4_text = search_history_tv4.getText().toString();
+                            search_history_tv5_text = search_history_tv5.getText().toString();
 
                             search_history_tv1.setOnClickListener(v -> {
                                 setClickColor(search_history_tv2, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(1).getSearchHistory());
@@ -358,6 +465,13 @@ public class SearchActivity extends BaseActivity {
                             search_history_tv4.setVisibility(View.VISIBLE);
                             search_history_tv5.setVisibility(View.VISIBLE);
                             search_history_tv6.setVisibility(View.VISIBLE);
+
+                            search_history_tv1_text = search_history_tv1.getText().toString();
+                            search_history_tv2_text = search_history_tv2.getText().toString();
+                            search_history_tv3_text = search_history_tv3.getText().toString();
+                            search_history_tv4_text = search_history_tv4.getText().toString();
+                            search_history_tv5_text = search_history_tv5.getText().toString();
+                            search_history_tv6_text = search_history_tv6.getText().toString();
 
                             search_history_tv1.setOnClickListener(v -> {
                                 setClickColor(search_history_tv2, R.color.color_999999, R.drawable.shape_cricle_gray_line, searchHistoryBeans.get(1).getSearchHistory());
@@ -431,8 +545,15 @@ public class SearchActivity extends BaseActivity {
      * @param searchHistory 搜索的keyword
      * @param type          搜索类型
      */
-    private void RequestData(String searchHistory, int type,boolean isContent) {
-        SearchDetailActivity.Start(this,searchHistory,type,isContent);
+    private void RequestData(String searchHistory, int type, boolean isContent) {
+        SpUtil.putList(this, "searchList",searchHistoryBeans);
+        SPUtils.put(this,"search_history_tv1_text",search_history_tv1_text);
+        SPUtils.put(this,"search_history_tv2_text",search_history_tv2_text);
+        SPUtils.put(this,"search_history_tv3_text",search_history_tv3_text);
+        SPUtils.put(this,"search_history_tv4_text",search_history_tv4_text);
+        SPUtils.put(this,"search_history_tv5_text",search_history_tv5_text);
+        SPUtils.put(this,"search_history_tv6_text",search_history_tv6_text);
+        SearchDetailActivity.Start(this, searchHistory, type, isContent);
     }
 
     @Override
@@ -448,7 +569,7 @@ public class SearchActivity extends BaseActivity {
     @Override
     public void emptyObject() {
         searchHistoryBean = null;
-        if(searchHistoryBeans!=null){
+        if (searchHistoryBeans != null) {
             searchHistoryBeans.clear();
             searchHistoryBeans = null;
         }
@@ -472,7 +593,7 @@ public class SearchActivity extends BaseActivity {
                 setClickColor(search_content_tv8, R.color.color_999999, R.drawable.shape_cricle_gray_line, R.string.search_content_tv8);
                 setClickColor(search_content_tv1, R.color.color_344266, R.drawable.shape_cricle_line, R.string.search_content_tv1);
                 setHistoryClickColor();
-                RequestData(SearchType.MEETING_NAME.getName(), SearchType.MEETING_NAME.getType(),true);
+                RequestData(SearchType.MEETING_NAME.getName(), SearchType.MEETING_NAME.getType(), true);
                 break;
             case R.id.search_content_tv2:
                 setClickColor(search_content_tv1, R.color.color_999999, R.drawable.shape_cricle_gray_line, R.string.search_content_tv1);
@@ -484,7 +605,7 @@ public class SearchActivity extends BaseActivity {
                 setClickColor(search_content_tv8, R.color.color_999999, R.drawable.shape_cricle_gray_line, R.string.search_content_tv8);
                 setClickColor(search_content_tv2, R.color.color_344266, R.drawable.shape_cricle_line, R.string.search_content_tv2);
                 setHistoryClickColor();
-                RequestData(SearchType.V_MEETING.getName(), SearchType.V_MEETING.getType(),true);
+                RequestData(SearchType.V_MEETING.getName(), SearchType.V_MEETING.getType(), true);
                 break;
             case R.id.search_content_tv3:
                 setClickColor(search_content_tv1, R.color.color_999999, R.drawable.shape_cricle_gray_line, R.string.search_content_tv1);
@@ -496,7 +617,7 @@ public class SearchActivity extends BaseActivity {
                 setClickColor(search_content_tv8, R.color.color_999999, R.drawable.shape_cricle_gray_line, R.string.search_content_tv8);
                 setClickColor(search_content_tv3, R.color.color_344266, R.drawable.shape_cricle_line, R.string.search_content_tv3);
                 setHistoryClickColor();
-                RequestData(SearchType.SALE_NAME.getName(), SearchType.SALE_NAME.getType(),true);
+                RequestData(SearchType.SALE_NAME.getName(), SearchType.SALE_NAME.getType(), true);
                 break;
             case R.id.search_content_tv4:
                 setClickColor(search_content_tv1, R.color.color_999999, R.drawable.shape_cricle_gray_line, R.string.search_content_tv1);
@@ -508,7 +629,7 @@ public class SearchActivity extends BaseActivity {
                 setClickColor(search_content_tv8, R.color.color_999999, R.drawable.shape_cricle_gray_line, R.string.search_content_tv8);
                 setClickColor(search_content_tv4, R.color.color_344266, R.drawable.shape_cricle_line, R.string.search_content_tv4);
                 setHistoryClickColor();
-                RequestData(SearchType.MEETING_ADDRESS.getName(), SearchType.MEETING_ADDRESS.getType(),true);
+                RequestData(SearchType.MEETING_ADDRESS.getName(), SearchType.MEETING_ADDRESS.getType(), true);
                 break;
             case R.id.search_content_tv5:
                 setClickColor(search_content_tv1, R.color.color_999999, R.drawable.shape_cricle_gray_line, R.string.search_content_tv1);
@@ -520,7 +641,7 @@ public class SearchActivity extends BaseActivity {
                 setClickColor(search_content_tv8, R.color.color_999999, R.drawable.shape_cricle_gray_line, R.string.search_content_tv8);
                 setClickColor(search_content_tv5, R.color.color_344266, R.drawable.shape_cricle_line, R.string.search_content_tv5);
                 setHistoryClickColor();
-                RequestData(SearchType.VIP1.getName(), SearchType.VIP1.getType(),true);
+                RequestData(SearchType.VIP1.getName(), SearchType.VIP1.getType(), true);
                 break;
             case R.id.search_content_tv6:
                 setClickColor(search_content_tv1, R.color.color_999999, R.drawable.shape_cricle_gray_line, R.string.search_content_tv1);
@@ -532,7 +653,7 @@ public class SearchActivity extends BaseActivity {
                 setClickColor(search_content_tv8, R.color.color_999999, R.drawable.shape_cricle_gray_line, R.string.search_content_tv8);
                 setClickColor(search_content_tv6, R.color.color_344266, R.drawable.shape_cricle_line, R.string.search_content_tv6);
                 setHistoryClickColor();
-                RequestData(SearchType.VIP2.getName(), SearchType.VIP2.getType(),true);
+                RequestData(SearchType.VIP2.getName(), SearchType.VIP2.getType(), true);
                 break;
             case R.id.search_content_tv7:
                 setClickColor(search_content_tv1, R.color.color_999999, R.drawable.shape_cricle_gray_line, R.string.search_content_tv1);
@@ -544,7 +665,7 @@ public class SearchActivity extends BaseActivity {
                 setClickColor(search_content_tv8, R.color.color_999999, R.drawable.shape_cricle_gray_line, R.string.search_content_tv8);
                 setClickColor(search_content_tv7, R.color.color_344266, R.drawable.shape_cricle_line, R.string.search_content_tv7);
                 setHistoryClickColor();
-                RequestData(SearchType.VIP3.getName(), SearchType.VIP3.getType(),true);
+                RequestData(SearchType.VIP3.getName(), SearchType.VIP3.getType(), true);
                 break;
             case R.id.search_content_tv8:
                 setClickColor(search_content_tv1, R.color.color_999999, R.drawable.shape_cricle_gray_line, R.string.search_content_tv1);
@@ -556,7 +677,7 @@ public class SearchActivity extends BaseActivity {
                 setClickColor(search_content_tv7, R.color.color_999999, R.drawable.shape_cricle_gray_line, R.string.search_content_tv7);
                 setClickColor(search_content_tv8, R.color.color_344266, R.drawable.shape_cricle_line, R.string.search_content_tv8);
                 setHistoryClickColor();
-                RequestData(SearchType.VIP4.getName(), SearchType.VIP4.getType(),true);
+                RequestData(SearchType.VIP4.getName(), SearchType.VIP4.getType(), true);
                 break;
         }
     }
@@ -566,12 +687,12 @@ public class SearchActivity extends BaseActivity {
      */
     private void setClickColor(TextView textView, int cor, int draw, int str) {
         setSearchView(textView, cor, draw);
-//        searchView.setQueryHint("搜索" + getResources().getString(str));
+        //        searchView.setQueryHint("搜索" + getResources().getString(str));
     }
 
     private void setClickColor(TextView textView, int cor, int draw, String str) {
         setSearchView(textView, cor, draw);
-//        searchView.setQueryHint("搜索" + str);
+        //        searchView.setQueryHint("搜索" + str);
     }
 
     /**
@@ -584,8 +705,8 @@ public class SearchActivity extends BaseActivity {
         searchView.onActionViewExpanded();
     }
 
-    private void setHistoryClickColor(){
-        if (searchHistoryBeans == null){
+    private void setHistoryClickColor() {
+        if (searchHistoryBeans == null) {
             return;
         }
         switch (searchHistoryBeans.size()) {
@@ -627,7 +748,7 @@ public class SearchActivity extends BaseActivity {
         }
     }
 
-    private void setContentClickColor(){
+    private void setContentClickColor() {
         setClickColor(search_content_tv1, R.color.color_999999, R.drawable.shape_cricle_gray_line, R.string.search_content_tv1);
         setClickColor(search_content_tv2, R.color.color_999999, R.drawable.shape_cricle_gray_line, R.string.search_content_tv2);
         setClickColor(search_content_tv3, R.color.color_999999, R.drawable.shape_cricle_gray_line, R.string.search_content_tv3);

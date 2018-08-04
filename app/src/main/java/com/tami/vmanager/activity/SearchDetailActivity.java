@@ -28,6 +28,8 @@ import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
+import com.tami.vmanager.utils.SPUtils;
+import com.tami.vmanager.utils.SpUtil;
 import com.tami.vmanager.utils.TimeUtils;
 import com.tami.vmanager.view.MeetingStateView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -44,7 +46,7 @@ public class SearchDetailActivity extends BaseActivity {
 
     private PullToRefreshLayout pullToRefreshLayout;
     private RecyclerView recyclerView;
-    private int CurPage =1;
+    private int CurPage = 1;
     private NetworkBroker networkBroker;
     private List<SearchResponseBean.DataBean.DataListBean> listData;
     private CommonAdapter<SearchResponseBean.DataBean.DataListBean> commonAdapter;
@@ -62,6 +64,12 @@ public class SearchDetailActivity extends BaseActivity {
     private int type;
     private boolean isLoadmore = false;
     private int userId;
+    private String search_history_tv1_text;
+    private String search_history_tv2_text;
+    private String search_history_tv3_text;
+    private String search_history_tv4_text;
+    private String search_history_tv5_text;
+    private String search_history_tv6_text;
 
     @Override
     public int getContentViewId() {
@@ -86,7 +94,7 @@ public class SearchDetailActivity extends BaseActivity {
         intent = new Intent(context, SearchDetailActivity.class);
         intent.putExtra(SEARCH_QUERY, query);
         intent.putExtra(SEARCH_TYPE, type);
-        intent.putExtra(SEARCH_CONTENT,isContent);
+        intent.putExtra(SEARCH_CONTENT, isContent);
         context.startActivity(intent);
     }
 
@@ -110,9 +118,16 @@ public class SearchDetailActivity extends BaseActivity {
     @Override
     public void initData() {
         LoginResponse.Item item = GlobaVariable.getInstance().item;
-        if (null != item){
+        if (null != item) {
             userId = item.getId();
         }
+        List<SearchHistoryBean> searchHistoryBeans = SpUtil.getList(this, "searchList");
+        search_history_tv1_text = (String) SPUtils.get(this, "search_history_tv1_text", "");
+        search_history_tv2_text = (String) SPUtils.get(this, "search_history_tv2_text", "");
+        search_history_tv3_text = (String) SPUtils.get(this, "search_history_tv3_text", "");
+        search_history_tv4_text = (String) SPUtils.get(this, "search_history_tv4_text", "");
+        search_history_tv5_text = (String) SPUtils.get(this, "search_history_tv5_text", "");
+        search_history_tv6_text = (String) SPUtils.get(this, "search_history_tv6_text", "");
         InitRecyc();
         searchView.setQueryHint(getString(R.string.enter_keyword));
         searchView.setIconifiedByDefault(true);
@@ -121,14 +136,75 @@ public class SearchDetailActivity extends BaseActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 searchView.setQueryHint("");
-                searchHistoryBean.setUserId(userId);
-                searchHistoryBean.setSearchHistory(query);
-                new Thread(() -> dao.insert(searchHistoryBean)).start();
-                CurPage = 1;
-                SearchDetailActivity.this.query = query;
-                SearchDetailActivity.this.type = type;
-                RequestServer(query, SearchType.MEETING_NAME.getType(), false);
-                return false;
+
+                if (searchHistoryBeans != null) {
+                    int size = searchHistoryBeans.size();
+                    switch (size) {
+                        case 0:
+                            insertData(query);
+                            break;
+                        case 1:
+                            if (!query.equals(SearchDetailActivity.this.search_history_tv1_text)) {
+                                insertData(query);
+                            } else {
+                                request(query);
+                            }
+                            break;
+                        case 2:
+                            if (!TextUtils.isEmpty(SearchDetailActivity.this.search_history_tv1_text) && !query.equals(SearchDetailActivity.this.search_history_tv1_text)
+                                    && !TextUtils.isEmpty(search_history_tv2_text) && !query.equals(search_history_tv2_text)) {
+                                insertData(query);
+                            } else {
+                                request(query);
+                            }
+                            break;
+                        case 3:
+                            if (!TextUtils.isEmpty(SearchDetailActivity.this.search_history_tv1_text) && !query.equals(SearchDetailActivity.this.search_history_tv1_text)
+                                    && !TextUtils.isEmpty(search_history_tv2_text) && !query.equals(search_history_tv2_text)
+                                    && !TextUtils.isEmpty(search_history_tv3_text) && !query.equals(search_history_tv3_text)) {
+                                insertData(query);
+                            } else {
+                                request(query);
+                            }
+                            break;
+                        case 4:
+                            if (!TextUtils.isEmpty(SearchDetailActivity.this.search_history_tv1_text) && !query.equals(SearchDetailActivity.this.search_history_tv1_text)
+                                    && !TextUtils.isEmpty(search_history_tv2_text) && !query.equals(search_history_tv2_text)
+                                    && !TextUtils.isEmpty(search_history_tv3_text) && !query.equals(search_history_tv3_text)
+                                    && !TextUtils.isEmpty(search_history_tv4_text) && !query.equals(search_history_tv4_text)) {
+                                insertData(query);
+                            } else {
+                                request(query);
+                            }
+                            break;
+                        case 5:
+                            if (!TextUtils.isEmpty(SearchDetailActivity.this.search_history_tv1_text) && !query.equals(SearchDetailActivity.this.search_history_tv1_text)
+                                    && !TextUtils.isEmpty(search_history_tv2_text) && !query.equals(search_history_tv2_text)
+                                    && !TextUtils.isEmpty(search_history_tv3_text) && !query.equals(search_history_tv3_text)
+                                    && !TextUtils.isEmpty(search_history_tv4_text) && !query.equals(search_history_tv4_text)
+                                    && !TextUtils.isEmpty(search_history_tv5_text) && !query.equals(search_history_tv5_text)) {
+                                insertData(query);
+                            } else {
+                                request(query);
+                            }
+                            break;
+                        case 6:
+                            if (!TextUtils.isEmpty(SearchDetailActivity.this.search_history_tv1_text) && !query.equals(SearchDetailActivity.this.search_history_tv1_text)
+                                    && !TextUtils.isEmpty(search_history_tv2_text) && !query.equals(search_history_tv2_text)
+                                    && !TextUtils.isEmpty(search_history_tv3_text) && !query.equals(search_history_tv3_text)
+                                    && !TextUtils.isEmpty(search_history_tv4_text) && !query.equals(search_history_tv4_text)
+                                    && !TextUtils.isEmpty(search_history_tv5_text) && !query.equals(search_history_tv5_text)
+                                    && !TextUtils.isEmpty(search_history_tv6_text) && !query.equals(search_history_tv6_text)) {
+                                insertData(query);
+                            } else {
+                                request(query);
+                            }
+                            break;
+                    }
+                } else {
+                    insertData(query);
+                }
+                return true;
             }
 
             @Override
@@ -136,6 +212,20 @@ public class SearchDetailActivity extends BaseActivity {
                 return false;
             }
         });
+    }
+
+    public void insertData(String query) {
+        searchHistoryBean.setUserId(userId);
+        searchHistoryBean.setSearchHistory(query);
+        new Thread(() -> dao.insert(searchHistoryBean)).start();
+        request(query);
+    }
+
+    private void request(String query) {
+        CurPage = 1;
+        SearchDetailActivity.this.query = query;
+        SearchDetailActivity.this.type = type;
+        RequestServer(query, SearchType.MEETING_NAME.getType(), false);
     }
 
     /**
@@ -159,9 +249,9 @@ public class SearchDetailActivity extends BaseActivity {
                 } else {
                     stateView.setMeetingStateText(dataBean.getMeetingStatus(), 20);
                 }
-                if(TextUtils.isEmpty(dataBean.getCancelStatus())){
+                if (TextUtils.isEmpty(dataBean.getCancelStatus())) {
                     stateView.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     stateView.setVisibility(View.INVISIBLE);
                 }
                 StringBuilder time = new StringBuilder();
@@ -171,26 +261,26 @@ public class SearchDetailActivity extends BaseActivity {
                 String endTime = TimeUtils.milliseconds2String(dataBean.getEndTime(), TimeUtils.DATE_YYYYMMDDHHMM_SLASH);
                 time.append(endTime);
                 holder.setText(R.id.item_meeting_start_time, time.toString());
-//                holder.setText(R.id.item_meeting_start_time,dataBean.getAutoDayTime());
-//                holder.setText(R.id.item_meeting_start_time, TimeUtils.milliseconds2String(dataBean.getStartTime(),TimeUtils.DATE_YYYYMMDDHHMM_SLASH));
-//                holder.setText(R.id.item_meeting_end_time, TimeUtils.milliseconds2String(dataBean.getStartTime(),TimeUtils.DATE_YYYYMMDDHHMM_SLASH));
+                //                holder.setText(R.id.item_meeting_start_time,dataBean.getAutoDayTime());
+                //                holder.setText(R.id.item_meeting_start_time, TimeUtils.milliseconds2String(dataBean.getStartTime(),TimeUtils.DATE_YYYYMMDDHHMM_SLASH));
+                //                holder.setText(R.id.item_meeting_end_time, TimeUtils.milliseconds2String(dataBean.getStartTime(),TimeUtils.DATE_YYYYMMDDHHMM_SLASH));
                 holder.setText(R.id.item_meeting_room, dataBean.getMeetingAddress());
                 holder.setText(R.id.item_meeting_perfected, dataBean.getPerfectStatus());
                 holder.setText(R.id.item_meeting_cancel, dataBean.getCancelStatus());
 
                 AppCompatImageView vipImageView = holder.getView(R.id.item_meeting_level_icon);
-                vipImageView.setVisibility((dataBean.getIsImportant() == 0||dataBean.getIsImportant() == 10) ? View.GONE : View.VISIBLE);
+                vipImageView.setVisibility((dataBean.getIsImportant() == 0 || dataBean.getIsImportant() == 10) ? View.GONE : View.VISIBLE);
                 vipImageView.setImageResource(getImageResId(dataBean.getIsImportant()));
 
                 AppCompatImageView imageView1 = holder.getView(R.id.item_meeting_level_icon1);
-                imageView1.setVisibility( dataBean.getIsVzh() ==  1 ? View.VISIBLE : View.GONE);
+                imageView1.setVisibility(dataBean.getIsVzh() == 1 ? View.VISIBLE : View.GONE);
             }
         };
         commonAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 Intent intent = new Intent(SearchDetailActivity.this, MeetingOverviewActivity.class);
-                intent.putExtra(Constants.KEY_MEETING_ID,listData.get(position).getMeetingId());
+                intent.putExtra(Constants.KEY_MEETING_ID, listData.get(position).getMeetingId());
                 startActivity(intent);
             }
 
@@ -235,7 +325,7 @@ public class SearchDetailActivity extends BaseActivity {
         searchView.setQueryHint(getString(R.string.search) + query);
         this.query = query;
         this.type = type;
-        RequestServer(query, type,isContent);
+        RequestServer(query, type, isContent);
     }
 
     @Override
@@ -245,7 +335,7 @@ public class SearchDetailActivity extends BaseActivity {
 
     @Override
     public void emptyObject() {
-        if(listData!=null){
+        if (listData != null) {
             listData.clear();
             listData = null;
         }
@@ -258,7 +348,8 @@ public class SearchDetailActivity extends BaseActivity {
 
     /**
      * 请求服务器
-     *  @param query      搜索的内容
+     *
+     * @param query      搜索的内容
      * @param searchType 请求的方式
      * @param isContent
      */
@@ -293,13 +384,12 @@ public class SearchDetailActivity extends BaseActivity {
                         }
                         isLoadmore = false;
                         listData.addAll(data);
-                        recyclerView.scrollToPosition(data.size());
                         commonAdapter.notifyDataSetChanged();
                     } else {
                         recyclerView.setVisibility(View.GONE);
                         empty_tv.setVisibility(View.VISIBLE);
                         empty_tv.setText(String.format(getString(R.string.empty_search), query));
-                        if (isContent){
+                        if (isContent) {
                             empty_tv.setVisibility(View.GONE);
                         }
                     }
