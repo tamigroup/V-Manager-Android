@@ -24,6 +24,8 @@ import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.TimeLineAdapter;
 import com.tami.vmanager.adapter.TimeLineMeetingFlowItem;
 import com.tami.vmanager.base.BaseActivity;
+import com.tami.vmanager.dialog.ConfirmEnterMeetingDialog;
+import com.tami.vmanager.dialog.ConfirmEnterMeetingListener;
 import com.tami.vmanager.entity.GetActualNumRequestBean;
 import com.tami.vmanager.entity.GetActualNumResponseBean;
 import com.tami.vmanager.entity.GetMeetingItemsByMeetingIdRequest;
@@ -41,7 +43,6 @@ import com.tami.vmanager.view.MeetingStateView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TimerTask;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
@@ -264,7 +265,20 @@ public class MeetingOverviewActivity extends BaseActivity implements EasyPermiss
                 functionBtn(v);
                 break;
             case R.id.sale_phone:
-                requiresPermission();
+                ConfirmEnterMeetingDialog cemd = new ConfirmEnterMeetingDialog(this);
+                cemd.setContentStr(meetingInfo.salesUserMobile);
+                cemd.setRightStr(getString(R.string.confirm));
+                cemd.setConfirmEnterMeetingListener(new ConfirmEnterMeetingListener() {
+                    @Override
+                    public void leftBtn() {
+                    }
+
+                    @Override
+                    public void rightBtn() {
+                        requiresPermission();
+                    }
+                });
+                cemd.show();
                 break;
         }
     }

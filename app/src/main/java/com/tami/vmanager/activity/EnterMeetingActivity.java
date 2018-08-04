@@ -237,8 +237,20 @@ public class EnterMeetingActivity extends BaseActivity implements EasyPermission
                 vipDetails();
                 break;
             case R.id.sale_phone:
+                ConfirmEnterMeetingDialog cemd = new ConfirmEnterMeetingDialog(this);
+                cemd.setContentStr(meetingInfo.salesUserMobile);
+                cemd.setRightStr(getString(R.string.confirm));
+                cemd.setConfirmEnterMeetingListener(new ConfirmEnterMeetingListener() {
+                    @Override
+                    public void leftBtn() {
+                    }
 
-                requiresPermission();
+                    @Override
+                    public void rightBtn() {
+                        requiresPermission();
+                    }
+                });
+                cemd.show();
                 break;
         }
     }
