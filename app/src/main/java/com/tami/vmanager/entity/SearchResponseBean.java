@@ -76,7 +76,7 @@ public class SearchResponseBean extends MobileMessage implements Serializable {
             private long endTime;
             private String eoUrl;
             private int estimateNum;
-            private boolean followStatus;
+            private int followStatus;
             private int fromPlat;
             private int isImportant;
             private String isPay;
@@ -169,11 +169,11 @@ public class SearchResponseBean extends MobileMessage implements Serializable {
                 this.estimateNum = estimateNum;
             }
 
-            public boolean isFollowStatus() {
+            public int getFollowStatus() {
                 return followStatus;
             }
 
-            public void setFollowStatus(boolean followStatus) {
+            public void setFollowStatus(int followStatus) {
                 this.followStatus = followStatus;
             }
 
