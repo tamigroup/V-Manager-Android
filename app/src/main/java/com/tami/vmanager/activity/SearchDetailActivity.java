@@ -2,6 +2,7 @@ package com.tami.vmanager.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,15 +21,19 @@ import com.tami.vmanager.Database.entity.SearchHistoryBean;
 import com.tami.vmanager.R;
 import com.tami.vmanager.adapter.RecycleViewDivider;
 import com.tami.vmanager.base.BaseActivity;
+import com.tami.vmanager.entity.FollowUserMeetingRequest;
+import com.tami.vmanager.entity.FollowUserMeetingResponse;
 import com.tami.vmanager.entity.LoginResponse;
 import com.tami.vmanager.entity.SearchRequestBean;
 import com.tami.vmanager.entity.SearchResponseBean;
 import com.tami.vmanager.enums.SearchType;
+import com.tami.vmanager.http.HttpKey;
 import com.tami.vmanager.http.NetworkBroker;
 import com.tami.vmanager.manager.GlobaVariable;
 import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.SPUtils;
+import com.tami.vmanager.utils.ScreenUtil;
 import com.tami.vmanager.utils.SpUtil;
 import com.tami.vmanager.utils.TimeUtils;
 import com.tami.vmanager.view.MeetingStateView;
@@ -70,6 +75,7 @@ public class SearchDetailActivity extends BaseActivity {
     private String search_history_tv4_text;
     private String search_history_tv5_text;
     private String search_history_tv6_text;
+    private int screenWidth;
 
     @Override
     public int getContentViewId() {
@@ -121,6 +127,7 @@ public class SearchDetailActivity extends BaseActivity {
         if (null != item) {
             userId = item.getId();
         }
+        screenWidth = ScreenUtil.getScreenWidth(this);
         List<SearchHistoryBean> searchHistoryBeans = SpUtil.getList(this, "searchList");
         search_history_tv1_text = (String) SPUtils.get(this, "search_history_tv1_text", "");
         search_history_tv2_text = (String) SPUtils.get(this, "search_history_tv2_text", "");
@@ -241,7 +248,8 @@ public class SearchDetailActivity extends BaseActivity {
 
             @Override
             protected void convert(ViewHolder holder, SearchResponseBean.DataBean.DataListBean dataBean, int position) {
-                holder.setText(R.id.item_meeting_name, dataBean.getMeetingName());
+                TextView nameView = holder.getView(R.id.item_meeting_name);
+                setNameTextLayoutParams(nameView, dataBean.getMeetingName());
 
                 MeetingStateView stateView = holder.getView(R.id.item_meeting_state);
                 if (TextUtils.isEmpty(dataBean.getMeetingStatus())) {
@@ -274,6 +282,13 @@ public class SearchDetailActivity extends BaseActivity {
 
                 AppCompatImageView imageView1 = holder.getView(R.id.item_meeting_level_icon1);
                 imageView1.setVisibility(dataBean.getIsVzh() == 1 ? View.VISIBLE : View.GONE);
+
+                //关注
+                final TextView follow = holder.getView(R.id.item_meeting_follow);
+                followOnClick(follow, dataBean.getMeetingStatus(), dataBean.getFollowStatus());
+                follow.setOnClickListener((View v) -> {
+                    followUserMeeting(follow, dataBean);
+                });
             }
         };
         commonAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
@@ -291,6 +306,35 @@ public class SearchDetailActivity extends BaseActivity {
         });
         recyclerView.setAdapter(commonAdapter);
         pullToRefreshLayout.setCanRefresh(false);
+    }
+
+
+    /**
+     * 测量会议名称的长度
+     * @param nameView
+     * @param content
+     */
+    private void setNameTextLayoutParams(TextView nameView, String content) {
+        setLayoutParams(nameView, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+        nameView.setText(content);
+        int spec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        nameView.measure(spec, spec);
+        int measuredWidthTicketNum = nameView.getMeasuredWidth();
+        int maxWidth = ScreenUtil.dip2px(this, (screenWidth - 160));
+        if (measuredWidthTicketNum > maxWidth) {
+            setLayoutParams(nameView, maxWidth);
+        }
+    }
+
+    /**
+     * 重新赋值长度
+     * @param nameView
+     * @param value
+     */
+    private void setLayoutParams(TextView nameView, int value) {
+        ConstraintLayout.LayoutParams layoutParams1 = (ConstraintLayout.LayoutParams) nameView.getLayoutParams();
+        layoutParams1.width = value;
+        nameView.setLayoutParams(layoutParams1);
     }
 
     /**
@@ -400,4 +444,76 @@ public class SearchDetailActivity extends BaseActivity {
             }
         });
     }
+
+    /**
+     * 关注/取消关注会议
+     */
+    private void followUserMeeting(TextView follow, SearchResponseBean.DataBean.DataListBean onClickItem) {
+        FollowUserMeetingRequest followUserMeetingRequest = new FollowUserMeetingRequest();
+        LoginResponse.Item item = GlobaVariable.getInstance().item;
+        if (item != null) {
+            followUserMeetingRequest.setUserId(String.valueOf(item.getId()));
+        }
+        followUserMeetingRequest.setMeetingId(String.valueOf(onClickItem.getMeetingId()));
+        followUserMeetingRequest.setRequsetUrl(onClickItem.getFollowStatus() == 0 ? HttpKey.FOLLOW_USER_MEETING : HttpKey.CANCEL_USER_MEETING);
+        networkBroker.ask(followUserMeetingRequest, (ex1, res) -> {
+            if (null != ex1) {
+                Logger.d(ex1.getMessage() + "-" + ex1);
+                return;
+            }
+            try {
+                FollowUserMeetingResponse response = (FollowUserMeetingResponse) res;
+                if (response.getCode() == 200) {
+                    if (response.data) {
+                        onClickItem.setFollowStatus(onClickItem.getFollowStatus() == 1 ? 0 : 1);
+                        followOnClick(follow, onClickItem.getMeetingStatus(), onClickItem.getFollowStatus());
+                        if (onClickItem.getFollowStatus() == 1) {
+                            showToast(getString(R.string.attention_prompt, getString(R.string.success)));
+                        } else {
+                            showToast(getString(R.string.attention_cancel_prompt, getString(R.string.success)));
+                        }
+                    }
+                } else {
+                    if (onClickItem.getFollowStatus() == 0) {
+                        showToast(getString(R.string.attention_prompt, getString(R.string.failure)));
+                    } else {
+                        showToast(getString(R.string.attention_cancel_prompt, getString(R.string.failure)));
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        });
+    }
+
+    /**
+     * 设置关注点击效果
+     *
+     * @param follow
+     * @param status
+     */
+    private void followOnClick(TextView follow, String meetingStatus, int status) {
+        if (getString(R.string.finished).equals(meetingStatus)) {
+            follow.setEnabled(false);
+            follow.setText(getString(R.string.attention));
+            follow.setTextColor(ContextCompat.getColor(this, R.color.color_333333));
+            follow.setBackgroundResource(R.drawable.item_meeting_follow_unselected);
+        } else {
+            follow.setEnabled(true);
+            if (status == 1) {
+                follow.setText(getString(R.string.yi_attention));
+                follow.setTextColor(ContextCompat.getColor(this, R.color.color_FF5657));
+                follow.setBackgroundResource(R.drawable.item_meeting_follow_selected);
+            } else {
+                follow.setText(getString(R.string.attention));
+                follow.setTextColor(ContextCompat.getColor(this, R.color.color_333333));
+                follow.setBackgroundResource(R.drawable.item_meeting_follow_unselected1);
+            }
+        }
+    }
+
+
+
+
 }

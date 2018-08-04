@@ -27,6 +27,8 @@ import com.tami.vmanager.utils.Constants;
 import com.tami.vmanager.utils.Logger;
 import com.tami.vmanager.utils.SPUtils;
 
+import cn.jpush.android.api.JPushInterface;
+
 /**
  * 主页
  * Created by why on 2018/6/12.
@@ -51,6 +53,7 @@ public class HomeActivity extends BaseActivity implements TabLayout.OnTabSelecte
 
     @Override
     public void initView() {
+        JPushInterface.init(getApplicationContext());
         LoginResponse.Item Login_item = (LoginResponse.Item) SPUtils.get(Constants.FILE_KEY, Constants.SAVE_LOGIN_DATA);
         if (Login_item != null){
             GlobaVariable.getInstance().item = Login_item;
