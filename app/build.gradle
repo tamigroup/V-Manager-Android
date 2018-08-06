@@ -1,5 +1,8 @@
 apply plugin: 'com.android.application'
 
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 android {
     compileSdkVersion 27
     defaultConfig {
@@ -26,6 +29,16 @@ android {
                 JPUSH_CHANNEL: "developer-default",
         ]
     }
+
+    signingConfigs{
+        release{
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+        }
+    }
+
     buildTypes {
         debug {
             buildConfigField 'String', 'API_SERVER_URL', '"http://192.168.103.104:8080/apis/tm/"'
@@ -34,6 +47,7 @@ android {
         }
 
         release {
+            signingConfig signingConfigs.release
             buildConfigField 'String', 'API_SERVER_URL', '"https://vgjapi.tamiyun.com/apis/tm"'
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
