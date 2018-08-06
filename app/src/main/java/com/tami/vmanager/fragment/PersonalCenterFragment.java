@@ -36,6 +36,7 @@ import com.tami.vmanager.utils.SPUtils;
 import com.tami.vmanager.view.CircleImageView;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
@@ -232,6 +233,16 @@ public class PersonalCenterFragment extends BaseFragment implements EasyPermissi
         }
         headIconFile = new File(HEAD_ICON_DIC, headFileNameStr);
         headClipFile = new File(HEAD_ICON_DIC, clipFileNameStr);
+        try {
+            if (!headIconFile.exists()) {
+                headIconFile.createNewFile();
+            }
+            if (!headClipFile.exists()) {
+                headClipFile.createNewFile();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

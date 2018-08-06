@@ -60,6 +60,7 @@ import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -317,6 +318,13 @@ public class CreateMeetingRewriteActivity extends BaseActivity implements EasyPe
             Log.e(TAG, "initHeadIconFile()---mkdirs : " + mkdirs);
         }
         eoFile = new File(HEAD_ICON_DIC, eoFileNameStr);
+        try {
+            if (!eoFile.exists()) {
+                eoFile.createNewFile();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

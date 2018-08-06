@@ -65,6 +65,7 @@ import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -320,6 +321,13 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
             Log.e(TAG, "initHeadIconFile()---mkdirs : " + mkdirs);
         }
         eoFile = new File(HEAD_ICON_DIC, eoFileNameStr);
+        try {
+            if (!eoFile.exists()) {
+                eoFile.createNewFile();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -938,11 +946,11 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
             return false;
         }
 
-        if (TextUtils.isEmpty(estimatedNumberPeople.getText())||Integer.parseInt(estimatedNumberPeople.getText().toString())==0) {
+        if (TextUtils.isEmpty(estimatedNumberPeople.getText()) || Integer.parseInt(estimatedNumberPeople.getText().toString()) == 0) {
             showToast(getString(R.string.please_enter_, getString(R.string.yudingrenshu)));
             return false;
         }
-        if (TextUtils.isEmpty(bottomNumberPeople.getText())||Integer.parseInt(bottomNumberPeople.getText().toString())==0) {
+        if (TextUtils.isEmpty(bottomNumberPeople.getText()) || Integer.parseInt(bottomNumberPeople.getText().toString()) == 0) {
             showToast(getString(R.string.please_enter_, getString(R.string.baodingrenshu)));
             return false;
         }
@@ -1108,7 +1116,7 @@ public class ModifyMeetingActivity extends BaseActivity implements EasyPermissio
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (!hasFocus) {
-            ((ClearEditText)v).onFocusChange(v,hasFocus);
+            ((ClearEditText) v).onFocusChange(v, hasFocus);
             switch (v.getId()) {
                 case R.id.acmr_meeting_name:
                     if (TextUtils.isEmpty(nameView.getText())) {
