@@ -157,7 +157,7 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
         meetingChatPageRequest.setType(1);
         meetingChatPageRequest.setCurPage(CurPage++);
         meetingChatPageRequest.setPageSize(10);
-        networkBroker.ask(meetingChatPageRequest, (ex1, res) -> {
+        networkBroker.ask(meetingChatPageRequest,false, (ex1, res) -> {
             if (null != ex1) {
                 Logger.d(ex1.getMessage() + "-" + ex1);
                 return;
@@ -232,7 +232,7 @@ public class GroupChatFragment extends ViewPagerBaseFragment {
             sendMsgRequest.setUserIcon(item.getIconUrl());
         }
 
-        networkBroker.ask(sendMsgRequest, (exl, res) -> {
+        networkBroker.ask(sendMsgRequest,false, (exl, res) -> {
             if (null != exl) {
                 Logger.d(exl.getMessage() + "-" + exl);
                 return;
