@@ -42,10 +42,10 @@ public class NetworkBroker extends BaseBroker {
     private String CancelTag = NetworkBroker.class.getSimpleName();
     //正式环境
     public static final String BASE_URI = "https://vgjapi.tamiyun.com/apis/tm/";
-//    public static final String BASE_URI = BuildConfig.API_SERVER_URL;
+    //    public static final String BASE_URI = BuildConfig.API_SERVER_URL;
     //测试
-//    public static final String BASE_URI = "http://192.168.103.104:8080/apis/tm/";
-//        public static final String BASE_URI = "http://192.168.100.152:8300/tm/";
+    //    public static final String BASE_URI = "http://192.168.103.104:8080/apis/tm/";
+    //        public static final String BASE_URI = "http://192.168.100.152:8300/tm/";
 
     public static final int NETWORK_UNAVAILABLE = -10000;
     public static final int ACCESS_TIME_OUT = -10001;
@@ -142,11 +142,11 @@ public class NetworkBroker extends BaseBroker {
         LoginResponse.Item item = GlobaVariable.getInstance().item;
         if (item != null) {
             token = item.getToken();
-            Logger.d("登录token=:" +token);
+            Logger.d("登录token=:" + token);
         }
         if (TextUtils.isEmpty(token)) {
             token = (String) SPUtils.get(context, Constants.TOKEN, "");
-            Logger.d("SP中的token=:" +token);
+            Logger.d("SP中的token=:" + token);
         }
         PostStringBuilder postStringBuilder = OkHttpUtils.postString()
                 .mediaType(MediaType.parse("application/json;charset=UTF-8"))
@@ -163,7 +163,6 @@ public class NetworkBroker extends BaseBroker {
                         if (showLoading)
                             loadingSubject.onNext(false);
                         Logger.d("接受报文: 错误" + CancelTag + ex1.getLocalizedMessage());
-//                        Toast.makeText(context.getApplicationContext(), "错误：" + ex1.getMessage(), Toast.LENGTH_LONG).show();
                         callback.apply(ex1, null);
                         return;
                     }
@@ -189,6 +188,7 @@ public class NetworkBroker extends BaseBroker {
                                     // LocalSettings.inst().clearLogin();
                                     ToastUtils.makeText(context, R.string.login_overdue, ToastUtils.LENGTH_LONG).show();
                                     Intent intent = new Intent(context, LoginActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     context.startActivity(intent);
                                 } else if (UNKNOWN_ERR == code) {
                                     callback.apply(new AccessException(-1, statusMessage), null);
